@@ -1,0 +1,9 @@
+{
+  "extends": "@repo/typescript-config/base.json",
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"],
+  "compilerOptions": {
+    /* Specify type package names to be included without being referenced in a source file. */
+    "types": ["bun-types"]
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "name": "backend",
+  "version": "0.1.0",
+  "scripts": {
+    "dev": "bun run --watch src/index.ts",
+    "lint": "eslint . --max-warnings 0"
+  },
+  "dependencies": {
+    "@lucia-auth/adapter-drizzle": "^1.0.7",
+    "drizzle-orm": "^0.32.0",
+    "elysia": "^1.1.0",
+    "lucia": "^3.2.0",
+    "postgres": "^3.4.4"
+  },
+  "devDependencies": {
+    "bun-types": "latest",
+    "drizzle-kit": "^0.23.0"
+  },
+  "module": "src/index.js"
+}
