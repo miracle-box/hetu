@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@lucia-auth/adapter-drizzle": "^1.0.7",
+    "@paralleldrive/cuid2": "^2.2.2",
     "drizzle-orm": "^0.32.0",
     "elysia": "^1.1.0",
     "lucia": "^3.2.0",
