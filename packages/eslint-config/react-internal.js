@@ -32,6 +32,9 @@ module.exports = {
 		'node_modules/',
 		'dist/',
 	],
+	rules: {
+		'no-unused-vars': 'off',
+	},
 	overrides: [
 		// Force ESLint to detect .tsx files
 		{ files: ['*.js?(x)', '*.ts?(x)'] },

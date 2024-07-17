@@ -25,6 +25,9 @@ module.exports = {
 		'node_modules/',
 		'dist/',
 	],
+	rules: {
+		'no-unused-vars': 'off',
+	},
 	overrides: [
 		{
 			files: ['*.js?(x)', '*.ts?(x)'],
