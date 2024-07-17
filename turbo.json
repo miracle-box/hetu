@@ -12,6 +12,18 @@
     "dev": {
       "cache": false,
       "persistent": true
+    },
+    "backend#dev": {
+      "env": ["DATABASE_URL", "DATABASE_URL_MIGRATE"]
+    },
+    "migration:generate": {
+      "cache": false
+    },
+    "migration:drop": {
+      "cache": false
+    },
+    "migration:run": {
+      "cache": false
     }
   }
 }

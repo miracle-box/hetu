@@ -3,7 +3,10 @@
   "version": "0.1.0",
   "scripts": {
     "dev": "bun run --watch src/index.ts",
-    "lint": "eslint . --max-warnings 0"
+    "lint": "eslint . --max-warnings 0",
+    "migration:generate": "drizzle-kit generate",
+    "migration:drop": "drizzle-kit drop",
+    "migration:run": "bun src/db/migrate.ts"
   },
   "dependencies": {
     "@lucia-auth/adapter-drizzle": "^1.0.7",
