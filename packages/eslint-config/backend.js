@@ -9,6 +9,9 @@ module.exports = {
 	env: {
 		node: true,
 	},
+	globals: {
+		Bun: false,
+	},
 	settings: {
 		'import/resolver': {
 			typescript: {
