@@ -1,6 +1,6 @@
 {
-  "id": "8faacc45-0f32-485f-b92a-5592439c1390",
-  "prevId": "cdc535b7-eaa6-4c87-a65f-e5ea4f979194",
+  "id": "2f47bed4-6fc6-4da2-9aac-9f6cd8f95c95",
+  "prevId": "8faacc45-0f32-485f-b92a-5592439c1390",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -46,6 +46,24 @@
           "primaryKey": true,
           "notNull": true
         },
+        "name": {
+          "name": "name",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "email": {
+          "name": "email",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "password_hash": {
+          "name": "password_hash",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
         "created_at": {
           "name": "created_at",
           "type": "timestamp with time zone",
@@ -63,7 +81,18 @@
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {
+        "user_name_unique": {
+          "name": "user_name_unique",
+          "nullsNotDistinct": false,
+          "columns": ["name"]
+        },
+        "user_email_unique": {
+          "name": "user_email_unique",
+          "nullsNotDistinct": false,
+          "columns": ["email"]
+        }
+      }
     }
   },
   "enums": {},
