@@ -12,7 +12,7 @@ export const userTable = pgTable('user', {
 
 export const sessionTable = pgTable('session', {
 	id: varchar('id', { length: 24 }).primaryKey(),
-	userId: varchar('id', { length: 24 })
+	userId: varchar('user_id', { length: 24 })
 		.notNull()
 		.references(() => userTable.id),
 	expiresAt: timestamp('expires_at', { withTimezone: true }).notNull(),
