@@ -1,0 +1,14 @@
+import { AuthModel } from './auth.model';
+import Elysia, { t } from 'elysia';
+import { AuthService } from './auth.service';
+
+export const AuthController = new Elysia({ name: 'Controller.Auth' })
+	.use(AuthModel)
+	.post('/signup', ({ body }) => AuthService.create(body), {
+		body: 'auth.signup.body',
+		response: 'auth.signin.response',
+	})
+	.post('/signin', ({ body }) => AuthService.signin(body), {
+		body: 'auth.signin.body',
+		response: 'auth.signin.response',
+	});
