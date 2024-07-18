@@ -59,10 +59,7 @@ export abstract class AuthService {
 
 		const session = await auth.createSession(
 			user.id,
-			{
-				name: user.email,
-				email: user.email,
-			},
+			{},
 			{
 				sessionId: createId(),
 			},

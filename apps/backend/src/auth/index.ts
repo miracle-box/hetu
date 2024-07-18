@@ -1,21 +1,10 @@
 import { Lucia } from 'lucia';
 import { adapter } from './adapter';
 
-export const auth = new Lucia(adapter, {
-	getUserAttributes: (attributes) => {
-		return {
-			name: attributes.name,
-			email: attributes.email,
-		};
-	},
-});
+export const auth = new Lucia(adapter, {});
 
 declare module 'lucia' {
 	interface Register {
 		Lucia: typeof auth;
-		DatabaseUserAttributes: {
-			name: string;
-			email: string;
-		};
 	}
 }
