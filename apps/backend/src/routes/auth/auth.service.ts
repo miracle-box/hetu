@@ -107,4 +107,8 @@ export abstract class AuthService {
 	static signout(body: AuthSignoutRequest): Promise<void> {
 		return auth.invalidateSession(body.sessionId);
 	}
+
+	static signoutAll(userId: string): Promise<void> {
+		return auth.invalidateUserSessions(userId);
+	}
 }

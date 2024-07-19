@@ -25,4 +25,17 @@ export const AuthController = new Elysia({ name: 'Controller.Auth' })
 				204: t.Void(),
 			},
 		},
+	)
+	.post(
+		'/signoutAll',
+		({ set }) => {
+			// [TODO] Retrieve user ID from auth middleware
+			// AuthService.signoutAll();
+			set.status = 'No Content';
+		},
+		{
+			response: {
+				204: t.Void(),
+			},
+		},
 	);
