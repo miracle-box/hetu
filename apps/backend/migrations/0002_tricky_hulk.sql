@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX IF NOT EXISTS "unique_password" ON "user_auth" USING btree ("user_id","type") WHERE "user_auth"."type" = 'password';

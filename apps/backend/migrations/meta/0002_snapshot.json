@@ -1,6 +1,6 @@
 {
-  "id": "7c086df2-c0fe-45ff-9db9-f436a16b7c3b",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "38d8cf81-8b98-483c-845f-67198f820d37",
+  "prevId": "73cbfef2-1e32-4c3f-b133-3ad1765083ce",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -42,6 +42,87 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
+    "public.user_auth": {
+      "name": "user_auth",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "varchar(24)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "varchar(24)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "type": {
+          "name": "type",
+          "type": "auth_type",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "credential": {
+          "name": "credential",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "unique_password": {
+          "name": "unique_password",
+          "columns": [
+            {
+              "expression": "user_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "type",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "where": "\"user_auth\".\"type\" = 'password'",
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "user_auth_user_id_user_id_fk": {
+          "name": "user_auth_user_id_user_id_fk",
+          "tableFrom": "user_auth",
+          "tableTo": "user",
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
     "public.user": {
       "name": "user",
       "schema": "",
@@ -60,12 +141,6 @@
         },
         "email": {
           "name": "email",
-          "type": "varchar",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "password_hash": {
-          "name": "password_hash",
           "type": "varchar",
           "primaryKey": false,
           "notNull": true
@@ -101,7 +176,13 @@
       }
     }
   },
-  "enums": {},
+  "enums": {
+    "public.auth_type": {
+      "name": "auth_type",
+      "schema": "public",
+      "values": ["password"]
+    }
+  },
   "schemas": {},
   "sequences": {},
   "_meta": {
