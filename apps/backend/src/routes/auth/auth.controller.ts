@@ -11,4 +11,18 @@ export const AuthController = new Elysia({ name: 'Controller.Auth' })
 	.post('/signin', ({ body }) => AuthService.signin(body), {
 		body: 'auth.signin.body',
 		response: 'auth.signin.response',
-	});
+	})
+	.post(
+		'/signout',
+		({ body, set }) => {
+			// Return 204 if signed out (whether the token is valid or invalid)
+			AuthService.signout(body);
+			set.status = 'No Content';
+		},
+		{
+			body: 'auth.signout.body',
+			response: {
+				204: t.Void(),
+			},
+		},
+	);

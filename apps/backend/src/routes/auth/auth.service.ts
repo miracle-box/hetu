@@ -1,5 +1,10 @@
 import { db } from '~/db/connection';
-import { AuthSigninRequest, AuthSigninResponse, AuthSignupRequest } from './auth.model';
+import {
+	AuthSigninRequest,
+	AuthSigninResponse,
+	AuthSignoutRequest,
+	AuthSignupRequest,
+} from './auth.model';
 import { userAuthTable, userTable } from '~/db/schema/auth';
 import { eq } from 'drizzle-orm';
 import { auth } from '~/auth';
@@ -97,5 +102,9 @@ export abstract class AuthService {
 			sessionId: session.id,
 			expiresAt: session.expiresAt,
 		};
+	}
+
+	static signout(body: AuthSignoutRequest): Promise<void> {
+		return auth.invalidateSession(body.sessionId);
 	}
 }
