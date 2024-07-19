@@ -1,12 +1,12 @@
 import { db } from '~/db/connection';
 import { AuthSigninRequest, AuthSigninResponse, AuthSignupRequest } from './auth.model';
 import { userAuthTable, userTable } from '~/db/schema/auth';
-import { and, eq } from 'drizzle-orm';
+import { eq } from 'drizzle-orm';
 import { auth } from '~/auth';
 import { createId } from '@paralleldrive/cuid2';
 
 export abstract class AuthService {
-	static async create(body: AuthSignupRequest): Promise<AuthSigninResponse> {
+	static async signup(body: AuthSignupRequest): Promise<AuthSigninResponse> {
 		// From OWASP Cheatsheet recommendations
 		const passwordHash = await Bun.password.hash(body.password, {
 			algorithm: 'argon2id',

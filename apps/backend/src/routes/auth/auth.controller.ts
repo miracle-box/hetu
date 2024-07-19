@@ -4,7 +4,7 @@ import { AuthService } from './auth.service';
 
 export const AuthController = new Elysia({ name: 'Controller.Auth' })
 	.use(AuthModel)
-	.post('/signup', ({ body }) => AuthService.create(body), {
+	.post('/signup', ({ body }) => AuthService.signup(body), {
 		body: 'auth.signup.body',
 		response: 'auth.signin.response',
 	})
