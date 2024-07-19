@@ -4,8 +4,8 @@ const project = resolve(process.cwd(), 'tsconfig.json');
 
 /** @type {import("eslint").Linter.Config} */
 module.exports = {
-	extends: ['eslint:recommended', 'prettier', 'turbo'],
-	plugins: ['only-warn'],
+	extends: ['eslint:recommended', 'plugin:drizzle/recommended', 'prettier', 'turbo'],
+	plugins: ['only-warn', 'drizzle'],
 	env: {
 		node: true,
 	},
