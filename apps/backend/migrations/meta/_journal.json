@@ -22,6 +22,13 @@
       "when": 1721392913669,
       "tag": "0002_tricky_hulk",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1721398289964,
+      "tag": "0003_silent_ghost_rider",
+      "breakpoints": true
     }
   ]
 }
