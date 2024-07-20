@@ -27,6 +27,12 @@ module.exports = {
 	],
 	rules: {
 		'no-unused-vars': 'off',
+		'drizzle/enforce-delete-with-where': [
+			'error',
+			{
+				drizzleObjectName: ['db'],
+			},
+		],
 	},
 	overrides: [
 		{
