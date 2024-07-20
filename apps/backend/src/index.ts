@@ -3,7 +3,27 @@ import { AuthController } from './routes/auth/auth.controller';
 import { Elysia } from 'elysia';
 
 const app = new Elysia()
-	.use(swagger())
+	.use(
+		swagger({
+			documentation: {
+				components: {
+					securitySchemes: {
+						sessionId: {
+							type: 'http',
+							scheme: 'bearer',
+							bearerFormat: 'Session ID',
+						},
+					},
+				},
+				tags: [
+					{
+						name: 'Authentication',
+						description: 'Authentication related APIs.',
+					},
+				],
+			},
+		}),
+	)
 	.group('/auth', (app) => {
 		return app.use(AuthController);
 	})
