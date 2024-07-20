@@ -4,6 +4,7 @@ import { userAuthTable, userTable } from '~/db/schema/auth';
 import { eq } from 'drizzle-orm';
 import { auth } from '~/auth';
 import { createId } from '@paralleldrive/cuid2';
+import { Session } from 'lucia';
 
 export abstract class AuthService {
 	static async signup(body: AuthSignupRequest): Promise<AuthSigninResponse> {
@@ -100,6 +101,26 @@ export abstract class AuthService {
 			sessionUid: session.sessionUid,
 			userId: session.userId,
 			expiresAt: session.expiresAt,
+		};
+	}
+
+	static async refresh(session: Session): Promise<AuthSigninResponse> {
+		await auth.invalidateSession(session.id);
+		const newSession = await auth.createSession(
+			session.userId,
+			{
+				uid: createId(),
+			},
+			{
+				sessionId: createId(),
+			},
+		);
+
+		return {
+			sessionId: newSession.id,
+			sessionUid: newSession.sessionUid,
+			userId: newSession.userId,
+			expiresAt: newSession.expiresAt,
 		};
 	}
 }
