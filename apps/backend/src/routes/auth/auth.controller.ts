@@ -12,30 +12,8 @@ export const AuthController = new Elysia({ name: 'Controller.Auth' })
 		body: 'auth.signin.body',
 		response: 'auth.signin.response',
 	})
-	.post(
-		'/signout',
-		({ body, set }) => {
-			// Return 204 if signed out (whether the token is valid or invalid)
-			AuthService.signout(body);
-			set.status = 'No Content';
-		},
-		{
-			body: 'auth.signout.body',
-			response: {
-				204: t.Void(),
-			},
-		},
-	)
-	.post(
-		'/signoutAll',
-		({ set }) => {
-			// [TODO] Retrieve user ID from auth middleware
-			// AuthService.signoutAll();
-			set.status = 'No Content';
-		},
-		{
-			response: {
-				204: t.Void(),
-			},
-		},
-	);
+	.post('/session/renew', () => {}, {})
+	.get('/session', () => {}, {})
+	.get('/session/:uid', () => {}, {})
+	.delete('/session', () => {}, {})
+	.delete('/session/:uid', () => {}, {});

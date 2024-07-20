@@ -1,0 +1,1 @@
+ALTER TABLE "session" ADD COLUMN "uid" varchar(24) NOT NULL;

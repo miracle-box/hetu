@@ -21,18 +21,14 @@ export type AuthSigninRequest = Static<typeof authSigninRequestSchema>;
 
 export const authSigninResponseSchema = t.Object({
 	sessionId: t.String(),
+	sessionUid: t.String(),
+	userId: t.String(),
 	expiresAt: t.Date(),
 });
 export type AuthSigninResponse = Static<typeof authSigninResponseSchema>;
-
-export const authSignoutRequestSchema = t.Object({
-	sessionId: t.String(),
-});
-export type AuthSignoutRequest = Static<typeof authSignoutRequestSchema>;
 
 export const AuthModel = new Elysia({ name: 'Model.Auth' }).model({
 	'auth.signup.body': authSignupRequestSchema,
 	'auth.signin.body': authSigninRequestSchema,
 	'auth.signin.response': authSigninResponseSchema,
-	'auth.signout.body': authSignoutRequestSchema,
 });
