@@ -1,5 +1,12 @@
 import { db } from '~/db/connection';
-import { AuthSigninRequest, AuthSigninResponse, AuthSignupRequest } from './auth.model';
+import {
+	AuthAllSessionsResponse,
+	AuthSessionResponse,
+	AuthSigninRequest,
+	AuthSigninResponse,
+	AuthSignupRequest,
+	SessionSummary,
+} from './auth.model';
 import { userAuthTable, userTable } from '~/db/schema/auth';
 import { eq } from 'drizzle-orm';
 import { auth } from '~/auth';
@@ -122,5 +129,33 @@ export abstract class AuthService {
 			userId: newSession.userId,
 			expiresAt: newSession.expiresAt,
 		};
+	}
+
+	static async getSessions(userId: string): Promise<AuthAllSessionsResponse> {
+		const sessions = await auth.getUserSessions(userId);
+		return sessions.map((session) => {
+			return {
+				sessionUid: session.sessionUid,
+				userId: session.userId,
+				expiresAt: session.expiresAt,
+			};
+		});
+	}
+
+	static async getSession(userId: string, uid: string): Promise<SessionSummary | null> {
+		return (
+			(await this.getSessions(userId)).find((session) => uid === session.sessionUid) ?? null
+		);
+	}
+
+	static async revokeSessions(userId: string): Promise<void> {
+		await auth.invalidateUserSessions(userId);
+	}
+
+	static async revokeSession(userId: string, uid: string): Promise<void> {
+		const allSessions = await auth.getUserSessions(userId);
+		const targetSession = allSessions.find((session) => uid === session.sessionUid);
+
+		if (targetSession) await auth.invalidateSession(targetSession.id);
 	}
 }
