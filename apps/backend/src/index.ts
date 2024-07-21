@@ -24,9 +24,7 @@ const app = new Elysia()
 			},
 		}),
 	)
-	.group('/auth', (app) => {
-		return app.use(AuthController);
-	})
+	.use(AuthController)
 	.listen(3000);
 
 console.log(`Service is running at ${app.server?.hostname}:${app.server?.port}`);
