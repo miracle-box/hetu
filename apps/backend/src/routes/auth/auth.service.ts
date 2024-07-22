@@ -1,20 +1,13 @@
-import { db } from '~/db/connection';
-import {
-	AuthAllSessionsResponse,
-	AuthSessionResponse,
-	AuthSigninRequest,
-	AuthSigninResponse,
-	AuthSignupRequest,
-	SessionSummary,
-} from './auth.model';
-import { userAuthTable, userTable } from '~/db/schema/auth';
 import { eq } from 'drizzle-orm';
-import { auth } from '~/auth';
 import { createId } from '@paralleldrive/cuid2';
-import { Session } from 'lucia';
+import { auth } from '~/auth';
+import { db } from '~/db/connection';
+import { userAuthTable, userTable } from '~/db/schema/auth';
+import { Session, SessionSummary } from '~/models/session';
+import { SigninRequest, SignupRequest } from './auth.model';
 
 export abstract class AuthService {
-	static async signup(body: AuthSignupRequest): Promise<AuthSigninResponse> {
+	static async signup(body: SignupRequest): Promise<Session> {
 		// From OWASP Cheatsheet recommendations
 		const passwordHash = await Bun.password.hash(body.password, {
 			algorithm: 'argon2id',
@@ -70,7 +63,7 @@ export abstract class AuthService {
 		});
 	}
 
-	static async signin(body: AuthSigninRequest): Promise<AuthSigninResponse> {
+	static async signin(body: SigninRequest): Promise<Session> {
 		// Find user by email, then join password hash.
 		const [user] = await db
 			.select({
@@ -98,63 +91,60 @@ export abstract class AuthService {
 			{
 				uid: createId(),
 			},
-			{
-				sessionId: createId(),
-			},
+			{ sessionId: createId() },
 		);
 
 		return {
-			sessionId: session.id,
-			sessionUid: session.sessionUid,
+			id: session.id,
+			uid: session.uid,
 			userId: session.userId,
 			expiresAt: session.expiresAt,
 		};
 	}
 
-	static async refresh(session: Session): Promise<AuthSigninResponse> {
+	static async refresh(session: Session): Promise<Session> {
 		await auth.invalidateSession(session.id);
 		const newSession = await auth.createSession(
 			session.userId,
 			{
 				uid: createId(),
 			},
-			{
-				sessionId: createId(),
-			},
+			{ sessionId: createId() },
 		);
 
 		return {
-			sessionId: newSession.id,
-			sessionUid: newSession.sessionUid,
+			id: newSession.id,
+			uid: newSession.uid,
 			userId: newSession.userId,
 			expiresAt: newSession.expiresAt,
 		};
 	}
 
-	static async getSessions(userId: string): Promise<AuthAllSessionsResponse> {
+	static async getUserSessionSummaries(userId: string): Promise<SessionSummary[]> {
 		const sessions = await auth.getUserSessions(userId);
 		return sessions.map((session) => {
 			return {
-				sessionUid: session.sessionUid,
+				uid: session.uid,
 				userId: session.userId,
 				expiresAt: session.expiresAt,
 			};
 		});
 	}
 
-	static async getSession(userId: string, uid: string): Promise<SessionSummary | null> {
+	static async getSessionSummary(userId: string, uid: string): Promise<SessionSummary | null> {
 		return (
-			(await this.getSessions(userId)).find((session) => uid === session.sessionUid) ?? null
+			(await this.getUserSessionSummaries(userId)).find((session) => uid === session.uid) ??
+			null
 		);
 	}
 
-	static async revokeSessions(userId: string): Promise<void> {
+	static async revokeUserSessions(userId: string): Promise<void> {
 		await auth.invalidateUserSessions(userId);
 	}
 
 	static async revokeSession(userId: string, uid: string): Promise<void> {
 		const allSessions = await auth.getUserSessions(userId);
-		const targetSession = allSessions.find((session) => uid === session.sessionUid);
+		const targetSession = allSessions.find((session) => uid === session.uid);
 
 		if (targetSession) await auth.invalidateSession(targetSession.id);
 	}

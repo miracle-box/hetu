@@ -8,39 +8,57 @@ export const AuthController = new Elysia({
 	prefix: '/auth',
 })
 	.use(AuthModel)
-	.post('/signup', ({ body }) => AuthService.signup(body), {
-		body: 'auth.signup.body',
-		response: 'auth.signin.response',
-		detail: {
-			summary: 'Sign Up',
-			description: 'Sign up by username, email and password.',
-			tags: ['Authentication'],
+	.post(
+		'/signup',
+		async ({ body }) => {
+			return { session: await AuthService.signup(body) };
 		},
-	})
-	.post('/signin', ({ body }) => AuthService.signin(body), {
-		body: 'auth.signin.body',
-		response: 'auth.signin.response',
-		detail: {
-			summary: 'Sign In',
-			description: 'Sign in by email and password.',
-			tags: ['Authentication'],
+		{
+			body: 'auth.signup.body',
+			response: 'auth.signup.response',
+			detail: {
+				summary: 'Sign Up',
+				description: 'Sign up by username, email and password.',
+				tags: ['Authentication'],
+			},
 		},
-	})
+	)
+	.post(
+		'/signin',
+		async ({ body }) => {
+			return { session: await AuthService.signin(body) };
+		},
+		{
+			body: 'auth.signin.body',
+			response: 'auth.signin.response',
+			detail: {
+				summary: 'Sign In',
+				description: 'Sign in by email and password.',
+				tags: ['Authentication'],
+			},
+		},
+	)
 	.use(authMiddleware)
-	.post('/session/refresh', ({ session }) => AuthService.refresh(session), {
-		response: 'auth.signin.response',
-		detail: {
-			summary: 'Refresh Session',
-			description: 'Invalidate the current session and create a new one.',
-			tags: ['Authentication'],
-			security: [{ sessionId: [] }],
+	.post(
+		'/session/refresh',
+		async ({ session }) => {
+			return { session: await AuthService.refresh(session) };
 		},
-	})
-	.get('/session', ({ user }) => AuthService.getSessions(user.id), {
-		response: 'auth.all-sessions.response',
+		{
+			response: 'auth.session.refresh.response',
+			detail: {
+				summary: 'Refresh Session',
+				description: 'Invalidate the current session and create a new one.',
+				tags: ['Authentication'],
+				security: [{ sessionId: [] }],
+			},
+		},
+	)
+	.get('/session', ({ user }) => AuthService.getUserSessionSummaries(user.id), {
+		response: 'auth.session.summary-all.response',
 		detail: {
 			summary: 'Get All Sessions',
-			description: 'Get all sessions of the current user.',
+			description: 'Get summary all sessions of the current user.',
 			tags: ['Authentication'],
 			security: [{ sessionId: [] }],
 		},
@@ -48,7 +66,7 @@ export const AuthController = new Elysia({
 	.get(
 		'/session/:uid',
 		async ({ params, user, set }) => {
-			const targetSession = await AuthService.getSession(user.id, params.uid);
+			const targetSession = await AuthService.getSessionSummary(user.id, params.uid);
 			// [TODO] Handle errors in one place.
 			if (!targetSession) {
 				set.status = 'Not Found';
@@ -58,10 +76,10 @@ export const AuthController = new Elysia({
 			return targetSession;
 		},
 		{
-			response: 'auth.session.response',
+			response: 'auth.session.summary.response',
 			detail: {
 				summary: 'Get Session',
-				description: 'Get session info of the current user by session UID.',
+				description: 'Get session summary of the current user by session UID.',
 				tags: ['Authentication'],
 				security: [{ sessionId: [] }],
 			},
@@ -71,7 +89,7 @@ export const AuthController = new Elysia({
 		'/session',
 		({ user, set }) => {
 			set.status = 'No Content';
-			AuthService.revokeSessions(user.id);
+			AuthService.revokeUserSessions(user.id);
 		},
 		{
 			response: {
