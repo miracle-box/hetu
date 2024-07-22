@@ -1,6 +1,6 @@
 import { eq } from 'drizzle-orm';
 import { createId } from '@paralleldrive/cuid2';
-import { auth } from '~/auth';
+import { lucia } from '~/auth/lucia';
 import { db } from '~/db/connection';
 import { userAuthTable, userTable } from '~/db/schema/auth';
 import { Session, SessionSummary } from '~/models/session';
@@ -86,7 +86,7 @@ export abstract class AuthService {
 		// [TODO] Manage all errors in one place
 		if (!passwordCorrect) throw new Error('Invalid email or password.');
 
-		const session = await auth.createSession(
+		const session = await lucia.createSession(
 			user.id,
 			{
 				uid: createId(),
@@ -103,8 +103,8 @@ export abstract class AuthService {
 	}
 
 	static async refresh(session: Session): Promise<Session> {
-		await auth.invalidateSession(session.id);
-		const newSession = await auth.createSession(
+		await lucia.invalidateSession(session.id);
+		const newSession = await lucia.createSession(
 			session.userId,
 			{
 				uid: createId(),
@@ -121,7 +121,7 @@ export abstract class AuthService {
 	}
 
 	static async getUserSessionSummaries(userId: string): Promise<SessionSummary[]> {
-		const sessions = await auth.getUserSessions(userId);
+		const sessions = await lucia.getUserSessions(userId);
 		return sessions.map((session) => {
 			return {
 				uid: session.uid,
@@ -139,13 +139,13 @@ export abstract class AuthService {
 	}
 
 	static async revokeUserSessions(userId: string): Promise<void> {
-		await auth.invalidateUserSessions(userId);
+		await lucia.invalidateUserSessions(userId);
 	}
 
 	static async revokeSession(userId: string, uid: string): Promise<void> {
-		const allSessions = await auth.getUserSessions(userId);
+		const allSessions = await lucia.getUserSessions(userId);
 		const targetSession = allSessions.find((session) => uid === session.uid);
 
-		if (targetSession) await auth.invalidateSession(targetSession.id);
+		if (targetSession) await lucia.invalidateSession(targetSession.id);
 	}
 }

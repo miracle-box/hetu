@@ -1,7 +1,11 @@
 import { Lucia } from 'lucia';
-import { adapter } from './adapter';
+import { DrizzlePostgreSQLAdapter } from '@lucia-auth/adapter-drizzle';
+import { db } from '~/db/connection';
+import { sessionTable, userTable } from '~/db/schema/auth';
 
-export const auth = new Lucia(adapter, {
+const adapter = new DrizzlePostgreSQLAdapter(db, sessionTable, userTable);
+
+export const lucia = new Lucia(adapter, {
 	getSessionAttributes: (attributes) => {
 		return {
 			uid: attributes.uid,
@@ -17,7 +21,7 @@ export const auth = new Lucia(adapter, {
 
 declare module 'lucia' {
 	interface Register {
-		Lucia: typeof auth;
+		Lucia: typeof lucia;
 		DatabaseSessionAttributes: DatabaseSessionAttributes;
 		DatabaseUserAttributes: DatabaseUserAttributes;
 	}
