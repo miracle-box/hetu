@@ -40,12 +40,12 @@ export const AuthController = new Elysia({
 	)
 	.use(authMiddleware)
 	.post(
-		'/session/refresh',
+		'/sessions/refresh',
 		async ({ session }) => {
 			return { session: await AuthService.refresh(session) };
 		},
 		{
-			response: 'auth.session.refresh.response',
+			response: 'auth.sessions.refresh.response',
 			detail: {
 				summary: 'Refresh Session',
 				description: 'Invalidate the current session and create a new one.',
@@ -54,8 +54,8 @@ export const AuthController = new Elysia({
 			},
 		},
 	)
-	.get('/session', ({ user }) => AuthService.getUserSessionSummaries(user.id), {
-		response: 'auth.session.summary-all.response',
+	.get('/sessions', ({ user }) => AuthService.getUserSessionSummaries(user.id), {
+		response: 'auth.sessions.summary-all.response',
 		detail: {
 			summary: 'Get All Sessions',
 			description: 'Get summary all sessions of the current user.',
@@ -64,7 +64,7 @@ export const AuthController = new Elysia({
 		},
 	})
 	.get(
-		'/session/:uid',
+		'/sessions/:uid',
 		async ({ params, user, set }) => {
 			const targetSession = await AuthService.getSessionSummary(user.id, params.uid);
 			// [TODO] Handle errors in one place.
@@ -76,7 +76,7 @@ export const AuthController = new Elysia({
 			return targetSession;
 		},
 		{
-			response: 'auth.session.summary.response',
+			response: 'auth.sessions.summary.response',
 			detail: {
 				summary: 'Get Session',
 				description: 'Get session summary of the current user by session UID.',
@@ -86,7 +86,7 @@ export const AuthController = new Elysia({
 		},
 	)
 	.delete(
-		'/session',
+		'/sessions',
 		({ user, set }) => {
 			set.status = 'No Content';
 			AuthService.revokeUserSessions(user.id);
@@ -104,7 +104,7 @@ export const AuthController = new Elysia({
 		},
 	)
 	.delete(
-		'/session/:uid',
+		'/sessions/:uid',
 		({ params, user, set }) => {
 			set.status = 'No Content';
 			AuthService.revokeSession(user.id, params.uid);

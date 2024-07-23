@@ -32,7 +32,7 @@ export const AuthModel = new Elysia({ name: 'Model.Auth' }).model({
 	'auth.signup.response': sessionResponseSchema,
 	'auth.signin.body': signinRequestSchema,
 	'auth.signin.response': sessionResponseSchema,
-	'auth.session.refresh.response': sessionResponseSchema,
-	'auth.session.summary.response': sessionSummarySchema,
-	'auth.session.summary-all.response': t.Array(sessionSummarySchema),
+	'auth.sessions.refresh.response': sessionResponseSchema,
+	'auth.sessions.summary.response': sessionSummarySchema,
+	'auth.sessions.summary-all.response': t.Array(sessionSummarySchema),
 });
