@@ -16,7 +16,8 @@
     "drizzle-typebox": "^0.1.1",
     "elysia": "^1.1.0",
     "lucia": "^3.2.0",
-    "postgres": "^3.4.4"
+    "postgres": "^3.4.4",
+    "sharp": "^0.33.4"
   },
   "devDependencies": {
     "bun-types": "latest",
