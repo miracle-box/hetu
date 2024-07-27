@@ -76,4 +76,8 @@ export abstract class TexturesService {
 		hasher.update(buf);
 		return hasher.digest().toString('hex');
 	}
+
+	static async createTexture(authorId: string, body: UploadRequest): Promise<Texture> {
+		const skinOrCape = body.type === 'cape' ? 'cape' : 'skin';
+	}
 }
