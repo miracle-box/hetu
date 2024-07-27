@@ -14,7 +14,7 @@ export abstract class TexturesService {
 		return true;
 	}
 
-	static isValidCapeDimensions(width: number, height: number): false | 'vanilla' | 'optifine' {
+	static isValidCapeDimensions(width: number, height: number): false | 'vanilla' | 'legacy' {
 		// Cape dims: n times of 64*32 or 22*17
 		const whRatio = width / height;
 
@@ -22,7 +22,7 @@ export abstract class TexturesService {
 		const isValid22x17 = width % 22 === 0 && whRatio === 22 / 17;
 
 		if (isValid64x32) return 'vanilla';
-		if (isValid22x17) return 'optifine';
+		if (isValid22x17) return 'legacy';
 		return false;
 	}
 
@@ -42,8 +42,8 @@ export abstract class TexturesService {
 			const capeType = this.isValidCapeDimensions(ogMeta.width, ogMeta.height);
 			if (!capeType) {
 				throw new Error('Invalid cape dimensions');
-			} else if (capeType === 'optifine') {
-				// Pad OF capes to n times of 64x32 using transparent background
+			} else if (capeType === 'legacy') {
+				// Pad legacy capes to n times of 64x32 using transparent background
 				const nTimesResolution = ogMeta.width / 22;
 				image = image.extend({
 					top: 0,
