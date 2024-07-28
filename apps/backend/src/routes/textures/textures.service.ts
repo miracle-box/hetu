@@ -5,6 +5,7 @@ import { UploadRequest } from './textures.model';
 import { s3 } from '~/s3/client';
 import { db } from '~/db/connection';
 import { textureTable } from '~/db/schema/texture';
+import { and, eq } from 'drizzle-orm';
 
 export abstract class TexturesService {
 	static isValidSkinDimensions(width: number, height: number): boolean {
@@ -123,6 +124,22 @@ export abstract class TexturesService {
 		await this.uploadToS3(image, hash).catch((reason: Error) => {
 			throw new Error(`Failed to upload texture: ${reason.message}`);
 		});
+
+		// If the same texture exists (in the same user), don't create it
+		const textureExists = await db
+			.select()
+			.from(textureTable)
+			.where(
+				and(
+					eq(textureTable.authorId, authorId),
+					eq(textureTable.hash, hash.toString('hex')),
+				),
+			)
+			.then((res) => res.length > 0);
+
+		// [TODO] Manage errors in one place
+		// [TODO] Narrow the error down and provide id for existing texture
+		if (textureExists) throw new Error('Texture already exists');
 
 		const [insertedTexture] = await db
 			.insert(textureTable)
