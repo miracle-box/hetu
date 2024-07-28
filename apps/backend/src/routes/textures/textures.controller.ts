@@ -28,7 +28,9 @@ export const TexturesController = new Elysia({ name: 'Controller.Textures', pref
 		},
 		{
 			body: 'textures.upload.body',
-			response: 'textures.upload.response',
+			response: {
+				201: 'textures.upload.response',
+			},
 			// [TODO] Probably it's better to put thissomewhere else
 			transform: ({ body }) => {
 				// Transform user input (base64 encoded png data uri) to File object
