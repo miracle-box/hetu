@@ -14,7 +14,14 @@
       "persistent": true
     },
     "backend#dev": {
-      "env": ["DATABASE_URL", "DATABASE_URL_MIGRATE"]
+      "env": [
+        "DATABASE_URL",
+        "DATABASE_URL_MIGRATE",
+        "S3_ENDPOINT",
+        "S3_BUCKET",
+        "S3_ACCESS_KEY_ID",
+        "S3_SECRET_ACCESS_KEY"
+      ]
     },
     "migration:generate": {
       "cache": false
