@@ -1,6 +1,10 @@
 import sharp from 'sharp';
+import { HeadObjectCommand, PutObjectCommand } from '@aws-sdk/client-s3';
 import { Texture } from '~/models/texture';
 import { UploadRequest } from './textures.model';
+import { s3 } from '~/s3/client';
+import { db } from '~/db/connection';
+import { textureTable } from '~/db/schema/texture';
 
 export abstract class TexturesService {
 	static isValidSkinDimensions(width: number, height: number): boolean {
@@ -70,14 +74,70 @@ export abstract class TexturesService {
 		return output;
 	}
 
-	static sha256Hash(buf: Buffer): string {
+	static sha256Hash(buf: Buffer): Buffer {
 		const hasher = new Bun.CryptoHasher('sha256');
 
 		hasher.update(buf);
-		return hasher.digest().toString('hex');
+		return hasher.digest();
+	}
+
+	static async uploadToS3(file: Buffer, sha256sum: Buffer): Promise<void> {
+		const hashHex = sha256sum.toString('hex');
+		const hashBase64 = sha256sum.toString('base64');
+
+		// Put textures in textures/(first two letters of hash)/(hash)
+		const fileKey = `textures/${hashHex.slice(0, 2)}/${hashHex}`;
+
+		const fileExists = await s3
+			.send(
+				new HeadObjectCommand({
+					Bucket: process.env.S3_BUCKET,
+					Key: fileKey,
+				}),
+			)
+			.then(() => true)
+			.catch((reason: Error) => {
+				if (reason.name === 'NotFound') return false;
+				throw reason;
+			});
+
+		if (!fileExists) {
+			const res = await s3.send(
+				new PutObjectCommand({
+					Bucket: process.env.S3_BUCKET,
+					Key: `textures/${hashHex.slice(0, 2)}/${hashHex}`,
+					Body: file,
+					ContentType: 'image/png',
+					ChecksumSHA256: hashBase64,
+				}),
+			);
+		}
 	}
 
 	static async createTexture(authorId: string, body: UploadRequest): Promise<Texture> {
 		const skinOrCape = body.type === 'cape' ? 'cape' : 'skin';
+		const image = await this.normalizeImage(body.image, skinOrCape);
+		const hash = this.sha256Hash(image);
+
+		// [TODO] Manage errors in one place
+		await this.uploadToS3(image, hash).catch((reason: Error) => {
+			throw new Error(`Failed to upload texture: ${reason.message}`);
+		});
+
+		const [insertedTexture] = await db
+			.insert(textureTable)
+			.values({
+				authorId,
+				name: body.name,
+				description: body.description,
+				type: body.type,
+				hash: hash.toString('hex'),
+			})
+			.returning();
+
+		// [TODO] Check if it's possible to do this in one query
+		if (!insertedTexture) throw new Error('Failed to create texture');
+
+		return insertedTexture;
 	}
 }
