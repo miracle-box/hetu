@@ -103,7 +103,7 @@ export abstract class TexturesService {
 			});
 
 		if (!fileExists) {
-			const res = await s3.send(
+			await s3.send(
 				new PutObjectCommand({
 					Bucket: process.env.S3_BUCKET,
 					Key: `textures/${hashHex.slice(0, 2)}/${hashHex}`,

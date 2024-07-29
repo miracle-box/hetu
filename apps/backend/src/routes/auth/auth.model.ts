@@ -1,6 +1,5 @@
 import Elysia, { Static, t } from 'elysia';
 import { sessionSchema, sessionSummarySchema } from '~/models/session';
-import { userSchema } from '~/models/user';
 
 export const signupRequestSchema = t.Object({
 	name: t.String({
