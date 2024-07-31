@@ -9,7 +9,7 @@ export const textureTable = pgTable('texture', {
 	authorId: varchar('author_id', { length: 24 })
 		.notNull()
 		.references(() => userTable.id),
-	name: varchar('name').notNull(),
+	name: varchar('name').notNull().unique(),
 	description: text('description').notNull().default(''),
 	type: TextureTypeEnum('type').notNull(),
 	hash: varchar('hash').notNull(),
