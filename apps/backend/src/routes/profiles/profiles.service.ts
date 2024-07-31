@@ -40,4 +40,28 @@ export abstract class ProfilesService {
 
 		return profile ?? null;
 	}
+
+	static async createProfile(userId: string, name: string): Promise<Profile> {
+		const nameExists = !!(await this.getProfileByName(name));
+		// [TODO] Put all errors in one place
+		if (nameExists) throw new Error('Player name already been taken.');
+
+		const hasPrimary = await this.getProfilesByUser(userId).then((profiles) =>
+			profiles.some((profile) => profile.isPrimary),
+		);
+
+		const [profile] = await db
+			.insert(profileTable)
+			.values({
+				authorId: userId,
+				isPrimary: !hasPrimary,
+				name,
+			})
+			.returning();
+
+		// [TODO] Put all errors in one place
+		if (!profile) throw new Error('Failed to create profile');
+
+		return profile;
+	}
 }

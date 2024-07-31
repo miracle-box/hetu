@@ -3,8 +3,6 @@ import Elysia, { Static, t } from 'elysia';
 import { profileTable } from '~/db/schema/profile';
 import { profileSchema } from '~/models/profile';
 
-const insertSchema = createInsertSchema(profileTable);
-
 export const getRequestSchema = t.Union(
 	[
 		// By user id
@@ -17,7 +15,11 @@ export const getRequestSchema = t.Union(
 	// { unevaluatedProperties: false },
 );
 
-export const createRequestSchema = t.Pick(insertSchema, ['name', 'isPrimary']);
+export const createRequestSchema = t.Object({
+	// Player name matches Mojang's requirements
+	// [TODO] Maybe make this configurable
+	name: t.String({ pattern: '[0-9A-Za-z_]{3,16}' }),
+});
 
 export type GetRequest = Static<typeof getRequestSchema>;
 export type CreateRequest = Static<typeof createRequestSchema>;

@@ -29,12 +29,31 @@ export const ProfilesController = new Elysia({ name: 'Controller.Profiles', pref
 			detail: {
 				summary: 'Get profiles',
 				description: 'Get profiles by user ID, UUID or player name.',
+				tags: ['Profiles'],
 				// Seems too complex for autogenerating OpenAPI docs, so we have to manually write it
 				parameters: [
 					{ name: 'user', in: 'query', schema: { type: 'string' }, required: false },
 					{ name: 'id', in: 'query', schema: { type: 'string' }, required: false },
 					{ name: 'name', in: 'query', schema: { type: 'string' }, required: false },
 				],
+			},
+		},
+	)
+	.use(authMiddleware)
+	.post(
+		'/',
+		({ session, body }) => {
+			// [TODO] HTTP status code should be "201 Created"
+			return ProfilesService.createProfile(session.userId, body.name);
+		},
+		{
+			body: 'profiles.create.body',
+			response: 'profiles.create.response',
+			detail: {
+				summary: 'Create profile',
+				description:
+					'Create a new profile (primary profile will be automatically handled).',
+				security: [{ sessionId: [] }],
 				tags: ['Profiles'],
 			},
 		},
