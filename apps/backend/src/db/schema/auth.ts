@@ -27,7 +27,7 @@ export const userAuthTable = pgTable(
 	(t) => ({
 		// Only one password for each user
 		uniquePassword: uniqueIndex('unique_password')
-			.on(t.userId, t.type)
+			.on(t.userId)
 			// Workaround for drizzle-orm #2506
 			.where(sql`"user_auth"."type" = 'password'`),
 	}),

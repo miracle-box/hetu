@@ -1,11 +1,15 @@
 import { Static, t } from 'elysia';
 
-export const sessionSchema = t.Object({
-	id: t.String(),
-	uid: t.String(),
-	userId: t.String(),
-	expiresAt: t.Date(),
-});
+export const sessionSchema = t.Object(
+	{
+		id: t.String(),
+		uid: t.String(),
+		userId: t.String(),
+		expiresAt: t.Date(),
+	},
+	// Pervent unwanted info leaking
+	{ additionalProperties: false },
+);
 
 export const sessionSummarySchema = t.Omit(sessionSchema, ['id']);
 
