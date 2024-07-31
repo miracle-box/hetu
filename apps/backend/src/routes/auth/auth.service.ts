@@ -38,11 +38,6 @@ export abstract class AuthService {
 					userId: txInsertedUser.id,
 					credential: passwordHash,
 				})
-				.onConflictDoUpdate({
-					target: [userAuthTable.userId, userAuthTable.type],
-					targetWhere: eq(userAuthTable.type, 'password'),
-					set: { credential: passwordHash },
-				})
 				.returning({
 					id: userAuthTable.id,
 				});
