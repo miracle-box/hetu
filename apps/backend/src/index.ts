@@ -33,7 +33,23 @@ const app = new Elysia()
 					},
 					{
 						name: 'Yggdrasil',
-						description: 'API for authlib-injector.',
+						description: 'API for authlib-injector. (authlib injector APIs)',
+					},
+					{
+						name: 'Yggdrasil Auth',
+						description: 'API for authlib-injector. (authserver APIs)',
+					},
+					{
+						name: 'Yggdrasil Session',
+						description: 'API for authlib-injector. (sessionserver APIs)',
+					},
+					{
+						name: 'Yggdrasil Mojang',
+						description: 'API for authlib-injector. (Mojang APIs)',
+					},
+					{
+						name: 'Yggdrasil Custom',
+						description: 'API for authlib-injector. (our custom APIs)',
 					},
 				],
 			},
