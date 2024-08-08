@@ -3,6 +3,7 @@ import swagger from '@elysiajs/swagger';
 import { AuthController } from './routes/auth/auth.controller';
 import { TexturesController } from './routes/textures/textures.controller';
 import { ProfilesController } from './routes/profiles/profiles.controller';
+import { YggdrasilController } from './routes/yggdrasil/yggdrasil';
 
 const app = new Elysia()
 	.use(
@@ -30,6 +31,10 @@ const app = new Elysia()
 						name: 'Profiles',
 						description: 'API for managing player profiles.',
 					},
+					{
+						name: 'Yggdrasil',
+						description: 'API for authlib-injector.',
+					},
 				],
 			},
 		}),
@@ -37,6 +42,7 @@ const app = new Elysia()
 	.use(AuthController)
 	.use(TexturesController)
 	.use(ProfilesController)
+	.use(YggdrasilController)
 	.listen(3000);
 
 console.log(`Service is running at ${app.server?.hostname}:${app.server?.port}`);
