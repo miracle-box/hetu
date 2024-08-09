@@ -1,11 +1,13 @@
 import Elysia from 'elysia';
+import { metadata, metadataResponseSchema } from './metadata';
 
 export const YggdrasilController = new Elysia({
 	name: 'Controller.Yggdrasil',
 	prefix: '/yggdrasil',
 })
 	.group('/', (app) =>
-		app.get('', () => {}, {
+		app.get('', () => metadata, {
+			response: metadataResponseSchema,
 			detail: {
 				summary: 'Get Metadata',
 				description: 'API metadata for authlib injector.',
