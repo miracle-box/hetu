@@ -3,6 +3,7 @@ import { metadata, metadataResponseSchema } from './metadata';
 import { AuthserverModel } from './authserver';
 import { SessionserverModel } from './sessionserver';
 import { MojangApiModel } from './mojang';
+import { CustomApiModel } from './custom';
 
 export const YggdrasilController = new Elysia({
 	name: 'Controller.Yggdrasil',
@@ -143,8 +144,12 @@ export const YggdrasilController = new Elysia({
 				},
 			}),
 	)
-	.group('/anylogin', (app) =>
-		app.post('/prejoin', () => {}, {
+	.group('/custom', (app) =>
+		app.use(CustomApiModel).post('/prejoin', () => {}, {
+			body: 'yggdrasil.custom.prejoin.body',
+			response: {
+				204: t.Void(),
+			},
 			detail: {
 				summary: 'AnyLogin Prejoin',
 				description:
