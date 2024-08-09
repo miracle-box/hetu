@@ -1,5 +1,6 @@
 import Elysia from 'elysia';
 import { metadata, metadataResponseSchema } from './metadata';
+import { AuthserverModel } from './authserver';
 
 export const YggdrasilController = new Elysia({
 	name: 'Controller.Yggdrasil',
@@ -17,7 +18,10 @@ export const YggdrasilController = new Elysia({
 	)
 	.group('/authserver', (app) =>
 		app
+			.use(AuthserverModel)
 			.post('/authenticate', () => {}, {
+				body: 'yggdrasil.authserver.auth.body',
+				response: 'yggdrasil.authserver.auth.response',
 				detail: {
 					summary: 'Sign in',
 					description: 'Sign in by email and password.',
