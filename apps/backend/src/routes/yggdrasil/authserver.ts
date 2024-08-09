@@ -48,12 +48,12 @@ export type AuthResponseSchema = Static<typeof authResponseSchema>;
 export type RefreshRequestSchema = Static<typeof refreshRequsetSchema>;
 export type RefreshResponseSchema = Static<typeof refreshResponseSchema>;
 
-export const AuthserverModel = new Elysia({ name: 'Model.Yggdrasil.Authserver' }).model({
-	'yggdrasil.authserver.auth.body': authRequestSchema,
-	'yggdrasil.authserver.auth.response': authResponseSchema,
-	'yggdrasil.authserver.refresh.body': refreshRequsetSchema,
-	'yggdrasil.authserver.refresh.response': refreshResponseSchema,
-	'yggdrasil.authserver.validate.body': tokenOpRequestSchema,
-	'yggdrasil.authserver.invalidate.body': tokenOpRequestSchema,
-	'yggdrasil.authserver.signout.body': credentialOpRequestSchema,
+export const AuthserverModel = new Elysia({ name: 'Model.Yggdrasil.Auth' }).model({
+	'yggdrasil.auth.auth.body': authRequestSchema,
+	'yggdrasil.auth.auth.response': authResponseSchema,
+	'yggdrasil.auth.refresh.body': refreshRequsetSchema,
+	'yggdrasil.auth.refresh.response': refreshResponseSchema,
+	'yggdrasil.auth.validate.body': tokenOpRequestSchema,
+	'yggdrasil.auth.invalidate.body': tokenOpRequestSchema,
+	'yggdrasil.auth.signout.body': credentialOpRequestSchema,
 });

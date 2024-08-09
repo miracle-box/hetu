@@ -1,6 +1,7 @@
 import Elysia, { t } from 'elysia';
 import { metadata, metadataResponseSchema } from './metadata';
 import { AuthserverModel } from './authserver';
+import { SessionserverModel } from './sessionserver';
 
 export const YggdrasilController = new Elysia({
 	name: 'Controller.Yggdrasil',
@@ -20,8 +21,8 @@ export const YggdrasilController = new Elysia({
 		app
 			.use(AuthserverModel)
 			.post('/authenticate', () => {}, {
-				body: 'yggdrasil.authserver.auth.body',
-				response: 'yggdrasil.authserver.auth.response',
+				body: 'yggdrasil.auth.auth.body',
+				response: 'yggdrasil.auth.auth.response',
 				detail: {
 					summary: 'Sign in',
 					description: 'Sign in by email and password.',
@@ -29,8 +30,8 @@ export const YggdrasilController = new Elysia({
 				},
 			})
 			.post('/refresh', () => {}, {
-				body: 'yggdrasil.authserver.refresh.body',
-				response: 'yggdrasil.authserver.refresh.response',
+				body: 'yggdrasil.auth.refresh.body',
+				response: 'yggdrasil.auth.refresh.response',
 				detail: {
 					summary: 'Resfesh Token',
 					description: 'Get a new token and invalidate the old one.',
@@ -38,7 +39,7 @@ export const YggdrasilController = new Elysia({
 				},
 			})
 			.post('/validate', () => {}, {
-				body: 'yggdrasil.authserver.validate.body',
+				body: 'yggdrasil.auth.validate.body',
 				response: {
 					204: t.Void(),
 				},
@@ -49,7 +50,7 @@ export const YggdrasilController = new Elysia({
 				},
 			})
 			.post('/invalidate', () => {}, {
-				body: 'yggdrasil.authserver.invalidate.body',
+				body: 'yggdrasil.auth.invalidate.body',
 				response: {
 					204: t.Void(),
 				},
@@ -60,7 +61,7 @@ export const YggdrasilController = new Elysia({
 				},
 			})
 			.post('/signout', () => {}, {
-				body: 'yggdrasil.authserver.signout.body',
+				body: 'yggdrasil.auth.signout.body',
 				response: {
 					204: t.Void(),
 				},
@@ -73,7 +74,12 @@ export const YggdrasilController = new Elysia({
 	)
 	.group('/sessionserver', (app) =>
 		app
+			.use(SessionserverModel)
 			.post('/session/minecraft/join', () => {}, {
+				body: 'yggdrasil.session.join.body',
+				response: {
+					204: t.Void(),
+				},
 				detail: {
 					summary: 'Join Server',
 					description: 'Log client info for validation.',
@@ -81,6 +87,8 @@ export const YggdrasilController = new Elysia({
 				},
 			})
 			.get('/session/minecraft/hasJoined', () => {}, {
+				query: 'yggdrasil.session.hasjoined.query',
+				response: 'yggdrasil.session.hasjoined.response',
 				detail: {
 					summary: 'Validate Client',
 					description: 'Validates client and get their profile.',
@@ -88,6 +96,8 @@ export const YggdrasilController = new Elysia({
 				},
 			})
 			.get('/session/minecraft/profile/:id', () => {}, {
+				query: 'yggdrasil.session.profile.query',
+				response: 'yggdrasil.session.profile.response',
 				detail: {
 					summary: 'Get Profile',
 					description: 'Get profile info by UUID.',
