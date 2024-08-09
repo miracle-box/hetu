@@ -3,6 +3,7 @@ import { sql } from 'drizzle-orm';
 import { pgEnum, pgTable, timestamp, uniqueIndex, varchar } from 'drizzle-orm/pg-core';
 
 export const userAuthTypeEnum = pgEnum('auth_type', ['password']);
+export const sessionScopeEnum = pgEnum('session_scope', ['default', 'yggdrasil']);
 
 export const userTable = pgTable('user', {
 	id: varchar('id', { length: 24 }).primaryKey().$defaultFn(createId),
@@ -39,5 +40,6 @@ export const sessionTable = pgTable('session', {
 	userId: varchar('user_id', { length: 24 })
 		.notNull()
 		.references(() => userTable.id),
+	scope: sessionScopeEnum('scope').notNull(),
 	expiresAt: timestamp('expires_at', { withTimezone: true }).notNull(),
 });

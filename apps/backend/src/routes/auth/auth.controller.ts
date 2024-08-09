@@ -38,7 +38,7 @@ export const AuthController = new Elysia({
 			},
 		},
 	)
-	.use(authMiddleware)
+	.use(authMiddleware('default'))
 	.post(
 		'/sessions/refresh',
 		async ({ session }) => {

@@ -11,7 +11,7 @@ export const TexturesController = new Elysia({ name: 'Controller.Textures', pref
 			tags: ['Textures'],
 		},
 	})
-	.use(authMiddleware)
+	.use(authMiddleware('default'))
 	.post(
 		'/',
 		async ({ session, body, set }) => {

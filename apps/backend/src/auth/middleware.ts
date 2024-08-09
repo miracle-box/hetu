@@ -1,9 +1,9 @@
 import Elysia from 'elysia';
 import { Session } from '~/models/session';
 import { User } from '~/models/user';
-import { lucia } from './lucia';
+import { lucia, SessionScope } from './lucia';
 
-export const authMiddleware = (app: Elysia) =>
+export const authMiddleware = (scope: SessionScope) => (app: Elysia) =>
 	app.derive(async ({ headers }) => {
 		const authz = headers['authorization'];
 		const bearer = authz ? lucia.readBearerToken(authz) : null;
@@ -11,20 +11,11 @@ export const authMiddleware = (app: Elysia) =>
 		if (!bearer) throw new Error('Unauthorized');
 
 		const { session: luciaSession, user: luciaUser } = await lucia.validateSession(bearer);
-		if (!luciaSession) throw new Error('Unauthorized');
+		if (!luciaSession || luciaSession.scope !== scope) throw new Error('Unauthorized');
 
 		return {
-			session: {
-				id: luciaSession.id,
-				uid: luciaSession.uid,
-				userId: luciaSession.userId,
-				expiresAt: luciaSession.expiresAt,
-			},
-			user: {
-				id: luciaUser.id,
-				name: luciaUser.name,
-				email: luciaUser.email,
-			},
+			session: luciaSession,
+			user: luciaUser,
 		} satisfies {
 			session: Session;
 			user: User;

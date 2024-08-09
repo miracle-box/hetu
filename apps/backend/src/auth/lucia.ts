@@ -2,13 +2,18 @@ import { Lucia } from 'lucia';
 import { DrizzlePostgreSQLAdapter } from '@lucia-auth/adapter-drizzle';
 import { db } from '~/db/connection';
 import { sessionTable, userTable } from '~/db/schema/auth';
+import { Static, t } from 'elysia';
 
 const adapter = new DrizzlePostgreSQLAdapter(db, sessionTable, userTable);
+
+export const sessionScopeSchema = t.Union([t.Literal('default'), t.Literal('yggdrasil')]);
+export type SessionScope = Static<typeof sessionScopeSchema>;
 
 export const lucia = new Lucia(adapter, {
 	getSessionAttributes: (attributes) => {
 		return {
 			uid: attributes.uid,
+			scope: attributes.scope,
 		};
 	},
 	getUserAttributes: (attributes) => {
@@ -28,6 +33,7 @@ declare module 'lucia' {
 
 	interface DatabaseSessionAttributes {
 		uid: string;
+		scope: 'default' | 'yggdrasil';
 	}
 
 	interface DatabaseUserAttributes {

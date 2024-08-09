@@ -39,7 +39,7 @@ export const ProfilesController = new Elysia({ name: 'Controller.Profiles', pref
 			},
 		},
 	)
-	.use(authMiddleware)
+	.use(authMiddleware('default'))
 	.post(
 		'/',
 		({ session, body }) => {
