@@ -2,6 +2,7 @@ import Elysia, { t } from 'elysia';
 import { metadata, metadataResponseSchema } from './metadata';
 import { AuthserverModel } from './authserver';
 import { SessionserverModel } from './sessionserver';
+import { MojangApiModel } from './mojang';
 
 export const YggdrasilController = new Elysia({
 	name: 'Controller.Yggdrasil',
@@ -107,7 +108,10 @@ export const YggdrasilController = new Elysia({
 	)
 	.group('/api', (app) =>
 		app
+			.use(MojangApiModel)
 			.post('/profiles/minecraft', () => {}, {
+				body: 'yggdrasil.mojang.get-profiles.body',
+				response: 'yggdrasil.mojang.get-profiles.response',
 				detail: {
 					summary: 'Get Profiles',
 					description: 'Get all profiles of the user.',
@@ -115,6 +119,11 @@ export const YggdrasilController = new Elysia({
 				},
 			})
 			.put('/user/profile/:id/:type', () => {}, {
+				query: 'yggdrasil.mojang.upload-texture.query',
+				body: 'yggdrasil.mojang.upload-texture.body',
+				response: {
+					204: t.Void(),
+				},
 				detail: {
 					summary: 'Upload Texture',
 					description:
@@ -123,6 +132,10 @@ export const YggdrasilController = new Elysia({
 				},
 			})
 			.delete('/user/profile/:id/:type', () => {}, {
+				query: 'yggdrasil.mojang.reset-texture.query',
+				response: {
+					204: t.Void(),
+				},
 				detail: {
 					summary: 'Reset Texture',
 					description: 'Reset texture to default.',
