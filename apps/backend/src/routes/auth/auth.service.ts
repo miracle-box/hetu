@@ -85,16 +85,13 @@ export abstract class AuthService {
 			user.id,
 			{
 				uid: createId(),
+				// [TODO] Support signing other scopes
+				scope: 'default',
 			},
 			{ sessionId: createId() },
 		);
 
-		return {
-			id: session.id,
-			uid: session.uid,
-			userId: session.userId,
-			expiresAt: session.expiresAt,
-		};
+		return session;
 	}
 
 	static async refresh(session: Session): Promise<Session> {
@@ -103,27 +100,18 @@ export abstract class AuthService {
 			session.userId,
 			{
 				uid: createId(),
+				// [TODO] refresh by current scope
+				scope: 'default',
 			},
 			{ sessionId: createId() },
 		);
 
-		return {
-			id: newSession.id,
-			uid: newSession.uid,
-			userId: newSession.userId,
-			expiresAt: newSession.expiresAt,
-		};
+		return newSession;
 	}
 
 	static async getUserSessionSummaries(userId: string): Promise<SessionSummary[]> {
 		const sessions = await lucia.getUserSessions(userId);
-		return sessions.map((session) => {
-			return {
-				uid: session.uid,
-				userId: session.userId,
-				expiresAt: session.expiresAt,
-			};
-		});
+		return sessions.map((session) => session);
 	}
 
 	static async getSessionSummary(userId: string, uid: string): Promise<SessionSummary | null> {

@@ -1,15 +1,8 @@
+import { createSelectSchema } from 'drizzle-typebox';
 import { Static, t } from 'elysia';
+import { sessionTable } from '~/db/schema/auth';
 
-export const sessionSchema = t.Object(
-	{
-		id: t.String(),
-		uid: t.String(),
-		userId: t.String(),
-		expiresAt: t.Date(),
-	},
-	// Pervent unwanted info leaking
-	{ additionalProperties: false },
-);
+export const sessionSchema = createSelectSchema(sessionTable);
 
 export const sessionSummarySchema = t.Omit(sessionSchema, ['id']);
 
