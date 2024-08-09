@@ -66,14 +66,14 @@ export const YggdrasilController = new Elysia({
 					tags: ['Yggdrasil Session'],
 				},
 			})
-			.post('/session/minecraft/hasJoined', () => {}, {
+			.get('/session/minecraft/hasJoined', () => {}, {
 				detail: {
 					summary: 'Validate Client',
 					description: 'Validates client and get their profile.',
 					tags: ['Yggdrasil Session'],
 				},
 			})
-			.post('/session/minecraft/profile/:id', () => {}, {
+			.get('/session/minecraft/profile/:id', () => {}, {
 				detail: {
 					summary: 'Get Profile',
 					description: 'Get profile info by UUID.',
