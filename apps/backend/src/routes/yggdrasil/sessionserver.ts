@@ -1,4 +1,4 @@
-import Elysia, { t } from 'elysia';
+import Elysia, { Static, t } from 'elysia';
 import { profileSchema } from './common';
 
 export const joinRequestSchema = t.Object({
@@ -14,8 +14,13 @@ export const hasJoinedRequestSchema = t.Object({
 });
 
 export const profileRequestSchema = t.Object({
+	id: t.String(),
 	unsigned: t.Boolean(),
 });
+
+export type JoinRequest = Static<typeof joinRequestSchema>;
+export type HasJoinedRequest = Static<typeof hasJoinedRequestSchema>;
+export type ProfileRequest = Static<typeof profileRequestSchema>;
 
 export const SessionserverModel = new Elysia({ name: 'Model.Yggdrasil.Session' }).model({
 	'yggdrasil.session.join.body': joinRequestSchema,
