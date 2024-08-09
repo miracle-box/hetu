@@ -1,4 +1,4 @@
-import Elysia from 'elysia';
+import Elysia, { t } from 'elysia';
 import { metadata, metadataResponseSchema } from './metadata';
 import { AuthserverModel } from './authserver';
 
@@ -29,6 +29,8 @@ export const YggdrasilController = new Elysia({
 				},
 			})
 			.post('/refresh', () => {}, {
+				body: 'yggdrasil.authserver.refresh.body',
+				response: 'yggdrasil.authserver.refresh.response',
 				detail: {
 					summary: 'Resfesh Token',
 					description: 'Get a new token and invalidate the old one.',
@@ -36,6 +38,10 @@ export const YggdrasilController = new Elysia({
 				},
 			})
 			.post('/validate', () => {}, {
+				body: 'yggdrasil.authserver.validate.body',
+				response: {
+					204: t.Void(),
+				},
 				detail: {
 					summary: 'Validate Token',
 					description: 'Check if the token is valid.',
@@ -43,6 +49,10 @@ export const YggdrasilController = new Elysia({
 				},
 			})
 			.post('/invalidate', () => {}, {
+				body: 'yggdrasil.authserver.invalidate.body',
+				response: {
+					204: t.Void(),
+				},
 				detail: {
 					summary: 'Invalidate Token',
 					description: 'Invalidate the token.',
@@ -50,6 +60,10 @@ export const YggdrasilController = new Elysia({
 				},
 			})
 			.post('/signout', () => {}, {
+				body: 'yggdrasil.authserver.signout.body',
+				response: {
+					204: t.Void(),
+				},
 				detail: {
 					summary: 'Sign Out',
 					description: 'Invalidate all tokens of the user.',
