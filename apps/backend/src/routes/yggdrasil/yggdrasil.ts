@@ -32,7 +32,7 @@ export const YggdrasilController = new Elysia({
 					tags: ['Yggdrasil Auth'],
 				},
 			})
-			.post('/refresh', () => {}, {
+			.post('/refresh', ({ body }) => AuthserverService.refresh(body), {
 				body: 'yggdrasil.auth.refresh.body',
 				response: 'yggdrasil.auth.refresh.response',
 				detail: {

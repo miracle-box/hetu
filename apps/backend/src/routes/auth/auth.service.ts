@@ -107,9 +107,8 @@ export abstract class AuthService {
 			session.userId,
 			{
 				uid: createId(),
-				// [TODO] refresh by current scope
-				scope: 'default',
-				metadata: {},
+				scope: session.scope,
+				metadata: session.metadata,
 			},
 			{ sessionId: createId() },
 		);
