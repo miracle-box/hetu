@@ -1,9 +1,9 @@
 import { eq } from 'drizzle-orm';
 import { createId } from '@paralleldrive/cuid2';
-import { lucia } from '~/auth/lucia';
+import { lucia, SessionScope } from '~/auth/lucia';
 import { db } from '~/db/connection';
 import { userAuthTable, userTable } from '~/db/schema/auth';
-import { Session, SessionSummary } from '~/models/session';
+import { Session, SessionMetadata, SessionSummary } from '~/models/session';
 import { SigninRequest, SignupRequest } from './auth.model';
 
 export abstract class AuthService {
@@ -58,6 +58,12 @@ export abstract class AuthService {
 		});
 	}
 
+	/**
+	 * Sign in a user
+	 * @todo [TODO] Use `credentialsSignin` for actual signin logic.
+	 * @param body username and password
+	 * @returns session data
+	 */
 	static async signin(body: SigninRequest): Promise<Session> {
 		// Find user by email, then join password hash.
 		const [user] = await db
@@ -109,6 +115,47 @@ export abstract class AuthService {
 		);
 
 		return newSession;
+	}
+
+	static async credentialsSignin(
+		email: string,
+		password: string,
+		scope: SessionScope,
+		metadata: SessionMetadata,
+	): Promise<Session> {
+		// Find user by email, then join password hash.
+		const [user] = await db
+			.select({
+				id: userTable.id,
+				email: userTable.email,
+				passwordHash: userAuthTable.credential,
+			})
+			.from(userTable)
+			.where(eq(userTable.email, email))
+			.innerJoin(userAuthTable, eq(userTable.id, userAuthTable.userId))
+			.limit(1);
+
+		// [TODO] Early returns can indicate whether the email is valid, consider add login limit
+		if (!user) {
+			// [TODO] Manage all errors in one place
+			throw new Error('Invalid email or password.');
+		}
+
+		const passwordCorrect = await Bun.password.verify(password, user.passwordHash);
+		// [TODO] Manage all errors in one place
+		if (!passwordCorrect) throw new Error('Invalid email or password.');
+
+		const session = await lucia.createSession(
+			user.id,
+			{
+				uid: createId(),
+				scope,
+				metadata,
+			},
+			{ sessionId: createId() },
+		);
+
+		return session;
 	}
 
 	static async getUserSessionSummaries(userId: string): Promise<SessionSummary[]> {
