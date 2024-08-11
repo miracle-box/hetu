@@ -87,6 +87,7 @@ export abstract class AuthService {
 				uid: createId(),
 				// [TODO] Support signing other scopes
 				scope: 'default',
+				metadata: {},
 			},
 			{ sessionId: createId() },
 		);
@@ -102,6 +103,7 @@ export abstract class AuthService {
 				uid: createId(),
 				// [TODO] refresh by current scope
 				scope: 'default',
+				metadata: {},
 			},
 			{ sessionId: createId() },
 		);

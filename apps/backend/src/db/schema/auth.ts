@@ -1,6 +1,7 @@
 import { createId } from '@paralleldrive/cuid2';
 import { sql } from 'drizzle-orm';
-import { pgEnum, pgTable, timestamp, uniqueIndex, varchar } from 'drizzle-orm/pg-core';
+import { jsonb, pgEnum, pgTable, timestamp, uniqueIndex, varchar } from 'drizzle-orm/pg-core';
+import { SessionMetadata } from '~/models/session';
 
 export const userAuthTypeEnum = pgEnum('auth_type', ['password']);
 export const sessionScopeEnum = pgEnum('session_scope', ['default', 'yggdrasil']);
@@ -41,5 +42,6 @@ export const sessionTable = pgTable('session', {
 		.notNull()
 		.references(() => userTable.id),
 	scope: sessionScopeEnum('scope').notNull(),
+	metadata: jsonb('metadata').$type<SessionMetadata>().notNull().default({}),
 	expiresAt: timestamp('expires_at', { withTimezone: true }).notNull(),
 });

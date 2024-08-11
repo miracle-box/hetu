@@ -1,0 +1,1 @@
+ALTER TABLE "session" ADD COLUMN "metadata" jsonb DEFAULT '{}'::jsonb NOT NULL;

@@ -3,6 +3,7 @@ import { DrizzlePostgreSQLAdapter } from '@lucia-auth/adapter-drizzle';
 import { db } from '~/db/connection';
 import { sessionTable, userTable } from '~/db/schema/auth';
 import { Static, t } from 'elysia';
+import { SessionMetadata } from '~/models/session';
 
 const adapter = new DrizzlePostgreSQLAdapter(db, sessionTable, userTable);
 
@@ -14,6 +15,7 @@ export const lucia = new Lucia(adapter, {
 		return {
 			uid: attributes.uid,
 			scope: attributes.scope,
+			metadata: attributes.metadata,
 		};
 	},
 	getUserAttributes: (attributes) => {
@@ -34,6 +36,7 @@ declare module 'lucia' {
 	interface DatabaseSessionAttributes {
 		uid: string;
 		scope: 'default' | 'yggdrasil';
+		metadata: SessionMetadata;
 	}
 
 	interface DatabaseUserAttributes {
