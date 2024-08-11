@@ -4,6 +4,7 @@ import { AuthserverModel } from './authserver';
 import { SessionserverModel } from './sessionserver';
 import { MojangApiModel } from './mojang';
 import { CustomApiModel } from './custom';
+import { AuthserverService } from './authserver.service';
 
 export const YggdrasilController = new Elysia({
 	name: 'Controller.Yggdrasil',
@@ -22,7 +23,7 @@ export const YggdrasilController = new Elysia({
 	.group('/authserver', (app) =>
 		app
 			.use(AuthserverModel)
-			.post('/authenticate', () => {}, {
+			.post('/authenticate', ({ body }) => AuthserverService.authenticate(body), {
 				body: 'yggdrasil.auth.auth.body',
 				response: 'yggdrasil.auth.auth.response',
 				detail: {
