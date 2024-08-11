@@ -78,17 +78,24 @@ export const YggdrasilController = new Elysia({
 					},
 				},
 			)
-			.post('/signout', () => {}, {
-				body: 'yggdrasil.auth.signout.body',
-				response: {
-					204: t.Void(),
+			.post(
+				'/signout',
+				async ({ body, set }) => {
+					await AuthserverService.signout(body);
+					set.status = 'No Content';
 				},
-				detail: {
-					summary: 'Sign Out',
-					description: 'Invalidate all tokens of the user.',
-					tags: ['Yggdrasil Auth'],
+				{
+					body: 'yggdrasil.auth.signout.body',
+					response: {
+						204: t.Void(),
+					},
+					detail: {
+						summary: 'Sign Out',
+						description: 'Invalidate all tokens of the user.',
+						tags: ['Yggdrasil Auth'],
+					},
 				},
-			}),
+			),
 	)
 	.group('/sessionserver', (app) =>
 		app

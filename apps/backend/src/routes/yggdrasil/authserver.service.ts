@@ -3,6 +3,7 @@ import { AuthService } from '../auth/auth.service';
 import {
 	AuthRequest,
 	AuthResponse,
+	CredentialOpRequest,
 	RefreshRequest,
 	RefreshResponse,
 	TokenOpRequest,
@@ -97,5 +98,16 @@ export abstract class AuthserverService {
 		if (!yggSessionExists) return;
 
 		lucia.invalidateSession(body.accessToken);
+	}
+
+	static async signout(body: CredentialOpRequest): Promise<void> {
+		// [TODO] Currently, this will invalidate all sessions of the user (not just Yggdrasil sessions).
+		const session = await AuthService.credentialsSignin(
+			body.username,
+			body.password,
+			'yggdrasil',
+			{},
+		);
+		lucia.invalidateUserSessions(session.userId);
 	}
 }
