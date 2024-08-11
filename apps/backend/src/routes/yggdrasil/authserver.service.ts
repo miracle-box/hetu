@@ -1,6 +1,15 @@
 import { lucia } from '~/auth/lucia';
 import { AuthService } from '../auth/auth.service';
-import { AuthRequest, AuthResponse, RefreshRequest, RefreshResponse } from './authserver';
+import {
+	AuthRequest,
+	AuthResponse,
+	RefreshRequest,
+	RefreshResponse,
+	TokenOpRequest,
+} from './authserver';
+import { db } from '~/db/connection';
+import { sessionTable } from '~/db/schema/auth';
+import { and, eq } from 'drizzle-orm';
 
 export abstract class AuthserverService {
 	static async authenticate(body: AuthRequest): Promise<AuthResponse> {
@@ -28,6 +37,7 @@ export abstract class AuthserverService {
 	static async refresh(body: RefreshRequest): Promise<RefreshResponse> {
 		const { session } = await lucia.validateSession(body.accessToken);
 		// [TODO] Error handling in Mojang's format
+		// [TODO] Probably move this into AuthService.validate()
 		if (
 			!session ||
 			session.scope !== 'yggdrasil' ||
@@ -48,5 +58,28 @@ export abstract class AuthserverService {
 			user: body.requestUser ? { id: session.userId, properties: [] } : undefined,
 			selectedProfile: body.selectedProfile,
 		};
+	}
+
+	static async validate(body: TokenOpRequest): Promise<boolean> {
+		// Lucia will automatically extend the session expiration,
+		// we don't want that for tokens that are not for Yggdrasil APIs.
+		// [TODO] But this results in an extra database query, which is not ideal!
+		const yggSessionExists = await db
+			.select()
+			.from(sessionTable)
+			.where(and(eq(sessionTable.id, body.accessToken), eq(sessionTable.scope, 'yggdrasil')))
+			.then(({ length }) => length > 0);
+		if (!yggSessionExists) return false;
+
+		const { session } = await lucia.validateSession(body.accessToken);
+		// [TODO] Probably move this into AuthService.validate()
+		if (
+			!session ||
+			// When client token is provided, check if it matches, otherwise ignore it.
+			(body.clientToken && body.clientToken !== session.metadata.clientToken)
+		)
+			return false;
+
+		return true;
 	}
 }

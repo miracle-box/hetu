@@ -41,17 +41,25 @@ export const YggdrasilController = new Elysia({
 					tags: ['Yggdrasil Auth'],
 				},
 			})
-			.post('/validate', () => {}, {
-				body: 'yggdrasil.auth.validate.body',
-				response: {
-					204: t.Void(),
+			.post(
+				'/validate',
+				async ({ body, set }) => {
+					const tokenValid = await AuthserverService.validate(body);
+					if (tokenValid) set.status = 'No Content';
+					else set.status = 'Unauthorized';
 				},
-				detail: {
-					summary: 'Validate Token',
-					description: 'Check if the token is valid.',
-					tags: ['Yggdrasil Auth'],
+				{
+					body: 'yggdrasil.auth.validate.body',
+					response: {
+						204: t.Void(),
+					},
+					detail: {
+						summary: 'Validate Token',
+						description: 'Check if the token is valid.',
+						tags: ['Yggdrasil Auth'],
+					},
 				},
-			})
+			)
 			.post('/invalidate', () => {}, {
 				body: 'yggdrasil.auth.invalidate.body',
 				response: {
