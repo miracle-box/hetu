@@ -60,17 +60,24 @@ export const YggdrasilController = new Elysia({
 					},
 				},
 			)
-			.post('/invalidate', () => {}, {
-				body: 'yggdrasil.auth.invalidate.body',
-				response: {
-					204: t.Void(),
+			.post(
+				'/invalidate',
+				({ body, set }) => {
+					AuthserverService.invalidate(body);
+					set.status = 'No Content';
 				},
-				detail: {
-					summary: 'Invalidate Token',
-					description: 'Invalidate the token.',
-					tags: ['Yggdrasil Auth'],
+				{
+					body: 'yggdrasil.auth.invalidate.body',
+					response: {
+						204: t.Void(),
+					},
+					detail: {
+						summary: 'Invalidate Token',
+						description: 'Invalidate the token.',
+						tags: ['Yggdrasil Auth'],
+					},
 				},
-			})
+			)
 			.post('/signout', () => {}, {
 				body: 'yggdrasil.auth.signout.body',
 				response: {

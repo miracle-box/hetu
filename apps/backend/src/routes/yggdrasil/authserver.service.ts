@@ -61,6 +61,7 @@ export abstract class AuthserverService {
 	}
 
 	static async validate(body: TokenOpRequest): Promise<boolean> {
+		// [TODO] Move this to a middleware probably, or just don't check for scopes?
 		// Lucia will automatically extend the session expiration,
 		// we don't want that for tokens that are not for Yggdrasil APIs.
 		// [TODO] But this results in an extra database query, which is not ideal!
@@ -81,5 +82,20 @@ export abstract class AuthserverService {
 			return false;
 
 		return true;
+	}
+
+	static async invalidate(body: TokenOpRequest): Promise<void> {
+		// [TODO] Move this to a middleware probably, or just don't check for scopes?
+		// Lucia will automatically extend the session expiration,
+		// we don't want that for tokens that are not for Yggdrasil APIs.
+		// [TODO] But this results in an extra database query, which is not ideal!
+		const yggSessionExists = await db
+			.select()
+			.from(sessionTable)
+			.where(and(eq(sessionTable.id, body.accessToken), eq(sessionTable.scope, 'yggdrasil')))
+			.then(({ length }) => length > 0);
+		if (!yggSessionExists) return;
+
+		lucia.invalidateSession(body.accessToken);
 	}
 }
