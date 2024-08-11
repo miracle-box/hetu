@@ -138,7 +138,7 @@ export const YggdrasilController = new Elysia({
 				response: 'yggdrasil.mojang.get-profiles.response',
 				detail: {
 					summary: 'Get Profiles',
-					description: 'Get all profiles of the user.',
+					description: 'Get profiles of requested users.',
 					tags: ['Yggdrasil Mojang'],
 				},
 			})

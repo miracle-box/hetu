@@ -8,6 +8,7 @@ export const sessionMetadataSchema = t.Object({
 	clientToken: t.Optional(t.String()),
 });
 
+// drizzle-typebox can not infer type from jsonb fileds.
 export const sessionSchema = t.Composite([
 	t.Omit(sessionSelectSchema, ['metadata']),
 	t.Object({ metadata: sessionMetadataSchema }),
