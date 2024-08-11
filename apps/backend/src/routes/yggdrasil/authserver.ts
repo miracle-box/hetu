@@ -41,12 +41,12 @@ export const refreshRequsetSchema = t.Composite([
 
 export const refreshResponseSchema = t.Omit(authResponseSchema, ['availableProfiles']);
 
-export type CredentialOpRequestSchema = Static<typeof credentialOpRequestSchema>;
-export type TokenOpRequestSchema = Static<typeof tokenOpRequestSchema>;
-export type AuthRequestSchema = Static<typeof authRequestSchema>;
-export type AuthResponseSchema = Static<typeof authResponseSchema>;
-export type RefreshRequestSchema = Static<typeof refreshRequsetSchema>;
-export type RefreshResponseSchema = Static<typeof refreshResponseSchema>;
+export type CredentialOpRequest = Static<typeof credentialOpRequestSchema>;
+export type TokenOpRequest = Static<typeof tokenOpRequestSchema>;
+export type AuthRequest = Static<typeof authRequestSchema>;
+export type AuthResponse = Static<typeof authResponseSchema>;
+export type RefreshRequest = Static<typeof refreshRequsetSchema>;
+export type RefreshResponse = Static<typeof refreshResponseSchema>;
 
 export const AuthserverModel = new Elysia({ name: 'Model.Yggdrasil.Auth' }).model({
 	'yggdrasil.auth.auth.body': authRequestSchema,
