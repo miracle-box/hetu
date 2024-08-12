@@ -28,15 +28,18 @@ export abstract class AuthserverService {
 			{ clientToken },
 		);
 
+		const profiles = await CommonService.getProfilesByUser(session.userId);
+
 		return {
 			accessToken: session.id,
 			clientToken,
 			// [TODO] Probably move this to a separate method.
 			user: body.requestUser ? { id: session.userId, properties: [] } : undefined,
 			// [TODO] Include profiles.
-			availableProfiles: await CommonService.getProfilesByUser(session.userId),
+			availableProfiles: profiles,
 			// [TODO] Probably support automatic profile selection by allowing signin by username.
-			selectedProfile: undefined,
+			// Select the only profile if there's only one.
+			selectedProfile: profiles.length === 1 ? profiles[0] : undefined,
 		};
 	}
 
