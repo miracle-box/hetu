@@ -5,6 +5,7 @@ import { SessionserverModel } from './sessionserver';
 import { MojangApiModel } from './mojang';
 import { CustomApiModel } from './custom';
 import { AuthserverService } from './authserver.service';
+import { SessionserverService } from './sessionserver.service';
 
 export const YggdrasilController = new Elysia({
 	name: 'Controller.Yggdrasil',
@@ -100,26 +101,45 @@ export const YggdrasilController = new Elysia({
 	.group('/sessionserver', (app) =>
 		app
 			.use(SessionserverModel)
-			.post('/session/minecraft/join', () => {}, {
-				body: 'yggdrasil.session.join.body',
-				response: {
-					204: t.Void(),
+			.post(
+				'/session/minecraft/join',
+				async ({ body, set }) => {
+					await SessionserverService.joinServer(body);
+					set.status = 'No Content';
 				},
-				detail: {
-					summary: 'Join Server',
-					description: 'Log client info for validation.',
-					tags: ['Yggdrasil Session'],
+				{
+					body: 'yggdrasil.session.join.body',
+					response: {
+						204: t.Void(),
+					},
+					detail: {
+						summary: 'Join Server',
+						description: 'Log client info for validation.',
+						tags: ['Yggdrasil Session'],
+					},
 				},
-			})
-			.get('/session/minecraft/hasJoined', () => {}, {
-				query: 'yggdrasil.session.hasjoined.query',
-				response: 'yggdrasil.session.hasjoined.response',
-				detail: {
-					summary: 'Validate Client',
-					description: 'Validates client and get their profile.',
-					tags: ['Yggdrasil Session'],
+			)
+			.get(
+				'/session/minecraft/hasJoined',
+				async ({ query, set }) => {
+					const profile = await SessionserverService.hasJoined(query);
+					if (profile) return profile;
+
+					set.status = 'No Content';
 				},
-			})
+				{
+					query: 'yggdrasil.session.hasjoined.query',
+					response: {
+						200: 'yggdrasil.session.hasjoined.response',
+						204: t.Void(),
+					},
+					detail: {
+						summary: 'Validate Client',
+						description: 'Validates client and get their profile.',
+						tags: ['Yggdrasil Session'],
+					},
+				},
+			)
 			.get('/session/minecraft/profile/:id', () => {}, {
 				query: 'yggdrasil.session.profile.query',
 				response: 'yggdrasil.session.profile.response',
