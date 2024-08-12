@@ -25,14 +25,16 @@ export abstract class CommonService {
 
 	static async profileToYggdrasil(
 		profile: Profile,
-		partial: boolean = false,
+		fullProfile: boolean = false,
+		signed: boolean = false,
 	): Promise<YggdrasilProfile> {
 		const partialProfile = {
 			id: this.getUnsignedUUID(profile.id),
 			name: profile.name,
 		};
-		if (partial) return partialProfile;
+		if (!fullProfile) return partialProfile;
 
+		// [TODO] Merge profile quries into one
 		const skinTexture = profile.skinTextureId
 			? await this.getYggdrasilTexture(profile.skinTextureId)
 			: null;
@@ -68,11 +70,14 @@ export abstract class CommonService {
 	 * @param id player UUID
 	 * @returns Yggdrasil profile if exists
 	 */
-	static async getProfileById(id: string): Promise<YggdrasilProfile | null> {
+	static async getProfileById(
+		id: string,
+		signed: boolean = false,
+	): Promise<YggdrasilProfile | null> {
 		const profile = await ProfilesService.getProfileById(id);
 		if (!profile) return null;
 
-		return this.profileToYggdrasil(profile);
+		return this.profileToYggdrasil(profile, true, signed);
 	}
 
 	/**
@@ -80,11 +85,14 @@ export abstract class CommonService {
 	 * @param name player name
 	 * @returns Yggdrasil profile if exists
 	 */
-	static async getProfileByName(name: string): Promise<YggdrasilProfile | null> {
+	static async getProfileByName(
+		name: string,
+		signed: boolean = false,
+	): Promise<YggdrasilProfile | null> {
 		const profile = await ProfilesService.getProfileByName(name);
 		if (!profile) return null;
 
-		return this.profileToYggdrasil(profile);
+		return this.profileToYggdrasil(profile, true, signed);
 	}
 
 	/**
@@ -92,9 +100,14 @@ export abstract class CommonService {
 	 * @param userId user id
 	 * @returns All Yggdrasil profiles for the user
 	 */
-	static async getProfilesByUser(userId: string): Promise<YggdrasilProfile[]> {
+	static async getProfilesByUser(
+		userId: string,
+		signed: boolean = false,
+	): Promise<YggdrasilProfile[]> {
+		// [TODO] Limit query amount
+		// [TODO] Merge profile quries into one
 		return ProfilesService.getProfilesByUser(userId).then((profiles) =>
-			Promise.all(profiles.map((profile) => this.profileToYggdrasil(profile, true))),
+			Promise.all(profiles.map((profile) => this.profileToYggdrasil(profile, false, signed))),
 		);
 	}
 }
