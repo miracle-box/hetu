@@ -13,19 +13,24 @@ export const hasJoinedRequestSchema = t.Object({
 	ip: t.Optional(t.String()),
 });
 
-export const profileRequestSchema = t.Object({
+export const profileParamsSchema = t.Object({
 	id: t.String(),
-	unsigned: t.Boolean(),
+});
+
+export const profileQuerySchema = t.Object({
+	unsigned: t.Optional(t.Boolean()),
 });
 
 export type JoinRequest = Static<typeof joinRequestSchema>;
 export type HasJoinedRequest = Static<typeof hasJoinedRequestSchema>;
-export type ProfileRequest = Static<typeof profileRequestSchema>;
+export type ProfileParams = Static<typeof profileParamsSchema>;
+export type ProfileQuery = Static<typeof profileQuerySchema>;
 
 export const SessionserverModel = new Elysia({ name: 'Model.Yggdrasil.Session' }).model({
 	'yggdrasil.session.join.body': joinRequestSchema,
 	'yggdrasil.session.hasjoined.query': hasJoinedRequestSchema,
 	'yggdrasil.session.hasjoined.response': profileSchema,
-	'yggdrasil.session.profile.query': profileRequestSchema,
+	'yggdrasil.session.profile.params': profileParamsSchema,
+	'yggdrasil.session.profile.query': profileQuerySchema,
 	'yggdrasil.session.profile.response': profileSchema,
 });

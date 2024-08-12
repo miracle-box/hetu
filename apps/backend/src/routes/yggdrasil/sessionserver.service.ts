@@ -43,4 +43,12 @@ export abstract class SessionserverService {
 
 		return CommonService.getProfileByName(body.username);
 	}
+
+	static async getProfile(id: string, unsigned: boolean = true): Promise<YggdrasilProfile> {
+		// [TODO] Handle profile signing
+		const profile = await CommonService.getProfileById(id);
+		if (!profile) throw new Error('Profile not found!');
+
+		return profile;
+	}
 }

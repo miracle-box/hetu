@@ -11,6 +11,12 @@ export const YggdrasilController = new Elysia({
 	name: 'Controller.Yggdrasil',
 	prefix: '/yggdrasil',
 })
+	.onRequest(({ request }) => {
+		console.log(request);
+	})
+	.onAfterHandle(({ response }) => {
+		console.log(response);
+	})
 	.group('/', (app) =>
 		app.get('', () => metadata, {
 			response: metadataResponseSchema,
@@ -139,15 +145,20 @@ export const YggdrasilController = new Elysia({
 					},
 				},
 			)
-			.get('/session/minecraft/profile/:id', () => {}, {
-				query: 'yggdrasil.session.profile.query',
-				response: 'yggdrasil.session.profile.response',
-				detail: {
-					summary: 'Get Profile',
-					description: 'Get profile info by UUID.',
-					tags: ['Yggdrasil Session'],
+			.get(
+				'/session/minecraft/profile/:id',
+				({ params, query }) => SessionserverService.getProfile(params.id, query.unsigned),
+				{
+					params: 'yggdrasil.session.profile.params',
+					query: 'yggdrasil.session.profile.query',
+					response: 'yggdrasil.session.profile.response',
+					detail: {
+						summary: 'Get Profile',
+						description: 'Get profile info by UUID.',
+						tags: ['Yggdrasil Session'],
+					},
 				},
-			}),
+			),
 	)
 	.group('/api', (app) =>
 		app

@@ -64,6 +64,18 @@ export abstract class CommonService {
 	}
 
 	/**
+	 * Get complete profile by player UUID
+	 * @param id player UUID
+	 * @returns Yggdrasil profile if exists
+	 */
+	static async getProfileById(id: string): Promise<YggdrasilProfile | null> {
+		const profile = await ProfilesService.getProfileById(id);
+		if (!profile) return null;
+
+		return this.profileToYggdrasil(profile);
+	}
+
+	/**
 	 * Get complete profile by player name
 	 * @param name player name
 	 * @returns Yggdrasil profile if exists
