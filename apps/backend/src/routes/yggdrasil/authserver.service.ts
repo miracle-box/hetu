@@ -13,8 +13,12 @@ import { sessionTable } from '~/db/schema/auth';
 import { and, eq } from 'drizzle-orm';
 
 export abstract class AuthserverService {
+	static generateClientToken(clientToken?: string): string {
+		return clientToken ?? crypto.randomUUID().replaceAll('-', '');
+	}
+
 	static async authenticate(body: AuthRequest): Promise<AuthResponse> {
-		const clientToken = body.clientToken ?? crypto.randomUUID();
+		const clientToken = this.generateClientToken(body.clientToken);
 		// [TODO] Error handling in Mojang's format
 		const session = await AuthService.credentialsSignin(
 			body.username,
@@ -50,7 +54,7 @@ export abstract class AuthserverService {
 
 		const newSession = await AuthService.refresh(session);
 		// Session metadata in database is not enforced.
-		const clientToken = newSession.metadata.clientToken ?? crypto.randomUUID();
+		const clientToken = this.generateClientToken(body.clientToken);
 
 		return {
 			accessToken: newSession.id,
