@@ -2,9 +2,8 @@ import { db } from '~/db/connection';
 import { HasJoinedRequest, JoinRequest } from './sessionserver';
 import { yggdrasilJoinServerTable } from '~/db/schema/yggdrasil';
 import { lucia } from '~/auth/lucia';
-import { Profile } from './common';
+import { YggdrasilProfile } from './common';
 import { eq } from 'drizzle-orm';
-import { ProfilesService } from '../profiles/profiles.service';
 import { CommonService } from './common.service';
 
 export abstract class SessionserverService {
@@ -16,10 +15,11 @@ export abstract class SessionserverService {
 
 		// [TODO] Make this configurable
 		const expiresAt = new Date(new Date().getTime() + 30 * 1000);
-		db.insert(yggdrasilJoinServerTable)
+		await db
+			.insert(yggdrasilJoinServerTable)
 			.values({
-				accessToken: body.accessToken,
 				serverId: body.serverId,
+				accessToken: body.accessToken,
 				expiresAt,
 				// [TODO] record client ip
 			})
@@ -29,7 +29,7 @@ export abstract class SessionserverService {
 			});
 	}
 
-	static async hasJoined(body: HasJoinedRequest): Promise<Profile | null> {
+	static async hasJoined(body: HasJoinedRequest): Promise<YggdrasilProfile | null> {
 		// [TODO] Support Anylogin
 		const [joinRecord] = await db
 			.select()

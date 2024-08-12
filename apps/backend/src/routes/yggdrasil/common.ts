@@ -40,7 +40,7 @@ export const profileTexturesSchema = t.Object({
 	textures: t.Record(t.String(), textureSchema),
 });
 
-export type User = Static<typeof userSchema>;
-export type Profile = Static<typeof profileSchema>;
-export type Texture = Static<typeof textureSchema>;
-export type ProfileTextures = Static<typeof profileTexturesSchema>;
+export type YggdrasilUser = Static<typeof userSchema>;
+export type YggdrasilProfile = Static<typeof profileSchema>;
+export type YggdrasilTexture = Static<typeof textureSchema>;
+export type YggdrasilProfileTextures = Static<typeof profileTexturesSchema>;

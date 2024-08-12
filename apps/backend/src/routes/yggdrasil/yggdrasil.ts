@@ -124,8 +124,7 @@ export const YggdrasilController = new Elysia({
 				async ({ query, set }) => {
 					const profile = await SessionserverService.hasJoined(query);
 					if (profile) return profile;
-
-					set.status = 'No Content';
+					else set.status = 'No Content';
 				},
 				{
 					query: 'yggdrasil.session.hasjoined.query',

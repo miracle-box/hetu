@@ -11,10 +11,11 @@ import {
 import { db } from '~/db/connection';
 import { sessionTable } from '~/db/schema/auth';
 import { and, eq } from 'drizzle-orm';
+import { CommonService } from './common.service';
 
 export abstract class AuthserverService {
 	static generateClientToken(clientToken?: string): string {
-		return clientToken ?? crypto.randomUUID().replaceAll('-', '');
+		return clientToken ?? CommonService.getUnsignedUUID(crypto.randomUUID());
 	}
 
 	static async authenticate(body: AuthRequest): Promise<AuthResponse> {
@@ -33,7 +34,7 @@ export abstract class AuthserverService {
 			// [TODO] Probably move this to a separate method.
 			user: body.requestUser ? { id: session.userId, properties: [] } : undefined,
 			// [TODO] Include profiles.
-			availableProfiles: [],
+			availableProfiles: await CommonService.getProfilesByUser(session.userId),
 			// [TODO] Probably support automatic profile selection by allowing signin by username.
 			selectedProfile: undefined,
 		};

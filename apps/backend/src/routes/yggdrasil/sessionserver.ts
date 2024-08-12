@@ -10,7 +10,7 @@ export const joinRequestSchema = t.Object({
 export const hasJoinedRequestSchema = t.Object({
 	username: t.String(),
 	serverId: t.String(),
-	ip: t.String(),
+	ip: t.Optional(t.String()),
 });
 
 export const profileRequestSchema = t.Object({
