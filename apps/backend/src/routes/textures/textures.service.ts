@@ -157,4 +157,18 @@ export abstract class TexturesService {
 
 		return insertedTexture;
 	}
+
+	static async getTextureById(id: string): Promise<Texture | null> {
+		const [texture] = await db
+			.select()
+			.from(textureTable)
+			.where(eq(textureTable.id, id))
+			.limit(1);
+
+		return texture ?? null;
+	}
+
+	static getTextureUrlByHash(hash: string): string {
+		return `${process.env.S3_PUBLIC_ROOT}/textures/${hash.slice(0, 2)}/${hash}`;
+	}
 }

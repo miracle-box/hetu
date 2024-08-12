@@ -26,9 +26,11 @@ export const profileSchema = t.Object({
 
 export const textureSchema = t.Object({
 	url: t.String({ format: 'uri' }),
-	metadata: t.Object({
-		model: t.Union([t.Literal('default'), t.Literal('slim')]),
-	}),
+	metadata: t.Optional(
+		t.Object({
+			model: t.Union([t.Literal('default'), t.Literal('slim')]),
+		}),
+	),
 });
 
 export const profileTexturesSchema = t.Object({
