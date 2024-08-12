@@ -64,6 +64,13 @@
       "when": 1723382473408,
       "tag": "0008_special_quasimodo",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1723468618359,
+      "tag": "0009_rich_alex_power",
+      "breakpoints": true
     }
   ]
 }
