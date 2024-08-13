@@ -71,6 +71,13 @@
       "when": 1723468618359,
       "tag": "0009_rich_alex_power",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1723570935981,
+      "tag": "0010_thankful_viper",
+      "breakpoints": true
     }
   ]
 }
