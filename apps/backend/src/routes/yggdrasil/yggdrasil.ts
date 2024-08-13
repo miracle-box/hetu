@@ -6,6 +6,7 @@ import { MojangApiModel } from './mojang';
 import { CustomApiModel } from './custom';
 import { AuthserverService } from './authserver.service';
 import { SessionserverService } from './sessionserver.service';
+import { MojangApiService } from './mojang.service';
 
 export const YggdrasilController = new Elysia({
 	name: 'Controller.Yggdrasil',
@@ -163,7 +164,7 @@ export const YggdrasilController = new Elysia({
 	.group('/api', (app) =>
 		app
 			.use(MojangApiModel)
-			.post('/profiles/minecraft', () => {}, {
+			.post('/profiles/minecraft', ({ body }) => MojangApiService.getProfilesByNames(body), {
 				body: 'yggdrasil.mojang.get-profiles.body',
 				response: 'yggdrasil.mojang.get-profiles.response',
 				detail: {
