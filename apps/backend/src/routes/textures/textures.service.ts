@@ -115,7 +115,11 @@ export abstract class TexturesService {
 		}
 	}
 
-	static async createTexture(authorId: string, body: UploadRequest): Promise<Texture> {
+	static async createTexture(
+		authorId: string,
+		body: UploadRequest,
+		silentOnDuplicate: boolean = false,
+	): Promise<Texture> {
 		const skinOrCape = body.type === 'cape' ? 'cape' : 'skin';
 		const image = await this.normalizeImage(body.image, skinOrCape);
 		const hash = this.sha256Hash(image);
@@ -126,7 +130,7 @@ export abstract class TexturesService {
 		});
 
 		// If the same texture exists (in the same user), don't create it
-		const textureExists = await db
+		const [existingTexture] = await db
 			.select()
 			.from(textureTable)
 			.where(
@@ -134,12 +138,14 @@ export abstract class TexturesService {
 					eq(textureTable.authorId, authorId),
 					eq(textureTable.hash, hash.toString('hex')),
 				),
-			)
-			.then((res) => res.length > 0);
+			);
 
-		// [TODO] Manage errors in one place
-		// [TODO] Narrow the error down and provide id for existing texture
-		if (textureExists) throw new Error('Texture already exists');
+		if (existingTexture) {
+			if (silentOnDuplicate) return existingTexture;
+			// [TODO] Manage errors in one place
+			// [TODO] Narrow the error down and provide id for existing texture
+			else throw new Error('Texture already exists');
+		}
 
 		const [insertedTexture] = await db
 			.insert(textureTable)
@@ -163,6 +169,16 @@ export abstract class TexturesService {
 			.select()
 			.from(textureTable)
 			.where(eq(textureTable.id, id))
+			.limit(1);
+
+		return texture ?? null;
+	}
+
+	static async getTextureByHash(hash: string): Promise<Texture | null> {
+		const [texture] = await db
+			.select()
+			.from(textureTable)
+			.where(eq(textureTable.hash, hash))
 			.limit(1);
 
 		return texture ?? null;

@@ -3,6 +3,9 @@ import { db } from '~/db/connection';
 import { userTable } from '~/db/schema/auth';
 import { profileTable } from '~/db/schema/profile';
 import { Profile } from '~/models/profile';
+import { EditRequest } from './profiles.model';
+import { textureTable } from '~/db/schema/texture';
+import { TextureType } from '~/models/texture';
 
 export abstract class ProfilesService {
 	static async getProfilesByUser(userId: string): Promise<Profile[]> {
@@ -61,6 +64,40 @@ export abstract class ProfilesService {
 
 		// [TODO] Put all errors in one place
 		if (!profile) throw new Error('Failed to create profile');
+
+		return profile;
+	}
+
+	static async isTextureSkinOrCape(textureId: string, type: 'skin' | 'cape'): Promise<boolean> {
+		const [texture] = await db
+			.select()
+			.from(textureTable)
+			.where(eq(textureTable.id, textureId));
+		if (!texture) throw new Error('Texture not found');
+
+		if (type === 'skin') return texture.type === 'skin' || texture.type === 'skin_slim';
+		return texture.type === 'cape';
+	}
+
+	static async editProfile(id: string, body: EditRequest): Promise<Profile> {
+		// enforce texture type is correct
+		// [TODO] Seems there's too many SQL queries
+		const isSkinTexture = body.skinTextureId
+			? await ProfilesService.isTextureSkinOrCape(body.skinTextureId, 'skin')
+			: true;
+		if (!isSkinTexture) throw new Error('Invalid skin texture type.');
+
+		const isCapeTexture = body.capeTextureId
+			? await ProfilesService.isTextureSkinOrCape(body.capeTextureId, 'cape')
+			: true;
+		if (!isCapeTexture) throw new Error('Invalid cape texture type.');
+
+		const [profile] = await db
+			.update(profileTable)
+			.set(body)
+			.where(eq(profileTable.id, id))
+			.returning();
+		if (!profile) throw new Error('Failed to edit profile');
 
 		return profile;
 	}

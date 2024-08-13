@@ -57,4 +57,14 @@ export const ProfilesController = new Elysia({ name: 'Controller.Profiles', pref
 				tags: ['Profiles'],
 			},
 		},
-	);
+	)
+	.patch('/:id', ({ session, body }) => ProfilesService.editProfile(session.userId, body), {
+		body: 'profiles.edit.body',
+		response: 'profiles.edit.response',
+		detail: {
+			summary: 'Edit profile',
+			description: 'Edit a part of the profile.',
+			security: [{ sessionId: [] }],
+			tags: ['Profiles'],
+		},
+	});
