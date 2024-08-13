@@ -15,8 +15,12 @@ export abstract class MojangApiService {
 		return profiles;
 	}
 
-	static async uploadTexture(id: string, textureType: TextureType, file: File): Promise<void> {
-		const profile = await ProfilesService.getProfileById(id);
+	static async uploadTexture(
+		profileId: string,
+		textureType: TextureType,
+		file: File,
+	): Promise<void> {
+		const profile = await ProfilesService.getProfileById(profileId);
 		if (!profile) throw new Error('Profile not found');
 
 		const description = `Uploaded via Yggdrasil API on ${new Date().toISOString()}.\nOriginal file name: ${file.name}`;
@@ -36,5 +40,10 @@ export abstract class MojangApiService {
 
 		if (textureType === 'cape')
 			await ProfilesService.editProfile(profile.id, { capeTextureId: texture.id });
+	}
+
+	static async resetTexture(profileId: string, type: 'skin' | 'cape'): Promise<void> {
+		if (type === 'skin') await ProfilesService.editProfile(profileId, { skinTextureId: null });
+		if (type === 'cape') await ProfilesService.editProfile(profileId, { capeTextureId: null });
 	}
 }

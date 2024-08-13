@@ -204,18 +204,25 @@ export const YggdrasilController = new Elysia({
 					},
 				},
 			)
-			.delete('/user/profile/:id/:type', () => {}, {
-				params: 'yggdrasil.mojang.reset-texture.params',
-				response: {
-					204: t.Void(),
+			.delete(
+				'/user/profile/:id/:type',
+				async ({ params, set }) => {
+					await MojangApiService.resetTexture(params.id, params.type);
+					set.status = 'No Content';
 				},
-				detail: {
-					summary: 'Reset Texture',
-					description: 'Reset texture to default.',
-					security: [{ sessionId: [] }],
-					tags: ['Yggdrasil Mojang'],
+				{
+					params: 'yggdrasil.mojang.reset-texture.params',
+					response: {
+						204: t.Void(),
+					},
+					detail: {
+						summary: 'Reset Texture',
+						description: 'Reset texture to default.',
+						security: [{ sessionId: [] }],
+						tags: ['Yggdrasil Mojang'],
+					},
 				},
-			}),
+			),
 	)
 	.group('/custom', (app) =>
 		app.use(CustomApiModel).post('/prejoin', () => {}, {

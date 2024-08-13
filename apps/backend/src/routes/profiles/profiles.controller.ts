@@ -58,7 +58,7 @@ export const ProfilesController = new Elysia({ name: 'Controller.Profiles', pref
 			},
 		},
 	)
-	.patch('/:id', ({ session, body }) => ProfilesService.editProfile(session.userId, body), {
+	.patch('/:id', ({ params, body }) => ProfilesService.editProfile(params.id, body), {
 		body: 'profiles.edit.body',
 		response: 'profiles.edit.response',
 		detail: {
