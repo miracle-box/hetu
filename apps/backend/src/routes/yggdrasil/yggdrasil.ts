@@ -7,6 +7,8 @@ import { CustomApiModel } from './custom';
 import { AuthserverService } from './authserver.service';
 import { SessionserverService } from './sessionserver.service';
 import { MojangApiService } from './mojang.service';
+import { authMiddleware } from '~/auth/middleware';
+import { TextureType } from '~/models/texture';
 
 export const YggdrasilController = new Elysia({
 	name: 'Controller.Yggdrasil',
@@ -173,27 +175,44 @@ export const YggdrasilController = new Elysia({
 					tags: ['Yggdrasil Mojang'],
 				},
 			})
-			.put('/user/profile/:id/:type', () => {}, {
-				query: 'yggdrasil.mojang.upload-texture.query',
-				body: 'yggdrasil.mojang.upload-texture.body',
-				response: {
-					204: t.Void(),
+			.use(authMiddleware('yggdrasil'))
+			.put(
+				'/user/profile/:id/:type',
+				async ({ params, body, set }) => {
+					const type: TextureType =
+						params.type === 'cape'
+							? 'cape'
+							: body.model === 'slim'
+								? 'skin_slim'
+								: 'skin';
+
+					await MojangApiService.uploadTexture(params.id, type, body.file);
+					set.status = 'No Content';
 				},
-				detail: {
-					summary: 'Upload Texture',
-					description:
-						"Upload texture for profile, will automatically create a new texture if it doesn't exist.",
-					tags: ['Yggdrasil Mojang'],
+				{
+					params: 'yggdrasil.mojang.upload-texture.params',
+					body: 'yggdrasil.mojang.upload-texture.body',
+					response: {
+						204: t.Void(),
+					},
+					detail: {
+						summary: 'Upload Texture',
+						description:
+							"Upload texture for profile, will automatically create a new texture if it doesn't exist.",
+						security: [{ sessionId: [] }],
+						tags: ['Yggdrasil Mojang'],
+					},
 				},
-			})
+			)
 			.delete('/user/profile/:id/:type', () => {}, {
-				query: 'yggdrasil.mojang.reset-texture.query',
+				params: 'yggdrasil.mojang.reset-texture.params',
 				response: {
 					204: t.Void(),
 				},
 				detail: {
 					summary: 'Reset Texture',
 					description: 'Reset texture to default.',
+					security: [{ sessionId: [] }],
 					tags: ['Yggdrasil Mojang'],
 				},
 			}),

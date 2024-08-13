@@ -21,7 +21,7 @@ export abstract class MojangApiService {
 
 		const description = `Uploaded via Yggdrasil API on ${new Date().toISOString()}.\nOriginal file name: ${file.name}`;
 		const texture = await TexturesService.createTexture(
-			id,
+			profile.authorId,
 			{
 				name: file.name,
 				description,
@@ -30,5 +30,11 @@ export abstract class MojangApiService {
 			},
 			true,
 		);
+
+		if (textureType === 'skin' || textureType === 'skin_slim')
+			await ProfilesService.editProfile(profile.id, { skinTextureId: texture.id });
+
+		if (textureType === 'cape')
+			await ProfilesService.editProfile(profile.id, { capeTextureId: texture.id });
 	}
 }

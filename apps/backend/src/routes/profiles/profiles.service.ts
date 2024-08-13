@@ -81,7 +81,7 @@ export abstract class ProfilesService {
 
 	static async editProfile(id: string, body: EditRequest): Promise<Profile> {
 		// enforce texture type is correct
-		// [TODO] Seems there's too many SQL queries
+		// [TODO] Seems there's too many SQL queries, maybe I should put all validations in another layer.
 		const isSkinTexture = body.skinTextureId
 			? await ProfilesService.isTextureSkinOrCape(body.skinTextureId, 'skin')
 			: true;
