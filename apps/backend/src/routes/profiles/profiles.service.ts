@@ -68,7 +68,7 @@ export abstract class ProfilesService {
 		return profile;
 	}
 
-	static async isTextureSkinOrCape(textureId: string, type: 'skin' | 'cape'): Promise<boolean> {
+	static async isTextureSkinOrCape(textureId: string, type: TextureType): Promise<boolean> {
 		const [texture] = await db
 			.select()
 			.from(textureTable)

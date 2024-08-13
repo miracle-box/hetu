@@ -61,6 +61,11 @@ export abstract class CommonService {
 					value: btoa(JSON.stringify(yggTextures)),
 					// [TODO] Support signature in future
 				},
+				{
+					// [TODO] Make this configurable in player profile metadata
+					name: 'uploadableTextures',
+					value: 'skin,cape',
+				},
 			],
 		};
 	}

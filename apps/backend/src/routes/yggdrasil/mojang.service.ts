@@ -1,7 +1,6 @@
-import { Texture, TextureType } from '~/models/texture';
+import { DbTextureType, TextureType } from '~/models/texture';
 import { YggdrasilProfile } from './common';
 import { CommonService } from './common.service';
-import { UploadTextureBody } from './mojang';
 import { ProfilesService } from '../profiles/profiles.service';
 import { TexturesService } from '../textures/textures.service';
 
@@ -17,7 +16,7 @@ export abstract class MojangApiService {
 
 	static async uploadTexture(
 		profileId: string,
-		textureType: TextureType,
+		textureType: DbTextureType,
 		file: File,
 	): Promise<void> {
 		const profile = await ProfilesService.getProfileById(profileId);
@@ -42,7 +41,7 @@ export abstract class MojangApiService {
 			await ProfilesService.editProfile(profile.id, { capeTextureId: texture.id });
 	}
 
-	static async resetTexture(profileId: string, type: 'skin' | 'cape'): Promise<void> {
+	static async resetTexture(profileId: string, type: TextureType): Promise<void> {
 		if (type === 'skin') await ProfilesService.editProfile(profileId, { skinTextureId: null });
 		if (type === 'cape') await ProfilesService.editProfile(profileId, { capeTextureId: null });
 	}

@@ -1,6 +1,6 @@
 import sharp from 'sharp';
 import { HeadObjectCommand, PutObjectCommand } from '@aws-sdk/client-s3';
-import { Texture } from '~/models/texture';
+import { Texture, TextureType } from '~/models/texture';
 import { UploadRequest } from './textures.model';
 import { s3 } from '~/s3/client';
 import { db } from '~/db/connection';
@@ -31,7 +31,7 @@ export abstract class TexturesService {
 		return false;
 	}
 
-	static async normalizeImage(file: File, type: 'skin' | 'cape'): Promise<Buffer> {
+	static async normalizeImage(file: File, type: TextureType): Promise<Buffer> {
 		let image = sharp(await file.arrayBuffer(), {
 			// [TODO] Configurable size limits
 			limitInputPixels: 1024 * 1024,

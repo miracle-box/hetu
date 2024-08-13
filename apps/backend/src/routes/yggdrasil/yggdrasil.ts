@@ -8,7 +8,7 @@ import { AuthserverService } from './authserver.service';
 import { SessionserverService } from './sessionserver.service';
 import { MojangApiService } from './mojang.service';
 import { authMiddleware } from '~/auth/middleware';
-import { TextureType } from '~/models/texture';
+import { DbTextureType } from '~/models/texture';
 
 export const YggdrasilController = new Elysia({
 	name: 'Controller.Yggdrasil',
@@ -173,7 +173,7 @@ export const YggdrasilController = new Elysia({
 			.put(
 				'/user/profile/:id/:type',
 				async ({ params, body, set }) => {
-					const type: TextureType =
+					const type: DbTextureType =
 						params.type === 'cape'
 							? 'cape'
 							: body.model === 'slim'
