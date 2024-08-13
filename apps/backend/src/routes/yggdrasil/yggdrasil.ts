@@ -14,12 +14,6 @@ export const YggdrasilController = new Elysia({
 	name: 'Controller.Yggdrasil',
 	prefix: '/yggdrasil',
 })
-	.onRequest(({ request }) => {
-		console.log(request);
-	})
-	.onAfterHandle(({ response }) => {
-		console.log(response);
-	})
 	.group('/', (app) =>
 		app.get('', () => metadata, {
 			response: metadataResponseSchema,
