@@ -30,6 +30,10 @@
         "YGGDRASIL_PUBIIC_KEY"
       ]
     },
+    "start": {
+      "cache": false,
+      "persistent": true
+    },
     "migration:generate": {
       "cache": false
     },

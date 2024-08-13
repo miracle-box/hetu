@@ -4,11 +4,13 @@
   "scripts": {
     "dev": "bun run --watch src/index.ts",
     "lint": "eslint . --max-warnings 0",
+    "start": "bun src/index.ts",
     "migration:generate": "drizzle-kit generate",
     "migration:drop": "drizzle-kit drop",
     "migration:run": "bun src/db/migrate.ts"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.629.0",
     "@elysiajs/swagger": "^1.1.0",
     "@lucia-auth/adapter-drizzle": "^1.0.7",
     "@paralleldrive/cuid2": "^2.2.2",
