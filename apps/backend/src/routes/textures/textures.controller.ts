@@ -5,12 +5,22 @@ import { TexturesService } from './textures.service';
 
 export const TexturesController = new Elysia({ name: 'Controller.Textures', prefix: '/textures' })
 	.use(TexturesModel)
-	.get('/:id', ({ params }) => {}, {
-		response: 'textures.details.response',
-		detail: {
-			tags: ['Textures'],
+	.get(
+		'/:id',
+		async ({ params }) => {
+			const texture = await TexturesService.getTextureById(params.id);
+			if (!texture) throw new Error('Texture not found.');
+			return texture;
 		},
-	})
+		{
+			response: 'textures.details.response',
+			detail: {
+				summary: 'Get Texture',
+				description: 'Get  a specific texture.',
+				tags: ['Textures'],
+			},
+		},
+	)
 	.use(authMiddleware('default'))
 	.post(
 		'/',
