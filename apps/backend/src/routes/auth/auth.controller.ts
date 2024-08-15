@@ -38,6 +38,45 @@ export const AuthController = new Elysia({
 			},
 		},
 	)
+	// [TODO] TEMPORARY.
+	.post(
+		'/reset-password',
+		async ({ body, set }) => {
+			const verification = await AuthService.createResetPasswordVerification(body.email);
+			set.status = 'Accepted';
+			return verification;
+		},
+		{
+			body: 'auth.reset-password-init.body',
+			response: {
+				202: 'auth.reset-password-init.response',
+			},
+			detail: {
+				summary: 'Initialize Password Reset',
+				description: 'Initialize the process of password reset.',
+				tags: ['Authentication'],
+			},
+		},
+	)
+	.post(
+		'/reset-password/:id',
+		async ({ body, params, set }) => {
+			await AuthService.resetPassword(params.id, body.verificationSecret, body.password);
+			set.status = 'No Content';
+		},
+		{
+			body: 'auth.reset-password.body',
+			response: {
+				204: t.Void(),
+			},
+			detail: {
+				summary: 'Reset Password',
+				description: 'Reset the password by providing the verification info.',
+				tags: ['Authentication'],
+			},
+		},
+	)
+
 	.use(authMiddleware('default'))
 	.post(
 		'/sessions/refresh',

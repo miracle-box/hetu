@@ -189,60 +189,6 @@ export abstract class AuthService {
 		if (targetSession) await lucia.invalidateSession(targetSession.id);
 	}
 
-	static async createVerification(
-		user: User,
-		method: VerificationMethod,
-		metadata: VerificationMetadata,
-	): Promise<VerificationSummary> {
-		const [record] = await db
-			.insert(verificationTable)
-			.values({
-				userId: user.id,
-				secret: createId(),
-				method: method,
-				metadata: metadata,
-				// 30 minutes
-				expiresAt: new Date(Date.now() + 1000 * 60 * 30),
-			})
-			.returning();
-
-		if (!record) {
-			throw new Error('Failed to create verification record.');
-		}
-
-		// [TODO] Support more verification methods
-		await new Promise((resolve, reject) => {
-			mailer.sendMail(
-				{
-					from: process.env.MAIL_SMTP_FROM,
-					to: user.email,
-					subject: 'Email verification',
-					text: `Email verification
-Action: ${record.metadata.action}
-Verify using this code: ${record.secret}
-The verification code will be expired after ${record.expiresAt}.
-Verification request ID: ${record.id}
-`,
-				},
-				function (error, info) {
-					if (error) {
-						reject(false);
-					} else {
-						resolve(true);
-					}
-				},
-			);
-		});
-
-		return {
-			id: record.id,
-			userId: record.userId,
-			method: record.method,
-			action: record.metadata.action,
-			expiresAt: record.expiresAt,
-		};
-	}
-
 	/**
 	 * @todo [TODO] Refactor this at sometime.
 	 */
@@ -299,5 +245,112 @@ Verification request ID: ${record.id}
 		}
 
 		return this.credentialsSignin(user.email, newpassword, 'default', {});
+	}
+
+	// [TODO] Support more verification methods
+	static async createEmailVerification(
+		email: string,
+		metadata: VerificationMetadata,
+	): Promise<VerificationSummary> {
+		const [user] = await db.select().from(userTable).where(eq(userTable.email, email)).limit(1);
+
+		const [record] = await db
+			.insert(verificationTable)
+			.values({
+				userId: user?.id,
+				secret: createId(),
+				method: 'email',
+				metadata: metadata,
+				// 30 minutes
+				expiresAt: new Date(Date.now() + 1000 * 60 * 30),
+			})
+			.returning();
+
+		if (!record) {
+			throw new Error('Failed to create verification record.');
+		}
+
+		// Only send email if user exists, but always record verifications
+		if (user) {
+			await new Promise((resolve, reject) => {
+				mailer.sendMail(
+					{
+						from: process.env.MAIL_SMTP_FROM,
+						to: user.email,
+						subject: 'Email verification',
+						text: `Email verification
+Action: ${record.metadata.action}
+Verify using this code: ${record.secret}
+The verification code will be expired after ${record.expiresAt}.
+Verification request ID: ${record.id}
+`,
+					},
+					function (error, info) {
+						if (error) {
+							reject(false);
+						} else {
+							resolve(true);
+						}
+					},
+				);
+			});
+		}
+
+		return {
+			id: record.id,
+			method: record.method,
+			action: record.metadata.action,
+			expiresAt: record.expiresAt,
+		};
+	}
+
+	static async createResetPasswordVerification(email: string): Promise<VerificationSummary> {
+		return this.createEmailVerification(email, {
+			action: 'password-reset',
+		});
+	}
+
+	static async resetPassword(
+		verificationId: string,
+		verificationSecret: string,
+		newPassword: string,
+	): Promise<void> {
+		const [record] = await db
+			.select()
+			.from(verificationTable)
+			.where(eq(verificationTable.id, verificationId))
+			.limit(1);
+		if (!record || !record.userId) {
+			// [TODO] Manage all errors in one place
+			throw new Error('Verification not found.');
+		}
+		if (record.expiresAt < new Date()) {
+			// [TODO] Manage all errors in one place
+			throw new Error('Verification expired.');
+		}
+		if (record.secret !== verificationSecret) {
+			// [TODO] Manage all errors in one place
+			throw new Error('Invalid verification secret.');
+		}
+
+		// Remove the verification record
+		await db.delete(verificationTable).where(eq(verificationTable.id, verificationId));
+
+		const passwordHash = await Bun.password.hash(newPassword, {
+			algorithm: 'argon2id',
+			timeCost: 2,
+			memoryCost: 19456,
+		});
+		const [authRecord] = await db
+			.update(userAuthTable)
+			.set({ credential: passwordHash })
+			.where(and(eq(userAuthTable.userId, record.userId), eq(userAuthTable.type, 'password')))
+			.returning();
+		if (!authRecord) {
+			// [TODO] Manage all errors in one place
+			throw new Error('Failed to reset password.');
+		}
+
+		await lucia.invalidateUserSessions(record.userId);
 	}
 }
