@@ -27,7 +27,13 @@
         "YGGDRASIL_LINKS_REGISTER",
         "YGGDRASIL_SKIN_DOMAINS",
         "YGGDRASIL_PRIVATE_KEY",
-        "YGGDRASIL_PUBIIC_KEY"
+        "YGGDRASIL_PUBIIC_KEY",
+        "MAIL_SMTP_HOST",
+        "MAIL_SMTP_PORT",
+        "MAIL_SMTP_SECURE",
+        "MAIL_SMTP_USER",
+        "MAIL_SMTP_PASS",
+        "MAIL_SMTP_FROM"
       ]
     },
     "start": {
