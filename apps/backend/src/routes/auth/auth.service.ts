@@ -159,7 +159,13 @@ export abstract class AuthService {
 
 	static async getUserSessionSummaries(userId: string): Promise<SessionSummary[]> {
 		const sessions = await lucia.getUserSessions(userId);
-		return sessions.map((session) => session);
+		return sessions.map(({ uid, scope, userId, metadata, expiresAt }) => ({
+			uid,
+			scope,
+			userId,
+			metadata,
+			expiresAt,
+		}));
 	}
 
 	static async getSessionSummary(userId: string, uid: string): Promise<SessionSummary | null> {
