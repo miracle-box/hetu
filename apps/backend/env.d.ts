@@ -13,5 +13,11 @@ declare module 'bun' {
 		YGGDRASIL_SKIN_DOMAINS: string;
 		YGGDRASIL_PRIVATE_KEY: string;
 		YGGDRASIL_PUBIIC_KEY: string;
+		MAIL_SMTP_HOST: string;
+		MAIL_SMTP_PORT: string;
+		MAIL_SMTP_SECURE: string;
+		MAIL_SMTP_USER: string;
+		MAIL_SMTP_PASS: string;
+		MAIL_SMTP_FROM: string;
 	}
 }
