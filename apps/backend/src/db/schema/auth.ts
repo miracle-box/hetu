@@ -1,10 +1,12 @@
 import { createId } from '@paralleldrive/cuid2';
 import { sql } from 'drizzle-orm';
 import { jsonb, pgEnum, pgTable, timestamp, uniqueIndex, varchar } from 'drizzle-orm/pg-core';
+import { VerificationMetadata } from '~/models/auth';
 import { SessionMetadata } from '~/models/session';
 
 export const userAuthTypeEnum = pgEnum('auth_type', ['password']);
 export const sessionScopeEnum = pgEnum('session_scope', ['default', 'yggdrasil']);
+export const verificationMethodEnum = pgEnum('verification_method', ['email']);
 
 export const userTable = pgTable('user', {
 	id: varchar('id', { length: 24 }).primaryKey().$defaultFn(createId),
@@ -43,5 +45,16 @@ export const sessionTable = pgTable('session', {
 		.references(() => userTable.id),
 	scope: sessionScopeEnum('scope').notNull(),
 	metadata: jsonb('metadata').$type<SessionMetadata>().notNull().default({}),
+	expiresAt: timestamp('expires_at', { withTimezone: true }).notNull(),
+});
+
+export const verificationTable = pgTable('verification', {
+	id: varchar('id', { length: 24 }).primaryKey().$defaultFn(createId),
+	userId: varchar('user_id', { length: 24 })
+		.notNull()
+		.references(() => userTable.id),
+	method: verificationMethodEnum('method').notNull(),
+	secret: varchar('secret').notNull(),
+	metadata: jsonb('metadata').$type<VerificationMetadata>().notNull(),
 	expiresAt: timestamp('expires_at', { withTimezone: true }).notNull(),
 });

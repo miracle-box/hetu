@@ -2,9 +2,12 @@ import { and, eq } from 'drizzle-orm';
 import { createId } from '@paralleldrive/cuid2';
 import { lucia, SessionScope } from '~/auth/lucia';
 import { db } from '~/db/connection';
-import { userAuthTable, userTable } from '~/db/schema/auth';
+import { userAuthTable, userTable, verificationTable } from '~/db/schema/auth';
 import { Session, SessionMetadata, SessionSummary } from '~/models/session';
 import { SigninRequest, SignupRequest } from './auth.model';
+import { VerificationMetadata, VerificationMethod, VerificationSummary } from '~/models/auth';
+import { mailer } from '~/mailing/mailing';
+import { User } from '~/models/user';
 
 export abstract class AuthService {
 	static async signup(body: SignupRequest): Promise<Session> {
@@ -184,6 +187,60 @@ export abstract class AuthService {
 		const targetSession = allSessions.find((session) => uid === session.uid);
 
 		if (targetSession) await lucia.invalidateSession(targetSession.id);
+	}
+
+	static async createVerification(
+		user: User,
+		method: VerificationMethod,
+		metadata: VerificationMetadata,
+	): Promise<VerificationSummary> {
+		const [record] = await db
+			.insert(verificationTable)
+			.values({
+				userId: user.id,
+				secret: createId(),
+				method: method,
+				metadata: metadata,
+				// 30 minutes
+				expiresAt: new Date(Date.now() + 1000 * 60 * 30),
+			})
+			.returning();
+
+		if (!record) {
+			throw new Error('Failed to create verification record.');
+		}
+
+		// [TODO] Support more verification methods
+		await new Promise((resolve, reject) => {
+			mailer.sendMail(
+				{
+					from: process.env.MAIL_SMTP_FROM,
+					to: user.email,
+					subject: 'Email verification',
+					text: `Email verification
+Action: ${record.metadata.action}
+Verify using this code: ${record.secret}
+The verification code will be expired after ${record.expiresAt}.
+Verification request ID: ${record.id}
+`,
+				},
+				function (error, info) {
+					if (error) {
+						reject(false);
+					} else {
+						resolve(true);
+					}
+				},
+			);
+		});
+
+		return {
+			id: record.id,
+			userId: record.userId,
+			method: record.method,
+			action: record.metadata.action,
+			expiresAt: record.expiresAt,
+		};
 	}
 
 	/**
