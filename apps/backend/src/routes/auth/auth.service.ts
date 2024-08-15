@@ -1,4 +1,4 @@
-import { eq } from 'drizzle-orm';
+import { and, eq } from 'drizzle-orm';
 import { createId } from '@paralleldrive/cuid2';
 import { lucia, SessionScope } from '~/auth/lucia';
 import { db } from '~/db/connection';
@@ -178,5 +178,63 @@ export abstract class AuthService {
 		const targetSession = allSessions.find((session) => uid === session.uid);
 
 		if (targetSession) await lucia.invalidateSession(targetSession.id);
+	}
+
+	/**
+	 * @todo [TODO] Refactor this at sometime.
+	 */
+	static async changePassword(
+		userId: string,
+		oldPassword: string,
+		newpassword: string,
+	): Promise<Session> {
+		const [dbPassword] = await db
+			.select({ hash: userAuthTable.credential })
+			.from(userAuthTable)
+			.where(and(eq(userAuthTable.userId, userId), eq(userAuthTable.type, 'password')))
+			.limit(1);
+
+		const oldPasswordCorrect = dbPassword?.hash
+			? await Bun.password.verify(oldPassword, dbPassword.hash)
+			: true;
+
+		if (!oldPasswordCorrect) {
+			// [TODO] Manage all errors in one place
+			throw new Error('Invalid old password.');
+		}
+
+		const hashedNewPassword = await Bun.password.hash(newpassword);
+		// Update or insert new password
+		dbPassword
+			? await db
+					.update(userAuthTable)
+					.set({ credential: hashedNewPassword })
+					.where(
+						and(eq(userAuthTable.userId, userId), eq(userAuthTable.type, 'password')),
+					)
+					.returning()
+			: await db
+					.insert(userAuthTable)
+					.values({
+						userId: userId,
+						type: 'password',
+						credential: hashedNewPassword,
+					})
+					.returning();
+
+		await lucia.invalidateUserSessions(userId);
+
+		const [user] = await db
+			.select({ email: userTable.email })
+			.from(userTable)
+			.where(eq(userTable.id, userId))
+			.limit(1);
+
+		if (!user) {
+			// [TODO] Manage all errors in one place
+			throw new Error('Failed to get user.');
+		}
+
+		return this.credentialsSignin(user.email, newpassword, 'default', {});
 	}
 }

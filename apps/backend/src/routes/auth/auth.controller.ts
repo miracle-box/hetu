@@ -120,4 +120,27 @@ export const AuthController = new Elysia({
 				security: [{ sessionId: [] }],
 			},
 		},
+	)
+	// [TODO] TEMPORARY.
+	.post(
+		'/change-password',
+		async ({ user, body }) => {
+			return {
+				session: await AuthService.changePassword(
+					user.id,
+					body.oldPassword,
+					body.newPassword,
+				),
+			};
+		},
+		{
+			body: 'auth.change-password.body',
+			response: 'auth.change-password.response',
+			detail: {
+				summary: 'Change Password',
+				description: 'Change password of the current user.',
+				tags: ['Authentication'],
+				security: [{ sessionId: [] }],
+			},
+		},
 	);
