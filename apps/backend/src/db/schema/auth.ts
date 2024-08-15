@@ -50,11 +50,10 @@ export const sessionTable = pgTable('session', {
 
 export const verificationTable = pgTable('verification', {
 	id: varchar('id', { length: 24 }).primaryKey().$defaultFn(createId),
-	userId: varchar('user_id', { length: 24 })
-		.notNull()
-		.references(() => userTable.id),
+	userId: varchar('user_id', { length: 24 }).references(() => userTable.id),
 	method: verificationMethodEnum('method').notNull(),
 	secret: varchar('secret').notNull(),
+	// I don't know it's useful or not.
 	metadata: jsonb('metadata').$type<VerificationMetadata>().notNull(),
 	expiresAt: timestamp('expires_at', { withTimezone: true }).notNull(),
 });

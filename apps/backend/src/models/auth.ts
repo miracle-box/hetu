@@ -8,7 +8,6 @@ export const verificationMetadataSchema = t.Union([
 	// Password reset metadata
 	t.Object({
 		action: t.Literal('password-reset'),
-		passwordHash: t.String(),
 	}),
 ]);
 
@@ -21,7 +20,7 @@ export const verificationSchema = t.Composite([
 ]);
 
 export const verificationSummarySchema = t.Composite([
-	t.Omit(verificationSchema, ['secret', 'metadata']),
+	t.Omit(verificationSchema, ['userId', 'secret', 'metadata']),
 	t.Object({ action: verificationActionSchema }),
 ]);
 
