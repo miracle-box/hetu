@@ -1,10 +1,8 @@
-import { textureTable } from '~/db/schema/texture';
 import { ProfilesService } from '../profiles/profiles.service';
 import { YggdrasilProfile, YggdrasilProfileTextures, YggdrasilTexture } from './common';
-import { eq } from 'drizzle-orm';
-import { db } from '~/db/connection';
 import { TexturesService } from '../textures/textures.service';
 import { Profile } from '~/models/profile';
+import { sign } from './signature';
 
 export abstract class CommonService {
 	static getUnsignedUUID(uuid: string): string {
@@ -38,11 +36,9 @@ export abstract class CommonService {
 		const skinTexture = profile.skinTextureId
 			? await this.getYggdrasilTexture(profile.skinTextureId)
 			: null;
-
 		const capeTexture = profile.capeTextureId
 			? await this.getYggdrasilTexture(profile.capeTextureId)
 			: null;
-
 		const yggTextures: YggdrasilProfileTextures = {
 			timestamp: new Date().getTime(),
 			profileId: this.getUnsignedUUID(profile.id),
@@ -52,21 +48,26 @@ export abstract class CommonService {
 				...(capeTexture ? { CAPE: capeTexture } : {}),
 			},
 		};
+		const encodedTextures = btoa(JSON.stringify(yggTextures));
+
+		const properties: YggdrasilProfile['properties'] = [
+			{
+				name: 'textures',
+				value: encodedTextures,
+				signature: signed
+					? sign(process.env.YGGDRASIL_PRIVATE_KEY, encodedTextures)
+					: undefined,
+			},
+			{
+				// [TODO] Configure uploadable textures in profile options
+				name: 'uploadableTextures',
+				value: 'skin,cape',
+			},
+		];
 
 		return {
 			...partialProfile,
-			properties: [
-				{
-					name: 'textures',
-					value: btoa(JSON.stringify(yggTextures)),
-					// [TODO] Support signature in future
-				},
-				{
-					// [TODO] Make this configurable in player profile metadata
-					name: 'uploadableTextures',
-					value: 'skin,cape',
-				},
-			],
+			properties,
 		};
 	}
 

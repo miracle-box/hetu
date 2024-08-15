@@ -41,12 +41,12 @@ export abstract class SessionserverService {
 		// [TODO] Validate client IP
 		// [TODO] Validate if username equals to to profile bounded to access token
 
-		return CommonService.getProfileByName(body.username);
+		return CommonService.getProfileByName(body.username, true);
 	}
 
 	static async getProfile(id: string, unsigned: boolean = true): Promise<YggdrasilProfile> {
 		// [TODO] Handle profile signing
-		const profile = await CommonService.getProfileById(id);
+		const profile = await CommonService.getProfileById(id, !unsigned);
 		if (!profile) throw new Error('Profile not found!');
 
 		return profile;
