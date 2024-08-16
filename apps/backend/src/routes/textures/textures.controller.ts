@@ -41,6 +41,24 @@ export const TexturesController = new Elysia({ name: 'Controller.Textures', pref
 			},
 		},
 	)
+	.get(
+		'/:id/image',
+		async ({ params, redirect }) => {
+			const texture = await TexturesService.getTextureById(params.id);
+			if (!texture) throw new Error('Texture not found.');
+			return redirect(TexturesService.getTextureUrlByHash(texture.hash), 302);
+		},
+		{
+			response: {
+				302: t.Void(),
+			},
+			detail: {
+				summary: 'Get Texture Image',
+				description: 'Redirect to actual file URL for a specific texture.',
+				tags: ['Textures'],
+			},
+		},
+	)
 	.use(authMiddleware('default'))
 	.post(
 		'/',
