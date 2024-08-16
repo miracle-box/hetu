@@ -6,6 +6,7 @@ import { Profile } from '~/models/profile';
 import { EditRequest } from './profiles.model';
 import { textureTable } from '~/db/schema/texture';
 import { TextureType } from '~/models/texture';
+import { lower } from '~/db/schema/utils';
 
 export abstract class ProfilesService {
 	static async getProfilesByUser(userId: string): Promise<Profile[]> {
@@ -38,7 +39,7 @@ export abstract class ProfilesService {
 		const [profile] = await db
 			.select()
 			.from(profileTable)
-			.where(eq(profileTable.name, name))
+			.where(eq(lower(profileTable.name), name.toLowerCase()))
 			.limit(1);
 
 		return profile ?? null;

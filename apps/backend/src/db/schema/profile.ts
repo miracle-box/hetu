@@ -3,6 +3,7 @@ import { pgTable } from 'drizzle-orm/pg-core';
 import { userTable } from './auth';
 import { textureTable } from './texture';
 import { sql } from 'drizzle-orm';
+import { lower } from './utils';
 
 export const profileTable = pgTable(
 	'profile',
@@ -12,7 +13,7 @@ export const profileTable = pgTable(
 		authorId: varchar('author_id', { length: 24 })
 			.notNull()
 			.references(() => userTable.id),
-		name: varchar('name').notNull().unique(),
+		name: varchar('name').notNull(),
 		skinTextureId: varchar('skin_texture_id', { length: 24 }).references(() => textureTable.id),
 		capeTextureId: varchar('cape_texture_id', { length: 24 }).references(() => textureTable.id),
 		isPrimary: boolean('is_primary').notNull().default(false),
@@ -25,5 +26,7 @@ export const profileTable = pgTable(
 			.on(t.authorId)
 			// Workaround for drizzle-orm #2506
 			.where(sql`"profile"."is_primary" = TRUE`),
+		// Player name is case insensitive in Minecraft
+		uniqueLowercaseName: uniqueIndex('unique_lowercase_name').on(lower(t.name)),
 	}),
 );
