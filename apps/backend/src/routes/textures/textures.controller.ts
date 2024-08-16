@@ -6,6 +6,26 @@ import { TexturesService } from './textures.service';
 export const TexturesController = new Elysia({ name: 'Controller.Textures', prefix: '/textures' })
 	.use(TexturesModel)
 	.get(
+		'/',
+		async ({ query }) => {
+			console.log({ query });
+
+			// [TODO] Support all query params, and response with pagination info
+			if (!query.author)
+				throw new Error('Author is required, other query params are not supported yet.');
+			return await TexturesService.getTexturesByUser(query.author);
+		},
+		{
+			query: 'textures.search.query',
+			response: 'textures.search.response',
+			detail: {
+				summary: 'Search for textures',
+				description: 'Search textures by query and filters.',
+				tags: ['Textures'],
+			},
+		},
+	)
+	.get(
 		'/:id',
 		async ({ params }) => {
 			const texture = await TexturesService.getTextureById(params.id);
@@ -16,7 +36,7 @@ export const TexturesController = new Elysia({ name: 'Controller.Textures', pref
 			response: 'textures.details.response',
 			detail: {
 				summary: 'Get Texture',
-				description: 'Get  a specific texture.',
+				description: 'Get a specific texture.',
 				tags: ['Textures'],
 			},
 		},

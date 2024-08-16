@@ -5,7 +5,7 @@ import { UploadRequest } from './textures.model';
 import { s3 } from '~/s3/client';
 import { db } from '~/db/connection';
 import { textureTable } from '~/db/schema/texture';
-import { and, eq } from 'drizzle-orm';
+import { and, eq, desc } from 'drizzle-orm';
 
 export abstract class TexturesService {
 	static isValidSkinDimensions(width: number, height: number): boolean {
@@ -113,6 +113,14 @@ export abstract class TexturesService {
 				}),
 			);
 		}
+	}
+
+	static async getTexturesByUser(userId: string): Promise<Texture[]> {
+		return db
+			.select()
+			.from(textureTable)
+			.where(eq(textureTable.authorId, userId))
+			.orderBy(desc(textureTable.updatedAt));
 	}
 
 	static async createTexture(
