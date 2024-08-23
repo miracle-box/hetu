@@ -86,8 +86,8 @@ export abstract class TexturesService {
 		const hashHex = sha256sum.toString('hex');
 		const hashBase64 = sha256sum.toString('base64');
 
-		// Put textures in textures/(first two letters of hash)/(hash)
-		const fileKey = `textures/${hashHex.slice(0, 2)}/${hashHex}`;
+		// Put textures in (prefix)(first two letters of hash)/(hash)
+		const fileKey = `${process.env.S3_PREFIX}${hashHex.slice(0, 2)}/${hashHex}`;
 
 		const fileExists = await s3
 			.send(
@@ -106,7 +106,7 @@ export abstract class TexturesService {
 			await s3.send(
 				new PutObjectCommand({
 					Bucket: process.env.S3_BUCKET,
-					Key: `textures/${hashHex.slice(0, 2)}/${hashHex}`,
+					Key: fileKey,
 					Body: file,
 					ContentType: 'image/png',
 					ChecksumSHA256: hashBase64,
@@ -193,6 +193,6 @@ export abstract class TexturesService {
 	}
 
 	static getTextureUrlByHash(hash: string): string {
-		return `${process.env.S3_PUBLIC_ROOT}/textures/${hash.slice(0, 2)}/${hash}`;
+		return `${process.env.S3_PUBLIC_ROOT}/${process.env.S3_PREFIX}${hash.slice(0, 2)}/${hash}`;
 	}
 }
