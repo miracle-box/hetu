@@ -1,5 +1,6 @@
 declare module 'bun' {
 	interface Env {
+		BASE_URL: string;
 		DATABASE_URL: string;
 		DATABASE_URL_MIGRATE: string;
 		S3_ENDPOINT: string;

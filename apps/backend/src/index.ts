@@ -9,6 +9,16 @@ const app = new Elysia()
 	.use(
 		swagger({
 			documentation: {
+				servers: [
+					{
+						url: process.env.BASE_URL,
+						description: 'Production server',
+					},
+					{
+						url: 'http://localhost:3000',
+						description: 'Local development server',
+					},
+				],
 				components: {
 					securitySchemes: {
 						sessionId: {
