@@ -5,9 +5,8 @@ import { db } from '~/db/connection';
 import { userAuthTable, userTable, verificationTable } from '~/db/schema/auth';
 import { Session, SessionMetadata, SessionSummary } from '~/models/session';
 import { SigninRequest, SignupRequest } from './auth.model';
-import { VerificationMetadata, VerificationMethod, VerificationSummary } from '~/models/auth';
+import { VerificationMetadata, VerificationSummary } from '~/models/auth';
 import { mailer } from '~/mailing/mailing';
-import { User } from '~/models/user';
 
 export abstract class AuthService {
 	static async signup(body: SignupRequest): Promise<Session> {
@@ -65,6 +64,7 @@ export abstract class AuthService {
 	 * Sign in a user
 	 * @todo [TODO] Use `credentialsSignin` for actual signin logic.
 	 * @param body username and password
+	 *
 	 * @returns session data
 	 */
 	static async signin(body: SigninRequest): Promise<Session> {

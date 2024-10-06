@@ -27,7 +27,7 @@ export const YggdrasilController = new Elysia({
 	.group('/authserver', (app) =>
 		app
 			.use(AuthserverModel)
-			.post('/authenticate', ({ body }) => AuthserverService.authenticate(body), {
+			.post('/authenticate', async ({ body }) => await AuthserverService.authenticate(body), {
 				body: 'yggdrasil.auth.auth.body',
 				response: 'yggdrasil.auth.auth.response',
 				detail: {
@@ -36,7 +36,7 @@ export const YggdrasilController = new Elysia({
 					tags: ['Yggdrasil Auth'],
 				},
 			})
-			.post('/refresh', ({ body }) => AuthserverService.refresh(body), {
+			.post('/refresh', async ({ body }) => await AuthserverService.refresh(body), {
 				body: 'yggdrasil.auth.refresh.body',
 				response: 'yggdrasil.auth.refresh.response',
 				detail: {
@@ -66,8 +66,8 @@ export const YggdrasilController = new Elysia({
 			)
 			.post(
 				'/invalidate',
-				({ body, set }) => {
-					AuthserverService.invalidate(body);
+				async ({ body, set }) => {
+					await AuthserverService.invalidate(body);
 					set.status = 'No Content';
 				},
 				{
@@ -144,7 +144,8 @@ export const YggdrasilController = new Elysia({
 			)
 			.get(
 				'/session/minecraft/profile/:id',
-				({ params, query }) => SessionserverService.getProfile(params.id, query.unsigned),
+				async ({ params, query }) =>
+					await SessionserverService.getProfile(params.id, query.unsigned),
 				{
 					params: 'yggdrasil.session.profile.params',
 					query: 'yggdrasil.session.profile.query',
@@ -160,15 +161,19 @@ export const YggdrasilController = new Elysia({
 	.group('/api', (app) =>
 		app
 			.use(MojangApiModel)
-			.post('/profiles/minecraft', ({ body }) => MojangApiService.getProfilesByNames(body), {
-				body: 'yggdrasil.mojang.get-profiles.body',
-				response: 'yggdrasil.mojang.get-profiles.response',
-				detail: {
-					summary: 'Get Profiles',
-					description: 'Get profiles of requested users.',
-					tags: ['Yggdrasil Mojang'],
+			.post(
+				'/profiles/minecraft',
+				async ({ body }) => await MojangApiService.getProfilesByNames(body),
+				{
+					body: 'yggdrasil.mojang.get-profiles.body',
+					response: 'yggdrasil.mojang.get-profiles.response',
+					detail: {
+						summary: 'Get Profiles',
+						description: 'Get profiles of requested users.',
+						tags: ['Yggdrasil Mojang'],
+					},
 				},
-			})
+			)
 			.use(authMiddleware('yggdrasil'))
 			.put(
 				'/user/profile/:id/:type',

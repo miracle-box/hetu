@@ -42,9 +42,9 @@ export const ProfilesController = new Elysia({ name: 'Controller.Profiles', pref
 	.use(authMiddleware('default'))
 	.post(
 		'/',
-		({ session, body }) => {
+		async ({ session, body }) => {
 			// [TODO] HTTP status code should be "201 Created"
-			return ProfilesService.createProfile(session.userId, body.name);
+			return await ProfilesService.createProfile(session.userId, body.name);
 		},
 		{
 			body: 'profiles.create.body',
@@ -58,7 +58,7 @@ export const ProfilesController = new Elysia({ name: 'Controller.Profiles', pref
 			},
 		},
 	)
-	.patch('/:id', ({ params, body }) => ProfilesService.editProfile(params.id, body), {
+	.patch('/:id', async ({ params, body }) => await ProfilesService.editProfile(params.id, body), {
 		body: 'profiles.edit.body',
 		response: 'profiles.edit.response',
 		detail: {

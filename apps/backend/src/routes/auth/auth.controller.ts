@@ -93,7 +93,7 @@ export const AuthController = new Elysia({
 			},
 		},
 	)
-	.get('/sessions', ({ user }) => AuthService.getUserSessionSummaries(user.id), {
+	.get('/sessions', async ({ user }) => await AuthService.getUserSessionSummaries(user.id), {
 		response: 'auth.sessions.summary-all.response',
 		detail: {
 			summary: 'Get All Sessions',
@@ -126,9 +126,9 @@ export const AuthController = new Elysia({
 	)
 	.delete(
 		'/sessions',
-		({ user, set }) => {
+		async ({ user, set }) => {
 			set.status = 'No Content';
-			AuthService.revokeUserSessions(user.id);
+			await AuthService.revokeUserSessions(user.id);
 		},
 		{
 			response: {
@@ -144,9 +144,9 @@ export const AuthController = new Elysia({
 	)
 	.delete(
 		'/sessions/:uid',
-		({ params, user, set }) => {
+		async ({ params, user, set }) => {
 			set.status = 'No Content';
-			AuthService.revokeSession(user.id, params.uid);
+			await AuthService.revokeSession(user.id, params.uid);
 		},
 		{
 			response: {
