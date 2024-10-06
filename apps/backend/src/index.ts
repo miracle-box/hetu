@@ -1,4 +1,5 @@
 import { Elysia } from 'elysia';
+import { version } from '../package.json';
 import swagger from '@elysiajs/swagger';
 import { AuthController } from './routes/auth/auth.controller';
 import { TexturesController } from './routes/textures/textures.controller';
@@ -9,6 +10,10 @@ const app = new Elysia()
 	.use(
 		swagger({
 			documentation: {
+				info: {
+					title: 'Hetu API',
+					version,
+				},
 				servers: [
 					{
 						url: process.env.BASE_URL,
