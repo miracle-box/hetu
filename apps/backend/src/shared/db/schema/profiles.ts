@@ -1,21 +1,21 @@
 import { varchar, timestamp, uuid, boolean, uniqueIndex } from 'drizzle-orm/pg-core';
 import { pgTable } from 'drizzle-orm/pg-core';
-import { userTable } from './auth';
-import { textureTable } from './texture';
-import { sql } from 'drizzle-orm';
-import { lower } from './utils';
+import { texturesTable } from './textures';
+import { relations, sql } from 'drizzle-orm';
+import { lower } from '../utils';
+import { usersTable } from '~/shared/db/schema/users';
 
-export const profileTable = pgTable(
-	'profile',
+export const profilesTable = pgTable(
+	'profiles',
 	{
 		// Use UUID for profile ids
 		id: uuid('id').primaryKey().defaultRandom(),
 		authorId: varchar('author_id', { length: 24 })
 			.notNull()
-			.references(() => userTable.id),
+			.references(() => usersTable.id),
 		name: varchar('name').notNull(),
-		skinTextureId: varchar('skin_texture_id', { length: 24 }).references(() => textureTable.id),
-		capeTextureId: varchar('cape_texture_id', { length: 24 }).references(() => textureTable.id),
+		skinTextureId: varchar('skin_texture_id', { length: 24 }),
+		capeTextureId: varchar('cape_texture_id', { length: 24 }),
 		isPrimary: boolean('is_primary').notNull().default(false),
 		createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
 		updatedAt: timestamp('updated_at', { withTimezone: true }).$onUpdate(() => new Date()),
@@ -26,7 +26,22 @@ export const profileTable = pgTable(
 			.on(t.authorId)
 			// Workaround for drizzle-orm #2506
 			.where(sql`"profile"."is_primary" = TRUE`),
-		// Player name is case insensitive in Minecraft
+		// Player name is case-insensitive in Minecraft
 		uniqueLowercaseName: uniqueIndex('unique_lowercase_name').on(lower(t.name)),
 	}),
 );
+
+export const profilesRelations = relations(profilesTable, ({ one }) => ({
+	author: one(usersTable, {
+		fields: [profilesTable.authorId],
+		references: [usersTable.id],
+	}),
+	skinTexture: one(texturesTable, {
+		fields: [profilesTable.skinTextureId],
+		references: [texturesTable.id],
+	}),
+	capeTexture: one(texturesTable, {
+		fields: [profilesTable.capeTextureId],
+		references: [texturesTable.id],
+	}),
+}));

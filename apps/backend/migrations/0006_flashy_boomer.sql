@@ -1,1 +1,0 @@
-ALTER TABLE "texture" ADD CONSTRAINT "texture_name_unique" UNIQUE("name");

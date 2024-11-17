@@ -1,1 +1,0 @@
-ALTER TABLE "texture" DROP CONSTRAINT "texture_name_unique";

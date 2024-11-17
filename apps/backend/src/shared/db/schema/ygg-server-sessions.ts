@@ -1,6 +1,6 @@
 import { pgTable, timestamp, varchar } from 'drizzle-orm/pg-core';
 
-export const yggdrasilJoinServerTable = pgTable('yggdrasil_join_server', {
+export const yggServerSessionsTable = pgTable('ygg_server_sessions', {
 	serverId: varchar('server_id').primaryKey(),
 	accessToken: varchar('access_token', { length: 24 }).notNull(),
 	clientIp: varchar('client_ip'),

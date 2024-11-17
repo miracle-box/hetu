@@ -8,7 +8,7 @@
     "build": "bun build --compile --minify-whitespace --minify-syntax --target bun --outfile dist/server ./src/index.ts",
     "migration:generate": "drizzle-kit generate",
     "migration:drop": "drizzle-kit drop",
-    "migration:run": "bun src/db/migrate.ts"
+    "migration:run": "bun src/shared/db/migrate.ts"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.629.0",
