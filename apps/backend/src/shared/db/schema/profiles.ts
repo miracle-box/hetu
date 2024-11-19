@@ -9,9 +9,7 @@ export const profilesTable = pgTable(
 	{
 		// Use UUID for profile ids
 		id: uuid('id').primaryKey().defaultRandom(),
-		authorId: varchar('author_id', { length: 24 })
-			.notNull()
-			.references(() => usersTable.id),
+		authorId: varchar('author_id', { length: 24 }).notNull(),
 		name: varchar('name').notNull(),
 		skinTextureId: varchar('skin_texture_id', { length: 24 }),
 		capeTextureId: varchar('cape_texture_id', { length: 24 }),
@@ -21,10 +19,12 @@ export const profilesTable = pgTable(
 	},
 	(t) => ({
 		// Only one primary profile for each user
-		uniquePrimaryProfile: uniqueIndex('unique_primary_profile')
-			.on(t.authorId)
-			// Workaround for drizzle-orm #2506
-			.where(sql`"profile"."is_primary" = TRUE`),
+		// Workaround for drizzle-orm #2506
+		uniquePrimaryProfile: uniqueIndex('unique_primary_profile').on(t.authorId)
+			.where(sql`"profile"
+			.
+			"is_primary"
+			= TRUE`),
 		// Ensures that the player name is unique and player name is case-insensitive in Minecraft
 		uniqueLowercaseName: uniqueIndex('unique_lowercase_name').on(lower(t.name)),
 	}),

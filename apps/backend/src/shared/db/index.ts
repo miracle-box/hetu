@@ -1,6 +1,7 @@
 import { drizzle } from 'drizzle-orm/postgres-js';
 import postgres from 'postgres';
 
+import * as filesSchemas from './schema/files';
 import * as profilesSchemas from './schema/profiles';
 import * as sessionsSchemas from './schema/sessions';
 import * as texturesSchemas from './schema/textures';
@@ -10,6 +11,7 @@ import * as verificationsSchemas from './schema/verifications';
 import * as yggServerSessionsSchemas from './schema/ygg-server-sessions';
 
 const schema = {
+	...filesSchemas,
 	...profilesSchemas,
 	...sessionsSchemas,
 	...texturesSchemas,

@@ -1,7 +1,7 @@
 import { jsonb, pgEnum, pgTable, timestamp, varchar } from 'drizzle-orm/pg-core';
 import { usersTable } from '~/shared/db/schema/users';
-import { SessionMetadata } from '~/auth/session';
 import { relations } from 'drizzle-orm';
+import { SessionMetadata } from '~/services/auth/session';
 
 export const sessionScopeEnum = pgEnum('session_scope', ['default', 'yggdrasil']);
 
@@ -10,7 +10,7 @@ export const sessionsTable = pgTable('sessions', {
 	uid: varchar('uid', { length: 24 }).notNull(),
 	userId: varchar('user_id', { length: 24 }).notNull(),
 	scope: sessionScopeEnum('scope').notNull(),
-	metadata: jsonb('metadata').$type<SessionMetadata>().notNull().default({}),
+	metadata: jsonb('metadata').$type<SessionMetadata['metadata']>().notNull().default({}),
 	expiresAt: timestamp('expires_at', { withTimezone: true }).notNull(),
 });
 
