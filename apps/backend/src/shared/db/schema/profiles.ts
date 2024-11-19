@@ -1,5 +1,4 @@
-import { varchar, timestamp, uuid, boolean, uniqueIndex } from 'drizzle-orm/pg-core';
-import { pgTable } from 'drizzle-orm/pg-core';
+import { boolean, pgTable, timestamp, uniqueIndex, uuid, varchar } from 'drizzle-orm/pg-core';
 import { texturesTable } from './textures';
 import { relations, sql } from 'drizzle-orm';
 import { lower } from '../utils';

@@ -1,10 +1,10 @@
 import { Elysia } from 'elysia';
 import { version } from '../package.json';
 import swagger from '@elysiajs/swagger';
-import { AuthController } from './routes/auth/auth.controller';
-import { TexturesController } from './routes/textures/textures.controller';
-import { ProfilesController } from './routes/profiles/profiles.controller';
-import { YggdrasilController } from './routes/yggdrasil/yggdrasil';
+import { AuthRoutes } from '~/auth/auth.routes';
+import { TexturesController } from '~/textures/textures.controller';
+import { ProfilesController } from '~/profiles/profiles.controller';
+import { YggdrasilController } from '~/yggdrasil/yggdrasil';
 
 const app = new Elysia()
 	.use(
@@ -70,7 +70,7 @@ const app = new Elysia()
 			},
 		}),
 	)
-	.use(AuthController)
+	.use(AuthRoutes)
 	.use(TexturesController)
 	.use(ProfilesController)
 	.use(YggdrasilController)

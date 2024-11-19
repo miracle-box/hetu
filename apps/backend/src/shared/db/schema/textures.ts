@@ -1,7 +1,6 @@
 import { createId } from '@paralleldrive/cuid2';
 import { pgEnum, pgTable, text, timestamp, varchar } from 'drizzle-orm/pg-core';
 import { usersTable } from '~/shared/db/schema/users';
-import { profilesTable } from '~/shared/db/schema/profiles';
 import { relations } from 'drizzle-orm';
 
 export const textureTypeEnum = pgEnum('texture_type', ['skin', 'skin_slim', 'cape']);
