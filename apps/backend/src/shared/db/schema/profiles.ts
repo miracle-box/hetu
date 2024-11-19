@@ -25,7 +25,7 @@ export const profilesTable = pgTable(
 			.on(t.authorId)
 			// Workaround for drizzle-orm #2506
 			.where(sql`"profile"."is_primary" = TRUE`),
-		// Player name is case-insensitive in Minecraft
+		// Ensures that the player name is unique and player name is case-insensitive in Minecraft
 		uniqueLowercaseName: uniqueIndex('unique_lowercase_name').on(lower(t.name)),
 	}),
 );
