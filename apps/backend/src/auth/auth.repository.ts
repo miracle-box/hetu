@@ -4,13 +4,13 @@ import { userAuthTable } from '~/shared/db/schema/user-auth';
 import { UserAuthType } from '~/auth/auth.entities';
 
 export abstract class AuthRepository {
-	static async getPassword(params: { userId: string }): Promise<string | null> {
+	static async getPassword(userId: string): Promise<string | null> {
 		const passwordRecord = await db.query.userAuthTable.findFirst({
 			columns: {
 				credential: true,
 			},
 			where: and(
-				eq(userAuthTable.userId, params.userId),
+				eq(userAuthTable.userId, userId),
 				eq(userAuthTable.type, UserAuthType.PASSWORD),
 			),
 		});

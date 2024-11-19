@@ -18,7 +18,7 @@ export async function changePassword(
 	body: Static<typeof changePasswordBodySchema>,
 	userId: string,
 ): Promise<Static<typeof changePasswordResponseSchema>> {
-	const oldPasswordHash = await AuthRepository.getPassword({ userId });
+	const oldPasswordHash = await AuthRepository.getPassword(userId);
 
 	// If the user does not have a password, we set a password here.
 	const oldPasswordCorrect = oldPasswordHash
@@ -29,7 +29,7 @@ export async function changePassword(
 	}
 
 	const hashedNewPassword = await PasswordService.hash(body.newPassword);
-	await AuthRepository.upsertPassword({ userId: userId, passwordHash: hashedNewPassword });
+	await AuthRepository.upsertPassword({ userId, passwordHash: hashedNewPassword });
 
 	await SessionService.revokeAll(userId);
 	const session = await SessionService.create(userId, {
