@@ -12,7 +12,7 @@ export const texturesTable = pgTable('textures', {
 	name: varchar('name').notNull(),
 	description: text('description').notNull().default(''),
 	type: textureTypeEnum('type').notNull(),
-	hash: varchar('hash', { length: 64 }).notNull(),
+	fileId: varchar('file_id', { length: 24 }).notNull(),
 	createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
 	updatedAt: timestamp('updated_at', { withTimezone: true }).$onUpdate(() => new Date()),
 });
@@ -23,7 +23,7 @@ export const texturesRelations = relations(texturesTable, ({ one }) => ({
 		references: [usersTable.id],
 	}),
 	file: one(filesTable, {
-		fields: [texturesTable.hash],
-		references: [filesTable.hash],
+		fields: [texturesTable.fileId],
+		references: [filesTable.id],
 	}),
 }));
