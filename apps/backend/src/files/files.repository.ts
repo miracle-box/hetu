@@ -1,6 +1,6 @@
 import { createSelectSchema } from 'drizzle-typebox';
 import { filesTable } from '~/shared/db/schema/files';
-import { Static, t } from 'elysia';
+import { Static } from 'elysia';
 import { db } from '~/shared/db';
 import { FileType } from '~/files/files.entities';
 import { and, eq } from 'drizzle-orm';

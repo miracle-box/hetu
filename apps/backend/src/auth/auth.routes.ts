@@ -18,7 +18,7 @@ import {
 } from '~/auth/usecases/change-password';
 
 export const AuthRoutes = new Elysia({
-	name: 'Controller.Auth',
+	name: 'Routes.Auth',
 	prefix: '/auth',
 })
 	.post('/signup', async ({ body }) => await signup(body), {

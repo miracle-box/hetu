@@ -20,11 +20,9 @@ export const profilesTable = pgTable(
 	(t) => ({
 		// Only one primary profile for each user
 		// Workaround for drizzle-orm #2506
-		uniquePrimaryProfile: uniqueIndex('unique_primary_profile').on(t.authorId)
-			.where(sql`"profile"
-			.
-			"is_primary"
-			= TRUE`),
+		uniquePrimaryProfile: uniqueIndex('unique_primary_profile')
+			.on(t.authorId)
+			.where(sql`"profile"."is_primary" = TRUE`),
 		// Ensures that the player name is unique and player name is case-insensitive in Minecraft
 		uniqueLowercaseName: uniqueIndex('unique_lowercase_name').on(lower(t.name)),
 	}),

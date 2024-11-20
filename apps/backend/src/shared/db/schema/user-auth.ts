@@ -2,8 +2,9 @@ import { pgEnum, pgTable, timestamp, uniqueIndex, varchar } from 'drizzle-orm/pg
 import { createId } from '@paralleldrive/cuid2';
 import { relations, sql } from 'drizzle-orm';
 import { usersTable } from '~/shared/db/schema/users';
+import { UserAuthType } from '~/auth/auth.entities';
 
-export const userAuthTypeEnum = pgEnum('auth_type', ['password']);
+export const userAuthTypeEnum = pgEnum('auth_type', [UserAuthType.PASSWORD]);
 
 export const userAuthTable = pgTable(
 	'user_auth',

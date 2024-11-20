@@ -3,8 +3,9 @@ import { version } from '../package.json';
 import swagger from '@elysiajs/swagger';
 import { AuthRoutes } from '~/auth/auth.routes';
 import { TexturesController } from '~/textures/textures.controller';
-import { ProfilesController } from '~/profiles/profiles.controller';
+import { ProfilesRoutes } from '~/profiles/profiles.routes';
 import { YggdrasilController } from '~/yggdrasil/yggdrasil';
+import { FilesRoutes } from '~/files/files.routes';
 
 const app = new Elysia()
 	.use(
@@ -39,6 +40,10 @@ const app = new Elysia()
 						description: 'Authentication related APIs.',
 					},
 					{
+						name: 'General',
+						description: 'API for general actions.',
+					},
+					{
 						name: 'Textures',
 						description: 'API for managing textures.',
 					},
@@ -71,8 +76,9 @@ const app = new Elysia()
 		}),
 	)
 	.use(AuthRoutes)
+	.use(FilesRoutes)
+	.use(ProfilesRoutes)
 	.use(TexturesController)
-	.use(ProfilesController)
 	.use(YggdrasilController)
 	.listen(3000);
 

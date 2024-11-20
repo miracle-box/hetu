@@ -10,7 +10,7 @@ import {
 	updateResponseSchema,
 } from '~/profiles/usecases/update';
 
-export const ProfilesController = new Elysia({ name: 'Controller.Profiles', prefix: '/profiles' })
+export const ProfilesRoutes = new Elysia({ name: 'Routes.Profiles', prefix: '/profiles' })
 	.get('/', async ({ query }) => await find(query), {
 		query: findQuery,
 		response: {
