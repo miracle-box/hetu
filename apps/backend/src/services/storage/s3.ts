@@ -82,4 +82,9 @@ export class S3StorageService {
 			size: fileBuf.byteLength,
 		};
 	}
+
+	// [TODO] Maybe put this into files module
+	getPublicUrl(hash: string): string {
+		return `${process.env.S3_PUBLIC_ROOT}/${this.getObjectPath(hash)}`;
+	}
 }

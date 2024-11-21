@@ -12,7 +12,7 @@ export const textureSchema = t.Object({
 	name: t.String(),
 	description: t.String(),
 	type: t.Enum(TextureType),
-	hash: t.String(),
+	fileId: t.String(),
 });
 
 export type Texture = Static<typeof textureSchema>;

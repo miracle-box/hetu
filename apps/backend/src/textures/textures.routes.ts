@@ -1,0 +1,61 @@
+import { Elysia } from 'elysia';
+import { authMiddleware } from '~/shared/auth/middleware';
+import { SessionScope } from '~/services/auth/session';
+import { create, createBodySchema, createResponseSchema } from '~/textures/usecases/create';
+import { inspect, inspectParamsSchema, inspectResponseSchema } from '~/textures/usecases/inspect';
+import {
+	getImage,
+	getImageParamsSchema,
+	getImageResponseSchema,
+} from '~/textures/usecases/get-image';
+
+export const TexturesRoutes = new Elysia({ name: 'Routes.Textures', prefix: '/textures' })
+	.get('/:id', async ({ params }) => await inspect(params), {
+		params: inspectParamsSchema,
+		response: {
+			200: inspectResponseSchema,
+		},
+		detail: {
+			summary: 'Get Texture',
+			description: 'Get a specific texture.',
+			tags: ['Textures'],
+		},
+	})
+	.get(
+		'/:id/image',
+		async ({ params, redirect }) => {
+			const url = await getImage(params);
+			return redirect(url, 302);
+		},
+		{
+			params: getImageParamsSchema,
+			response: {
+				302: getImageResponseSchema,
+			},
+			detail: {
+				summary: 'Get Texture Image',
+				description: 'Redirect to actual file URL for a specific texture.',
+				tags: ['Textures'],
+			},
+		},
+	)
+	.use(authMiddleware(SessionScope.DEFAULT))
+	.post(
+		'/',
+		async ({ user, body, set }) => {
+			set.status = 'Created';
+			return await create(body, user.id);
+		},
+		{
+			body: createBodySchema,
+			response: {
+				201: createResponseSchema,
+			},
+			detail: {
+				summary: 'Create Texture',
+				description: 'Create a new texture.',
+				security: [{ sessionId: [] }],
+				tags: ['Textures'],
+			},
+		},
+	);

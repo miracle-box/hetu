@@ -3,8 +3,13 @@ import { pgEnum, pgTable, text, timestamp, varchar } from 'drizzle-orm/pg-core';
 import { usersTable } from '~/shared/db/schema/users';
 import { relations } from 'drizzle-orm';
 import { filesTable } from '~/shared/db/schema/files';
+import { TextureType } from '~/textures/texture.entities';
 
-export const textureTypeEnum = pgEnum('texture_type', ['skin', 'skin_slim', 'cape']);
+export const textureTypeEnum = pgEnum('texture_type', [
+	TextureType.SKIN,
+	TextureType.SKIN_SLIM,
+	TextureType.CAPE,
+]);
 
 export const texturesTable = pgTable('textures', {
 	id: varchar('id', { length: 24 }).primaryKey().$defaultFn(createId),

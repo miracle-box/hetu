@@ -2,7 +2,7 @@ import { Elysia } from 'elysia';
 import { version } from '../package.json';
 import swagger from '@elysiajs/swagger';
 import { AuthRoutes } from '~/auth/auth.routes';
-import { TexturesController } from '~/textures/textures.controller';
+import { TexturesRoutes } from '~/textures/textures.routes';
 import { ProfilesRoutes } from '~/profiles/profiles.routes';
 import { YggdrasilController } from '~/yggdrasil/yggdrasil';
 import { FilesRoutes } from '~/files/files.routes';
@@ -78,7 +78,7 @@ const app = new Elysia()
 	.use(AuthRoutes)
 	.use(FilesRoutes)
 	.use(ProfilesRoutes)
-	.use(TexturesController)
+	.use(TexturesRoutes)
 	.use(YggdrasilController)
 	.listen(3000);
 
