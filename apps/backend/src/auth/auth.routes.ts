@@ -1,21 +1,21 @@
 import { Elysia, t } from 'elysia';
 import { authMiddleware } from '~/shared/auth/middleware';
-import { signup, signupBodySchema, signupResponseSchema } from '~/auth/usecases/signup';
-import { signin, signinBodySchema, signinResponseSchema } from '~/auth/usecases/signin';
-import { refresh, refreshResponseSchema } from '~/auth/usecases/refresh';
-import { listSessions, listSessionsResponseSchema } from '~/auth/usecases/list-sessions';
+import { signup, signupBodySchema, signupResponseSchema } from './webapis/signup';
+import { signin, signinBodySchema, signinResponseSchema } from './webapis/signin';
+import { refresh, refreshResponseSchema } from './webapis/refresh';
+import { listSessions, listSessionsResponseSchema } from './webapis/list-sessions';
 import {
 	revokeSession,
 	revokeSessionParamsSchema,
 	revokeSessionResponseSchema,
-} from '~/auth/usecases/revoke-session';
-import { revokeAllSessions } from '~/auth/usecases/revoke-all-sessions';
+} from './webapis/revoke-session';
+import { revokeAllSessions } from './webapis/revoke-all-sessions';
 import { SessionScope } from '~/services/auth/session';
 import {
 	changePassword,
 	changePasswordBodySchema,
 	changePasswordResponseSchema,
-} from '~/auth/usecases/change-password';
+} from './webapis/change-password';
 
 export const AuthRoutes = new Elysia({
 	name: 'Routes.Auth',

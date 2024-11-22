@@ -1,14 +1,14 @@
 import { Elysia } from 'elysia';
 import { authMiddleware } from '~/shared/auth/middleware';
 import { SessionScope } from '~/services/auth/session';
-import { find, findQuery, findResponse } from '~/profiles/usecases/find';
-import { create, createBodySchema, createResponseSchema } from '~/profiles/usecases/create';
+import { find, findQuery, findResponse } from './webapis/find';
+import { create, createBodySchema, createResponseSchema } from './webapis/create';
 import {
 	update,
 	updateBodySchema,
 	updateParamsSchema,
 	updateResponseSchema,
-} from '~/profiles/usecases/update';
+} from './webapis/update';
 
 export const ProfilesRoutes = new Elysia({ name: 'Routes.Profiles', prefix: '/profiles' })
 	.get('/', async ({ query }) => await find(query), {

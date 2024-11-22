@@ -1,7 +1,7 @@
 import { Elysia } from 'elysia';
 import { authMiddleware } from '~/shared/auth/middleware';
 import { SessionScope } from '~/services/auth/session';
-import { upload, uploadBodySchema, uploadResponseSchema } from '~/files/usecases/upload';
+import { upload, uploadBodySchema, uploadResponseSchema } from './webapis/upload';
 
 export const FilesRoutes = new Elysia({
 	name: 'Routes.Files',
