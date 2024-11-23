@@ -66,6 +66,7 @@ export abstract class SessionService {
 		await lucia.invalidateSession(sessionId);
 	}
 
+	// [TODO] Should validate session scope (and permissions possibly).
 	static async validate(sessionId: string): Promise<{
 		session: Session;
 		user: User;

@@ -69,8 +69,8 @@ export abstract class ProfilesRepository {
 		id: string,
 		params: {
 			name?: string;
-			skinTextureId?: string;
-			capeTextureId?: string;
+			skinTextureId?: string | null;
+			capeTextureId?: string | null;
 		},
 	): Promise<ProfileRecord> {
 		const [profile] = await db
