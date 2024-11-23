@@ -6,7 +6,7 @@ export const createBodySchema = t.Object({
 	name: t.String({ minLength: 3, maxLength: 16 }),
 	description: t.String(),
 	type: t.Enum(TextureType),
-	fileId: t.String(),
+	hash: t.String(),
 });
 export const createResponseSchema = textureSchema;
 
@@ -15,10 +15,10 @@ export async function create(
 	userId: string,
 ): Promise<Static<typeof createResponseSchema>> {
 	// If the same file exists (in the same user), don't create it
-	const existingTexture = await TexturesRepository.findUserTextureByFileId(
+	const existingTexture = await TexturesRepository.findUserTextureByHash(
 		userId,
 		body.type,
-		body.fileId,
+		body.hash,
 	);
 	// [TODO] Provide existing texture id for redirecting.
 	if (existingTexture) throw new Error('Texture already exists');
@@ -28,7 +28,7 @@ export async function create(
 		name: body.name,
 		description: body.description,
 		type: body.type,
-		fileId: body.fileId,
+		hash: body.hash,
 	});
 	if (!texture) throw new Error('Failed to create texture');
 

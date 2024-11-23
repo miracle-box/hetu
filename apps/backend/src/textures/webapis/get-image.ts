@@ -11,12 +11,12 @@ export const getImageDataSchema = t.String();
 export async function getImage(
 	params: Static<typeof getImageParamsSchema>,
 ): Promise<Static<typeof getImageDataSchema>> {
-	const texture = await TexturesRepository.findByIdWithFile(params.id);
+	const texture = await TexturesRepository.findById(params.id);
 
 	if (!texture) {
 		throw new Error('Texture not found');
 	}
 
 	// [TODO] Needs to move url fetching into files module
-	return StorageService.getPublicUrl(texture.file.hash);
+	return StorageService.getPublicUrl(texture.hash);
 }

@@ -10,7 +10,6 @@ const textureRecord = createSelectSchema(texturesTable);
 const fileRecord = createSelectSchema(filesTable);
 
 type TextureRecord = Static<typeof textureRecord>;
-type TextureWithFileRecord = TextureRecord & { file: Static<typeof fileRecord> };
 
 export abstract class TexturesRepository {
 	static async findById(id: string): Promise<TextureRecord | null> {
@@ -21,26 +20,15 @@ export abstract class TexturesRepository {
 		return texture ?? null;
 	}
 
-	static async findByIdWithFile(id: string): Promise<TextureWithFileRecord | null> {
-		const texture = await db.query.texturesTable.findFirst({
-			where: eq(texturesTable.id, id),
-			with: {
-				file: true,
-			},
-		});
-
-		return texture ?? null;
-	}
-
-	static async findUserTextureByFileId(
+	static async findUserTextureByHash(
 		userId: string,
 		type: TextureType,
-		fileId: string,
+		hash: string,
 	): Promise<TextureRecord | null> {
 		const texture = await db.query.texturesTable.findFirst({
 			where: and(
 				eq(texturesTable.authorId, userId),
-				eq(texturesTable.fileId, fileId),
+				eq(texturesTable.hash, hash),
 				eq(texturesTable.type, type),
 			),
 		});
@@ -49,7 +37,7 @@ export abstract class TexturesRepository {
 	}
 
 	static async create(
-		params: Pick<TextureRecord, 'authorId' | 'name' | 'description' | 'type' | 'fileId'>,
+		params: Pick<TextureRecord, 'authorId' | 'name' | 'description' | 'type' | 'hash'>,
 	): Promise<TextureRecord> {
 		const [insertedTexture] = await db.insert(texturesTable).values(params).returning();
 		if (!insertedTexture) {
