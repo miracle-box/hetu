@@ -4,7 +4,7 @@ import swagger from '@elysiajs/swagger';
 import { AuthRoutes } from '~/auth/auth.routes';
 import { TexturesRoutes } from '~/textures/textures.routes';
 import { ProfilesRoutes } from '~/profiles/profiles.routes';
-import { YggdrasilController } from '~/yggdrasil/yggdrasil';
+import { YggdrasilRoutes } from '~/yggdrasil/yggdrasil.routes';
 import { FilesRoutes } from '~/files/files.routes';
 
 const app = new Elysia()
@@ -53,23 +53,11 @@ const app = new Elysia()
 					},
 					{
 						name: 'Yggdrasil',
-						description: 'API for authlib-injector. (authlib injector APIs)',
-					},
-					{
-						name: 'Yggdrasil Auth',
-						description: 'API for authlib-injector. (authserver APIs)',
-					},
-					{
-						name: 'Yggdrasil Session',
-						description: 'API for authlib-injector. (sessionserver APIs)',
-					},
-					{
-						name: 'Yggdrasil Mojang',
-						description: 'API for authlib-injector. (Mojang APIs)',
+						description: 'API for authlib-injector.',
 					},
 					{
 						name: 'Yggdrasil Custom',
-						description: 'API for authlib-injector. (our custom APIs)',
+						description: 'Our own extension for authlib-injector APIs.',
 					},
 				],
 			},
@@ -79,7 +67,7 @@ const app = new Elysia()
 	.use(FilesRoutes)
 	.use(ProfilesRoutes)
 	.use(TexturesRoutes)
-	.use(YggdrasilController)
+	.use(YggdrasilRoutes)
 	.listen(3000);
 
 console.log(`Service is running at ${app.server?.hostname}:${app.server?.port}`);
