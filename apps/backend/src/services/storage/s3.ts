@@ -1,7 +1,6 @@
 import { Static, t } from 'elysia';
 import { s3 } from '~/shared/s3/client';
-import { HeadObjectCommand, PutObjectCommand } from '@aws-sdk/client-s3';
-import { NotFound } from '@aws-sdk/client-s3/dist-types/models';
+import { HeadObjectCommand, PutObjectCommand, NotFound } from '@aws-sdk/client-s3';
 
 // Entities
 export const objectInfoSchema = t.Object({
