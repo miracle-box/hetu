@@ -9,6 +9,7 @@ import * as userAuthSchemas from './schema/user-auth';
 import * as usersSchemas from './schema/users';
 import * as verificationsSchemas from './schema/verifications';
 import * as yggServerSessionsSchemas from './schema/ygg-server-sessions';
+import * as relations from './relations';
 
 const schema = {
 	...filesSchemas,
@@ -19,9 +20,14 @@ const schema = {
 	...usersSchemas,
 	...verificationsSchemas,
 	...yggServerSessionsSchemas,
+	...relations,
 };
 
 const queryClient = postgres(process.env.DATABASE_URL, {});
 
 export const rawDb = queryClient;
 export const db = drizzle(queryClient, { schema });
+
+db.query.filesTable.findFirst({
+	with: {},
+});

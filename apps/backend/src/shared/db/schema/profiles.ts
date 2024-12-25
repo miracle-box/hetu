@@ -1,8 +1,6 @@
 import { boolean, pgTable, timestamp, uniqueIndex, uuid, varchar } from 'drizzle-orm/pg-core';
-import { texturesTable } from './textures';
-import { relations, sql } from 'drizzle-orm';
+import { sql } from 'drizzle-orm';
 import { lower } from '../utils';
-import { usersTable } from '~/shared/db/schema/users';
 
 export const profilesTable = pgTable(
 	'profiles',
@@ -22,23 +20,8 @@ export const profilesTable = pgTable(
 		// Workaround for drizzle-orm #2506
 		uniquePrimaryProfile: uniqueIndex('unique_primary_profile')
 			.on(t.authorId)
-			.where(sql`"profile"."is_primary" = TRUE`),
+			.where(sql`"profiles"."is_primary" = TRUE`),
 		// Ensures that the player name is unique and player name is case-insensitive in Minecraft
 		uniqueLowercaseName: uniqueIndex('unique_lowercase_name').on(lower(t.name)),
 	}),
 );
-
-export const profilesRelations = relations(profilesTable, ({ one }) => ({
-	author: one(usersTable, {
-		fields: [profilesTable.authorId],
-		references: [usersTable.id],
-	}),
-	skinTexture: one(texturesTable, {
-		fields: [profilesTable.skinTextureId],
-		references: [texturesTable.id],
-	}),
-	capeTexture: one(texturesTable, {
-		fields: [profilesTable.capeTextureId],
-		references: [texturesTable.id],
-	}),
-}));

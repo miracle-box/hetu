@@ -1,8 +1,7 @@
 import { bigint, pgEnum, pgTable, timestamp, uniqueIndex, varchar } from 'drizzle-orm/pg-core';
 import { createId } from '@paralleldrive/cuid2';
-import { FileType } from '~/files/files.entities';
 
-export const fileTypeEnum = pgEnum('file_type', [FileType.TEXTURE_SKIN, FileType.TEXTURE_CAPE]);
+export const fileTypeEnum = pgEnum('file_type', ['texture_skin', 'texture_cape']);
 
 export const filesTable = pgTable(
 	'files',
