@@ -102,11 +102,14 @@ export abstract class UsersRepository {
 					return;
 				}
 
-				const [insertedAuth] = await tx.insert(userAuthTable).values({
-					type: UserAuthType.PASSWORD,
-					userId: insertedUser.id,
-					credential: params.passwordHash,
-				});
+				const [insertedAuth] = await tx
+					.insert(userAuthTable)
+					.values({
+						type: UserAuthType.PASSWORD,
+						userId: insertedUser.id,
+						credential: params.passwordHash,
+					})
+					.returning();
 
 				if (!insertedAuth) {
 					tx.rollback();

@@ -15,8 +15,9 @@ export async function upload(
 	body: Static<typeof uploadBodySchema>,
 ): Promise<Static<typeof uploadResponseSchema>> {
 	if (body.type === FileType.TEXTURE_SKIN || body.type === FileType.TEXTURE_CAPE) {
-		await uploadTexture(body.file, body.type);
+		// Return FileInfo is fine for now.
+		return await uploadTexture(body.file, body.type);
+	} else {
+		throw new Error('Unknown file type');
 	}
-
-	throw new Error('Unknown file type');
 }

@@ -21,7 +21,7 @@ export async function signin(
 		throw new Error('Invalid credentials, or the user does not have password.');
 	}
 
-	const passwordCorrect = PasswordService.compare(user.passwordHash, body.password);
+	const passwordCorrect = PasswordService.compare(body.password, user.passwordHash);
 	if (!passwordCorrect) {
 		throw new Error('Invalid credentials, or the user does not have password.');
 	}
