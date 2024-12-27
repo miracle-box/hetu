@@ -9,13 +9,13 @@
     "backend.js"
   ],
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^7.16.1",
-    "@typescript-eslint/parser": "^7.16.1",
+    "@typescript-eslint/eslint-plugin": "^7.18.0",
+    "@typescript-eslint/parser": "^7.18.0",
     "@vercel/style-guide": "^6.0.0",
     "eslint-config-prettier": "^9.1.0",
-    "eslint-config-turbo": "^2.0.6",
+    "eslint-config-turbo": "^2.3.3",
     "eslint-plugin-drizzle": "^0.2.3",
     "eslint-plugin-only-warn": "^1.1.0",
-    "typescript": "^5.5.3"
+    "typescript": "^5.7.2"
   }
 }
