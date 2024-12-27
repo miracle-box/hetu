@@ -1,25 +1,19 @@
-import { createSelectSchema } from 'drizzle-typebox';
 import { filesTable } from '~/shared/db/schema/files';
-import { Static } from 'elysia';
 import { db } from '~/shared/db';
-import { FileType } from '~/files/files.entities';
+import { FileInfo, FileType } from '~/files/files.entities';
 import { and, eq } from 'drizzle-orm';
-
-const fileRecordSchema = createSelectSchema(filesTable, {});
-
-type FileRecord = Static<typeof fileRecordSchema>;
 
 export abstract class FilesRepository {
 	static async create(
-		params: Pick<FileRecord, 'hash' | 'size' | 'type' | 'mimeType'>,
-	): Promise<FileRecord> {
+		params: Pick<FileInfo, 'hash' | 'size' | 'type' | 'mimeType'>,
+	): Promise<FileInfo> {
 		const [fileRecord] = await db.insert(filesTable).values(params).returning();
 
 		if (!fileRecord) throw new Error('Failed to create file record.');
 		return fileRecord;
 	}
 
-	static async findByHash(hash: string, type: FileType): Promise<FileRecord | null> {
+	static async findByHash(hash: string, type: FileType): Promise<FileInfo | null> {
 		const fileRecord = await db.query.filesTable.findFirst({
 			where: and(eq(filesTable.hash, hash), eq(filesTable.type, type)),
 		});
@@ -33,7 +27,7 @@ export abstract class FilesRepository {
 	 * @param id File ID
 	 * @param type File type (optional)
 	 */
-	static async findById(id: string, type?: FileType): Promise<FileRecord | null> {
+	static async findById(id: string, type?: FileType): Promise<FileInfo | null> {
 		const fileRecord = await db.query.filesTable.findFirst({
 			where: type
 				? and(eq(filesTable.id, id), eq(filesTable.type, type))

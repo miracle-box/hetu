@@ -1,10 +1,13 @@
 import { TextureType } from '~/textures/texture.entities';
 import sharp from 'sharp';
+import { EnumLikeValues } from '~/shared/typing/utils';
 
-export enum CapeType {
-	VANILLA,
-	LEGACY,
-}
+export const CapeType = {
+	VANILLA: 'vanilla',
+	LEGACY: 'legacy',
+} as const;
+
+export type CapeType = EnumLikeValues<typeof CapeType>;
 
 export abstract class TexturesService {
 	static isValidSkinDimensions(width: number, height: number): boolean {

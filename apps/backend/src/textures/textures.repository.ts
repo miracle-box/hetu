@@ -1,18 +1,10 @@
-import { createSelectSchema } from 'drizzle-typebox';
 import { texturesTable } from '~/shared/db/schema/textures';
-import { Static } from 'elysia';
 import { db } from '~/shared/db';
 import { and, eq } from 'drizzle-orm';
-import { TextureType } from '~/textures/texture.entities';
-import { filesTable } from '~/shared/db/schema/files';
-
-const textureRecord = createSelectSchema(texturesTable);
-const fileRecord = createSelectSchema(filesTable);
-
-type TextureRecord = Static<typeof textureRecord>;
+import { Texture, TextureType } from '~/textures/texture.entities';
 
 export abstract class TexturesRepository {
-	static async findById(id: string): Promise<TextureRecord | null> {
+	static async findById(id: string): Promise<Texture | null> {
 		const texture = await db.query.texturesTable.findFirst({
 			where: eq(texturesTable.id, id),
 		});
@@ -24,7 +16,7 @@ export abstract class TexturesRepository {
 		userId: string,
 		type: TextureType,
 		hash: string,
-	): Promise<TextureRecord | null> {
+	): Promise<Texture | null> {
 		const texture = await db.query.texturesTable.findFirst({
 			where: and(
 				eq(texturesTable.authorId, userId),
@@ -37,8 +29,8 @@ export abstract class TexturesRepository {
 	}
 
 	static async create(
-		params: Pick<TextureRecord, 'authorId' | 'name' | 'description' | 'type' | 'hash'>,
-	): Promise<TextureRecord> {
+		params: Pick<Texture, 'authorId' | 'name' | 'description' | 'type' | 'hash'>,
+	): Promise<Texture> {
 		const [insertedTexture] = await db.insert(texturesTable).values(params).returning();
 		if (!insertedTexture) {
 			throw new Error('Failed to create texture.');

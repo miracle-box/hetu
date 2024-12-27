@@ -34,6 +34,7 @@ module.exports = {
 	],
 	rules: {
 		'no-unused-vars': 'off',
+		'no-redeclare': 'off',
 	},
 	overrides: [
 		// Force ESLint to detect .tsx files

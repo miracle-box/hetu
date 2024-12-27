@@ -1,10 +1,11 @@
 import { Static, t } from 'elysia';
+import { EnumLikeValues } from '~/shared/typing/utils';
 
-export enum TextureType {
-	CAPE = 'cape',
-	SKIN = 'skin',
-	SKIN_SLIM = 'skin_slim',
-}
+export const TextureType = {
+	CAPE: 'cape',
+	SKIN: 'skin',
+	SKIN_SLIM: 'skin_slim',
+} as const;
 
 export const textureSchema = t.Object({
 	id: t.String(),
@@ -15,4 +16,5 @@ export const textureSchema = t.Object({
 	hash: t.String(),
 });
 
+export type TextureType = EnumLikeValues<typeof TextureType>;
 export type Texture = Static<typeof textureSchema>;

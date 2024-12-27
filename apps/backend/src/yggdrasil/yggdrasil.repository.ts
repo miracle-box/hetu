@@ -1,16 +1,10 @@
 import { db } from '~/shared/db';
-import { and, eq, inArray } from 'drizzle-orm';
+import { and, eq, gt, inArray } from 'drizzle-orm';
 import { profilesTable } from '~/shared/db/schema/profiles';
 import { Texture } from '~/textures/texture.entities';
 import { Profile } from '~/profiles/profile.entities';
-import { createSelectSchema } from 'drizzle-typebox';
 import { yggServerSessionsTable } from '~/shared/db/schema/ygg-server-sessions';
-import { Static } from 'elysia';
-import { gt } from 'drizzle-orm/sql/expressions/conditions';
-
-const yggServerSessionSchema = createSelectSchema(yggServerSessionsTable);
-
-type YggServerSession = Static<typeof yggServerSessionSchema>;
+import { YggServerSession } from '~/yggdrasil/yggdrasil.entities';
 
 export abstract class YggdrasilRepository {
 	static async getProfilesDigestByNames(

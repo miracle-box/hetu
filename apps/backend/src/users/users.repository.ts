@@ -1,16 +1,10 @@
 import { db } from '~/shared/db';
 import { UserAuthType } from '~/auth/auth.entities';
-import { createSelectSchema } from 'drizzle-typebox';
-import { Static } from 'elysia';
 import { TransactionRollbackError } from 'drizzle-orm/errors';
 import { eq, or } from 'drizzle-orm';
 import { usersTable } from '~/shared/db/schema/users';
 import { userAuthTable } from '~/shared/db/schema/user-auth';
-
-const userRecordSchema = createSelectSchema(usersTable);
-
-type UserRecord = Static<typeof userRecordSchema>;
-type UserInfoRecord = Pick<UserRecord, 'id' | 'email' | 'name'>;
+import { User } from '~/users/user.entities';
 
 export abstract class UsersRepository {
 	/**
@@ -38,7 +32,7 @@ export abstract class UsersRepository {
 	 * @param email Email
 	 */
 	static async findUserWithPassword(email: string): Promise<
-		| (UserInfoRecord & {
+		| (User & {
 				passwordHash: string;
 		  })
 		| null
@@ -81,7 +75,7 @@ export abstract class UsersRepository {
 		name: string;
 		email: string;
 		passwordHash: string;
-	}): Promise<UserInfoRecord> {
+	}): Promise<User> {
 		try {
 			const user = await db.transaction(async (tx) => {
 				const [insertedUser] = await tx

@@ -10,6 +10,13 @@ export const yggTokenSchema = t.Object({
 	clientToken: t.Optional(t.String()),
 });
 
+export const yggServerSessionSchema = t.Object({
+	accessToken: t.String(),
+	clientIp: t.Nullable(t.String()),
+	expiresAt: t.Date(),
+	serverId: t.String(),
+});
+
 export const yggUserSchema = t.Object({
 	id: t.String(),
 	properties: t.Array(
@@ -52,6 +59,7 @@ export const yggdrasilProfileTexturesSchema = t.Object({
 
 export type YggCredentials = Static<typeof yggCredentialsSchema>;
 export type YggToken = Static<typeof yggTokenSchema>;
+export type YggServerSession = Static<typeof yggServerSessionSchema>;
 export type YggUser = Static<typeof yggUserSchema>;
 export type YggProfile = Static<typeof yggProfileSchema>;
 export type YggProfileDigest = Static<typeof yggProfileDigestSchema>;

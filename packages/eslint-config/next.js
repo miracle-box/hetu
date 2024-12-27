@@ -28,6 +28,7 @@ module.exports = {
 	},
 	rules: {
 		'no-unused-vars': 'off',
+		'no-redeclare': 'off',
 	},
 	ignorePatterns: [
 		// Ignore dotfiles

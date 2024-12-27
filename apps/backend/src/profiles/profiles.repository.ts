@@ -2,21 +2,16 @@ import { and, eq } from 'drizzle-orm';
 import { db } from '~/shared/db';
 import { profilesTable } from '~/shared/db/schema/profiles';
 import { lower } from '~/shared/db/utils';
-import { createSelectSchema } from 'drizzle-typebox';
-import { Static } from 'elysia';
-
-const profileRecordSchema = createSelectSchema(profilesTable);
-
-type ProfileRecord = Static<typeof profileRecordSchema>;
+import { Profile } from '~/profiles/profile.entities';
 
 export abstract class ProfilesRepository {
-	static async findByUser(userId: string): Promise<ProfileRecord[]> {
+	static async findByUser(userId: string): Promise<Profile[]> {
 		return db.query.profilesTable.findMany({
 			where: eq(profilesTable.authorId, userId),
 		});
 	}
 
-	static async findPrimaryByUser(userId: string): Promise<ProfileRecord | null> {
+	static async findPrimaryByUser(userId: string): Promise<Profile | null> {
 		const profile = await db.query.profilesTable.findFirst({
 			where: and(eq(profilesTable.authorId, userId), eq(profilesTable.isPrimary, true)),
 		});
@@ -24,7 +19,7 @@ export abstract class ProfilesRepository {
 		return profile ?? null;
 	}
 
-	static async findById(id: string): Promise<ProfileRecord | null> {
+	static async findById(id: string): Promise<Profile | null> {
 		const profile = await db.query.profilesTable.findFirst({
 			where: eq(profilesTable.id, id),
 		});
@@ -32,7 +27,7 @@ export abstract class ProfilesRepository {
 		return profile ?? null;
 	}
 
-	static async findByName(name: string): Promise<ProfileRecord | null> {
+	static async findByName(name: string): Promise<Profile | null> {
 		const profile = await db.query.profilesTable.findFirst({
 			where: eq(lower(profilesTable.name), name.toLowerCase()),
 		});
@@ -51,7 +46,7 @@ export abstract class ProfilesRepository {
 		authorId: string;
 		name: string;
 		isPrimary: boolean;
-	}): Promise<ProfileRecord> {
+	}): Promise<Profile> {
 		const [profile] = await db
 			.insert(profilesTable)
 			.values({
@@ -72,7 +67,7 @@ export abstract class ProfilesRepository {
 			skinTextureId?: string | null;
 			capeTextureId?: string | null;
 		},
-	): Promise<ProfileRecord> {
+	): Promise<Profile> {
 		const [profile] = await db
 			.update(profilesTable)
 			.set(params)

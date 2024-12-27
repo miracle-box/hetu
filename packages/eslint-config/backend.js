@@ -27,6 +27,7 @@ module.exports = {
 	],
 	rules: {
 		'no-unused-vars': 'off',
+		'no-redeclare': 'off',
 		'drizzle/enforce-delete-with-where': [
 			'error',
 			{

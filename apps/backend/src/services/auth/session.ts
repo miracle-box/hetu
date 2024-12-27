@@ -2,12 +2,13 @@ import { Static, t } from 'elysia';
 import { lucia } from '~/shared/auth/lucia';
 import { createId } from '@paralleldrive/cuid2';
 import { User } from '~/users/user.entities';
+import { EnumLikeValues } from '~/shared/typing/utils';
 
 // Entities
-export enum SessionScope {
-	DEFAULT = 'default',
-	YGGDRASIL = 'yggdrasil',
-}
+export const SessionScope = {
+	DEFAULT: 'default',
+	YGGDRASIL: 'yggdrasil',
+} as const;
 
 // Metadata differs between scopes.
 export const sessionMetadataSchema = t.Union([
@@ -35,6 +36,7 @@ export const sessionSchema = t.Intersect([
 
 export const sessionDigestSchema = t.Omit(sessionSchema, ['id', 'metadata']);
 
+export type SessionScope = EnumLikeValues<typeof SessionScope>;
 export type Session = Static<typeof sessionSchema>;
 export type SessionMetadata = Static<typeof sessionMetadataSchema>;
 export type SessionDigest = Static<typeof sessionDigestSchema>;
