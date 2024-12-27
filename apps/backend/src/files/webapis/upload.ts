@@ -1,9 +1,10 @@
 import { Static, t } from 'elysia';
 import { fileInfoSchema, FileType } from '~/files/files.entities';
 import { uploadTexture } from '~/files/usecases/upload-texture';
+import { createEnumLikeValuesSchema } from '~/shared/typing/utils';
 
 export const uploadBodySchema = t.Object({
-	type: t.Enum(FileType),
+	type: createEnumLikeValuesSchema(FileType),
 	file: t.File({
 		// [TODO] Make this depends on file type.
 		maxSize: '4m',

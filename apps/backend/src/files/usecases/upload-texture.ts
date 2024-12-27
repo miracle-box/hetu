@@ -7,7 +7,7 @@ import { StorageService } from '~/services/storage';
 
 export async function uploadTexture(
 	file: Blob,
-	type: FileType.TEXTURE_SKIN | FileType.TEXTURE_CAPE,
+	type: typeof FileType.TEXTURE_SKIN | typeof FileType.TEXTURE_CAPE,
 ): Promise<FileInfo> {
 	const normalizedImage =
 		type === FileType.TEXTURE_SKIN
