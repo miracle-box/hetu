@@ -1,9 +1,9 @@
-import { FileInfo, FileType } from '~/files/files.entities';
-import { TexturesService } from '~/services/textures';
-import { TextureType } from '~/textures/texture.entities';
+import { FileInfo, FileType } from '~backend/files/files.entities';
+import { TexturesService } from '~backend/services/textures';
+import { TextureType } from '~backend/textures/texture.entities';
 import { CryptoHasher } from 'bun';
-import { FilesRepository } from '~/files/files.repository';
-import { StorageService } from '~/services/storage';
+import { FilesRepository } from '~backend/files/files.repository';
+import { StorageService } from '~backend/services/storage';
 
 export async function uploadTexture(
 	file: Blob,

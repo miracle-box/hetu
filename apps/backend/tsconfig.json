@@ -3,10 +3,9 @@
   "include": ["drizzle.config.ts", "env.d.ts", "src/**/*"],
   "exclude": ["node_modules"],
   "compilerOptions": {
-    /* Specify type package names to be included without being referenced in a source file. */
     "types": ["bun-types"],
     "paths": {
-      "~/*": ["./src/*"]
+      "~backend/*": ["./src/*"]
     }
   }
 }

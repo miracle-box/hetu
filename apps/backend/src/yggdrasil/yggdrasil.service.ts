@@ -1,13 +1,13 @@
 import { createPrivateKey, createSign } from 'node:crypto';
-import { Texture } from '~/textures/texture.entities';
+import { Texture } from '~backend/textures/texture.entities';
 import {
 	YggProfile,
 	YggProfileDigest,
 	YggProfileTextures,
 	YggTexture,
-} from '~/yggdrasil/yggdrasil.entities';
-import { StorageService } from '~/services/storage';
-import { Profile } from '~/profiles/profile.entities';
+} from '~backend/yggdrasil/yggdrasil.entities';
+import { StorageService } from '~backend/services/storage';
+import { Profile } from '~backend/profiles/profile.entities';
 
 export abstract class YggdrasilService {
 	static getUnsignedUUID(uuid: string): string {

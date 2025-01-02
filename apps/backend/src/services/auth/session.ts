@@ -1,8 +1,8 @@
 import { Static, t } from 'elysia';
-import { lucia } from '~/shared/auth/lucia';
+import { lucia } from '~backend/shared/auth/lucia';
 import { createId } from '@paralleldrive/cuid2';
-import { User } from '~/users/user.entities';
-import { EnumLikeValues } from '~/shared/typing/utils';
+import { User } from '~backend/users/user.entities';
+import { EnumLikeValues } from '~backend/shared/typing/utils';
 
 // Entities
 export const SessionScope = {

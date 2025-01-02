@@ -1,7 +1,7 @@
 import { Static, t } from 'elysia';
-import { yggProfileSchema } from '~/yggdrasil/yggdrasil.entities';
-import { YggdrasilRepository } from '~/yggdrasil/yggdrasil.repository';
-import { YggdrasilService } from '~/yggdrasil/yggdrasil.service';
+import { yggProfileSchema } from '~backend/yggdrasil/yggdrasil.entities';
+import { YggdrasilRepository } from '~backend/yggdrasil/yggdrasil.repository';
+import { YggdrasilService } from '~backend/yggdrasil/yggdrasil.service';
 
 export const hasJoinedQuerySchema = t.Object({
 	username: t.String(),

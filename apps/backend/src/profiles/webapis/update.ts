@@ -1,8 +1,8 @@
 import { Static, t } from 'elysia';
-import { ProfilesRepository } from '~/profiles/profiles.repository';
-import { profileSchema } from '~/profiles/profile.entities';
-import { TexturesRepository } from '~/textures/textures.repository';
-import { TextureType } from '~/textures/texture.entities';
+import { ProfilesRepository } from '~backend/profiles/profiles.repository';
+import { profileSchema } from '~backend/profiles/profile.entities';
+import { TexturesRepository } from '~backend/textures/textures.repository';
+import { TextureType } from '~backend/textures/texture.entities';
 
 export const updateParamsSchema = t.Object({
 	id: t.String(),

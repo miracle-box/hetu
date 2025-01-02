@@ -1,6 +1,6 @@
 import { Elysia } from 'elysia';
-import { authMiddleware } from '~/shared/auth/middleware';
-import { SessionScope } from '~/services/auth/session';
+import { authMiddleware } from '~backend/shared/auth/middleware';
+import { SessionScope } from '~backend/services/auth/session';
 import { create, createBodySchema, createResponseSchema } from './webapis/create';
 import { inspect, inspectParamsSchema, inspectResponseSchema } from './webapis/inspect';
 import { getImage, getImageParamsSchema, getImageResponseSchema } from './webapis/get-image';

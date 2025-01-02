@@ -1,5 +1,5 @@
 import { Elysia, t } from 'elysia';
-import { authMiddleware } from '~/shared/auth/middleware';
+import { authMiddleware } from '~backend/shared/auth/middleware';
 import { signup, signupBodySchema, signupResponseSchema } from './webapis/signup';
 import { signin, signinBodySchema, signinResponseSchema } from './webapis/signin';
 import { refresh, refreshResponseSchema } from './webapis/refresh';
@@ -10,7 +10,7 @@ import {
 	revokeSessionResponseSchema,
 } from './webapis/revoke-session';
 import { revokeAllSessions } from './webapis/revoke-all-sessions';
-import { SessionScope } from '~/services/auth/session';
+import { SessionScope } from '~backend/services/auth/session';
 import {
 	changePassword,
 	changePasswordBodySchema,

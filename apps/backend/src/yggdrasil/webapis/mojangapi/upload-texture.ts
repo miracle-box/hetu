@@ -1,10 +1,10 @@
 import { Static, t } from 'elysia';
-import { YggdrasilRepository } from '~/yggdrasil/yggdrasil.repository';
-import { ProfilesRepository } from '~/profiles/profiles.repository';
-import { TexturesRepository } from '~/textures/textures.repository';
-import { TextureType } from '~/textures/texture.entities';
-import { uploadTexture as uploadTextureUsecase } from '~/files/usecases/upload-texture';
-import { FileType } from '~/files/files.entities';
+import { YggdrasilRepository } from '~backend/yggdrasil/yggdrasil.repository';
+import { ProfilesRepository } from '~backend/profiles/profiles.repository';
+import { TexturesRepository } from '~backend/textures/textures.repository';
+import { TextureType } from '~backend/textures/texture.entities';
+import { uploadTexture as uploadTextureUsecase } from '~backend/files/usecases/upload-texture';
+import { FileType } from '~backend/files/files.entities';
 
 export const uploadTextureParamsSchema = t.Object({
 	id: t.String(),

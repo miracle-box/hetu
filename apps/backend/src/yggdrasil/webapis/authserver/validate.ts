@@ -1,6 +1,6 @@
-import { yggTokenSchema } from '~/yggdrasil/yggdrasil.entities';
+import { yggTokenSchema } from '~backend/yggdrasil/yggdrasil.entities';
 import { Static, t } from 'elysia';
-import { SessionScope, SessionService } from '~/services/auth/session';
+import { SessionScope, SessionService } from '~backend/services/auth/session';
 
 export const validateBodySchema = yggTokenSchema;
 export const validateResponseSchema = t.Void();

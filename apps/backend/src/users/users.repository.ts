@@ -1,10 +1,10 @@
-import { db } from '~/shared/db';
-import { UserAuthType } from '~/auth/auth.entities';
+import { db } from '~backend/shared/db';
+import { UserAuthType } from '~backend/auth/auth.entities';
 import { TransactionRollbackError } from 'drizzle-orm/errors';
 import { eq, or } from 'drizzle-orm';
-import { usersTable } from '~/shared/db/schema/users';
-import { userAuthTable } from '~/shared/db/schema/user-auth';
-import { User } from '~/users/user.entities';
+import { usersTable } from '~backend/shared/db/schema/users';
+import { userAuthTable } from '~backend/shared/db/schema/user-auth';
+import { User } from '~backend/users/user.entities';
 
 export abstract class UsersRepository {
 	/**

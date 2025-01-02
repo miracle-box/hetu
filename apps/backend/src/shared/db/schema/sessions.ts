@@ -1,5 +1,5 @@
 import { jsonb, pgEnum, pgTable, timestamp, varchar } from 'drizzle-orm/pg-core';
-import { SessionMetadata } from '~/services/auth/session';
+import { SessionMetadata } from '~backend/services/auth/session';
 
 export const sessionScopeEnum = pgEnum('session_scope', ['default', 'yggdrasil']);
 

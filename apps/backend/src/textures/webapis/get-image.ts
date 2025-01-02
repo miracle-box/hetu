@@ -1,6 +1,6 @@
 import { Static, t } from 'elysia';
-import { TexturesRepository } from '~/textures/textures.repository';
-import { StorageService } from '~/services/storage';
+import { TexturesRepository } from '~backend/textures/textures.repository';
+import { StorageService } from '~backend/services/storage';
 
 export const getImageParamsSchema = t.Object({
 	id: t.String(),

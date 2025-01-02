@@ -1,6 +1,6 @@
 import { Static, t } from 'elysia';
-import { YggdrasilRepository } from '~/yggdrasil/yggdrasil.repository';
-import { SessionService } from '~/services/auth/session';
+import { YggdrasilRepository } from '~backend/yggdrasil/yggdrasil.repository';
+import { SessionService } from '~backend/services/auth/session';
 
 export const joinServerBodySchema = t.Object({
 	accessToken: t.String(),

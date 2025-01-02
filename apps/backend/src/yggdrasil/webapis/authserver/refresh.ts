@@ -1,7 +1,11 @@
 import { Static, t } from 'elysia';
-import { yggProfileSchema, yggTokenSchema, yggUserSchema } from '~/yggdrasil/yggdrasil.entities';
-import { SessionScope, SessionService } from '~/services/auth/session';
-import { YggdrasilService } from '~/yggdrasil/yggdrasil.service';
+import {
+	yggProfileSchema,
+	yggTokenSchema,
+	yggUserSchema,
+} from '~backend/yggdrasil/yggdrasil.entities';
+import { SessionScope, SessionService } from '~backend/services/auth/session';
+import { YggdrasilService } from '~backend/yggdrasil/yggdrasil.service';
 
 export const refreshBodySchema = t.Composite([
 	yggTokenSchema,

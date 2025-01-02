@@ -1,4 +1,4 @@
-import { EnumLikeValues } from '~/shared/typing/utils';
+import { EnumLikeValues } from '~backend/shared/typing/utils';
 
 export const UserAuthType = {
 	PASSWORD: 'password',

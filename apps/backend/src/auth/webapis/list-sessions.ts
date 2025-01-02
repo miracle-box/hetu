@@ -1,4 +1,4 @@
-import { sessionDigestSchema, SessionService } from '~/services/auth/session';
+import { sessionDigestSchema, SessionService } from '~backend/services/auth/session';
 import { Static, t } from 'elysia';
 
 export const listSessionsResponseSchema = t.Object({

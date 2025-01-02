@@ -14,7 +14,7 @@ declare module 'bun' {
 		YGGDRASIL_LINKS_REGISTER: string;
 		YGGDRASIL_SKIN_DOMAINS: string;
 		YGGDRASIL_PRIVATE_KEY: string;
-		YGGDRASIL_PUBIIC_KEY: string;
+		YGGDRASIL_PUBLIC_KEY: string;
 		MAIL_SMTP_HOST: string;
 		MAIL_SMTP_PORT: string;
 		MAIL_SMTP_SECURE: string;

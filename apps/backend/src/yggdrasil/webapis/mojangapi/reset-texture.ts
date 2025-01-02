@@ -1,5 +1,5 @@
 import { Static, t } from 'elysia';
-import { ProfilesRepository } from '~/profiles/profiles.repository';
+import { ProfilesRepository } from '~backend/profiles/profiles.repository';
 
 export const resetTextureParamsSchema = t.Object({
 	id: t.String(),

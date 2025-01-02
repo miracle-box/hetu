@@ -1,6 +1,6 @@
 import Elysia from 'elysia';
 import { lucia } from './lucia';
-import { SessionScope, SessionService } from '~/services/auth/session';
+import { SessionScope, SessionService } from '~backend/services/auth/session';
 
 export const authMiddleware = (scope: SessionScope) => (app: Elysia) =>
 	app.derive(async ({ headers }) => {

@@ -1,7 +1,7 @@
 import { Static, t } from 'elysia';
-import { AuthRepository } from '~/auth/auth.repository';
-import { PasswordService } from '~/services/auth/password';
-import { sessionSchema, SessionScope, SessionService } from '~/services/auth/session';
+import { AuthRepository } from '~backend/auth/auth.repository';
+import { PasswordService } from '~backend/services/auth/password';
+import { sessionSchema, SessionScope, SessionService } from '~backend/services/auth/session';
 
 export const changePasswordBodySchema = t.Object({
 	oldPassword: t.String(),

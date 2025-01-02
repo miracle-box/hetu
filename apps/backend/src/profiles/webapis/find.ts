@@ -1,6 +1,6 @@
 import { Static, t } from 'elysia';
-import { Profile, profileSchema } from '~/profiles/profile.entities';
-import { ProfilesRepository } from '~/profiles/profiles.repository';
+import { Profile, profileSchema } from '~backend/profiles/profile.entities';
+import { ProfilesRepository } from '~backend/profiles/profiles.repository';
 
 export const findQuery = t.Object({
 	idOrName: t.String(),

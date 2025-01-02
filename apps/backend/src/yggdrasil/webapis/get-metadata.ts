@@ -39,6 +39,6 @@ export function getMetadata(): Static<typeof getMetadataResponse> {
 			'feature.username_check': true,
 		},
 		skinDomains: process.env.YGGDRASIL_SKIN_DOMAINS.split(' ').map((d) => d.trim()),
-		signaturePublickey: process.env.YGGDRASIL_PUBIIC_KEY,
+		signaturePublickey: process.env.YGGDRASIL_PUBLIC_KEY,
 	};
 }

@@ -1,6 +1,6 @@
-import { filesTable } from '~/shared/db/schema/files';
-import { db } from '~/shared/db';
-import { FileInfo, FileType } from '~/files/files.entities';
+import { filesTable } from '~backend/shared/db/schema/files';
+import { db } from '~backend/shared/db';
+import { FileInfo, FileType } from '~backend/files/files.entities';
 import { and, eq } from 'drizzle-orm';
 
 export abstract class FilesRepository {

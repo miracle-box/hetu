@@ -1,5 +1,5 @@
 import { Static, t } from 'elysia';
-import { s3 } from '~/shared/s3/client';
+import { s3 } from '~backend/shared/s3/client';
 import { HeadObjectCommand, PutObjectCommand, NotFound } from '@aws-sdk/client-s3';
 
 // Entities

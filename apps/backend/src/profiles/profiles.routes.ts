@@ -1,6 +1,6 @@
 import { Elysia } from 'elysia';
-import { authMiddleware } from '~/shared/auth/middleware';
-import { SessionScope } from '~/services/auth/session';
+import { authMiddleware } from '~backend/shared/auth/middleware';
+import { SessionScope } from '~backend/services/auth/session';
 import { find, findQuery, findResponse } from './webapis/find';
 import { create, createBodySchema, createResponseSchema } from './webapis/create';
 import {

@@ -13,7 +13,12 @@
       "cache": false,
       "persistent": true
     },
-    "backend#dev": {
+    "@repo/web#dev": {
+      "env": [
+        "API_ROOT"
+      ]
+    },
+    "@repo/backend#dev": {
       "env": [
         "BASE_URL",
         "DATABASE_URL",
@@ -29,7 +34,7 @@
         "YGGDRASIL_LINKS_REGISTER",
         "YGGDRASIL_SKIN_DOMAINS",
         "YGGDRASIL_PRIVATE_KEY",
-        "YGGDRASIL_PUBIIC_KEY",
+        "YGGDRASIL_PUBLIC_KEY",
         "MAIL_SMTP_HOST",
         "MAIL_SMTP_PORT",
         "MAIL_SMTP_SECURE",

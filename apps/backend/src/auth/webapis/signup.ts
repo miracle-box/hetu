@@ -1,7 +1,7 @@
 import { Static, t } from 'elysia';
-import { UsersRepository } from '~/users/users.repository';
-import { PasswordService } from '~/services/auth/password';
-import { sessionSchema, SessionScope, SessionService } from '~/services/auth/session';
+import { UsersRepository } from '~backend/users/users.repository';
+import { PasswordService } from '~backend/services/auth/password';
+import { sessionSchema, SessionScope, SessionService } from '~backend/services/auth/session';
 
 export const signupBodySchema = t.Object({
 	name: t.String({

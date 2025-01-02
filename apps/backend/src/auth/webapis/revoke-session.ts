@@ -1,4 +1,4 @@
-import { SessionService } from '~/services/auth/session';
+import { SessionService } from '~backend/services/auth/session';
 import { Static, t } from 'elysia';
 
 export const revokeSessionParamsSchema = t.Object({

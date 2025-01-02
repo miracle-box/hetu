@@ -1,5 +1,5 @@
 {
-  "name": "backend",
+  "name": "@repo/backend",
   "version": "0.1.0",
   "scripts": {
     "dev": "bun run --watch --env-file=.env.development.local src/index.ts",
@@ -17,7 +17,7 @@
     "@paralleldrive/cuid2": "^2.2.2",
     "@types/nodemailer": "^6.4.17",
     "drizzle-orm": "^0.38.3",
-    "elysia": "^1.2.6",
+    "elysia": "^1.2.9",
     "lucia": "^3.2.2",
     "nodemailer": "^6.9.16",
     "postgres": "^3.4.5",
@@ -27,5 +27,8 @@
     "bun-types": "latest",
     "drizzle-kit": "^0.30.1"
   },
-  "module": "src/index.js"
+  "module": "src/index.js",
+  "exports": {
+    ".": "./src/index.ts"
+  }
 }

@@ -1,9 +1,9 @@
 import { Lucia } from 'lucia';
 import { DrizzlePostgreSQLAdapter } from '@lucia-auth/adapter-drizzle';
-import { db } from '~/shared/db';
-import { sessionsTable } from '~/shared/db/schema/sessions';
-import { usersTable } from '~/shared/db/schema/users';
-import { SessionMetadata, SessionScope } from '~/services/auth/session';
+import { db } from '~backend/shared/db';
+import { sessionsTable } from '~backend/shared/db/schema/sessions';
+import { usersTable } from '~backend/shared/db/schema/users';
+import { SessionMetadata, SessionScope } from '~backend/services/auth/session';
 
 const adapter = new DrizzlePostgreSQLAdapter(db, sessionsTable, usersTable);
 

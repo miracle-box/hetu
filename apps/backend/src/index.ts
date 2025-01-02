@@ -1,11 +1,11 @@
 import { Elysia } from 'elysia';
 import { version } from '../package.json';
 import swagger from '@elysiajs/swagger';
-import { AuthRoutes } from '~/auth/auth.routes';
-import { TexturesRoutes } from '~/textures/textures.routes';
-import { ProfilesRoutes } from '~/profiles/profiles.routes';
-import { YggdrasilRoutes } from '~/yggdrasil/yggdrasil.routes';
-import { FilesRoutes } from '~/files/files.routes';
+import { AuthRoutes } from '~backend/auth/auth.routes';
+import { TexturesRoutes } from '~backend/textures/textures.routes';
+import { ProfilesRoutes } from '~backend/profiles/profiles.routes';
+import { YggdrasilRoutes } from '~backend/yggdrasil/yggdrasil.routes';
+import { FilesRoutes } from '~backend/files/files.routes';
 
 const app = new Elysia()
 	.use(
@@ -71,3 +71,5 @@ const app = new Elysia()
 	.listen(3000);
 
 console.log(`Service is running at ${app.server?.hostname}:${app.server?.port}`);
+
+export type App = typeof app;

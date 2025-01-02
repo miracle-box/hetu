@@ -1,4 +1,9 @@
-import { Session, sessionSchema, SessionScope, SessionService } from '~/services/auth/session';
+import {
+	Session,
+	sessionSchema,
+	SessionScope,
+	SessionService,
+} from '~backend/services/auth/session';
 import { Static, t } from 'elysia';
 
 export const refreshResponseSchema = t.Object({

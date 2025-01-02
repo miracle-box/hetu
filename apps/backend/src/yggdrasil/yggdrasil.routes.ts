@@ -1,5 +1,5 @@
 import Elysia from 'elysia';
-import { SessionScope } from '~/services/auth/session';
+import { SessionScope } from '~backend/services/auth/session';
 import { getMetadata, getMetadataResponse } from './webapis/get-metadata';
 import {
 	authenticate,
@@ -22,36 +22,36 @@ import {
 	joinServer,
 	joinServerBodySchema,
 	joinServerResponseSchema,
-} from '~/yggdrasil/webapis/sessionserver/join-server';
+} from '~backend/yggdrasil/webapis/sessionserver/join-server';
 import {
 	hasJoined,
 	hasJoinedQuerySchema,
 	hasJoinedResponse200Schema,
 	hasJoinedResponse204Schema,
-} from '~/yggdrasil/webapis/sessionserver/has-joined';
+} from '~backend/yggdrasil/webapis/sessionserver/has-joined';
 import {
 	getProfile,
 	getProfileParamsSchema,
 	getProfileQuerySchema,
 	getProfileResponseSchema,
-} from '~/yggdrasil/webapis/sessionserver/get-profile';
+} from '~backend/yggdrasil/webapis/sessionserver/get-profile';
 import {
 	getProfiles,
 	getProfilesBodySchema,
 	getProfilesResponseSchema,
-} from '~/yggdrasil/webapis/mojangapi/get-profiles';
-import { authMiddleware } from '~/shared/auth/middleware';
+} from '~backend/yggdrasil/webapis/mojangapi/get-profiles';
+import { authMiddleware } from '~backend/shared/auth/middleware';
 import {
 	uploadTexture,
 	uploadTextureBodySchema,
 	uploadTextureParamsSchema,
 	uploadTextureResponseSchema,
-} from '~/yggdrasil/webapis/mojangapi/upload-texture';
+} from '~backend/yggdrasil/webapis/mojangapi/upload-texture';
 import {
 	resetTexture,
 	resetTextureParamsSchema,
 	resetTextureResponseSchema,
-} from '~/yggdrasil/webapis/mojangapi/reset-texture';
+} from '~backend/yggdrasil/webapis/mojangapi/reset-texture';
 
 export const YggdrasilRoutes = new Elysia({
 	name: 'Routes.Yggdrasil',

@@ -1,7 +1,7 @@
 import { Static, t } from 'elysia';
-import { fileInfoSchema, FileType } from '~/files/files.entities';
-import { uploadTexture } from '~/files/usecases/upload-texture';
-import { createEnumLikeValuesSchema } from '~/shared/typing/utils';
+import { fileInfoSchema, FileType } from '~backend/files/files.entities';
+import { uploadTexture } from '~backend/files/usecases/upload-texture';
+import { createEnumLikeValuesSchema } from '~backend/shared/typing/utils';
 
 export const uploadBodySchema = t.Object({
 	type: createEnumLikeValuesSchema(FileType),

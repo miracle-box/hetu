@@ -4,12 +4,12 @@ import {
 	yggProfileDigestSchema,
 	yggTokenSchema,
 	yggUserSchema,
-} from '~/yggdrasil/yggdrasil.entities';
-import { YggdrasilService } from '~/yggdrasil/yggdrasil.service';
-import { UsersRepository } from '~/users/users.repository';
-import { PasswordService } from '~/services/auth/password';
-import { SessionScope, SessionService } from '~/services/auth/session';
-import { YggdrasilRepository } from '~/yggdrasil/yggdrasil.repository';
+} from '~backend/yggdrasil/yggdrasil.entities';
+import { YggdrasilService } from '~backend/yggdrasil/yggdrasil.service';
+import { UsersRepository } from '~backend/users/users.repository';
+import { PasswordService } from '~backend/services/auth/password';
+import { SessionScope, SessionService } from '~backend/services/auth/session';
+import { YggdrasilRepository } from '~backend/yggdrasil/yggdrasil.repository';
 
 export const authenticateBodySchema = t.Composite([
 	yggCredentialsSchema,

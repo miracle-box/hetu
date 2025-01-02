@@ -1,7 +1,7 @@
-import { db } from '~/shared/db';
+import { db } from '~backend/shared/db';
 import { and, eq } from 'drizzle-orm';
-import { userAuthTable } from '~/shared/db/schema/user-auth';
-import { UserAuthType } from '~/auth/auth.entities';
+import { userAuthTable } from '~backend/shared/db/schema/user-auth';
+import { UserAuthType } from '~backend/auth/auth.entities';
 
 export abstract class AuthRepository {
 	static async getPassword(userId: string): Promise<string | null> {

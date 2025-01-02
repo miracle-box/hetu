@@ -1,7 +1,7 @@
 import { Static, t } from 'elysia';
-import { yggProfileSchema } from '~/yggdrasil/yggdrasil.entities';
-import { YggdrasilService } from '~/yggdrasil/yggdrasil.service';
-import { YggdrasilRepository } from '~/yggdrasil/yggdrasil.repository';
+import { yggProfileSchema } from '~backend/yggdrasil/yggdrasil.entities';
+import { YggdrasilService } from '~backend/yggdrasil/yggdrasil.service';
+import { YggdrasilRepository } from '~backend/yggdrasil/yggdrasil.repository';
 
 export const getProfileParamsSchema = t.Object({
 	id: t.String(),

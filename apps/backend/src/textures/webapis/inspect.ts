@@ -1,6 +1,6 @@
 import { Static, t } from 'elysia';
-import { textureSchema } from '~/textures/texture.entities';
-import { TexturesRepository } from '~/textures/textures.repository';
+import { textureSchema } from '~backend/textures/texture.entities';
+import { TexturesRepository } from '~backend/textures/textures.repository';
 
 export const inspectParamsSchema = t.Object({
 	id: t.String(),

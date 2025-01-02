@@ -1,6 +1,6 @@
 import { Static, t } from 'elysia';
-import { ProfilesRepository } from '~/profiles/profiles.repository';
-import { profileSchema } from '~/profiles/profile.entities';
+import { ProfilesRepository } from '~backend/profiles/profiles.repository';
+import { profileSchema } from '~backend/profiles/profile.entities';
 
 export const createBodySchema = t.Object({
 	name: t.String({ pattern: '[0-9A-Za-z_]{3,16}' }),

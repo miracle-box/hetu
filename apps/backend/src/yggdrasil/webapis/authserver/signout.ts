@@ -1,8 +1,8 @@
-import { yggCredentialsSchema } from '~/yggdrasil/yggdrasil.entities';
+import { yggCredentialsSchema } from '~backend/yggdrasil/yggdrasil.entities';
 import { Static, t } from 'elysia';
-import { UsersRepository } from '~/users/users.repository';
-import { PasswordService } from '~/services/auth/password';
-import { SessionService } from '~/services/auth/session';
+import { UsersRepository } from '~backend/users/users.repository';
+import { PasswordService } from '~backend/services/auth/password';
+import { SessionService } from '~backend/services/auth/session';
 
 export const signoutBodySchema = yggCredentialsSchema;
 export const signoutResponseSchema = t.Void();

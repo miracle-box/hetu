@@ -1,6 +1,6 @@
-import { textureSchema, TextureType } from '~/textures/texture.entities';
+import { textureSchema, TextureType } from '~backend/textures/texture.entities';
 import { Static, t } from 'elysia';
-import { TexturesRepository } from '~/textures/textures.repository';
+import { TexturesRepository } from '~backend/textures/textures.repository';
 
 export const createBodySchema = t.Object({
 	name: t.String({ minLength: 3, maxLength: 16 }),
