@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "npm exec next dev --turbopack",
+    "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -12,6 +12,7 @@
     "@elysiajs/eden": "^1.2.0",
     "@radix-ui/themes": "^3.1.6",
     "@repo/ui": "*",
+    "@tanstack/react-query": "^5.62.11",
     "next": "^15.1.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
@@ -19,6 +20,7 @@
   "devDependencies": {
     "@repo/eslint-config": "*",
     "@repo/typescript-config": "*",
+    "@tanstack/react-query-devtools": "^5.62.11",
     "@types/node": "^20.17.10",
     "@types/react": "^19.0.2",
     "@types/react-dom": "^19.0.2",

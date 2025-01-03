@@ -9,6 +9,7 @@
     "backend.js"
   ],
   "devDependencies": {
+    "@tanstack/eslint-plugin-query": "^5.62.9",
     "@typescript-eslint/eslint-plugin": "^7.18.0",
     "@typescript-eslint/parser": "^7.18.0",
     "@vercel/style-guide": "^6.0.0",
