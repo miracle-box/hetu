@@ -3,24 +3,25 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbo",
+    "dev": "npm exec next dev --turbopack",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
     "@elysiajs/eden": "^1.2.0",
+    "@radix-ui/themes": "^3.1.6",
     "@repo/ui": "*",
-    "next": "^15.1.2",
-    "react": "^19.0.0-rc.1",
-    "react-dom": "^19.0.0-rc.1"
+    "next": "^15.1.3",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
   },
   "devDependencies": {
     "@repo/eslint-config": "*",
     "@repo/typescript-config": "*",
     "@types/node": "^20.17.10",
-    "@types/react": "^18.3.18",
-    "@types/react-dom": "^18.3.5",
+    "@types/react": "^19.0.2",
+    "@types/react-dom": "^19.0.2",
     "bun-types": "latest",
     "elysia": "^1.2.9",
     "eslint": "^8.57.1",

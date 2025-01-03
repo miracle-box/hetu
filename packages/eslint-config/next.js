@@ -13,6 +13,7 @@ module.exports = {
 	globals: {
 		React: true,
 		JSX: true,
+		Bun: false,
 	},
 	env: {
 		node: true,

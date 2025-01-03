@@ -27,7 +27,3 @@ const queryClient = postgres(process.env.DATABASE_URL, {});
 
 export const rawDb = queryClient;
 export const db = drizzle(queryClient, { schema });
-
-db.query.filesTable.findFirst({
-	with: {},
-});

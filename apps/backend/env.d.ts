@@ -1,5 +1,5 @@
-declare module 'bun' {
-	interface Env {
+declare module NodeJS {
+	interface ProcessEnv {
 		BASE_URL: string;
 		DATABASE_URL: string;
 		DATABASE_URL_MIGRATE: string;

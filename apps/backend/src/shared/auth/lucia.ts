@@ -5,6 +5,7 @@ import { sessionsTable } from '~backend/shared/db/schema/sessions';
 import { usersTable } from '~backend/shared/db/schema/users';
 import { SessionMetadata, SessionScope } from '~backend/services/auth/session';
 
+// @ts-ignore Lucia is going to be deprecated soon...
 const adapter = new DrizzlePostgreSQLAdapter(db, sessionsTable, usersTable);
 
 export const lucia = new Lucia(adapter, {
