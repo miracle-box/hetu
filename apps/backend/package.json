@@ -18,7 +18,6 @@
     "@types/nodemailer": "^6.4.17",
     "drizzle-orm": "^0.38.3",
     "elysia": "^1.2.9",
-    "lucia": "^3.2.2",
     "nodemailer": "^6.9.16",
     "postgres": "^3.4.5",
     "sharp": "^0.33.5"
