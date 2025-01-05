@@ -1,102 +1,60 @@
-import { Static, t } from 'elysia';
-import { lucia } from '~backend/shared/auth/lucia';
-import { createId } from '@paralleldrive/cuid2';
+import { Session, SessionMetadata } from '~backend/auth/auth.entities';
+import { AuthRepository } from '~backend/auth/auth.repository';
+import { UsersRepository } from '~backend/users/users.repository';
+import { nowWithinDate } from '~backend/shared/auth/utils';
 import { User } from '~backend/users/user.entities';
-import { EnumLikeValues } from '~backend/shared/typing/utils';
-
-// Entities
-export const SessionScope = {
-	DEFAULT: 'default',
-	YGGDRASIL: 'yggdrasil',
-} as const;
-
-// Metadata differs between scopes.
-export const sessionMetadataSchema = t.Union([
-	t.Object({
-		scope: t.Literal(SessionScope.DEFAULT),
-		metadata: t.Object({}),
-	}),
-	t.Object({
-		scope: t.Literal(SessionScope.YGGDRASIL),
-		metadata: t.Object({
-			clientToken: t.String(),
-		}),
-	}),
-]);
-
-export const sessionSchema = t.Intersect([
-	t.Object({
-		id: t.String(),
-		uid: t.String(),
-		userId: t.String(),
-		expiresAt: t.Date(),
-	}),
-	sessionMetadataSchema,
-]);
-
-export const sessionDigestSchema = t.Omit(sessionSchema, ['id', 'metadata']);
-
-export type SessionScope = EnumLikeValues<typeof SessionScope>;
-export type Session = Static<typeof sessionSchema>;
-export type SessionMetadata = Static<typeof sessionMetadataSchema>;
-export type SessionDigest = Static<typeof sessionDigestSchema>;
 
 /**
  * Session handling related utilities.
- *
- * @todo [TODO] Lucia will be deprecated soon and we need to implement our own authentication.
- *       See https://github.com/lucia-auth/lucia/discussions/1714 for more info.
  */
 export abstract class SessionService {
-	static async getUserSessions(userId: string): Promise<Session[]> {
-		// Workaround as lucia interface is not strict enough.
-		return (await lucia.getUserSessions(userId)) as Session[];
+	static async findUserSessions(userId: string): Promise<Session[]> {
+		return await AuthRepository.findSessionsByUser(userId);
 	}
 
-	static async revoke(userId: string, sessionUid: string): Promise<void> {
-		const allSessions = await lucia.getUserSessions(userId);
-		const targetSession = allSessions.find((session) => sessionUid === session.uid);
+	static async findById(sessionId: string): Promise<Session | null> {
+		return await AuthRepository.findSessionById(sessionId);
+	}
 
-		if (targetSession) await lucia.invalidateSession(targetSession.id);
+	static async revoke(sessionId: string): Promise<void> {
+		await AuthRepository.revokeSessionById(sessionId);
 	}
 
 	static async revokeAll(userId: string): Promise<void> {
-		await lucia.invalidateUserSessions(userId);
+		await AuthRepository.revokeSessionsByUser(userId);
 	}
 
-	static async invalidate(sessionId: string): Promise<void> {
-		await lucia.invalidateSession(sessionId);
-	}
+	static async validate(
+		sessionId: string,
+		token: string,
+	): Promise<{ user: User; session: Session } | null> {
+		const session = await AuthRepository.findSessionById(sessionId);
+		if (!session) return null;
+		if (session.token !== token) return null;
+		if (!nowWithinDate(session.expiresAt)) return null;
 
-	// [TODO] Should validate session scope (and permissions possibly).
-	static async validate(sessionId: string): Promise<{
-		session: Session;
-		user: User;
-	} | null> {
-		const authInfo = await lucia.validateSession(sessionId);
-		if (!authInfo.session) {
-			return null;
+		const user = await UsersRepository.findById(session.userId);
+		if (!user) return null;
+
+		// Auto renew session if it's close to expiration
+		// [TODO] Should be configurable (now 7 days)
+		if (nowWithinDate(new Date(session.expiresAt.getTime() - 1000 * 3600 * 24 * 7))) {
+			await AuthRepository.renewSession(
+				sessionId,
+				// [TODO] Should be configurable (now 30 days)
+				new Date(Date.now() + 1000 * 3600 * 24 * 30),
+			);
 		}
 
-		return {
-			// Workaround as lucia interface is not strict enough.
-			session: authInfo.session as Session,
-			user: authInfo.user,
-		};
+		return { user, session };
 	}
 
 	static async create(userId: string, metadata: SessionMetadata): Promise<Session> {
-		const session = await lucia.createSession(
+		return AuthRepository.createSession({
 			userId,
-			{
-				uid: createId(),
-				scope: metadata.scope,
-				metadata: metadata.metadata,
-			},
-			{ sessionId: createId() },
-		);
-
-		// Workaround as lucia interface is not strict enough.
-		return session as Session;
+			metadata,
+			// [TODO] Should be configurable (now 30 days)
+			expiresAt: new Date(Date.now() + 1000 * 3600 * 24 * 30),
+		});
 	}
 }
