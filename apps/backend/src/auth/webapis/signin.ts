@@ -1,7 +1,8 @@
 import { Static, t } from 'elysia';
 import { UsersRepository } from '~backend/users/users.repository';
-import { sessionSchema, SessionScope, SessionService } from '~backend/services/auth/session';
+import { SessionService } from '~backend/services/auth/session';
 import { PasswordService } from '~backend/services/auth/password';
+import { sessionSchema, SessionScope } from '~backend/auth/auth.entities';
 
 export const signinBodySchema = t.Object({
 	email: t.String(),
@@ -28,7 +29,6 @@ export async function signin(
 
 	const session = await SessionService.create(user.id, {
 		scope: SessionScope.DEFAULT,
-		metadata: {},
 	});
 
 	return { session };

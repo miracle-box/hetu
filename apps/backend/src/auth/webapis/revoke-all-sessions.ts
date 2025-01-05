@@ -1,5 +1,5 @@
-import { lucia } from '~backend/shared/auth/lucia';
+import { SessionService } from '~backend/services/auth/session';
 
 export async function revokeAllSessions(userId: string): Promise<void> {
-	await lucia.invalidateUserSessions(userId);
+	await SessionService.revokeAll(userId);
 }

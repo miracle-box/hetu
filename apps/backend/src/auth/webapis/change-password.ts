@@ -1,7 +1,8 @@
 import { Static, t } from 'elysia';
 import { AuthRepository } from '~backend/auth/auth.repository';
 import { PasswordService } from '~backend/services/auth/password';
-import { sessionSchema, SessionScope, SessionService } from '~backend/services/auth/session';
+import { SessionService } from '~backend/services/auth/session';
+import { sessionSchema, SessionScope } from '~backend/auth/auth.entities';
 
 export const changePasswordBodySchema = t.Object({
 	oldPassword: t.String(),
@@ -34,7 +35,6 @@ export async function changePassword(
 	await SessionService.revokeAll(userId);
 	const session = await SessionService.create(userId, {
 		scope: SessionScope.DEFAULT,
-		metadata: {},
 	});
 
 	return { session };

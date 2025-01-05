@@ -1,4 +1,5 @@
 import { Elysia, t } from 'elysia';
+import { SessionScope } from '~backend/auth/auth.entities';
 import { authMiddleware } from '~backend/shared/auth/middleware';
 import { signup, signupBodySchema, signupResponseSchema } from './webapis/signup';
 import { signin, signinBodySchema, signinResponseSchema } from './webapis/signin';
@@ -10,7 +11,6 @@ import {
 	revokeSessionResponseSchema,
 } from './webapis/revoke-session';
 import { revokeAllSessions } from './webapis/revoke-all-sessions';
-import { SessionScope } from '~backend/services/auth/session';
 import {
 	changePassword,
 	changePasswordBodySchema,
@@ -85,10 +85,10 @@ export const AuthRoutes = new Elysia({
 		},
 	)
 	.delete(
-		'/sessions/:uid',
+		'/sessions/:id',
 		async ({ params, user, set }) => {
 			set.status = 'No Content';
-			await revokeSession(user.id, params.uid);
+			await revokeSession(params, user.id);
 		},
 		{
 			params: revokeSessionParamsSchema,
