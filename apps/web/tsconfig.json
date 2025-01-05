@@ -10,9 +10,7 @@
       "~backend/*": ["../backend/src/*"],
       "~web/*": ["../web/src/*"]
     },
-    "types": [
-      "bun-types"
-    ]
+    "types": ["bun-types"]
   },
   "include": [
     "next-env.d.ts",

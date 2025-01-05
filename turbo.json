@@ -14,9 +14,7 @@
       "persistent": true
     },
     "@repo/web#dev": {
-      "env": [
-        "API_ROOT"
-      ]
+      "env": ["API_ROOT"]
     },
     "@repo/backend#dev": {
       "env": [
