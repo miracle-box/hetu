@@ -120,4 +120,12 @@ export abstract class UsersRepository {
 			throw e;
 		}
 	}
+
+	static async findById(id: string): Promise<User | null> {
+		const user = await db.query.usersTable.findFirst({
+			where: eq(usersTable.id, id),
+		});
+
+		return user ?? null;
+	}
 }

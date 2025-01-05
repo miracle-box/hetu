@@ -2,13 +2,18 @@ import { SessionService } from '~backend/services/auth/session';
 import { Static, t } from 'elysia';
 
 export const revokeSessionParamsSchema = t.Object({
-	uid: t.String(),
+	id: t.String(),
 });
 export const revokeSessionResponseSchema = t.Void();
 
 export async function revokeSession(
+	params: Static<typeof revokeSessionParamsSchema>,
 	userId: string,
-	uid: string,
 ): Promise<Static<typeof revokeSessionResponseSchema>> {
-	await SessionService.revoke(userId, uid);
+	const session = await SessionService.findById(params.id);
+	if (session?.userId !== userId) {
+		throw new Error('Invalid session');
+	}
+
+	await SessionService.revoke(params.id);
 }

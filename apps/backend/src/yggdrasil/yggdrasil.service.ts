@@ -91,4 +91,17 @@ export abstract class YggdrasilService {
 		signer.update(data);
 		return signer.sign(key, 'base64');
 	}
+
+	static parseAccessToken(accessToken: string): {
+		sessionId: string;
+		sessionToken: string;
+	} | null {
+		const [sessionId, sessionToken] = accessToken.split(':');
+		if (!sessionId || !sessionToken) return null;
+
+		return {
+			sessionId,
+			sessionToken,
+		};
+	}
 }

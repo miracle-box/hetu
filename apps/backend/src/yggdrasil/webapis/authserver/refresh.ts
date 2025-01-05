@@ -4,8 +4,9 @@ import {
 	yggTokenSchema,
 	yggUserSchema,
 } from '~backend/yggdrasil/yggdrasil.entities';
-import { SessionScope, SessionService } from '~backend/services/auth/session';
+import { SessionService } from '~backend/services/auth/session';
 import { YggdrasilService } from '~backend/yggdrasil/yggdrasil.service';
+import { SessionScope } from '~backend/auth/auth.entities';
 
 export const refreshBodySchema = t.Composite([
 	yggTokenSchema,
@@ -27,10 +28,14 @@ export async function refresh(
 ): Promise<Static<typeof refreshResponseSchema>> {
 	// [TODO] Error handling in Mojang's format
 
-	const session = (await SessionService.validate(body.accessToken))?.session;
+	const accessToken = YggdrasilService.parseAccessToken(body.accessToken);
+	if (!accessToken) throw new Error('Invalid session!');
+
+	const session = (await SessionService.validate(accessToken.sessionId, accessToken.sessionToken))
+		?.session;
 	if (
 		!session ||
-		session.scope !== SessionScope.YGGDRASIL ||
+		session.metadata.scope !== SessionScope.YGGDRASIL ||
 		// When client token is provided, check if it matches, otherwise ignore it.
 		(body.clientToken && body.clientToken !== session.metadata.clientToken)
 	) {
@@ -39,12 +44,10 @@ export async function refresh(
 
 	const clientToken = YggdrasilService.generateClientToken(body.clientToken);
 
-	await SessionService.invalidate(session.id);
+	await SessionService.revoke(session.id);
 	const newSession = await SessionService.create(session.userId, {
 		scope: SessionScope.YGGDRASIL,
-		metadata: {
-			clientToken,
-		},
+		clientToken,
 	});
 
 	return {

@@ -8,6 +8,13 @@
       "when": 1735135631291,
       "tag": "0000_premium_terror",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1736078015330,
+      "tag": "0001_woozy_scarecrow",
+      "breakpoints": true
     }
   ]
 }

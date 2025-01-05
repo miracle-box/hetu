@@ -1,6 +1,5 @@
 import { Elysia } from 'elysia';
 import { authMiddleware } from '~backend/shared/auth/middleware';
-import { SessionScope } from '~backend/services/auth/session';
 import { find, findQuery, findResponse } from './webapis/find';
 import { create, createBodySchema, createResponseSchema } from './webapis/create';
 import {
@@ -9,6 +8,7 @@ import {
 	updateParamsSchema,
 	updateResponseSchema,
 } from './webapis/update';
+import { SessionScope } from '~backend/auth/auth.entities';
 
 export const ProfilesRoutes = new Elysia({ name: 'Routes.Profiles', prefix: '/profiles' })
 	.get('/', async ({ query }) => await find(query), {

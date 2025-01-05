@@ -8,8 +8,9 @@ import {
 import { YggdrasilService } from '~backend/yggdrasil/yggdrasil.service';
 import { UsersRepository } from '~backend/users/users.repository';
 import { PasswordService } from '~backend/services/auth/password';
-import { SessionScope, SessionService } from '~backend/services/auth/session';
+import { SessionService } from '~backend/services/auth/session';
 import { YggdrasilRepository } from '~backend/yggdrasil/yggdrasil.repository';
+import { SessionScope } from '~backend/auth/auth.entities';
 
 export const authenticateBodySchema = t.Composite([
 	yggCredentialsSchema,
@@ -54,13 +55,11 @@ export async function authenticate(
 
 	const session = await SessionService.create(user.id, {
 		scope: SessionScope.YGGDRASIL,
-		metadata: {
-			clientToken,
-		},
+		clientToken,
 	});
 
 	return {
-		accessToken: session.id,
+		accessToken: `${session.id}:${session.token}`,
 		clientToken,
 		// [TODO] Probably move this to a separate method.
 		user: body.requestUser ? { id: session.userId, properties: [] } : undefined,

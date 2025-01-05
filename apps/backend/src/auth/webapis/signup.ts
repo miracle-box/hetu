@@ -1,7 +1,8 @@
 import { Static, t } from 'elysia';
 import { UsersRepository } from '~backend/users/users.repository';
 import { PasswordService } from '~backend/services/auth/password';
-import { sessionSchema, SessionScope, SessionService } from '~backend/services/auth/session';
+import { SessionService } from '~backend/services/auth/session';
+import { sessionSchema, SessionScope } from '~backend/auth/auth.entities';
 
 export const signupBodySchema = t.Object({
 	name: t.String({
@@ -34,7 +35,6 @@ export async function signup(
 
 	const session = await SessionService.create(user.id, {
 		scope: SessionScope.DEFAULT,
-		metadata: {},
 	});
 
 	return { session };
