@@ -1,5 +1,4 @@
 import Elysia from 'elysia';
-import { SessionScope } from '~backend/services/auth/session';
 import { getMetadata, getMetadataResponse } from './webapis/get-metadata';
 import {
 	authenticate,
@@ -52,6 +51,7 @@ import {
 	resetTextureParamsSchema,
 	resetTextureResponseSchema,
 } from '~backend/yggdrasil/webapis/mojangapi/reset-texture';
+import { SessionScope } from '~backend/auth/auth.entities';
 
 export const YggdrasilRoutes = new Elysia({
 	name: 'Routes.Yggdrasil',
