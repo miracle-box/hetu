@@ -18,6 +18,7 @@ export const sessionMetadataSchema = t.Union([
 	t.Object({
 		scope: t.Literal(SessionScope.YGGDRASIL),
 		clientToken: t.String(),
+		selectedProfile: t.Nullable(t.String()),
 	}),
 ]);
 

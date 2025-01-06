@@ -8,6 +8,7 @@ import {
 } from '~backend/yggdrasil/yggdrasil.entities';
 import { StorageService } from '~backend/services/storage';
 import { Profile } from '~backend/profiles/profile.entities';
+import { Session } from '~backend/auth/auth.entities';
 
 export abstract class YggdrasilService {
 	static getUnsignedUUID(uuid: string): string {
@@ -103,5 +104,9 @@ export abstract class YggdrasilService {
 			sessionId,
 			sessionToken,
 		};
+	}
+
+	static createAccessToken(session: Session): string {
+		return `${session.id}:${session.token}`;
 	}
 }

@@ -43,7 +43,7 @@ export async function authenticate(
 		throw new Error('Invalid credentials.');
 	}
 
-	const passwordCorrect = PasswordService.compare(user.passwordHash, body.password);
+	const passwordCorrect = PasswordService.compare(body.password, user.passwordHash);
 	if (!passwordCorrect) {
 		throw new Error('Invalid credentials.');
 	}
@@ -53,9 +53,13 @@ export async function authenticate(
 		YggdrasilService.getYggdrasilProfileDigest(profile),
 	);
 
+	// Select the only profile if there's only one.
+	const selectedProfile = profiles.length === 1 ? profiles[0] : null;
+
 	const session = await SessionService.create(user.id, {
 		scope: SessionScope.YGGDRASIL,
 		clientToken,
+		selectedProfile: selectedProfile?.id ?? null,
 	});
 
 	return {
@@ -64,8 +68,6 @@ export async function authenticate(
 		// [TODO] Probably move this to a separate method.
 		user: body.requestUser ? { id: session.userId, properties: [] } : undefined,
 		availableProfiles: profiles,
-		// [TODO] Probably support automatic profile selection by allowing signin by username.
-		// Select the only profile if there's only one.
-		selectedProfile: profiles.length === 1 ? profiles[0] : undefined,
+		selectedProfile: selectedProfile ?? undefined,
 	};
 }

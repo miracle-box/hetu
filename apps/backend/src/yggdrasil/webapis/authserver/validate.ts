@@ -16,7 +16,9 @@ export async function validate(
 
 	const session = (await SessionService.validate(accessToken.sessionId, accessToken.sessionToken))
 		?.session;
-	return !(
+
+	// Returns `true` if the token is valid, `false` otherwise.
+	return !!(
 		session &&
 		session.metadata.scope === SessionScope.YGGDRASIL &&
 		// When client token is provided, check if it matches, otherwise ignore it.
