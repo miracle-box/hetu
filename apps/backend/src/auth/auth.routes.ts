@@ -52,7 +52,7 @@ export const AuthRoutes = new Elysia({
 			summary: 'Refresh Session',
 			description: 'Invalidate the current session and create a new one.',
 			tags: ['Authentication'],
-			security: [{ sessionId: [] }],
+			security: [{ session: [] }],
 		},
 	})
 	.get('/sessions', async ({ user }) => await listSessions(user.id), {
@@ -63,7 +63,7 @@ export const AuthRoutes = new Elysia({
 			summary: 'List Sessions',
 			description: 'Get digest of all sessions of the current user.',
 			tags: ['Authentication'],
-			security: [{ sessionId: [] }],
+			security: [{ session: [] }],
 		},
 	})
 	.delete(
@@ -80,7 +80,7 @@ export const AuthRoutes = new Elysia({
 				summary: 'Revoke All Sessions',
 				description: 'Invalidate all sessions for the current user.',
 				tags: ['Authentication'],
-				security: [{ sessionId: [] }],
+				security: [{ session: [] }],
 			},
 		},
 	)
@@ -99,7 +99,7 @@ export const AuthRoutes = new Elysia({
 				summary: 'Revoke Session',
 				description: 'Invalidate a specific session of the current user.',
 				tags: ['Authentication'],
-				security: [{ sessionId: [] }],
+				security: [{ session: [] }],
 			},
 		},
 	)
@@ -112,6 +112,6 @@ export const AuthRoutes = new Elysia({
 			summary: 'Change Password',
 			description: 'Change password of the current user.',
 			tags: ['Authentication'],
-			security: [{ sessionId: [] }],
+			security: [{ session: [] }],
 		},
 	});

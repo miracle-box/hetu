@@ -27,10 +27,10 @@ const app = new Elysia()
 				],
 				components: {
 					securitySchemes: {
-						sessionId: {
+						session: {
 							type: 'http',
 							scheme: 'bearer',
-							bearerFormat: 'Session ID',
+							bearerFormat: 'Session ID and token',
 						},
 					},
 				},

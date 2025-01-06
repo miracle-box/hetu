@@ -50,7 +50,7 @@ export const TexturesRoutes = new Elysia({ name: 'Routes.Textures', prefix: '/te
 			detail: {
 				summary: 'Create Texture',
 				description: 'Create a new texture.',
-				security: [{ sessionId: [] }],
+				security: [{ session: [] }],
 				tags: ['Textures'],
 			},
 		},

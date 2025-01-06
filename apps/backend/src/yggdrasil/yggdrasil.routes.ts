@@ -236,7 +236,7 @@ export const YggdrasilRoutes = new Elysia({
 						summary: 'Upload Texture',
 						description:
 							"Upload texture for profile, will automatically create a new texture if it doesn't exist.",
-						security: [{ sessionId: [] }],
+						security: [{ session: [] }],
 						tags: ['Yggdrasil'],
 					},
 				},
@@ -255,7 +255,7 @@ export const YggdrasilRoutes = new Elysia({
 					detail: {
 						summary: 'Reset Texture',
 						description: 'Reset texture to default.',
-						security: [{ sessionId: [] }],
+						security: [{ session: [] }],
 						tags: ['Yggdrasil'],
 					},
 				},
