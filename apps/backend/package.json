@@ -13,9 +13,7 @@
   "dependencies": {
     "@aws-sdk/client-s3": "^3.717.0",
     "@elysiajs/swagger": "^1.2.0",
-    "@lucia-auth/adapter-drizzle": "^1.1.0",
     "@paralleldrive/cuid2": "^2.2.2",
-    "@types/nodemailer": "^6.4.17",
     "drizzle-orm": "^0.38.3",
     "elysia": "^1.2.9",
     "nodemailer": "^6.9.16",
@@ -23,6 +21,7 @@
     "sharp": "^0.33.5"
   },
   "devDependencies": {
+    "@types/nodemailer": "^6.4.17",
     "bun-types": "latest",
     "drizzle-kit": "^0.30.1"
   },
