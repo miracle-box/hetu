@@ -38,7 +38,7 @@ export const ProfilesRoutes = new Elysia({ name: 'Routes.Profiles', prefix: '/pr
 				summary: 'Create profile',
 				description:
 					'Create a new profile. \n *Primary profile will be automatically handled.*',
-				security: [{ sessionId: [] }],
+				security: [{ session: [] }],
 				tags: ['Profiles'],
 			},
 		},
@@ -52,7 +52,7 @@ export const ProfilesRoutes = new Elysia({ name: 'Routes.Profiles', prefix: '/pr
 		detail: {
 			summary: 'Edit profile',
 			description: 'Edit a part of the profile.',
-			security: [{ sessionId: [] }],
+			security: [{ session: [] }],
 			tags: ['Profiles'],
 		},
 	});

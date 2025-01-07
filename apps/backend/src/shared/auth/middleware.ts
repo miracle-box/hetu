@@ -12,9 +12,8 @@ export const authMiddleware = (scope: SessionScope) => (app: Elysia) =>
 		const [sessionId, token] = bearer.split(':');
 		if (!sessionId || !token) throw new Error('Unauthorized');
 
-		const sessionInfo = await SessionService.validate(sessionId, token);
+		const sessionInfo = await SessionService.validate(sessionId, token, scope);
 		if (!sessionInfo) throw new Error('Unauthorized');
-		if (sessionInfo.session.metadata.scope !== scope) throw new Error('Unauthorized');
 
 		return sessionInfo;
 	});

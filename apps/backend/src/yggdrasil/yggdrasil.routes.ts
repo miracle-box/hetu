@@ -6,11 +6,7 @@ import {
 	authenticateResponseSchema,
 } from './webapis/authserver/authenticate';
 import { refresh, refreshBodySchema, refreshResponseSchema } from './webapis/authserver/refresh';
-import {
-	validate,
-	validateBodySchema,
-	validateResponseSchema,
-} from './webapis/authserver/validate';
+import { validateBodySchema, validateResponseSchema } from './webapis/authserver/validate';
 import {
 	invalidate,
 	invalidateBodySchema,
@@ -52,6 +48,7 @@ import {
 	resetTextureResponseSchema,
 } from '~backend/yggdrasil/webapis/mojangapi/reset-texture';
 import { SessionScope } from '~backend/auth/auth.entities';
+import { validateTokenMiddleware } from '~backend/yggdrasil/validate-token.middleware';
 
 export const YggdrasilRoutes = new Elysia({
 	name: 'Routes.Yggdrasil',
@@ -82,54 +79,6 @@ export const YggdrasilRoutes = new Elysia({
 					tags: ['Yggdrasil'],
 				},
 			})
-			.post('/refresh', async ({ body }) => await refresh(body), {
-				body: refreshBodySchema,
-				response: {
-					200: refreshResponseSchema,
-				},
-				detail: {
-					summary: 'Resfesh Token',
-					description: 'Get a new token and invalidate the old one.',
-					tags: ['Yggdrasil'],
-				},
-			})
-			.post(
-				'/validate',
-				async ({ body, set }) => {
-					const tokenValid = await validate(body);
-					if (tokenValid) set.status = 'No Content';
-					else set.status = 'Unauthorized';
-				},
-				{
-					body: validateBodySchema,
-					response: {
-						204: validateResponseSchema,
-					},
-					detail: {
-						summary: 'Validate Token',
-						description: 'Check if the token is valid.',
-						tags: ['Yggdrasil'],
-					},
-				},
-			)
-			.post(
-				'/invalidate',
-				async ({ body, set }) => {
-					await invalidate(body);
-					set.status = 'No Content';
-				},
-				{
-					body: invalidateBodySchema,
-					response: {
-						204: invalidateResponseSchema,
-					},
-					detail: {
-						summary: 'Invalidate Token',
-						description: 'Invalidate the token.',
-						tags: ['Yggdrasil'],
-					},
-				},
-			)
 			.post(
 				'/signout',
 				async ({ body, set }) => {
@@ -147,27 +96,83 @@ export const YggdrasilRoutes = new Elysia({
 						tags: ['Yggdrasil'],
 					},
 				},
+			)
+			// `clientToken` requires validation
+			.group('', (app) =>
+				app
+					.use(validateTokenMiddleware(true))
+					.post('/refresh', async ({ body, session }) => await refresh(body, session), {
+						body: refreshBodySchema,
+						response: {
+							200: refreshResponseSchema,
+						},
+						detail: {
+							summary: 'Resfesh Token',
+							description: 'Get a new token and invalidate the old one.',
+							tags: ['Yggdrasil'],
+						},
+					})
+					.post(
+						'/validate',
+						async ({ set }) => {
+							set.status = 'No Content';
+						},
+						{
+							body: validateBodySchema,
+							response: {
+								204: validateResponseSchema,
+							},
+							detail: {
+								summary: 'Validate Token',
+								description: 'Check if the token is valid.',
+								tags: ['Yggdrasil'],
+							},
+						},
+					),
+			)
+			// `clientToken` does not require validation
+			.group('', (app) =>
+				app.use(validateTokenMiddleware(false)).post(
+					'/invalidate',
+					async ({ body, set, session }) => {
+						await invalidate(body, session);
+						set.status = 'No Content';
+					},
+					{
+						body: invalidateBodySchema,
+						response: {
+							204: invalidateResponseSchema,
+						},
+						detail: {
+							summary: 'Invalidate Token',
+							description: 'Invalidate the token.',
+							tags: ['Yggdrasil'],
+						},
+					},
+				),
 			),
 	)
 	.group('/sessionserver', (app) =>
 		app
-			.post(
-				'/session/minecraft/join',
-				async ({ body, set }) => {
-					await joinServer(body);
-					set.status = 'No Content';
-				},
-				{
-					body: joinServerBodySchema,
-					response: {
-						204: joinServerResponseSchema,
+			.group('', (app) =>
+				app.use(validateTokenMiddleware(false)).post(
+					'/session/minecraft/join',
+					async ({ body, set, session }) => {
+						await joinServer(body, session);
+						set.status = 'No Content';
 					},
-					detail: {
-						summary: 'Join Server',
-						description: 'Log client info for validation.',
-						tags: ['Yggdrasil'],
+					{
+						body: joinServerBodySchema,
+						response: {
+							204: joinServerResponseSchema,
+						},
+						detail: {
+							summary: 'Join Server',
+							description: 'Log client info for validation.',
+							tags: ['Yggdrasil'],
+						},
 					},
-				},
+				),
 			)
 			.get(
 				'/session/minecraft/hasJoined',
@@ -236,7 +241,7 @@ export const YggdrasilRoutes = new Elysia({
 						summary: 'Upload Texture',
 						description:
 							"Upload texture for profile, will automatically create a new texture if it doesn't exist.",
-						security: [{ sessionId: [] }],
+						security: [{ session: [] }],
 						tags: ['Yggdrasil'],
 					},
 				},
@@ -255,7 +260,7 @@ export const YggdrasilRoutes = new Elysia({
 					detail: {
 						summary: 'Reset Texture',
 						description: 'Reset texture to default.',
-						security: [{ sessionId: [] }],
+						security: [{ session: [] }],
 						tags: ['Yggdrasil'],
 					},
 				},

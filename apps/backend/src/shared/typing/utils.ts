@@ -22,3 +22,15 @@ export function createEnumLikeValuesSchema<TEnumLike extends EnumLike>(
 		Object.values(enumLike).map((v) => Type.Literal(v as TEnumLike[keyof TEnumLike])),
 	);
 }
+
+/**
+ * Checks whether a value is an object and whether a prop is in the object.
+ * @param obj Value to check
+ * @param prop Desired property to check for
+ */
+export function hasProperty<K extends string>(
+	obj: unknown,
+	prop: K,
+): obj is { [key in K]: unknown } {
+	return typeof obj === 'object' && obj !== null && prop in obj;
+}

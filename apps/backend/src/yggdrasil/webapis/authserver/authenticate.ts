@@ -43,19 +43,24 @@ export async function authenticate(
 		throw new Error('Invalid credentials.');
 	}
 
-	const passwordCorrect = PasswordService.compare(user.passwordHash, body.password);
+	const passwordCorrect = PasswordService.compare(body.password, user.passwordHash);
 	if (!passwordCorrect) {
 		throw new Error('Invalid credentials.');
 	}
 
 	const clientToken = YggdrasilService.generateClientToken(body.clientToken);
-	const profiles = (await YggdrasilRepository.getProfilesDigestByUser(user.id)).map((profile) =>
-		YggdrasilService.getYggdrasilProfileDigest(profile),
+	const yggProfiles = (await YggdrasilRepository.getProfilesDigestByUser(user.id)).map(
+		(profile) => YggdrasilService.getYggdrasilProfileDigest(profile),
 	);
+
+	// Select the only profile if there's only one.
+	const selectedProfile = yggProfiles.length === 1 ? yggProfiles[0] : null;
 
 	const session = await SessionService.create(user.id, {
 		scope: SessionScope.YGGDRASIL,
 		clientToken,
+		// Already converted to unsigned UUID
+		selectedProfile: selectedProfile?.id ?? null,
 	});
 
 	return {
@@ -63,9 +68,7 @@ export async function authenticate(
 		clientToken,
 		// [TODO] Probably move this to a separate method.
 		user: body.requestUser ? { id: session.userId, properties: [] } : undefined,
-		availableProfiles: profiles,
-		// [TODO] Probably support automatic profile selection by allowing signin by username.
-		// Select the only profile if there's only one.
-		selectedProfile: profiles.length === 1 ? profiles[0] : undefined,
+		availableProfiles: yggProfiles,
+		selectedProfile: selectedProfile ?? undefined,
 	};
 }
