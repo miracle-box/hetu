@@ -1,7 +1,7 @@
-import { Session, SessionMetadata } from '~backend/auth/auth.entities';
+import { Session, SessionMetadata, SessionScope } from '~backend/auth/auth.entities';
 import { AuthRepository } from '~backend/auth/auth.repository';
 import { UsersRepository } from '~backend/users/users.repository';
-import { nowWithinDate } from '~backend/shared/auth/utils';
+import { isSessionOfScope, nowWithinDate } from '~backend/shared/auth/utils';
 import { User } from '~backend/users/user.entities';
 
 /**
@@ -24,14 +24,20 @@ export abstract class SessionService {
 		await AuthRepository.revokeSessionsByUser(userId);
 	}
 
-	static async validate(
+	static async validate<TScope extends SessionScope>(
 		sessionId: string,
 		token: string,
-	): Promise<{ user: User; session: Session } | null> {
+		scope: TScope,
+	): Promise<{ user: User; session: Session<TScope> } | null> {
 		const session = await AuthRepository.findSessionById(sessionId);
-		if (!session) return null;
-		if (session.token !== token) return null;
-		if (!nowWithinDate(session.expiresAt)) return null;
+		if (
+			!session ||
+			session.token !== token ||
+			!nowWithinDate(session.expiresAt) ||
+			!isSessionOfScope(session, scope)
+		) {
+			return null;
+		}
 
 		const user = await UsersRepository.findById(session.userId);
 		if (!user) return null;

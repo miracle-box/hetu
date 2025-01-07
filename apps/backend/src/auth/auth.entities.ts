@@ -34,5 +34,11 @@ export const sessionDigestSchema = t.Omit(sessionSchema, ['token']);
 export type UserAuthType = EnumLikeValues<typeof UserAuthType>;
 export type SessionScope = EnumLikeValues<typeof SessionScope>;
 export type SessionMetadata = Static<typeof sessionMetadataSchema>;
-export type Session = Static<typeof sessionSchema>;
+// Represent any session by default
+export type Session<TScope extends SessionScope = SessionScope> = Omit<
+	Static<typeof sessionSchema>,
+	'metadata'
+> & {
+	metadata: Extract<SessionMetadata, { scope: TScope }>;
+};
 export type SessionDigest = Static<typeof sessionDigestSchema>;
