@@ -6,7 +6,7 @@ import {
 } from '~backend/yggdrasil/yggdrasil.entities';
 import { SessionService } from '~backend/services/auth/session';
 import { YggdrasilService } from '~backend/yggdrasil/yggdrasil.service';
-import { SessionScope } from '~backend/auth/auth.entities';
+import { Session, SessionScope } from '~backend/auth/auth.entities';
 import { YggdrasilRepository } from '~backend/yggdrasil/yggdrasil.repository';
 
 export const refreshBodySchema = t.Composite([
@@ -26,22 +26,9 @@ export const refreshResponseSchema = t.Composite([
 
 export async function refresh(
 	body: Static<typeof refreshBodySchema>,
+	session: Session<typeof SessionScope.YGGDRASIL>,
 ): Promise<Static<typeof refreshResponseSchema>> {
 	// [TODO] Error handling in Mojang's format
-
-	const accessToken = YggdrasilService.parseAccessToken(body.accessToken);
-	if (!accessToken) throw new Error('Invalid session!');
-
-	const session = (await SessionService.validate(accessToken.sessionId, accessToken.sessionToken))
-		?.session;
-	if (
-		!session ||
-		session.metadata.scope !== SessionScope.YGGDRASIL ||
-		// When client token is provided, check if it matches, otherwise ignore it.
-		(body.clientToken && body.clientToken !== session.metadata.clientToken)
-	) {
-		throw new Error('Invalid session!');
-	}
 
 	// Use profile form request body if provided, otherwise use the one from the session.
 	const sessionSelectedProfileId = session.metadata.selectedProfile;
