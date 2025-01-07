@@ -49,16 +49,17 @@ export async function authenticate(
 	}
 
 	const clientToken = YggdrasilService.generateClientToken(body.clientToken);
-	const profiles = (await YggdrasilRepository.getProfilesDigestByUser(user.id)).map((profile) =>
-		YggdrasilService.getYggdrasilProfileDigest(profile),
+	const yggProfiles = (await YggdrasilRepository.getProfilesDigestByUser(user.id)).map(
+		(profile) => YggdrasilService.getYggdrasilProfileDigest(profile),
 	);
 
 	// Select the only profile if there's only one.
-	const selectedProfile = profiles.length === 1 ? profiles[0] : null;
+	const selectedProfile = yggProfiles.length === 1 ? yggProfiles[0] : null;
 
 	const session = await SessionService.create(user.id, {
 		scope: SessionScope.YGGDRASIL,
 		clientToken,
+		// Already converted to unsigned UUID
 		selectedProfile: selectedProfile?.id ?? null,
 	});
 
@@ -67,7 +68,7 @@ export async function authenticate(
 		clientToken,
 		// [TODO] Probably move this to a separate method.
 		user: body.requestUser ? { id: session.userId, properties: [] } : undefined,
-		availableProfiles: profiles,
+		availableProfiles: yggProfiles,
 		selectedProfile: selectedProfile ?? undefined,
 	};
 }

@@ -1,7 +1,6 @@
 import { Static, t } from 'elysia';
 import { SessionService } from '~backend/services/auth/session';
 import { yggTokenSchema } from '~backend/yggdrasil/yggdrasil.entities';
-import { YggdrasilService } from '~backend/yggdrasil/yggdrasil.service';
 import { Session, SessionScope } from '~backend/auth/auth.entities';
 
 export const invalidateBodySchema = yggTokenSchema;

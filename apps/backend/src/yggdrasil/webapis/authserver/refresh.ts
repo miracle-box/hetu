@@ -31,15 +31,16 @@ export async function refresh(
 	// [TODO] Error handling in Mojang's format
 
 	// Use profile form request body if provided, otherwise use the one from the session.
-	const sessionSelectedProfileId = session.metadata.selectedProfile;
-	const selectedProfile = body.selectedProfile
+	const sessionProfileId = session.metadata.selectedProfile;
+	const profile = body.selectedProfile
 		? await YggdrasilRepository.getProfileDigestById(body.selectedProfile.id)
-		: sessionSelectedProfileId
-			? await YggdrasilRepository.getProfileDigestById(sessionSelectedProfileId)
+		: sessionProfileId
+			? await YggdrasilRepository.getProfileDigestById(sessionProfileId)
 			: null;
 
 	// Profile must be selected
-	if (!selectedProfile) throw new Error('You should select a profile when refreshing a session!');
+	if (!profile) throw new Error('You should select a profile when refreshing a session!');
+	const yggSelectedProfile = YggdrasilService.getYggdrasilProfileDigest(profile);
 
 	const clientToken = YggdrasilService.generateClientToken(body.clientToken);
 
@@ -47,7 +48,7 @@ export async function refresh(
 	const newSession = await SessionService.create(session.userId, {
 		scope: SessionScope.YGGDRASIL,
 		clientToken,
-		selectedProfile: selectedProfile.id,
+		selectedProfile: yggSelectedProfile.id,
 	});
 
 	return {
@@ -55,6 +56,6 @@ export async function refresh(
 		clientToken: clientToken,
 		// [TODO] Probably move this to a separate method.
 		user: body.requestUser ? { id: session.userId, properties: [] } : undefined,
-		selectedProfile: YggdrasilService.getYggdrasilProfileDigest(selectedProfile),
+		selectedProfile: yggSelectedProfile,
 	};
 }
