@@ -45,11 +45,6 @@ export function prefixSchemaToErrors(valueErrors: ValueError[], transformErrors:
 
 		const path = transformPath(valueError.path);
 		schema.set(path, (schema.get(path) ?? []).concat(valueError));
-
-		console.log({
-			pointerPath: valueError.path,
-			dotPath: path,
-		});
 	}
 
 	const transformedSchema = {} as Record<string, ValidationError>;
@@ -85,7 +80,6 @@ export const typeboxValidator =
 				const [...result] = Value.Errors(fn, value);
 				if (result.length <= 0) return;
 
-				console.log({ result });
 				const transformer = getTransformStrategy(validationSource);
 				return transformer(result);
 			},
