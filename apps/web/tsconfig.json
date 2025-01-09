@@ -8,7 +8,7 @@
     ],
     "paths": {
       "~backend/*": ["../backend/src/*"],
-      "~web/*": ["../web/src/*"]
+      "~web/*": ["../web/*"]
     },
     "types": ["bun-types"]
   },
