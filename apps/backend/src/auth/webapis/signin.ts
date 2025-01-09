@@ -19,12 +19,12 @@ export async function signin(
 
 	// [TODO] Consider add login limit to prevent possible attacks.
 	if (!user) {
-		throw new Error('Invalid credentials, or the user does not have password.');
+		throw new Error('Invalid credentials.');
 	}
 
-	const passwordCorrect = PasswordService.compare(body.password, user.passwordHash);
+	const passwordCorrect = await PasswordService.compare(body.password, user.passwordHash);
 	if (!passwordCorrect) {
-		throw new Error('Invalid credentials, or the user does not have password.');
+		throw new Error('Invalid credentials.');
 	}
 
 	const session = await SessionService.create(user.id, {
