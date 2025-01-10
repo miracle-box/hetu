@@ -1,5 +1,6 @@
 import { Button, Callout, Container, Flex, Heading, Text } from '@radix-ui/themes';
 import Link from 'next/link';
+import { SessionInfo } from './SessionInfo';
 
 export default function Home() {
 	return (
@@ -23,6 +24,8 @@ export default function Home() {
 					<Heading as="h3" size="3">
 						Session Info
 					</Heading>
+
+					<SessionInfo />
 				</Callout.Root>
 
 				<Flex gap="3">
