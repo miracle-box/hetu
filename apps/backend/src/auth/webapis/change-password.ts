@@ -2,7 +2,7 @@ import { Static, t } from 'elysia';
 import { AuthRepository } from '~backend/auth/auth.repository';
 import { PasswordService } from '~backend/services/auth/password';
 import { SessionService } from '~backend/services/auth/session';
-import { sessionSchema, SessionScope } from '~backend/auth/auth.entities';
+import { Session, sessionSchema, SessionScope } from '~backend/auth/auth.entities';
 
 export const changePasswordBodySchema = t.Object({
 	oldPassword: t.String(),
@@ -12,7 +12,7 @@ export const changePasswordBodySchema = t.Object({
 	}),
 });
 export const changePasswordResponseSchema = t.Object({
-	session: sessionSchema,
+	session: sessionSchema(t.Literal(SessionScope.DEFAULT)),
 });
 
 export async function changePassword(
@@ -33,9 +33,9 @@ export async function changePassword(
 	await AuthRepository.upsertPassword({ userId, passwordHash: hashedNewPassword });
 
 	await SessionService.revokeAll(userId);
-	const session = await SessionService.create(userId, {
+	const session = (await SessionService.create(userId, {
 		scope: SessionScope.DEFAULT,
-	});
+	})) as Session<typeof SessionScope.DEFAULT>;
 
 	return { session };
 }

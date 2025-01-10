@@ -1,6 +1,13 @@
 import { Type, TUnion, TLiteral } from '@sinclair/typebox';
 
 /**
+ * Make your dev experience better.
+ */
+export type Prettify<T> = {
+	[K in keyof T]: T[K];
+} & {};
+
+/**
  * Represents a enum-like object
  */
 type EnumLike = { readonly [key: string]: string | number };

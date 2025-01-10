@@ -2,7 +2,7 @@ import { Static, t } from 'elysia';
 import { UsersRepository } from '~backend/users/users.repository';
 import { PasswordService } from '~backend/services/auth/password';
 import { SessionService } from '~backend/services/auth/session';
-import { sessionSchema, SessionScope } from '~backend/auth/auth.entities';
+import { Session, sessionSchema, SessionScope } from '~backend/auth/auth.entities';
 
 export const signupBodySchema = t.Object({
 	name: t.String({
@@ -16,7 +16,7 @@ export const signupBodySchema = t.Object({
 	}),
 });
 export const signupResponseSchema = t.Object({
-	session: sessionSchema,
+	session: sessionSchema(t.Literal(SessionScope.DEFAULT)),
 });
 
 export async function signup(
@@ -33,9 +33,9 @@ export async function signup(
 		passwordHash,
 	});
 
-	const session = await SessionService.create(user.id, {
+	const session = (await SessionService.create(user.id, {
 		scope: SessionScope.DEFAULT,
-	});
+	})) as Session<typeof SessionScope.DEFAULT>;
 
 	return { session };
 }

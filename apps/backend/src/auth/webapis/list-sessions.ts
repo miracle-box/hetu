@@ -1,9 +1,9 @@
 import { Static, t } from 'elysia';
-import { sessionDigestSchema } from '~backend/auth/auth.entities';
+import { sessionDigestSchema, sessionScopeSchema } from '~backend/auth/auth.entities';
 import { SessionService } from '~backend/services/auth/session';
 
 export const listSessionsResponseSchema = t.Object({
-	sessions: t.Array(sessionDigestSchema),
+	sessions: t.Array(sessionDigestSchema(sessionScopeSchema)),
 });
 
 export async function listSessions(
