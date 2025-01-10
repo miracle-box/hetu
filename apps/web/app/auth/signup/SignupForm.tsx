@@ -1,47 +1,47 @@
 'use client';
 
-import { useActionState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Box, Button, Flex, Text, TextField } from '@radix-ui/themes';
-import { initialFormState } from '@tanstack/react-form/nextjs';
-import { mergeForm, useForm, useStore, useTransform } from '@tanstack/react-form';
+import { mergeForm, useForm, useStore } from '@tanstack/react-form';
 import { TypeboxValidator } from '@repo/typebox-form-adapter';
 import { useZustandStore } from '~web/libs/stores/use-zustand-store';
+import { useMutation } from '@tanstack/react-query';
 import { useSessionStore } from '~web/libs/stores/session';
 import { signupFormOpts, SignupFormValues } from './shared';
 import { handleSignup } from './actions';
 
 export function SignupForm() {
-	const [state, action] = useActionState(handleSignup, { formState: initialFormState });
-	const form = useForm({
-		...signupFormOpts,
-		transform: useTransform(
-			(baseForm) =>
-				mergeForm<SignupFormValues, TypeboxValidator>(
-					baseForm,
-					'formState' in state ? state.formState : {},
-				),
-			[state],
-		),
-	});
-
-	const formErrors = useStore(form.store, (state) => state.errors);
-
 	const setSessionStore = useZustandStore(useSessionStore, (state) => state.setSession);
-	const session = useZustandStore(useSessionStore, (state) => state.session);
-
 	const router = useRouter();
 
-	useEffect(() => {
-		if ('data' in state) {
-			// Store session in Zustand store (will persist in localStorage)
-			if (setSessionStore) setSessionStore(state.data.session);
-			router.push('/');
-		}
-	}, [state]);
+	const submit = useMutation({
+		mutationFn: (values: SignupFormValues) => handleSignup(values),
+		onSuccess: (data) => {
+			if ('formState' in data)
+				mergeForm<SignupFormValues, TypeboxValidator>(form, data.formState);
+
+			if ('data' in data) {
+				// Store session in Zustand store (will persist in localStorage)
+				if (setSessionStore) setSessionStore(data.data.session);
+				router.push('/');
+			}
+		},
+	});
+
+	const form = useForm({
+		...signupFormOpts,
+		onSubmit: async ({ value }) => submit.mutate(value),
+	});
+	const formErrors = useStore(form.store, (state) => state.errors);
 
 	return (
-		<form action={action as never} onSubmit={() => form.handleSubmit()}>
+		<form
+			onSubmit={(e) => {
+				e.preventDefault();
+				e.stopPropagation();
+				form.handleSubmit();
+			}}
+		>
 			<Flex gap="3" direction="column">
 				<form.Field name="email">
 					{(field) => (
