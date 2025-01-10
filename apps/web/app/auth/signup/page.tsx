@@ -1,17 +1,17 @@
 import { Button, Container, Flex, Heading } from '@radix-ui/themes';
-import { SigninForm } from './SigninForm';
+import { SignupForm } from '~web/app/auth/signup/SignupForm';
 import Link from 'next/link';
 
-export default function Signin() {
+export default function Signup() {
 	return (
 		<Container>
 			<Flex gap="3" direction="column">
-				<Heading>Sign In</Heading>
+				<Heading>Sign Up</Heading>
 
-				<SigninForm />
+				<SignupForm />
 
 				<Button variant="surface" asChild>
-					<Link href="/auth/signup">I don't have an account</Link>
+					<Link href="/auth/signin">I already have an account</Link>
 				</Button>
 
 				<Button variant="surface" asChild>

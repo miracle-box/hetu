@@ -3,27 +3,28 @@
 import { useActionState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Box, Button, Flex, Text, TextField } from '@radix-ui/themes';
-import { mergeForm, useForm, useStore, useTransform } from '@tanstack/react-form';
 import { initialFormState } from '@tanstack/react-form/nextjs';
+import { mergeForm, useForm, useStore, useTransform } from '@tanstack/react-form';
 import { TypeboxValidator } from '@repo/typebox-form-adapter';
 import { useZustandStore } from '~web/libs/stores/use-zustand-store';
 import { useSessionStore } from '~web/libs/stores/session';
-import { signinFormOpts, SigninFormValues } from './shared';
-import { handleSignin } from './actions';
+import { signupFormOpts, SignupFormValues } from './shared';
+import { handleSignup } from './actions';
 
-export function SigninForm() {
-	const [state, action] = useActionState(handleSignin, { formState: initialFormState });
+export function SignupForm() {
+	const [state, action] = useActionState(handleSignup, { formState: initialFormState });
 	const form = useForm({
-		...signinFormOpts,
+		...signupFormOpts,
 		transform: useTransform(
-			(baseFrom) =>
-				mergeForm<SigninFormValues, TypeboxValidator>(
-					baseFrom,
+			(baseForm) =>
+				mergeForm<SignupFormValues, TypeboxValidator>(
+					baseForm,
 					'formState' in state ? state.formState : {},
 				),
 			[state],
 		),
 	});
+
 	const formErrors = useStore(form.store, (state) => state.errors);
 
 	const setSessionStore = useZustandStore(useSessionStore, (state) => state.setSession);
@@ -64,6 +65,28 @@ export function SigninForm() {
 					)}
 				</form.Field>
 
+				<form.Field name="name">
+					{(field) => (
+						<Box>
+							<Text as="label" size="2" weight="bold">
+								Username
+							</Text>
+							<TextField.Root
+								name="name"
+								placeholder="Username"
+								type="text"
+								value={field.state.value}
+								onChange={(e) => field.handleChange(e.target.value)}
+							/>
+							{field.state.meta.errors.map((error) => (
+								<Text key={error as string} color="red" size="2">
+									{error}
+								</Text>
+							))}
+						</Box>
+					)}
+				</form.Field>
+
 				<form.Field name="password">
 					{(field) => (
 						<Box>
@@ -73,6 +96,39 @@ export function SigninForm() {
 							<TextField.Root
 								name="password"
 								placeholder="Password"
+								type="password"
+								value={field.state.value}
+								onChange={(e) => field.handleChange(e.target.value)}
+							/>
+							{field.state.meta.errors.map((error) => (
+								<Text key={error as string} color="red" size="2">
+									{error}
+								</Text>
+							))}
+						</Box>
+					)}
+				</form.Field>
+
+				<form.Field
+					name="confirmPassword"
+					validators={{
+						onChangeListenTo: ['password'],
+						onChange: ({ value, fieldApi }) => {
+							if (value !== fieldApi.form.getFieldValue('password'))
+								return 'Passwords do not match';
+
+							return undefined;
+						},
+					}}
+				>
+					{(field) => (
+						<Box>
+							<Text as="label" size="2" weight="bold">
+								Confirm password
+							</Text>
+							<TextField.Root
+								name="confirmPassword"
+								placeholder="Confirm password"
 								type="password"
 								value={field.state.value}
 								onChange={(e) => field.handleChange(e.target.value)}
@@ -99,7 +155,7 @@ export function SigninForm() {
 				>
 					{([canSubmit, isSubmitting]) => (
 						<Button type="submit" disabled={!canSubmit} loading={isSubmitting}>
-							Sign In
+							Sign Up
 						</Button>
 					)}
 				</form.Subscribe>
