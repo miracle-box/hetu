@@ -32,7 +32,9 @@ export default function Home() {
 					<Button asChild>
 						<Link href="/auth/signin">Sign In</Link>
 					</Button>
-					<Button>Sign Up</Button>
+					<Button asChild>
+						<Link href="/auth/signup">Sign Up</Link>
+					</Button>
 				</Flex>
 			</Flex>
 		</Container>

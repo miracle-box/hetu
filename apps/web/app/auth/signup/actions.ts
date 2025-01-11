@@ -2,10 +2,14 @@
 
 import { client as api } from '~web/libs/api/eden';
 import { formError, formSuccess } from '~web/libs/form/responses';
-import { SigninFormValues } from './shared';
+import { SignupFormValues } from './shared';
 
-export async function handleSignin(form: SigninFormValues) {
-	const { data, error } = await api.auth.signin.post(form);
+export async function handleSignup(form: SignupFormValues) {
+	const { data, error } = await api.auth.signup.post({
+		email: form.email,
+		name: form.name,
+		password: form.password,
+	});
 
 	if (error)
 		switch (error.status) {
