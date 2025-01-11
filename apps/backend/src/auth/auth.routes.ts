@@ -16,6 +16,7 @@ import {
 	changePasswordBodySchema,
 	changePasswordResponseSchema,
 } from './webapis/change-password';
+import { validate, validateResponseSchema } from '~backend/auth/webapis/validate';
 
 export const AuthRoutes = new Elysia({
 	name: 'Routes.Auth',
@@ -44,6 +45,18 @@ export const AuthRoutes = new Elysia({
 		},
 	})
 	.use(authMiddleware(SessionScope.DEFAULT))
+	.post('/validate', async ({ session }) => await validate(session), {
+		response: {
+			200: validateResponseSchema,
+		},
+		detail: {
+			summary: 'Validate Session',
+			description:
+				'Validate the current session, will renew if the session is about to expire.',
+			tags: ['Authentication'],
+			security: [{ session: [] }],
+		},
+	})
 	.post('/sessions/refresh', async ({ session }) => await refresh(session), {
 		response: {
 			200: refreshResponseSchema,

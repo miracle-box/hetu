@@ -6,7 +6,9 @@ export const refreshResponseSchema = t.Object({
 	session: sessionSchema(t.Literal(SessionScope.DEFAULT)),
 });
 
-export async function refresh(oldSession: Session): Promise<Static<typeof refreshResponseSchema>> {
+export async function refresh(
+	oldSession: Session<typeof SessionScope.DEFAULT>,
+): Promise<Static<typeof refreshResponseSchema>> {
 	await SessionService.revoke(oldSession.id);
 
 	const session = (await SessionService.create(oldSession.userId, {
