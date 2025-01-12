@@ -1,3 +1,4 @@
+import 'server-only';
 import { treaty } from '@elysiajs/eden';
 import type { App } from '~backend/index';
 

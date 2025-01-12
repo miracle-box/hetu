@@ -4,14 +4,11 @@ import { useRouter } from 'next/navigation';
 import { Box, Button, Flex, Text, TextField } from '@radix-ui/themes';
 import { mergeForm, useForm, useStore } from '@tanstack/react-form';
 import { TypeboxValidator } from '@repo/typebox-form-adapter';
-import { useZustandStore } from '~web/libs/stores/use-zustand-store';
 import { useMutation } from '@tanstack/react-query';
-import { useSessionStore } from '~web/libs/stores/session';
 import { signinFormOpts, SigninFormValues } from './shared';
 import { handleSignin } from './actions';
 
 export function SigninForm() {
-	const setSessionStore = useZustandStore(useSessionStore, (state) => state.setSession);
 	const router = useRouter();
 
 	const submit = useMutation({
@@ -20,11 +17,7 @@ export function SigninForm() {
 			if ('formState' in data)
 				mergeForm<SigninFormValues, TypeboxValidator>(form, data.formState);
 
-			if ('data' in data) {
-				// Store session in Zustand store (will persist in localStorage)
-				if (setSessionStore) setSessionStore(data.data.session);
-				router.push('/');
-			}
+			if ('data' in data) router.push('/');
 		},
 	});
 
