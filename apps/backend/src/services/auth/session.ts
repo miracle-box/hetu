@@ -42,16 +42,6 @@ export abstract class SessionService {
 		const user = await UsersRepository.findById(session.userId);
 		if (!user) return null;
 
-		// Auto renew session if it's close to expiration
-		// [TODO] Should be configurable (now 7 days)
-		if (nowWithinDate(new Date(session.expiresAt.getTime() - 1000 * 3600 * 24 * 7))) {
-			await AuthRepository.renewSession(
-				sessionId,
-				// [TODO] Should be configurable (now 30 days)
-				new Date(Date.now() + 1000 * 3600 * 24 * 30),
-			);
-		}
-
 		return { user, session };
 	}
 
