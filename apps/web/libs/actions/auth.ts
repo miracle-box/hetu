@@ -53,7 +53,10 @@ export async function readSessionCookie(): Promise<SessionCookie | null> {
 
 export async function renewSessionCookie() {
 	const session = await readSessionCookie();
-	if (!session) return;
+	if (!session) {
+		await clearSessionCookie();
+		return;
+	}
 
 	// [TODO] Make this configurable or constant (now 7 days)
 	// Auto renew session if it's close to expiration
@@ -63,7 +66,10 @@ export async function renewSessionCookie() {
 				Authorization: `Bearer ${session.id}:${session.token}`,
 			},
 		});
-		if (!renewedSession) return;
+		if (!renewedSession) {
+			await clearSessionCookie();
+			return;
+		}
 
 		await setSessionCookie({
 			id: renewedSession.session.id,
