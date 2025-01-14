@@ -10,7 +10,10 @@ import {
 } from './webapis/update';
 import { SessionScope } from '~backend/auth/auth.entities';
 
-export const ProfilesRoutes = new Elysia({ name: 'Routes.Profiles', prefix: '/profiles' })
+export const ProfilesRoutes = new Elysia({
+	name: 'Routes.Profiles',
+	prefix: '/profiles',
+})
 	.get('/', async ({ query }) => await find(query), {
 		query: findQuery,
 		response: {

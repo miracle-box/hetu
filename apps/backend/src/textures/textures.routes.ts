@@ -5,7 +5,10 @@ import { inspect, inspectParamsSchema, inspectResponseSchema } from './webapis/i
 import { getImage, getImageParamsSchema, getImageResponseSchema } from './webapis/get-image';
 import { SessionScope } from '~backend/auth/auth.entities';
 
-export const TexturesRoutes = new Elysia({ name: 'Routes.Textures', prefix: '/textures' })
+export const TexturesRoutes = new Elysia({
+	name: 'Routes.Textures',
+	prefix: '/textures',
+})
 	.get('/:id', async ({ params }) => await inspect(params), {
 		params: inspectParamsSchema,
 		response: {
