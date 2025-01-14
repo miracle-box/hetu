@@ -41,8 +41,8 @@ export const ProfilesRoutes = new Elysia({
 				summary: 'Create profile',
 				description:
 					'Create a new profile. \n *Primary profile will be automatically handled.*',
-				security: [{ session: [] }],
 				tags: ['Profiles'],
+				security: [{ session: [] }],
 			},
 		},
 	)
@@ -55,7 +55,7 @@ export const ProfilesRoutes = new Elysia({
 		detail: {
 			summary: 'Edit profile',
 			description: 'Edit a part of the profile.',
-			security: [{ session: [] }],
 			tags: ['Profiles'],
+			security: [{ session: [] }],
 		},
 	});

@@ -23,6 +23,7 @@ export const FilesRoutes = new Elysia({
 				summary: 'Upload File',
 				description: 'Upload file before calling resource creation APIs.',
 				tags: ['General'],
+				security: [{ session: [] }],
 			},
 		},
 	);
