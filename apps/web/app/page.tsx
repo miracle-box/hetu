@@ -22,7 +22,7 @@ export default function Home() {
 
 				<Callout.Root>
 					<Heading as="h3" size="3">
-						Session Info
+						Session info
 					</Heading>
 
 					<SessionInfo />
@@ -34,6 +34,9 @@ export default function Home() {
 					</Button>
 					<Button asChild>
 						<Link href="/auth/signup">Sign Up</Link>
+					</Button>
+					<Button asChild>
+						<Link href="/app/dashboard">App</Link>
 					</Button>
 				</Flex>
 			</Flex>
