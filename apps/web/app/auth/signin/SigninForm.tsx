@@ -38,8 +38,8 @@ export function SigninForm() {
 			<Flex gap="3" direction="column">
 				<form.Field name="email">
 					{(field) => (
-						<Box>
-							<Text as="label" size="2" weight="bold">
+						<label>
+							<Text size="2" weight="bold">
 								Email
 							</Text>
 							<TextField.Root
@@ -54,14 +54,14 @@ export function SigninForm() {
 									{error}
 								</Text>
 							))}
-						</Box>
+						</label>
 					)}
 				</form.Field>
 
 				<form.Field name="password">
 					{(field) => (
-						<Box>
-							<Text as="label" size="2" weight="bold">
+						<label>
+							<Text size="2" weight="bold">
 								Password
 							</Text>
 							<TextField.Root
@@ -76,7 +76,7 @@ export function SigninForm() {
 									{error}
 								</Text>
 							))}
-						</Box>
+						</label>
 					)}
 				</form.Field>
 

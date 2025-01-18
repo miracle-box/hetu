@@ -38,8 +38,8 @@ export function SignupForm() {
 			<Flex gap="3" direction="column">
 				<form.Field name="email">
 					{(field) => (
-						<Box>
-							<Text as="label" size="2" weight="bold">
+						<label>
+							<Text size="2" weight="bold">
 								Email
 							</Text>
 							<TextField.Root
@@ -54,14 +54,14 @@ export function SignupForm() {
 									{error}
 								</Text>
 							))}
-						</Box>
+						</label>
 					)}
 				</form.Field>
 
 				<form.Field name="name">
 					{(field) => (
-						<Box>
-							<Text as="label" size="2" weight="bold">
+						<label>
+							<Text size="2" weight="bold">
 								Username
 							</Text>
 							<TextField.Root
@@ -76,14 +76,14 @@ export function SignupForm() {
 									{error}
 								</Text>
 							))}
-						</Box>
+						</label>
 					)}
 				</form.Field>
 
 				<form.Field name="password">
 					{(field) => (
-						<Box>
-							<Text as="label" size="2" weight="bold">
+						<label>
+							<Text size="2" weight="bold">
 								Password
 							</Text>
 							<TextField.Root
@@ -98,7 +98,7 @@ export function SignupForm() {
 									{error}
 								</Text>
 							))}
-						</Box>
+						</label>
 					)}
 				</form.Field>
 
@@ -115,8 +115,8 @@ export function SignupForm() {
 					}}
 				>
 					{(field) => (
-						<Box>
-							<Text as="label" size="2" weight="bold">
+						<label>
+							<Text size="2" weight="bold">
 								Confirm password
 							</Text>
 							<TextField.Root
@@ -131,7 +131,7 @@ export function SignupForm() {
 									{error}
 								</Text>
 							))}
-						</Box>
+						</label>
 					)}
 				</form.Field>
 
