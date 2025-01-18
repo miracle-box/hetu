@@ -9,6 +9,7 @@ export const TexturesRoutes = new Elysia({
 	name: 'Routes.Textures',
 	prefix: '/textures',
 })
+	.use(authMiddleware(SessionScope.DEFAULT))
 	.get('/:id', async ({ params }) => await inspect(params), {
 		params: inspectParamsSchema,
 		response: {
@@ -18,6 +19,7 @@ export const TexturesRoutes = new Elysia({
 			summary: 'Get Texture',
 			description: 'Get a specific texture.',
 			tags: ['Textures'],
+			security: [{ session: [] }],
 		},
 	})
 	.get(
@@ -35,10 +37,10 @@ export const TexturesRoutes = new Elysia({
 				summary: 'Get Texture Image',
 				description: 'Redirect to actual file URL for a specific texture.',
 				tags: ['Textures'],
+				security: [{ session: [] }],
 			},
 		},
 	)
-	.use(authMiddleware(SessionScope.DEFAULT))
 	.post(
 		'/',
 		async ({ user, body, set }) => {
