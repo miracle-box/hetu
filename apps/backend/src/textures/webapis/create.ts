@@ -3,7 +3,7 @@ import { Static, t } from 'elysia';
 import { TexturesRepository } from '~backend/textures/textures.repository';
 
 export const createBodySchema = t.Object({
-	name: t.String({ minLength: 3, maxLength: 16 }),
+	name: t.String({ minLength: 3, maxLength: 128 }),
 	description: t.String(),
 	type: t.Enum(TextureType),
 	hash: t.String(),

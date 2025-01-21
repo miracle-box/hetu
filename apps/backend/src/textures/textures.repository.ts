@@ -4,6 +4,12 @@ import { and, eq } from 'drizzle-orm';
 import { Texture, TextureType } from '~backend/textures/texture.entities';
 
 export abstract class TexturesRepository {
+	static async findByUser(userId: string): Promise<Texture[]> {
+		return db.query.texturesTable.findMany({
+			where: eq(texturesTable.authorId, userId),
+		});
+	}
+
 	static async findById(id: string): Promise<Texture | null> {
 		const texture = await db.query.texturesTable.findFirst({
 			where: eq(texturesTable.id, id),

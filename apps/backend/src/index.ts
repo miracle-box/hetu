@@ -6,6 +6,7 @@ import { TexturesRoutes } from '~backend/textures/textures.routes';
 import { ProfilesRoutes } from '~backend/profiles/profiles.routes';
 import { YggdrasilRoutes } from '~backend/yggdrasil/yggdrasil.routes';
 import { FilesRoutes } from '~backend/files/files.routes';
+import { UsersRoutes } from '~backend/users/users.routes';
 
 const app = new Elysia()
 	.use(
@@ -44,6 +45,10 @@ const app = new Elysia()
 						description: 'API for general actions.',
 					},
 					{
+						name: 'Users',
+						description: 'API for managing user info.',
+					},
+					{
 						name: 'Textures',
 						description: 'API for managing textures.',
 					},
@@ -65,6 +70,7 @@ const app = new Elysia()
 	)
 	.use(AuthRoutes)
 	.use(FilesRoutes)
+	.use(UsersRoutes)
 	.use(ProfilesRoutes)
 	.use(TexturesRoutes)
 	.use(YggdrasilRoutes)

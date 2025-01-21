@@ -7,6 +7,7 @@ import { client as api } from '~web/libs/api/eden';
 
 type SessionCookie = {
 	id: string;
+	userId: string;
 	token: string;
 	expiresAt: Date;
 };
@@ -22,6 +23,7 @@ export async function setSessionCookie(session: SessionCookie) {
 	} as const;
 
 	cookieStore.set('sessionId', session.id, cookieOpts);
+	cookieStore.set('sessionUserId', session.userId, cookieOpts);
 	cookieStore.set('sessionToken', session.token, cookieOpts);
 	cookieStore.set('sessionExpiry', session.expiresAt.getTime().toString(), cookieOpts);
 }
@@ -30,6 +32,7 @@ export async function clearSessionCookie() {
 	const cookieStore = await cookies();
 
 	cookieStore.delete('sessionId');
+	cookieStore.delete('sessionUserId');
 	cookieStore.delete('sessionToken');
 	cookieStore.delete('sessionExpiry');
 }
@@ -38,14 +41,16 @@ export async function readSessionCookie(): Promise<SessionCookie | null> {
 	const cookieStore = await cookies();
 
 	const sessionId = cookieStore.get('sessionId')?.value;
+	const sessionUserId = cookieStore.get('sessionUserId')?.value;
 	const sessionToken = cookieStore.get('sessionToken')?.value;
 	const sessionExpiry = Number(cookieStore.get('sessionExpiry')?.value);
 
-	if (!sessionId || !sessionToken) return null;
+	if (!sessionId || !sessionUserId || !sessionToken) return null;
 	const expiryNumber = Number.isNaN(sessionExpiry) ? 0 : sessionExpiry;
 
 	return {
 		id: sessionId,
+		userId: sessionUserId,
 		token: sessionToken,
 		expiresAt: new Date(expiryNumber),
 	};
@@ -73,6 +78,7 @@ export async function renewSessionCookie() {
 
 		await setSessionCookie({
 			id: renewedSession.session.id,
+			userId: renewedSession.session.userId,
 			token: renewedSession.session.token,
 			// [TODO] Workaround for Eden bug of incorrectly transforming Date object
 			expiresAt: new Date(renewedSession.session.expiresAt),
@@ -88,5 +94,6 @@ export const validateSession = cache(async () => {
 
 	return {
 		authToken: `${session.id}:${session.token}`,
+		userId: session.userId,
 	};
 });

@@ -1,28 +1,30 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { Box, Button, Flex, Text, TextField } from '@radix-ui/themes';
+import { Box, Button, Dialog, Flex, Text, TextField } from '@radix-ui/themes';
+import { useMutation } from '@tanstack/react-query';
 import { mergeForm, useForm, useStore } from '@tanstack/react-form';
 import { TypeboxValidator } from '@repo/typebox-form-adapter';
-import { useMutation } from '@tanstack/react-query';
-import { signinFormOpts, SigninFormValues } from './shared';
-import { handleSignin } from './actions';
+import { createProfileFormOpts, CreateProfileFormValues } from './shared';
+import { handleCreateProfile } from './actions';
 
-export function SigninForm() {
+export function CreateProfileForm() {
 	const router = useRouter();
 
 	const submit = useMutation({
-		mutationFn: (values: SigninFormValues) => handleSignin(values),
+		mutationFn: (values: CreateProfileFormValues) => handleCreateProfile(values),
 		onSuccess: (data) => {
 			if ('formState' in data)
-				mergeForm<SigninFormValues, TypeboxValidator>(form, data.formState);
+				mergeForm<CreateProfileFormValues, TypeboxValidator>(form, data.formState);
 
-			if ('data' in data) router.push('/');
+			if ('data' in data) {
+				router.push(`/app/dashboard/profiles/${data.id}`);
+			}
 		},
 	});
 
 	const form = useForm({
-		...signinFormOpts,
+		...createProfileFormOpts,
 		onSubmit: async ({ value }) => submit.mutate(value),
 	});
 	const formErrors = useStore(form.store, (state) => state.errors);
@@ -36,38 +38,16 @@ export function SigninForm() {
 			}}
 		>
 			<Flex gap="3" direction="column">
-				<form.Field name="email">
+				<form.Field name="name">
 					{(field) => (
 						<label>
 							<Text size="2" weight="bold">
-								Email
+								Name
 							</Text>
 							<TextField.Root
-								name="email"
-								placeholder="Email"
-								type="email"
-								value={field.state.value}
-								onChange={(e) => field.handleChange(e.target.value)}
-							/>
-							{field.state.meta.errors.map((error) => (
-								<Text key={error as string} color="red" size="2">
-									{error}
-								</Text>
-							))}
-						</label>
-					)}
-				</form.Field>
-
-				<form.Field name="password">
-					{(field) => (
-						<label>
-							<Text size="2" weight="bold">
-								Password
-							</Text>
-							<TextField.Root
-								name="password"
-								placeholder="Password"
-								type="password"
+								name="name"
+								placeholder="Name"
+								type="text"
 								value={field.state.value}
 								onChange={(e) => field.handleChange(e.target.value)}
 							/>
@@ -92,9 +72,16 @@ export function SigninForm() {
 					selector={(formState) => [formState.canSubmit, formState.isSubmitting]}
 				>
 					{([canSubmit, isSubmitting]) => (
-						<Button type="submit" disabled={!canSubmit} loading={isSubmitting}>
-							Sign In
-						</Button>
+						<Flex justify="end" mt="3" gap="3">
+							<Dialog.Close>
+								<Button variant="soft" color="gray">
+									Cancel
+								</Button>
+							</Dialog.Close>
+							<Button type="submit" disabled={!canSubmit} loading={isSubmitting}>
+								Create profile
+							</Button>
+						</Flex>
 					)}
 				</form.Subscribe>
 			</Flex>

@@ -8,6 +8,18 @@ export default function Home() {
 			<Flex gap="3" direction="column">
 				<Heading>Hetu Web</Heading>
 
+				<Flex gap="3">
+					<Button asChild>
+						<Link href="/auth/signin">Sign In</Link>
+					</Button>
+					<Button asChild>
+						<Link href="/auth/signup">Sign Up</Link>
+					</Button>
+					<Button asChild>
+						<Link href="/app/dashboard">App</Link>
+					</Button>
+				</Flex>
+
 				<Callout.Root>
 					<Heading as="h3" size="3">
 						Running on
@@ -22,20 +34,11 @@ export default function Home() {
 
 				<Callout.Root>
 					<Heading as="h3" size="3">
-						Session Info
+						Session info
 					</Heading>
 
 					<SessionInfo />
 				</Callout.Root>
-
-				<Flex gap="3">
-					<Button asChild>
-						<Link href="/auth/signin">Sign In</Link>
-					</Button>
-					<Button asChild>
-						<Link href="/auth/signup">Sign Up</Link>
-					</Button>
-				</Flex>
 			</Flex>
 		</Container>
 	);

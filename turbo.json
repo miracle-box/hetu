@@ -14,7 +14,7 @@
       "persistent": true
     },
     "@repo/web#dev": {
-      "env": ["API_ROOT"]
+      "env": ["API_ROOT", "TEXTURE_STORE_ROOT", "TEXTURE_STORE_CONFIG"]
     },
     "@repo/backend#dev": {
       "env": [

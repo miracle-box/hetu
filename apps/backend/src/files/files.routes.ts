@@ -12,7 +12,7 @@ export const FilesRoutes = new Elysia({
 		'/',
 		async ({ body, set }) => {
 			set.status = 'Created';
-			await upload(body);
+			return await upload(body);
 		},
 		{
 			body: uploadBodySchema,
@@ -23,6 +23,7 @@ export const FilesRoutes = new Elysia({
 				summary: 'Upload File',
 				description: 'Upload file before calling resource creation APIs.',
 				tags: ['General'],
+				security: [{ session: [] }],
 			},
 		},
 	);

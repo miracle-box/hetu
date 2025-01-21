@@ -17,6 +17,7 @@ export async function handleSignin(form: SigninFormValues) {
 
 	await setSessionCookie({
 		id: data.session.id,
+		userId: data.session.userId,
 		token: data.session.token,
 		// [TODO] Workaround for Eden bug of incorrectly transforming Date object
 		expiresAt: new Date(data.session.expiresAt),

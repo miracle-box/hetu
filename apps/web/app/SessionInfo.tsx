@@ -7,8 +7,14 @@ export async function SessionInfo() {
 	return (
 		session && (
 			<Box>
-				<Text>Auth Token: </Text>
-				<Code>{session.authToken}</Code>
+				<Box>
+					<Text>User ID: </Text>
+					<Code>{session.userId}</Code>
+				</Box>
+				<Box>
+					<Text>Auth token: </Text>
+					<Code>{session.authToken}</Code>
+				</Box>
 			</Box>
 		)
 	);

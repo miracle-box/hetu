@@ -1,28 +1,40 @@
 'use client';
 
+import {
+	Box,
+	Button,
+	Dialog,
+	Flex,
+	SegmentedControl,
+	Text,
+	TextArea,
+	TextField,
+} from '@radix-ui/themes';
 import { useRouter } from 'next/navigation';
-import { Box, Button, Flex, Text, TextField } from '@radix-ui/themes';
 import { mergeForm, useForm, useStore } from '@tanstack/react-form';
-import { TypeboxValidator } from '@repo/typebox-form-adapter';
 import { useMutation } from '@tanstack/react-query';
-import { signupFormOpts, SignupFormValues } from './shared';
-import { handleSignup } from './actions';
+import { TypeboxValidator } from '@repo/typebox-form-adapter';
+import { createTextureFormOpts, CreateTextureFormValues } from './shared';
+import { handleCreateTexture } from './actions';
+import { Input } from '@repo/ui/Input';
 
-export function SignupForm() {
+export function CreateTextureForm() {
 	const router = useRouter();
 
 	const submit = useMutation({
-		mutationFn: (values: SignupFormValues) => handleSignup(values),
+		mutationFn: (values: CreateTextureFormValues) => handleCreateTexture(values),
 		onSuccess: (data) => {
 			if ('formState' in data)
-				mergeForm<SignupFormValues, TypeboxValidator>(form, data.formState);
+				mergeForm<CreateTextureFormValues, TypeboxValidator>(form, data.formState);
 
-			if ('data' in data) router.push('/');
+			if ('data' in data) {
+				router.push(`/app/dashboard/textures/${data.id}`);
+			}
 		},
 	});
 
 	const form = useForm({
-		...signupFormOpts,
+		...createTextureFormOpts,
 		onSubmit: async ({ value }) => submit.mutate(value),
 	});
 	const formErrors = useStore(form.store, (state) => state.errors);
@@ -36,37 +48,15 @@ export function SignupForm() {
 			}}
 		>
 			<Flex gap="3" direction="column">
-				<form.Field name="email">
-					{(field) => (
-						<label>
-							<Text size="2" weight="bold">
-								Email
-							</Text>
-							<TextField.Root
-								name="email"
-								placeholder="Email"
-								type="email"
-								value={field.state.value}
-								onChange={(e) => field.handleChange(e.target.value)}
-							/>
-							{field.state.meta.errors.map((error) => (
-								<Text key={error as string} color="red" size="2">
-									{error}
-								</Text>
-							))}
-						</label>
-					)}
-				</form.Field>
-
 				<form.Field name="name">
 					{(field) => (
 						<label>
 							<Text size="2" weight="bold">
-								Username
+								Name
 							</Text>
 							<TextField.Root
 								name="name"
-								placeholder="Username"
+								placeholder="Name"
 								type="text"
 								value={field.state.value}
 								onChange={(e) => field.handleChange(e.target.value)}
@@ -80,16 +70,15 @@ export function SignupForm() {
 					)}
 				</form.Field>
 
-				<form.Field name="password">
+				<form.Field name="description">
 					{(field) => (
 						<label>
 							<Text size="2" weight="bold">
-								Password
+								Description
 							</Text>
-							<TextField.Root
-								name="password"
-								placeholder="Password"
-								type="password"
+							<TextArea
+								name="description"
+								placeholder="Description"
 								value={field.state.value}
 								onChange={(e) => field.handleChange(e.target.value)}
 							/>
@@ -102,29 +91,54 @@ export function SignupForm() {
 					)}
 				</form.Field>
 
-				<form.Field
-					name="confirmPassword"
-					validators={{
-						onChangeListenTo: ['password'],
-						onChange: ({ value, fieldApi }) => {
-							if (value !== fieldApi.form.getFieldValue('password'))
-								return 'Passwords do not match';
+				<form.Field name="type">
+					{(field) => (
+						<label>
+							<Flex direction="column" gap="1">
+								<Text size="2" weight="bold">
+									Type
+								</Text>
+								<SegmentedControl.Root
+									defaultValue="skin"
+									value={field.state.value}
+									onValueChange={(value) =>
+										field.handleChange(value as 'skin' | 'skin_slim' | 'cape')
+									}
+								>
+									<SegmentedControl.Item value="skin">
+										Skin (Normal)
+									</SegmentedControl.Item>
+									<SegmentedControl.Item value="skin_slim">
+										Skin (Slim)
+									</SegmentedControl.Item>
+									<SegmentedControl.Item value="cape">Cape</SegmentedControl.Item>
+								</SegmentedControl.Root>
+							</Flex>
+							{field.state.meta.errors.map((error) => (
+								<Text key={error as string} color="red" size="2">
+									{error}
+								</Text>
+							))}
+						</label>
+					)}
+				</form.Field>
 
-							return undefined;
-						},
-					}}
-				>
+				<form.Field name="file">
 					{(field) => (
 						<label>
 							<Text size="2" weight="bold">
-								Confirm password
+								File
 							</Text>
-							<TextField.Root
-								name="confirmPassword"
-								placeholder="Confirm password"
-								type="password"
-								value={field.state.value}
-								onChange={(e) => field.handleChange(e.target.value)}
+							<Input
+								name="file"
+								type="file"
+								placeholder="Select File"
+								accept="image/png"
+								onChange={async (e) => {
+									const selectedFile = e.target.files?.[0];
+									if (selectedFile) field.handleChange(selectedFile);
+									else e.target.value = '';
+								}}
 							/>
 							{field.state.meta.errors.map((error) => (
 								<Text key={error as string} color="red" size="2">
@@ -147,9 +161,16 @@ export function SignupForm() {
 					selector={(formState) => [formState.canSubmit, formState.isSubmitting]}
 				>
 					{([canSubmit, isSubmitting]) => (
-						<Button type="submit" disabled={!canSubmit} loading={isSubmitting}>
-							Sign Up
-						</Button>
+						<Flex justify="end" mt="3" gap="3">
+							<Dialog.Close>
+								<Button variant="soft" color="gray">
+									Cancel
+								</Button>
+							</Dialog.Close>
+							<Button type="submit" disabled={!canSubmit} loading={isSubmitting}>
+								Create texture
+							</Button>
+						</Flex>
 					)}
 				</form.Subscribe>
 			</Flex>
