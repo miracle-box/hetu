@@ -2,13 +2,13 @@
 
 import React from 'react';
 import { Dialog } from '@radix-ui/themes';
-import { CreateTextureForm } from '~web/app/app/dashboard/textures/CreateTextureForm';
+import { CreateTextureForm } from './CreateTextureForm';
 
 export type Props = {
 	children: React.ReactNode;
 };
 
-export default function CreateTextureDialog({ children }: Props) {
+export function CreateTextureDialog({ children }: Props) {
 	return (
 		<Dialog.Root>
 			<Dialog.Trigger>{children}</Dialog.Trigger>

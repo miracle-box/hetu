@@ -101,3 +101,18 @@ export async function createTexture(body: {
 
 	return data;
 }
+
+export async function createProfile(body: { name: string }) {
+	const session = await validateSession();
+	if (!session) return null;
+
+	const { data, error } = await api.profiles.index.post(body, {
+		headers: { Authorization: `Bearer ${session.authToken}` },
+	});
+
+	if (!data) {
+		return null;
+	}
+
+	return data;
+}

@@ -1,6 +1,8 @@
-import { Badge, Card, Code, Container, DataList, Flex, Heading, Text } from '@radix-ui/themes';
+import { Button, Container, Flex, Grid, Heading, Text } from '@radix-ui/themes';
 import { AppNav } from '~web/libs/basicui/AppNav';
 import { getUserProfiles } from '~web/libs/actions/api';
+import { ProfileCard } from '~web/libs/basicui/ProfileCard';
+import CreateProfileDialog from './CreateProfileDialog';
 
 export default async function Profiles() {
 	const profiles = await getUserProfiles();
@@ -12,33 +14,16 @@ export default async function Profiles() {
 
 				<AppNav />
 
-				{profiles &&
-					profiles.map((profile) => (
-						<Card key={profile.id}>
-							<DataList.Root>
-								<DataList.Item>
-									<DataList.Label>Username</DataList.Label>
-									<DataList.Value>{profile.name}</DataList.Value>
-								</DataList.Item>
-								<DataList.Item>
-									<DataList.Label>UUID</DataList.Label>
-									<DataList.Value>
-										<Code>{profile.id}</Code>
-									</DataList.Value>
-								</DataList.Item>
-								<DataList.Item>
-									<DataList.Label>Primary Profile</DataList.Label>
-									<DataList.Value>
-										{profile.isPrimary ? (
-											<Badge color="green">Primary</Badge>
-										) : (
-											<Badge color="gray">Not Primary</Badge>
-										)}
-									</DataList.Value>
-								</DataList.Item>
-							</DataList.Root>
-						</Card>
-					))}
+				<CreateProfileDialog>
+					<Button>Create profile</Button>
+				</CreateProfileDialog>
+
+				<Grid columns={{ xs: '1', sm: '2', lg: '3' }} gap={3}>
+					{profiles &&
+						profiles.map((profile) => (
+							<ProfileCard key={profile.id} profile={profile} />
+						))}
+				</Grid>
 
 				{profiles && profiles.length <= 0 && <Text>No profiles</Text>}
 			</Flex>

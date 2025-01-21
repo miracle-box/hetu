@@ -52,12 +52,12 @@ export function TextureCard({ texture }: Props) {
 					width={64}
 					height={texture.type === 'cape' ? 32 : 64}
 					src={`${process.env.TEXTURE_STORE_ROOT}/${texture.hash.slice(0, 2)}/${texture.hash}`}
-					quality={100}
 					style={{
 						imageRendering: 'pixelated',
 						height: '12rem',
 						width: 'auto',
 					}}
+					unoptimized
 				/>
 			</Box>
 		</Card>
