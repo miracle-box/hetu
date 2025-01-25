@@ -8,7 +8,9 @@ export const createBodySchema = t.Object({
 	type: t.Enum(TextureType),
 	hash: t.String(),
 });
-export const createResponseSchema = textureSchema;
+export const createResponseSchema = t.Object({
+	texture: textureSchema,
+});
 
 export async function create(
 	body: Static<typeof createBodySchema>,
@@ -32,5 +34,5 @@ export async function create(
 	});
 	if (!texture) throw new Error('Failed to create texture');
 
-	return texture;
+	return { texture };
 }

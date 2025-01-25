@@ -5,7 +5,9 @@ import { profileSchema } from '~backend/profiles/profile.entities';
 export const createBodySchema = t.Object({
 	name: t.String({ pattern: '[0-9A-Za-z_]{3,16}' }),
 });
-export const createResponseSchema = profileSchema;
+export const createResponseSchema = t.Object({
+	profile: profileSchema,
+});
 
 export async function create(
 	body: Static<typeof createBodySchema>,
@@ -16,9 +18,11 @@ export async function create(
 
 	const hasPrimary = !!(await ProfilesRepository.findPrimaryByUser(userId));
 
-	return await ProfilesRepository.create({
-		authorId: userId,
-		name: body.name,
-		isPrimary: !hasPrimary,
-	});
+	return {
+		profile: await ProfilesRepository.create({
+			authorId: userId,
+			name: body.name,
+			isPrimary: !hasPrimary,
+		}),
+	};
 }

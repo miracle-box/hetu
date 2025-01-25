@@ -6,7 +6,9 @@ export const getUserTexturesParamsSchema = t.Object({
 	id: t.String(),
 });
 
-export const getUserTexturesResponseSchema = t.Array(textureSchema);
+export const getUserTexturesResponseSchema = t.Object({
+	textures: t.Array(textureSchema),
+});
 
 export async function getUserTextures(
 	params: Static<typeof getUserTexturesParamsSchema>,
@@ -15,5 +17,7 @@ export async function getUserTextures(
 	// [TODO] Allow get other user's info (profile digest).
 	if (userId !== params.id) throw new Error('You can only get your own info.');
 
-	return await TexturesRepository.findByUser(params.id);
+	return {
+		textures: await TexturesRepository.findByUser(params.id),
+	};
 }

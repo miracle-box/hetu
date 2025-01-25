@@ -14,7 +14,9 @@ export const updateBodySchema = t.Partial(
 		capeTextureId: t.String(),
 	}),
 );
-export const updateResponseSchema = profileSchema;
+export const updateResponseSchema = t.Object({
+	profile: profileSchema,
+});
 
 export async function update(
 	params: Static<typeof updateParamsSchema>,
@@ -39,5 +41,7 @@ export async function update(
 		if (!(capeTexture.type === TextureType.CAPE)) throw new Error('Cape texture invalid.');
 	}
 
-	return await ProfilesRepository.update(params.id, body);
+	return {
+		profile: await ProfilesRepository.update(params.id, body),
+	};
 }

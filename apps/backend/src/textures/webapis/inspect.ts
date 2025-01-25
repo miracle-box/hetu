@@ -5,7 +5,9 @@ import { TexturesRepository } from '~backend/textures/textures.repository';
 export const inspectParamsSchema = t.Object({
 	id: t.String(),
 });
-export const inspectResponseSchema = textureSchema;
+export const inspectResponseSchema = t.Object({
+	texture: textureSchema,
+});
 
 export async function inspect(
 	params: Static<typeof inspectParamsSchema>,
@@ -16,5 +18,5 @@ export async function inspect(
 		throw new Error('Texture not found');
 	}
 
-	return texture;
+	return { texture };
 }

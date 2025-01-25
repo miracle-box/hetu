@@ -6,7 +6,9 @@ export const getUserInfoParamsSchema = t.Object({
 	id: t.String(),
 });
 
-export const getUserInfoResponseSchema = userSchema;
+export const getUserInfoResponseSchema = t.Object({
+	user: userSchema,
+});
 
 export async function getUserInfo(
 	params: Static<typeof getUserInfoParamsSchema>,
@@ -18,5 +20,7 @@ export async function getUserInfo(
 	const userInfo = await UsersRepository.findById(params.id);
 	if (!userInfo) throw new Error('User not found.');
 
-	return userInfo;
+	return {
+		user: userInfo,
+	};
 }

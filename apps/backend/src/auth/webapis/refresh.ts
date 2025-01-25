@@ -15,7 +15,5 @@ export async function refresh(
 		scope: SessionScope.DEFAULT,
 	})) as Session<typeof SessionScope.DEFAULT>;
 
-	return {
-		session,
-	};
+	return { session };
 }

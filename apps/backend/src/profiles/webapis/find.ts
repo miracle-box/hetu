@@ -6,7 +6,9 @@ export const findQuery = t.Object({
 	idOrName: t.String(),
 	type: t.Union([t.Literal('id'), t.Literal('name')]),
 });
-export const findResponse = profileSchema;
+export const findResponse = t.Object({
+	profile: profileSchema,
+});
 
 export async function find(query: Static<typeof findQuery>): Promise<Static<typeof findResponse>> {
 	let profile: Profile | null = null;
@@ -16,5 +18,5 @@ export async function find(query: Static<typeof findQuery>): Promise<Static<type
 
 	if (!profile) throw new Error('Profile not found');
 
-	return profile;
+	return { profile };
 }
