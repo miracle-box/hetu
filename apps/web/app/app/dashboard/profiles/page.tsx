@@ -18,7 +18,7 @@ export default async function Profiles() {
 					<Button>Create profile</Button>
 				</CreateProfileDialog>
 
-				<Grid columns={{ xs: '1', sm: '2', lg: '3' }} gap={3}>
+				<Grid columns={{ xs: '1', sm: '2', lg: '3' }} gap="3">
 					{profiles &&
 						profiles.map((profile) => (
 							<ProfileCard key={profile.id} profile={profile} />

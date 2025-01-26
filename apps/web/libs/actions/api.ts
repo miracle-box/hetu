@@ -19,7 +19,7 @@ export async function getUserInfo() {
 		return null;
 	}
 
-	return data;
+	return data.user;
 }
 
 export async function getUserProfiles() {
@@ -38,7 +38,7 @@ export async function getUserProfiles() {
 		return null;
 	}
 
-	return data;
+	return data.profiles;
 }
 
 export async function getUserTextures() {
@@ -57,7 +57,7 @@ export async function getUserTextures() {
 		return null;
 	}
 
-	return data;
+	return data.textures;
 }
 
 export async function uploadTexture(body: { file: File; type: 'texture_skin' | 'texture_cape' }) {
@@ -79,7 +79,7 @@ export async function uploadTexture(body: { file: File; type: 'texture_skin' | '
 		return null;
 	}
 
-	return data;
+	return data.file;
 }
 
 export async function createTexture(body: {
@@ -99,7 +99,7 @@ export async function createTexture(body: {
 		return null;
 	}
 
-	return data;
+	return data.texture;
 }
 
 export async function createProfile(body: { name: string }) {
@@ -114,5 +114,5 @@ export async function createProfile(body: { name: string }) {
 		return null;
 	}
 
-	return data;
+	return data.profile;
 }

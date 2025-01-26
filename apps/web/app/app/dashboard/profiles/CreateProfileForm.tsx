@@ -18,7 +18,7 @@ export function CreateProfileForm() {
 				mergeForm<CreateProfileFormValues, TypeboxValidator>(form, data.formState);
 
 			if ('data' in data) {
-				router.push(`/app/dashboard/profiles/${data.id}`);
+				router.push(`/app/dashboard/profiles/${data.data.id}`);
 			}
 		},
 	});

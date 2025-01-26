@@ -28,7 +28,7 @@ export function CreateTextureForm() {
 				mergeForm<CreateTextureFormValues, TypeboxValidator>(form, data.formState);
 
 			if ('data' in data) {
-				router.push(`/app/dashboard/textures/${data.id}`);
+				router.push(`/app/dashboard/textures/${data.data.id}`);
 			}
 		},
 	});
