@@ -3,6 +3,7 @@ import { UsersRepository } from '~backend/users/users.repository';
 import { PasswordService } from '~backend/services/auth/password';
 import { SessionService } from '~backend/services/auth/session';
 import { Session, sessionSchema, SessionScope } from '~backend/auth/auth.entities';
+import { AppError } from '~backend/shared/middlewares/errors/app-error';
 
 export const signupBodySchema = t.Object({
 	name: t.String({
@@ -25,8 +26,7 @@ export async function signup(
 	const passwordHash = await PasswordService.hash(body.password);
 
 	if (await UsersRepository.emailOrNameExists(body.email, body.name))
-		throw new Error('User already exists.');
-
+		throw new AppError('auth/user-exists');
 	const user = await UsersRepository.createWithPassword({
 		name: body.name,
 		email: body.email,

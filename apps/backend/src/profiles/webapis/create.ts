@@ -1,6 +1,7 @@
 import { Static, t } from 'elysia';
 import { ProfilesRepository } from '~backend/profiles/profiles.repository';
 import { profileSchema } from '~backend/profiles/profile.entities';
+import { AppError } from '~backend/shared/middlewares/errors/app-error';
 
 export const createBodySchema = t.Object({
 	name: t.String({ pattern: '[0-9A-Za-z_]{3,16}' }),
@@ -14,7 +15,7 @@ export async function create(
 	userId: string,
 ): Promise<Static<typeof createResponseSchema>> {
 	const nameExists = !!(await ProfilesRepository.findByName(body.name));
-	if (nameExists) throw new Error('Player name already been taken.');
+	if (nameExists) throw new AppError('profiles/name-exists');
 
 	const hasPrimary = !!(await ProfilesRepository.findPrimaryByUser(userId));
 

@@ -1,6 +1,7 @@
 import { Static, t } from 'elysia';
 import { Profile, profileSchema } from '~backend/profiles/profile.entities';
 import { ProfilesRepository } from '~backend/profiles/profiles.repository';
+import { AppError } from '~backend/shared/middlewares/errors/app-error';
 
 export const findQuery = t.Object({
 	idOrName: t.String(),
@@ -16,7 +17,7 @@ export async function find(query: Static<typeof findQuery>): Promise<Static<type
 	if (query.type === 'id') profile = await ProfilesRepository.findById(query.idOrName);
 	else if (query.type === 'name') profile = await ProfilesRepository.findByName(query.idOrName);
 
-	if (!profile) throw new Error('Profile not found');
+	if (!profile) throw new AppError('profiles/not-found');
 
 	return { profile };
 }

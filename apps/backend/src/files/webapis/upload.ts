@@ -1,6 +1,7 @@
 import { Static, t } from 'elysia';
 import { fileInfoSchema, FileType } from '~backend/files/files.entities';
 import { uploadTexture } from '~backend/files/usecases/upload-texture';
+import { AppError } from '~backend/shared/middlewares/errors/app-error';
 import { createEnumLikeValuesSchema } from '~backend/shared/typing/utils';
 
 export const uploadBodySchema = t.Object({
@@ -23,6 +24,6 @@ export async function upload(
 			file: await uploadTexture(body.file, body.type),
 		};
 	} else {
-		throw new Error('Unknown file type');
+		throw new AppError('files/invalid-file-type');
 	}
 }

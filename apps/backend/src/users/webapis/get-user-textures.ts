@@ -1,4 +1,5 @@
 import { Static, t } from 'elysia';
+import { AppError } from '~backend/shared/middlewares/errors/app-error';
 import { textureSchema } from '~backend/textures/texture.entities';
 import { TexturesRepository } from '~backend/textures/textures.repository';
 
@@ -15,7 +16,7 @@ export async function getUserTextures(
 	userId: string,
 ): Promise<Static<typeof getUserTexturesResponseSchema>> {
 	// [TODO] Allow get other user's info (profile digest).
-	if (userId !== params.id) throw new Error('You can only get your own info.');
+	if (userId !== params.id) throw new AppError('users/forbidden');
 
 	return {
 		textures: await TexturesRepository.findByUser(params.id),

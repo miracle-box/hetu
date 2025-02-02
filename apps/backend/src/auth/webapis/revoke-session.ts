@@ -1,5 +1,6 @@
 import { SessionService } from '~backend/services/auth/session';
 import { Static, t } from 'elysia';
+import { AppError } from '~backend/shared/middlewares/errors/app-error';
 
 export const revokeSessionParamsSchema = t.Object({
 	id: t.String(),
@@ -12,7 +13,7 @@ export async function revokeSession(
 ): Promise<Static<typeof revokeSessionResponseSchema>> {
 	const session = await SessionService.findById(params.id);
 	if (session?.userId !== userId) {
-		throw new Error('Invalid session');
+		throw new AppError('auth/invalid-session');
 	}
 
 	await SessionService.revoke(params.id);

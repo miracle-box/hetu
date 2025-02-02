@@ -3,6 +3,7 @@ import { UsersRepository } from '~backend/users/users.repository';
 import { SessionService } from '~backend/services/auth/session';
 import { PasswordService } from '~backend/services/auth/password';
 import { Session, sessionSchema, SessionScope } from '~backend/auth/auth.entities';
+import { AppError } from '~backend/shared/middlewares/errors/app-error';
 
 export const signinBodySchema = t.Object({
 	email: t.String(),
@@ -19,12 +20,12 @@ export async function signin(
 
 	// [TODO] Consider add login limit to prevent possible attacks.
 	if (!user) {
-		throw new Error('Invalid credentials.');
+		throw new AppError('auth/invalid-credentials');
 	}
 
 	const passwordCorrect = await PasswordService.compare(body.password, user.passwordHash);
 	if (!passwordCorrect) {
-		throw new Error('Invalid credentials.');
+		throw new AppError('auth/invalid-credentials');
 	}
 
 	const session = (await SessionService.create(user.id, {

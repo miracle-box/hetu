@@ -3,6 +3,7 @@ import { AuthRepository } from '~backend/auth/auth.repository';
 import { PasswordService } from '~backend/services/auth/password';
 import { SessionService } from '~backend/services/auth/session';
 import { Session, sessionSchema, SessionScope } from '~backend/auth/auth.entities';
+import { AppError } from '~backend/shared/middlewares/errors/app-error';
 
 export const changePasswordBodySchema = t.Object({
 	oldPassword: t.String(),
@@ -26,7 +27,7 @@ export async function changePassword(
 		? await PasswordService.compare(body.oldPassword, oldPasswordHash)
 		: true;
 	if (!oldPasswordCorrect) {
-		throw new Error('Invalid old password.');
+		throw new AppError('auth/invalid-credentials');
 	}
 
 	const hashedNewPassword = await PasswordService.hash(body.newPassword);
