@@ -11,6 +11,7 @@ import { PasswordService } from '~backend/services/auth/password';
 import { SessionService } from '~backend/services/auth/session';
 import { YggdrasilRepository } from '~backend/yggdrasil/yggdrasil.repository';
 import { SessionScope } from '~backend/auth/auth.entities';
+import { ForbiddenOperationException } from '~backend/yggdrasil/utils/errors';
 
 export const authenticateBodySchema = t.Composite([
 	yggCredentialsSchema,
@@ -35,17 +36,15 @@ export const authenticateResponseSchema = t.Composite([
 export async function authenticate(
 	body: Static<typeof authenticateBodySchema>,
 ): Promise<Static<typeof authenticateResponseSchema>> {
-	// [TODO] Error handling in Mojang's format
-
 	const user = await UsersRepository.findUserWithPassword(body.username);
 	// [TODO] Consider add login limit to prevent possible attacks.
 	if (!user) {
-		throw new Error('Invalid credentials.');
+		throw new ForbiddenOperationException('Invalid credentials. Invalid username or password.');
 	}
 
 	const passwordCorrect = PasswordService.compare(body.password, user.passwordHash);
 	if (!passwordCorrect) {
-		throw new Error('Invalid credentials.');
+		throw new ForbiddenOperationException('Invalid credentials. Invalid username or password.');
 	}
 
 	const clientToken = YggdrasilService.generateClientToken(body.clientToken);

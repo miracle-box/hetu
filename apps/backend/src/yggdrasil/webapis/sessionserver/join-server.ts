@@ -1,6 +1,7 @@
 import { Static, t } from 'elysia';
 import { YggdrasilRepository } from '~backend/yggdrasil/yggdrasil.repository';
 import { Session, SessionScope } from '~backend/auth/auth.entities';
+import { ForbiddenOperationException } from '~backend/yggdrasil/utils/errors';
 
 export const joinServerBodySchema = t.Object({
 	accessToken: t.String(),
@@ -14,7 +15,7 @@ export async function joinServer(
 	session: Session<typeof SessionScope.YGGDRASIL>,
 ): Promise<Static<typeof joinServerResponseSchema>> {
 	if (session.metadata.selectedProfile !== body.selectedProfile)
-		throw new Error('Invalid profile selected.');
+		throw new ForbiddenOperationException('Invalid profile selected.');
 
 	// [TODO] Make this configurable (30s for now)
 	const expiresAt = new Date(new Date().getTime() + 30 * 1000);

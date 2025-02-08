@@ -1,4 +1,4 @@
-import { Static, t } from 'elysia';
+import { NotFoundError, Static, t } from 'elysia';
 import { yggProfileSchema } from '~backend/yggdrasil/yggdrasil.entities';
 import { YggdrasilService } from '~backend/yggdrasil/yggdrasil.service';
 import { YggdrasilRepository } from '~backend/yggdrasil/yggdrasil.repository';
@@ -17,7 +17,7 @@ export async function getProfile(
 ): Promise<Static<typeof getProfileResponseSchema>> {
 	const unsigned = query.unsigned ?? true;
 	const profileWithSkins = await YggdrasilRepository.getProfileDigestWithSkinsById(params.id);
-	if (!profileWithSkins) throw new Error('Profile not found!');
+	if (!profileWithSkins) throw new NotFoundError();
 
 	return YggdrasilService.getYggdrasilProfile(profileWithSkins, !unsigned);
 }

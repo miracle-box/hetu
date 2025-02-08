@@ -3,6 +3,7 @@ import { ProfilesRepository } from '~backend/profiles/profiles.repository';
 import { profileSchema } from '~backend/profiles/profile.entities';
 import { TexturesRepository } from '~backend/textures/textures.repository';
 import { TextureType } from '~backend/textures/texture.entities';
+import { AppError } from '~backend/shared/middlewares/errors/app-error';
 
 export const updateParamsSchema = t.Object({
 	id: t.String(),
@@ -14,7 +15,9 @@ export const updateBodySchema = t.Partial(
 		capeTextureId: t.String(),
 	}),
 );
-export const updateResponseSchema = profileSchema;
+export const updateResponseSchema = t.Object({
+	profile: profileSchema,
+});
 
 export async function update(
 	params: Static<typeof updateParamsSchema>,
@@ -22,22 +25,25 @@ export async function update(
 	userId: string,
 ): Promise<Static<typeof updateResponseSchema>> {
 	const profile = await ProfilesRepository.findById(params.id);
-	if (!profile) throw new Error('Profile does not exist');
-
-	if (profile.authorId != userId) throw new Error('Profile does not exist.');
+	if (!profile) throw new AppError('profiles/not-exists');
+	if (profile.authorId != userId) throw new AppError('profiles/forbidden');
 
 	if (body.skinTextureId) {
 		const skinTexture = await TexturesRepository.findById(body.skinTextureId);
-		if (!skinTexture) throw new Error('Skin texture does not exist.');
-		if (!(skinTexture.type === TextureType.SKIN || skinTexture.type === TextureType.SKIN_SLIM))
-			throw new Error('Skin texture invalid.');
+		if (
+			!skinTexture ||
+			(skinTexture.type !== TextureType.SKIN && skinTexture.type !== TextureType.SKIN_SLIM)
+		)
+			throw new AppError('profiles/skin-invalid');
 	}
 
 	if (body.capeTextureId) {
 		const capeTexture = await TexturesRepository.findById(body.capeTextureId);
-		if (!capeTexture) throw new Error('Cape texture does not exist.');
-		if (!(capeTexture.type === TextureType.CAPE)) throw new Error('Cape texture invalid.');
+		if (!capeTexture || capeTexture.type !== TextureType.CAPE)
+			throw new AppError('profiles/cape-invalid');
 	}
 
-	return await ProfilesRepository.update(params.id, body);
+	return {
+		profile: await ProfilesRepository.update(params.id, body),
+	};
 }

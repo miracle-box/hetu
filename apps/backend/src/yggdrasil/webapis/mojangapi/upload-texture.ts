@@ -1,4 +1,4 @@
-import { Static, t } from 'elysia';
+import { NotFoundError, Static, t } from 'elysia';
 import { YggdrasilRepository } from '~backend/yggdrasil/yggdrasil.repository';
 import { ProfilesRepository } from '~backend/profiles/profiles.repository';
 import { TexturesRepository } from '~backend/textures/textures.repository';
@@ -21,7 +21,7 @@ export async function uploadTexture(
 	body: Static<typeof uploadTextureBodySchema>,
 ): Promise<Static<typeof uploadTextureResponseSchema>> {
 	const profile = await YggdrasilRepository.getProfileDigestById(params.id);
-	if (!profile) throw new Error('Profile not found');
+	if (!profile) throw new NotFoundError();
 
 	// Upload file
 	const uploadedFile = await uploadTextureUsecase(

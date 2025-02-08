@@ -1,6 +1,7 @@
 import { textureSchema, TextureType } from '~backend/textures/texture.entities';
 import { Static, t } from 'elysia';
 import { TexturesRepository } from '~backend/textures/textures.repository';
+import { AppError } from '~backend/shared/middlewares/errors/app-error';
 
 export const createBodySchema = t.Object({
 	name: t.String({ minLength: 3, maxLength: 128 }),
@@ -8,7 +9,9 @@ export const createBodySchema = t.Object({
 	type: t.Enum(TextureType),
 	hash: t.String(),
 });
-export const createResponseSchema = textureSchema;
+export const createResponseSchema = t.Object({
+	texture: textureSchema,
+});
 
 export async function create(
 	body: Static<typeof createBodySchema>,
@@ -21,7 +24,7 @@ export async function create(
 		body.hash,
 	);
 	// [TODO] Provide existing texture id for redirecting.
-	if (existingTexture) throw new Error('Texture already exists');
+	if (existingTexture) throw new AppError('textures/file-exists');
 
 	const texture = await TexturesRepository.create({
 		authorId: userId,
@@ -30,7 +33,6 @@ export async function create(
 		type: body.type,
 		hash: body.hash,
 	});
-	if (!texture) throw new Error('Failed to create texture');
 
-	return texture;
+	return { texture };
 }
