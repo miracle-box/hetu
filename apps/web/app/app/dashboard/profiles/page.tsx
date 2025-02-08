@@ -1,4 +1,5 @@
 import { Button, Container, Flex, Grid, Heading, Text } from '@radix-ui/themes';
+import Link from 'next/link';
 import { AppNav } from '~web/libs/basicui/AppNav';
 import { getUserProfiles } from '~web/libs/actions/api';
 import { ProfileCard } from '~web/libs/basicui/ProfileCard';
@@ -21,7 +22,13 @@ export default async function Profiles() {
 				<Grid columns={{ xs: '1', sm: '2', lg: '3' }} gap="3">
 					{profiles &&
 						profiles.map((profile) => (
-							<ProfileCard key={profile.id} profile={profile} />
+							<ProfileCard key={profile.id} profile={profile}>
+								<Button asChild>
+									<Link href={`/app/dashboard/profiles/${profile.id}`}>
+										Inspect
+									</Link>
+								</Button>
+							</ProfileCard>
 						))}
 				</Grid>
 
