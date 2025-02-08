@@ -8,6 +8,10 @@ import { SessionService } from '~backend/services/auth/session';
 import { YggdrasilService } from '~backend/yggdrasil/yggdrasil.service';
 import { Session, SessionScope } from '~backend/auth/auth.entities';
 import { YggdrasilRepository } from '~backend/yggdrasil/yggdrasil.repository';
+import {
+	ForbiddenOperationException,
+	IllegalArgumentException,
+} from '~backend/yggdrasil/utils/errors';
 
 export const refreshBodySchema = t.Composite([
 	yggTokenSchema,
@@ -28,10 +32,13 @@ export async function refresh(
 	body: Static<typeof refreshBodySchema>,
 	session: Session<typeof SessionScope.YGGDRASIL>,
 ): Promise<Static<typeof refreshResponseSchema>> {
-	// [TODO] Error handling in Mojang's format
-
 	// Use profile form request body if provided, otherwise use the one from the session.
 	const sessionProfileId = session.metadata.selectedProfile;
+
+	// Must NOT have a profile selected when selecting profiles.
+	if (sessionProfileId !== null && body.selectedProfile?.id === sessionProfileId)
+		throw new ForbiddenOperationException('Access token already has a profile assigned.');
+
 	const profile = body.selectedProfile
 		? await YggdrasilRepository.getProfileDigestById(body.selectedProfile.id)
 		: sessionProfileId
@@ -39,7 +46,8 @@ export async function refresh(
 			: null;
 
 	// Profile must be selected
-	if (!profile) throw new Error('You should select a profile when refreshing a session!');
+	if (!profile)
+		throw new IllegalArgumentException('Profile must be selected when refreshing a token!');
 	const yggSelectedProfile = YggdrasilService.getYggdrasilProfileDigest(profile);
 
 	const clientToken = YggdrasilService.generateClientToken(body.clientToken);

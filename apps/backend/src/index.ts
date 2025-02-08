@@ -8,13 +8,15 @@ import { TexturesRoutes } from '~backend/textures/textures.routes';
 import { YggdrasilRoutes } from '~backend/yggdrasil/yggdrasil.routes';
 
 const app = new Elysia()
+	// Putting yggdrasil routes here avoids the error being handled twice
+	//  [TODO] I'm Looking for solutions better than this.
+	.use(YggdrasilRoutes)
 	.use(middlewares)
 	.use(AuthRoutes)
 	.use(FilesRoutes)
 	.use(UsersRoutes)
 	.use(ProfilesRoutes)
 	.use(TexturesRoutes)
-	.use(YggdrasilRoutes)
 	.listen(3000);
 
 console.log(`Service is running at ${app.server?.hostname}:${app.server?.port}`);

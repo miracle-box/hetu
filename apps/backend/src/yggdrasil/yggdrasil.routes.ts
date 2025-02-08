@@ -49,11 +49,13 @@ import {
 } from '~backend/yggdrasil/webapis/mojangapi/reset-texture';
 import { SessionScope } from '~backend/auth/auth.entities';
 import { validateTokenMiddleware } from '~backend/yggdrasil/validate-token.middleware';
+import { yggdrasilErrorsHandler } from './utils/errors';
 
 export const YggdrasilRoutes = new Elysia({
 	name: 'Routes.Yggdrasil',
 	prefix: '/yggdrasil',
 })
+	.use(yggdrasilErrorsHandler)
 	.group('/', (app) =>
 		app.get('', async () => getMetadata(), {
 			response: {

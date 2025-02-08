@@ -3,15 +3,16 @@ import { SessionService } from '~backend/services/auth/session';
 import { SessionScope } from '~backend/auth/auth.entities';
 import { YggdrasilService } from '~backend/yggdrasil/yggdrasil.service';
 import { hasProperty } from '~backend/shared/typing/utils';
+import { ForbiddenOperationException } from './utils/errors';
 
 export const validateTokenMiddleware = (validateClientToken: boolean) => (app: Elysia) =>
 	app.derive(async ({ body }) => {
 		// Make sure accessToken is in the body.
 		if (!hasProperty(body, 'accessToken') || typeof body.accessToken !== 'string')
-			throw new Error('Unauthorized');
+			throw new ForbiddenOperationException('Invalid token.');
 
 		const accessToken = YggdrasilService.parseAccessToken(body.accessToken);
-		if (!accessToken) throw new Error('Unauthorized');
+		if (!accessToken) throw new ForbiddenOperationException('Invalid token.');
 
 		const info = await SessionService.validate(
 			accessToken.sessionId,
@@ -19,7 +20,7 @@ export const validateTokenMiddleware = (validateClientToken: boolean) => (app: E
 			SessionScope.YGGDRASIL,
 		);
 		if (!info || info.session.metadata.scope !== SessionScope.YGGDRASIL)
-			throw new Error('Unauthorized');
+			throw new ForbiddenOperationException('Invalid token.');
 
 		if (validateClientToken) {
 			// Invalid clientToken
@@ -27,7 +28,7 @@ export const validateTokenMiddleware = (validateClientToken: boolean) => (app: E
 				hasProperty(body, 'clientToken') &&
 				body.clientToken !== info.session.metadata.clientToken
 			) {
-				throw new Error('Unauthorized');
+				throw new ForbiddenOperationException('Invalid token.');
 			}
 		}
 
