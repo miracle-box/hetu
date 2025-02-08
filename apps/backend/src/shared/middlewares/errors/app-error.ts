@@ -30,6 +30,7 @@ export class AppError<TErrorCode extends keyof typeof APP_ERRORS> extends Error 
 			this.message = errorInfo.message.call(this, params[0]);
 			if (errorInfo.details.length > 0) this.details = params[1];
 		} else {
+			this.message = errorInfo.message.call(this);
 			if (errorInfo.details.length > 0) this.details = params[0];
 		}
 	}

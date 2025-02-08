@@ -10,7 +10,8 @@ export type AppErrorInfo<TMessageParams> = {
 export const APP_ERRORS = {
 	unauthorized: {
 		status: 401,
-		message: () => 'You must be authorized to access this resource. Please sign in.',
+		message: () =>
+			'You must be authorized to access this resource. Please check for token validity.',
 		details: t.Void(),
 	},
 	'auth/invalid-credentials': {
