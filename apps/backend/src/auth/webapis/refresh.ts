@@ -1,19 +1,30 @@
-import { Static, t } from 'elysia';
+import { Elysia, t } from 'elysia';
 import { Session, sessionSchema, SessionScope } from '~backend/auth/auth.entities';
 import { SessionService } from '~backend/services/auth/session';
+import { authMiddleware } from '~backend/shared/auth/middleware';
 
-export const refreshResponseSchema = t.Object({
-	session: sessionSchema(t.Literal(SessionScope.DEFAULT)),
-});
+export const refreshHandler = new Elysia().use(authMiddleware(SessionScope.DEFAULT)).post(
+	'/sessions/refresh',
+	async ({ session }) => {
+		await SessionService.revoke(session.id);
 
-export async function refresh(
-	oldSession: Session<typeof SessionScope.DEFAULT>,
-): Promise<Static<typeof refreshResponseSchema>> {
-	await SessionService.revoke(oldSession.id);
+		const newSession = (await SessionService.create(session.userId, {
+			scope: SessionScope.DEFAULT,
+		})) as Session<typeof SessionScope.DEFAULT>;
 
-	const session = (await SessionService.create(oldSession.userId, {
-		scope: SessionScope.DEFAULT,
-	})) as Session<typeof SessionScope.DEFAULT>;
-
-	return { session };
-}
+		return { session: newSession };
+	},
+	{
+		response: {
+			200: t.Object({
+				session: sessionSchema(t.Literal(SessionScope.DEFAULT)),
+			}),
+		},
+		detail: {
+			summary: 'Refresh Session',
+			description: 'Invalidate the current session and create a new one.',
+			tags: ['Authentication'],
+			security: [{ session: [] }],
+		},
+	},
+);

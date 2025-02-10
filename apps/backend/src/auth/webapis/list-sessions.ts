@@ -1,15 +1,26 @@
-import { Static, t } from 'elysia';
-import { sessionDigestSchema, sessionScopeSchema } from '~backend/auth/auth.entities';
+import { Elysia, t } from 'elysia';
+import { sessionDigestSchema, SessionScope, sessionScopeSchema } from '~backend/auth/auth.entities';
 import { SessionService } from '~backend/services/auth/session';
+import { authMiddleware } from '~backend/shared/auth/middleware';
 
-export const listSessionsResponseSchema = t.Object({
-	sessions: t.Array(sessionDigestSchema(sessionScopeSchema)),
-});
-
-export async function listSessions(
-	userId: string,
-): Promise<Static<typeof listSessionsResponseSchema>> {
-	return {
-		sessions: await SessionService.findUserSessions(userId),
-	};
-}
+export const listSessionsHandler = new Elysia().use(authMiddleware(SessionScope.DEFAULT)).get(
+	'/sessions',
+	async ({ user }) => {
+		return {
+			sessions: await SessionService.findUserSessions(user.id),
+		};
+	},
+	{
+		response: {
+			200: t.Object({
+				sessions: t.Array(sessionDigestSchema(sessionScopeSchema)),
+			}),
+		},
+		detail: {
+			summary: 'List Sessions',
+			description: 'Get digest of all sessions of the current user.',
+			tags: ['Authentication'],
+			security: [{ session: [] }],
+		},
+	},
+);

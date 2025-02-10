@@ -1,14 +1,23 @@
-import { Static, t } from 'elysia';
+import { Elysia, t } from 'elysia';
 import { SessionService } from '~backend/services/auth/session';
 import { yggTokenSchema } from '~backend/yggdrasil/yggdrasil.entities';
-import { Session, SessionScope } from '~backend/auth/auth.entities';
+import { validateTokenMiddleware } from '~backend/yggdrasil/validate-token.middleware';
 
-export const invalidateBodySchema = yggTokenSchema;
-export const invalidateResponseSchema = t.Void();
-
-export async function invalidate(
-	body: Static<typeof invalidateBodySchema>,
-	session: Session<typeof SessionScope.YGGDRASIL>,
-): Promise<Static<typeof invalidateResponseSchema>> {
-	await SessionService.revoke(session.id);
-}
+export const invalidateHandler = new Elysia().use(validateTokenMiddleware(false)).post(
+	'/invalidate',
+	async ({ set, session }) => {
+		set.status = 'No Content';
+		await SessionService.revoke(session.id);
+	},
+	{
+		body: yggTokenSchema,
+		response: {
+			204: t.Void(),
+		},
+		detail: {
+			summary: 'Invalidate Token',
+			description: 'Invalidate the token.',
+			tags: ['Yggdrasil'],
+		},
+	},
+);

@@ -1,42 +1,52 @@
-import { Static, t } from 'elysia';
+import { Elysia, t } from 'elysia';
 import { AuthRepository } from '~backend/auth/auth.repository';
 import { PasswordService } from '~backend/services/auth/password';
 import { SessionService } from '~backend/services/auth/session';
 import { Session, sessionSchema, SessionScope } from '~backend/auth/auth.entities';
 import { AppError } from '~backend/shared/middlewares/errors/app-error';
+import { authMiddleware } from '~backend/shared/auth/middleware';
 
-export const changePasswordBodySchema = t.Object({
-	oldPassword: t.String(),
-	newPassword: t.String({
-		minLength: 8,
-		maxLength: 120,
-	}),
-});
-export const changePasswordResponseSchema = t.Object({
-	session: sessionSchema(t.Literal(SessionScope.DEFAULT)),
-});
+export const changePasswordHandler = new Elysia().use(authMiddleware(SessionScope.DEFAULT)).post(
+	'/change-password',
+	async ({ user, body }) => {
+		const oldPasswordHash = await AuthRepository.getPassword(user.id);
 
-export async function changePassword(
-	body: Static<typeof changePasswordBodySchema>,
-	userId: string,
-): Promise<Static<typeof changePasswordResponseSchema>> {
-	const oldPasswordHash = await AuthRepository.getPassword(userId);
+		// If the user does not have a password, we set a password here.
+		const oldPasswordCorrect = oldPasswordHash
+			? await PasswordService.compare(body.oldPassword, oldPasswordHash)
+			: true;
+		if (!oldPasswordCorrect) {
+			throw new AppError('auth/invalid-credentials');
+		}
 
-	// If the user does not have a password, we set a password here.
-	const oldPasswordCorrect = oldPasswordHash
-		? await PasswordService.compare(body.oldPassword, oldPasswordHash)
-		: true;
-	if (!oldPasswordCorrect) {
-		throw new AppError('auth/invalid-credentials');
-	}
+		const hashedNewPassword = await PasswordService.hash(body.newPassword);
+		await AuthRepository.upsertPassword({ userId: user.id, passwordHash: hashedNewPassword });
 
-	const hashedNewPassword = await PasswordService.hash(body.newPassword);
-	await AuthRepository.upsertPassword({ userId, passwordHash: hashedNewPassword });
+		await SessionService.revokeAll(user.id);
+		const session = (await SessionService.create(user.id, {
+			scope: SessionScope.DEFAULT,
+		})) as Session<typeof SessionScope.DEFAULT>;
 
-	await SessionService.revokeAll(userId);
-	const session = (await SessionService.create(userId, {
-		scope: SessionScope.DEFAULT,
-	})) as Session<typeof SessionScope.DEFAULT>;
-
-	return { session };
-}
+		return { session };
+	},
+	{
+		body: t.Object({
+			oldPassword: t.String(),
+			newPassword: t.String({
+				minLength: 8,
+				maxLength: 120,
+			}),
+		}),
+		response: {
+			200: t.Object({
+				session: sessionSchema(t.Literal(SessionScope.DEFAULT)),
+			}),
+		},
+		detail: {
+			summary: 'Change Password',
+			description: 'Change password of the current user.',
+			tags: ['Authentication'],
+			security: [{ session: [] }],
+		},
+	},
+);
