@@ -4,6 +4,7 @@ import { profileSchema } from '~backend/profiles/profile.entities';
 import { AppError } from '~backend/shared/middlewares/errors/app-error';
 import { authMiddleware } from '~backend/shared/auth/middleware';
 import { SessionScope } from '~backend/auth/auth.entities';
+import { createErrorResps } from '~backend/shared/middlewares/errors/docs';
 
 export const createHandler = new Elysia().use(authMiddleware(SessionScope.DEFAULT)).post(
 	'/',
@@ -30,6 +31,7 @@ export const createHandler = new Elysia().use(authMiddleware(SessionScope.DEFAUL
 			201: t.Object({
 				profile: profileSchema,
 			}),
+			...createErrorResps(409),
 		},
 		detail: {
 			summary: 'Create profile',

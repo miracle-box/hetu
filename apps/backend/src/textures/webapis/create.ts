@@ -4,6 +4,7 @@ import { TexturesRepository } from '~backend/textures/textures.repository';
 import { AppError } from '~backend/shared/middlewares/errors/app-error';
 import { authMiddleware } from '~backend/shared/auth/middleware';
 import { SessionScope } from '~backend/auth/auth.entities';
+import { createErrorResps } from '~backend/shared/middlewares/errors/docs';
 
 export const createHandler = new Elysia().use(authMiddleware(SessionScope.DEFAULT)).post(
 	'/',
@@ -39,6 +40,7 @@ export const createHandler = new Elysia().use(authMiddleware(SessionScope.DEFAUL
 			201: t.Object({
 				texture: textureSchema,
 			}),
+			...createErrorResps(409),
 		},
 		detail: {
 			summary: 'Create Texture',

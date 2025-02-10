@@ -2,6 +2,7 @@ import { Elysia, t } from 'elysia';
 import { SessionScope } from '~backend/auth/auth.entities';
 import { authMiddleware } from '~backend/shared/auth/middleware';
 import { AppError } from '~backend/shared/middlewares/errors/app-error';
+import { createErrorResps } from '~backend/shared/middlewares/errors/docs';
 import { textureSchema } from '~backend/textures/texture.entities';
 import { TexturesRepository } from '~backend/textures/textures.repository';
 
@@ -23,6 +24,7 @@ export const getUserTexturesHandler = new Elysia().use(authMiddleware(SessionSco
 			200: t.Object({
 				textures: t.Array(textureSchema),
 			}),
+			...createErrorResps(403),
 		},
 		detail: {
 			summary: 'Get User Textures',

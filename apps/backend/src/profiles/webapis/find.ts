@@ -2,6 +2,7 @@ import { Elysia, t } from 'elysia';
 import { Profile, profileSchema } from '~backend/profiles/profile.entities';
 import { ProfilesRepository } from '~backend/profiles/profiles.repository';
 import { AppError } from '~backend/shared/middlewares/errors/app-error';
+import { createErrorResps } from '~backend/shared/middlewares/errors/docs';
 
 export const findHandler = new Elysia().get(
 	'/',
@@ -25,6 +26,7 @@ export const findHandler = new Elysia().get(
 			200: t.Object({
 				profile: profileSchema,
 			}),
+			...createErrorResps(404),
 		},
 		detail: {
 			summary: 'Find Profile',

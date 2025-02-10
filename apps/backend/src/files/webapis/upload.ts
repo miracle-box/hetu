@@ -4,6 +4,7 @@ import { fileInfoSchema, FileType } from '~backend/files/files.entities';
 import { uploadTexture } from '~backend/files/usecases/upload-texture';
 import { authMiddleware } from '~backend/shared/auth/middleware';
 import { AppError } from '~backend/shared/middlewares/errors/app-error';
+import { createErrorResps } from '~backend/shared/middlewares/errors/docs';
 import { createEnumLikeValuesSchema } from '~backend/shared/typing/utils';
 
 export const uploadHandler = new Elysia().use(authMiddleware(SessionScope.DEFAULT)).post(
@@ -31,6 +32,7 @@ export const uploadHandler = new Elysia().use(authMiddleware(SessionScope.DEFAUL
 			201: t.Object({
 				file: fileInfoSchema,
 			}),
+			...createErrorResps(415),
 		},
 		detail: {
 			summary: 'Upload File',

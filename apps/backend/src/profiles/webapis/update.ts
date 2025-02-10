@@ -6,6 +6,7 @@ import { TextureType } from '~backend/textures/texture.entities';
 import { AppError } from '~backend/shared/middlewares/errors/app-error';
 import { authMiddleware } from '~backend/shared/auth/middleware';
 import { SessionScope } from '~backend/auth/auth.entities';
+import { createErrorResps } from '~backend/shared/middlewares/errors/docs';
 
 export const updateHandler = new Elysia().use(authMiddleware(SessionScope.DEFAULT)).patch(
 	'/:id',
@@ -49,6 +50,7 @@ export const updateHandler = new Elysia().use(authMiddleware(SessionScope.DEFAUL
 			200: t.Object({
 				profile: profileSchema,
 			}),
+			...createErrorResps(400, 403, 404),
 		},
 		detail: {
 			summary: 'Edit profile',

@@ -2,6 +2,7 @@ import { Elysia, t } from 'elysia';
 import { sessionDigestSchema, SessionScope, sessionScopeSchema } from '~backend/auth/auth.entities';
 import { SessionService } from '~backend/services/auth/session';
 import { authMiddleware } from '~backend/shared/auth/middleware';
+import { createErrorResps } from '~backend/shared/middlewares/errors/docs';
 
 export const listSessionsHandler = new Elysia().use(authMiddleware(SessionScope.DEFAULT)).get(
 	'/sessions',
@@ -15,6 +16,7 @@ export const listSessionsHandler = new Elysia().use(authMiddleware(SessionScope.
 			200: t.Object({
 				sessions: t.Array(sessionDigestSchema(sessionScopeSchema)),
 			}),
+			...createErrorResps(),
 		},
 		detail: {
 			summary: 'List Sessions',
