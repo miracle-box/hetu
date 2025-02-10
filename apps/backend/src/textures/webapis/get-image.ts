@@ -4,6 +4,7 @@ import { StorageService } from '~backend/services/storage';
 import { AppError } from '~backend/shared/middlewares/errors/app-error';
 import { authMiddleware } from '~backend/shared/auth/middleware';
 import { SessionScope } from '~backend/auth/auth.entities';
+import { createErrorResps } from '~backend/shared/middlewares/errors/docs';
 
 export const getImageHandler = new Elysia().use(authMiddleware(SessionScope.DEFAULT)).get(
 	'/:id/image',
@@ -24,6 +25,7 @@ export const getImageHandler = new Elysia().use(authMiddleware(SessionScope.DEFA
 		}),
 		response: {
 			302: t.Void(),
+			...createErrorResps(404),
 		},
 		detail: {
 			summary: 'Get Texture Image',

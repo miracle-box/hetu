@@ -5,6 +5,7 @@ import { SessionService } from '~backend/services/auth/session';
 import { Session, sessionSchema, SessionScope } from '~backend/auth/auth.entities';
 import { AppError } from '~backend/shared/middlewares/errors/app-error';
 import { authMiddleware } from '~backend/shared/auth/middleware';
+import { createErrorResps } from '~backend/shared/middlewares/errors/docs';
 
 export const changePasswordHandler = new Elysia().use(authMiddleware(SessionScope.DEFAULT)).post(
 	'/change-password',
@@ -41,6 +42,7 @@ export const changePasswordHandler = new Elysia().use(authMiddleware(SessionScop
 			200: t.Object({
 				session: sessionSchema(t.Literal(SessionScope.DEFAULT)),
 			}),
+			...createErrorResps(400),
 		},
 		detail: {
 			summary: 'Change Password',

@@ -2,6 +2,7 @@ import { Elysia, t } from 'elysia';
 import { SessionService } from '~backend/services/auth/session';
 import { authMiddleware } from '~backend/shared/auth/middleware';
 import { SessionScope } from '../auth.entities';
+import { createErrorResps } from '~backend/shared/middlewares/errors/docs';
 
 export const revokeAllSessionsHandler = new Elysia()
 	.use(authMiddleware(SessionScope.DEFAULT))
@@ -14,6 +15,7 @@ export const revokeAllSessionsHandler = new Elysia()
 		{
 			response: {
 				204: t.Void(),
+				...createErrorResps(),
 			},
 			detail: {
 				summary: 'Revoke All Sessions',

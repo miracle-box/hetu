@@ -4,6 +4,7 @@ import { profileSchema } from '~backend/profiles/profile.entities';
 import { AppError } from '~backend/shared/middlewares/errors/app-error';
 import { authMiddleware } from '~backend/shared/auth/middleware';
 import { SessionScope } from '~backend/auth/auth.entities';
+import { createErrorResps } from '~backend/shared/middlewares/errors/docs';
 
 export const getUserProfilesHandler = new Elysia().use(authMiddleware(SessionScope.DEFAULT)).get(
 	'/:id/profiles',
@@ -23,6 +24,7 @@ export const getUserProfilesHandler = new Elysia().use(authMiddleware(SessionSco
 			200: t.Object({
 				profiles: t.Array(profileSchema),
 			}),
+			...createErrorResps(403),
 		},
 		detail: {
 			summary: 'Get User Profiles',

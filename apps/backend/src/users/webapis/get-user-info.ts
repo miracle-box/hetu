@@ -2,6 +2,7 @@ import { Elysia, t } from 'elysia';
 import { SessionScope } from '~backend/auth/auth.entities';
 import { authMiddleware } from '~backend/shared/auth/middleware';
 import { AppError } from '~backend/shared/middlewares/errors/app-error';
+import { createErrorResps } from '~backend/shared/middlewares/errors/docs';
 import { userSchema } from '~backend/users/user.entities';
 import { UsersRepository } from '~backend/users/users.repository';
 
@@ -26,6 +27,7 @@ export const getUserInfoHandler = new Elysia().use(authMiddleware(SessionScope.D
 			200: t.Object({
 				user: userSchema,
 			}),
+			...createErrorResps(403, 404),
 		},
 		detail: {
 			summary: 'Get User Info',

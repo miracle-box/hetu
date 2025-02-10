@@ -2,6 +2,7 @@ import { Elysia, t } from 'elysia';
 import { Session, sessionSchema, SessionScope } from '~backend/auth/auth.entities';
 import { SessionService } from '~backend/services/auth/session';
 import { authMiddleware } from '~backend/shared/auth/middleware';
+import { createErrorResps } from '~backend/shared/middlewares/errors/docs';
 
 export const refreshHandler = new Elysia().use(authMiddleware(SessionScope.DEFAULT)).post(
 	'/sessions/refresh',
@@ -19,6 +20,7 @@ export const refreshHandler = new Elysia().use(authMiddleware(SessionScope.DEFAU
 			200: t.Object({
 				session: sessionSchema(t.Literal(SessionScope.DEFAULT)),
 			}),
+			...createErrorResps(),
 		},
 		detail: {
 			summary: 'Refresh Session',

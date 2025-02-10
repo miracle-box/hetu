@@ -4,6 +4,7 @@ import { SessionService } from '~backend/services/auth/session';
 import { PasswordService } from '~backend/services/auth/password';
 import { Session, sessionSchema, SessionScope } from '~backend/auth/auth.entities';
 import { AppError } from '~backend/shared/middlewares/errors/app-error';
+import { createErrorResps } from '~backend/shared/middlewares/errors/docs';
 
 export const signinHandler = new Elysia().post(
 	'/signin',
@@ -35,6 +36,7 @@ export const signinHandler = new Elysia().post(
 			200: t.Object({
 				session: sessionSchema(t.Literal(SessionScope.DEFAULT)),
 			}),
+			...createErrorResps(400),
 		},
 		detail: {
 			summary: 'Sign In',
