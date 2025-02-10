@@ -1,23 +1,35 @@
-import { Static, t } from 'elysia';
+import { Elysia, t } from 'elysia';
 import { TexturesRepository } from '~backend/textures/textures.repository';
 import { StorageService } from '~backend/services/storage';
 import { AppError } from '~backend/shared/middlewares/errors/app-error';
+import { authMiddleware } from '~backend/shared/auth/middleware';
+import { SessionScope } from '~backend/auth/auth.entities';
 
-export const getImageParamsSchema = t.Object({
-	id: t.String(),
-});
-export const getImageResponseSchema = t.Void();
-export const getImageDataSchema = t.String();
+export const getImageHandler = new Elysia().use(authMiddleware(SessionScope.DEFAULT)).get(
+	'/:id/image',
+	async ({ params, redirect }) => {
+		const texture = await TexturesRepository.findById(params.id);
 
-export async function getImage(
-	params: Static<typeof getImageParamsSchema>,
-): Promise<Static<typeof getImageDataSchema>> {
-	const texture = await TexturesRepository.findById(params.id);
+		if (!texture) {
+			throw new AppError('textures/not-found');
+		}
 
-	if (!texture) {
-		throw new AppError('textures/not-found');
-	}
-
-	// [TODO] Needs to move url fetching into files module
-	return StorageService.getPublicUrl(texture.hash);
-}
+		// [TODO] Needs to move url fetching into files module
+		const url = StorageService.getPublicUrl(texture.hash);
+		redirect(url, 302);
+	},
+	{
+		params: t.Object({
+			id: t.String(),
+		}),
+		response: {
+			302: t.Void(),
+		},
+		detail: {
+			summary: 'Get Texture Image',
+			description: 'Redirect to actual file URL for a specific texture.',
+			tags: ['Textures'],
+			security: [{ session: [] }],
+		},
+	},
+);
