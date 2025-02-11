@@ -15,12 +15,12 @@
     "@elysiajs/server-timing": "^1.2.0",
     "@elysiajs/swagger": "^1.2.0",
     "@paralleldrive/cuid2": "^2.2.2",
+    "@repo/pino-pretty-transport": "*",
     "@tqman/nice-logger": "^1.1.1",
     "drizzle-orm": "^0.38.3",
     "elysia": "^1.2.9",
     "nodemailer": "^6.9.16",
     "pino": "^9.6.0",
-    "pino-pretty": "^13.0.0",
     "postgres": "^3.4.5",
     "sharp": "^0.33.5"
   },

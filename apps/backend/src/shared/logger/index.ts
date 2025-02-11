@@ -4,7 +4,7 @@ export const Logger = pino({
 	transport: {
 		targets: [
 			{
-				target: './pino-pretty-transport',
+				target: '@repo/pino-pretty-transport',
 			},
 			// [TODO] Add file transport
 		],
