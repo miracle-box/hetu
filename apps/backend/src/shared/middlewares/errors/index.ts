@@ -58,7 +58,6 @@ export const errorsHandler = (app: Elysia) =>
 						path,
 						code: 'unknown-error',
 						message: 'An unexpected error occurred. Please try again later.',
-						details: error.message,
 					},
 				};
 		}

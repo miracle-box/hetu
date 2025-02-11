@@ -18,6 +18,7 @@
     },
     "@repo/backend#dev": {
       "env": [
+        "NODE_ENV",
         "BASE_URL",
         "DATABASE_URL",
         "DATABASE_URL_MIGRATE",
@@ -38,7 +39,8 @@
         "MAIL_SMTP_SECURE",
         "MAIL_SMTP_USER",
         "MAIL_SMTP_PASS",
-        "MAIL_SMTP_FROM"
+        "MAIL_SMTP_FROM",
+        "ENABLE_REQUEST_LOGGER"
       ]
     },
     "start": {

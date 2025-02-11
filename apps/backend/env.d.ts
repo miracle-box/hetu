@@ -1,5 +1,6 @@
 declare module NodeJS {
 	interface ProcessEnv {
+		NODE_ENV: string;
 		BASE_URL: string;
 		DATABASE_URL: string;
 		DATABASE_URL_MIGRATE: string;
@@ -21,5 +22,6 @@ declare module NodeJS {
 		MAIL_SMTP_USER: string;
 		MAIL_SMTP_PASS: string;
 		MAIL_SMTP_FROM: string;
+		ENABLE_REQUEST_LOGGER: string;
 	}
 }

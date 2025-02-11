@@ -19,6 +19,4 @@ const app = new Elysia()
 	.use(TexturesRoutes)
 	.listen(3000);
 
-console.log(`Service is running at ${app.server?.hostname}:${app.server?.port}`);
-
 export type App = typeof app;
