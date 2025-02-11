@@ -1,4 +1,5 @@
 import { Elysia } from 'elysia';
+import { Logger } from './shared/logger';
 import { middlewares } from '~backend/shared/middlewares';
 import { AuthRoutes } from '~backend/auth/auth.routes';
 import { FilesRoutes } from '~backend/files/files.routes';
@@ -18,5 +19,7 @@ const app = new Elysia()
 	.use(ProfilesRoutes)
 	.use(TexturesRoutes)
 	.listen(3000);
+
+Logger.info('Service started on ' + app.server?.url);
 
 export type App = typeof app;

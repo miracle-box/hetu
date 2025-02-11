@@ -7,6 +7,5 @@ export const logger = (app: Elysia) =>
 			enabled: process.env.ENABLE_REQUEST_LOGGER === 'true',
 			mode: 'combined',
 			withTimestamp: true,
-			withBanner: true,
 		}),
 	);
