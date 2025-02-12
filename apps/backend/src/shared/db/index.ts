@@ -1,5 +1,6 @@
-import { drizzle } from 'drizzle-orm/postgres-js';
 import postgres from 'postgres';
+import { drizzle } from 'drizzle-orm/postgres-js';
+import { Config } from '~backend/shared/config';
 
 import * as filesSchemas from './schema/files';
 import * as profilesSchemas from './schema/profiles';
@@ -23,7 +24,7 @@ const schema = {
 	...relations,
 };
 
-const queryClient = postgres(process.env.DATABASE_URL, {});
+const queryClient = postgres(Config.database.url, {});
 
 export const rawDb = queryClient;
 export const db = drizzle(queryClient, { schema });

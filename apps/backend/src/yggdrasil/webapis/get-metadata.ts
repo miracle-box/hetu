@@ -1,17 +1,18 @@
 import { Elysia, t } from 'elysia';
 import { version } from '../../../package.json';
+import { Config } from '~backend/shared/config';
 
 export const getMetadataHandler = new Elysia().get(
 	'/',
 	async () => {
 		return {
 			meta: {
-				serverName: process.env.YGGDRASIL_SERVER_NAME,
+				serverName: Config.app.yggdrasil.serverName,
 				implementationName: 'hetu',
 				implementationVersion: version,
 				links: {
-					homepage: process.env.YGGDRASIL_LINKS_HOMEPAGE,
-					register: process.env.YGGDRASIL_LINKS_REGISTER,
+					homepage: Config.app.yggdrasil.links.homepage,
+					register: Config.app.yggdrasil.links.register,
 				},
 				'feature.non_email_login': false,
 				'feature.legacy_skin_api': false,
@@ -20,8 +21,8 @@ export const getMetadataHandler = new Elysia().get(
 				'feature.enable_profile_key': false,
 				'feature.username_check': true,
 			},
-			skinDomains: process.env.YGGDRASIL_SKIN_DOMAINS.split(' ').map((d) => d.trim()),
-			signaturePublickey: process.env.YGGDRASIL_PUBLIC_KEY,
+			skinDomains: Config.app.yggdrasil.skinDomains,
+			signaturePublickey: Config.app.yggdrasil.profileKeypair.public,
 		};
 	},
 	{

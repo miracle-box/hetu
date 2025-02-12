@@ -1,6 +1,6 @@
 {
   "extends": "@repo/typescript-config/base.json",
-  "include": ["drizzle.config.ts", "env.d.ts", "src/**/*"],
+  "include": ["drizzle.config.ts", "env.d.ts", "scripts/**/*", "src/**/*"],
   "exclude": ["node_modules"],
   "compilerOptions": {
     "types": ["bun-types"],

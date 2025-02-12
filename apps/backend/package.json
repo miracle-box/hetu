@@ -8,7 +8,7 @@
     "build": "bun build --compile --minify-whitespace --minify-syntax --target bun --outfile dist/server ./src/index.ts",
     "migration:generate": "drizzle-kit generate",
     "migration:drop": "drizzle-kit drop",
-    "migration:run": "bun src/shared/db/migrate.ts"
+    "migration:run": "bun scripts/migrate.ts"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.717.0",
@@ -16,13 +16,15 @@
     "@elysiajs/swagger": "^1.2.0",
     "@paralleldrive/cuid2": "^2.2.2",
     "@repo/pino-pretty-transport": "*",
+    "@sinclair/typebox": "^0.34.16",
     "@tqman/nice-logger": "^1.1.1",
     "drizzle-orm": "^0.38.3",
     "elysia": "^1.2.9",
     "nodemailer": "^6.9.16",
     "pino": "^9.6.0",
     "postgres": "^3.4.5",
-    "sharp": "^0.33.5"
+    "sharp": "^0.33.5",
+    "yaml": "^2.7.0"
   },
   "devDependencies": {
     "@types/nodemailer": "^6.4.17",
