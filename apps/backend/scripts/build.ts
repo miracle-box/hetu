@@ -36,6 +36,10 @@ function bunPluginEmbedSharpNative(): BunPlugin {
 					build.config.outdir ?? '',
 					`/sharp_natives/sharp/sharp-${platform}`,
 				),
+				// [FIXME] default loader causes error: Can't find variable: __require
+				loader: {
+					'.node': 'file',
+				},
 				target: build.config.target,
 				naming: build.config.naming,
 				sourcemap: build.config.sourcemap,
@@ -76,9 +80,16 @@ function bunPluginEmbedSharpNative(): BunPlugin {
 				if (injected) return;
 				injected = true;
 
+				const replacedLines = [
+					"import path from 'node:path';",
+					`const bundleDir = path.dirname(Bun.resolveSync(\`./sharp_natives/sharp/sharp-${platform}/sharp-${platform}.js\`, import.meta.dir));`,
+					`const relativeFilePath = require(path.join(bundleDir, "sharp-${platform}.js")).default`,
+					'const paths = [',
+					'path.join(bundleDir, relativeFilePath),',
+				];
 				const contents = (await Bun.file(args.path).text()).replace(
 					'const paths = [',
-					`const paths = [\n  Bun.resolveSync(\`./sharp_natives/sharp/sharp-${platform}/sharp-${platform}.js\`, import.meta.dir),\n`,
+					replacedLines.join('\n'),
 				);
 
 				console.log(green('Sharp native module path injected.'));
