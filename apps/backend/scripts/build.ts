@@ -108,8 +108,6 @@ await Bun.build({
 	sourcemap: 'linked',
 	plugins: [
 		bunPluginEmbedSharpNative(),
-		// [FIXME] Windows build breaks
-		// See: https://github.com/vktrl/bun-plugin-pino/issues/5
 		bunPluginPino({
 			transports: ['@repo/pino-pretty-transport'],
 		}),
