@@ -1,11 +1,12 @@
 import nodemailer from 'nodemailer';
+import { Config } from '~backend/shared/config';
 
 export const mailer = nodemailer.createTransport({
-	host: process.env.MAIL_SMTP_HOST,
-	port: Number(process.env.MAIL_SMTP_PORT),
-	secure: Boolean(process.env.MAIL_SMTP_SECURE),
+	host: Config.mailing.smtp.host,
+	port: Config.mailing.smtp.port,
+	secure: Config.mailing.smtp.secure,
 	auth: {
-		user: process.env.MAIL_SMTP_USER,
-		pass: process.env.MAIL_SMTP_PASS,
+		user: Config.mailing.smtp.user,
+		pass: Config.mailing.smtp.password,
 	},
 });

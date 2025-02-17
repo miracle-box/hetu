@@ -1,0 +1,48 @@
+app:
+  listenTo: '3000'
+  baseUrl: 'https://api.example.org'
+  yggdrasil:
+    serverName: 'Hetu'
+    links:
+      homepage: 'https://example.org'
+      register: 'https://example.org/register'
+    skinDomains:
+      - 'example.org'
+      - '.example.org'
+    profileKeypair:
+      private: |
+        -----BEGIN PRIVATE KEY-----
+        <Your private key here>
+        -----END PRIVATE KEY-----
+      public: |
+        -----BEGIN PUBLIC KEY-----
+        <Your public key here>
+        -----END PUBLIC KEY-----
+
+debug:
+  logRequests: true
+  enableServerTiming: true
+
+database:
+  url: 'postgres://user:password@localhost:5432/database_name'
+  migrationUrl: 'postgres://user:password@localhost:5432/database_name'
+
+storage:
+  s3:
+    endpoint: 'https://s3-endpoint.example.org'
+    publicRoot: 'https://storage.example.org'
+    bucket: 'my-bucket'
+    # Ends in '/' if provided
+    prefix: 'textures/'
+    accessKey:
+      id: 'access_key_id'
+      secret: 'secret_access_key'
+
+mailing:
+  smtp:
+    host: 'smtp.example.org'
+    port: 587
+    secure: true
+    user: 'user@example.org'
+    password: 'smtp_password'
+    sender: 'Accounts <noreply@example.org>'

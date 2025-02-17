@@ -1,10 +1,11 @@
 import { S3Client } from '@aws-sdk/client-s3';
+import { Config } from '~backend/shared/config';
 
 export const s3 = new S3Client({
 	region: 'auto',
-	endpoint: process.env.S3_ENDPOINT,
+	endpoint: Config.storage.s3.endpoint,
 	credentials: {
-		accessKeyId: process.env.S3_ACCESS_KEY_ID,
-		secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
+		accessKeyId: Config.storage.s3.accessKey.id,
+		secretAccessKey: Config.storage.s3.accessKey.secret,
 	},
 });

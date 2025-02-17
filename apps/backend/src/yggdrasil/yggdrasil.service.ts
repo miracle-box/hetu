@@ -9,6 +9,7 @@ import {
 import { StorageService } from '~backend/services/storage';
 import { Profile } from '~backend/profiles/profile.entities';
 import { Session } from '~backend/auth/auth.entities';
+import { Config } from '~backend/shared/config';
 
 export abstract class YggdrasilService {
 	static getUnsignedUUID(uuid: string): string {
@@ -65,7 +66,7 @@ export abstract class YggdrasilService {
 				name: 'textures',
 				value: encodedTextures,
 				signature: signed
-					? this.sign(process.env.YGGDRASIL_PRIVATE_KEY, encodedTextures)
+					? this.sign(Config.app.yggdrasil.profileKeypair.private, encodedTextures)
 					: undefined,
 			},
 			{

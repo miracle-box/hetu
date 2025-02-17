@@ -1,4 +1,5 @@
 import { Elysia } from 'elysia';
+import { Logger } from '~backend/shared/logger';
 import { AppError } from '~backend/shared/middlewares/errors/app-error';
 
 export const errorsHandler = (app: Elysia) =>
@@ -53,12 +54,14 @@ export const errorsHandler = (app: Elysia) =>
 					},
 				};
 			default:
+				// [TODO] Add request ID for tracing
+				Logger.error(error, `Error happened when handling request on ${path}`);
+
 				return {
 					error: {
 						path,
 						code: 'unknown-error',
 						message: 'An unexpected error occurred. Please try again later.',
-						details: error.message,
 					},
 				};
 		}
