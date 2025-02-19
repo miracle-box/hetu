@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "bun run --watch src/index.ts",
     "lint": "eslint . --max-warnings 0",
-    "start": "bun dist/index.js",
+    "start": "cd dist && bun run index.js",
     "build": "bun scripts/build.ts",
     "migration:generate": "drizzle-kit generate",
     "migration:drop": "drizzle-kit drop",
