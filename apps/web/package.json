@@ -23,6 +23,7 @@
     "zustand": "^5.0.3"
   },
   "devDependencies": {
+    "@next/eslint-plugin-next": "^15.1.7",
     "@repo/eslint-config": "*",
     "@repo/typescript-config": "*",
     "@tanstack/react-query-devtools": "^5.62.11",
