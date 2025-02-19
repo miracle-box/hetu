@@ -1,36 +1,23 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "tasks": {
-    "build": {
-      "dependsOn": ["^build"],
-      "inputs": ["$TURBO_DEFAULT$", ".env*"],
-      "outputs": [".next/**", "!.next/cache/**"]
-    },
-    "lint": {
-      "dependsOn": ["^lint"]
-    },
     "dev": {
       "cache": false,
       "persistent": true
     },
-    "@repo/web#dev": {
-      "env": ["API_ROOT", "TEXTURE_STORE_ROOT", "TEXTURE_STORE_CONFIG"]
+
+    "build": {
+      "dependsOn": ["^build"],
+      "inputs": ["$TURBO_DEFAULT$"]
     },
-    "@repo/backend#dev": {
-      "env": []
-    },
+
     "start": {
       "cache": false,
       "persistent": true
     },
-    "migration:generate": {
-      "cache": false
-    },
-    "migration:drop": {
-      "cache": false
-    },
-    "migration:run": {
-      "cache": false
+
+    "lint": {
+      "dependsOn": ["^lint"]
     }
   }
 }

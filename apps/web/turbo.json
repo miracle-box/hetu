@@ -1,0 +1,21 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "extends": ["//"],
+  "tasks": {
+    "dev": {
+      "env": ["NODE_ENV", "API_ROOT", "TEXTURE_STORE_ROOT"],
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        ".env.development.local",
+        ".env.local",
+        ".env.development",
+        ".env"
+      ]
+    },
+    "build": {
+      "outputs": [".next/**", "!.next/cache/**"]
+      // No build time environment variables used currently,
+      // so `env` key is not configured now.
+    }
+  }
+}
