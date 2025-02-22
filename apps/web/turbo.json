@@ -13,9 +13,8 @@
       ]
     },
     "build": {
+      "env": ["NODE_ENV"],
       "outputs": [".next/**", "!.next/cache/**"]
-      // No build time environment variables used currently,
-      // so `env` key is not configured now.
     }
   }
 }
