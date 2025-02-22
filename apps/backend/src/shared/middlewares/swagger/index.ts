@@ -6,6 +6,11 @@ import { version } from '~backend/../package.json';
 export const swaggerMiddleware = (app: Elysia) =>
 	app.use(
 		swagger({
+			scalarConfig: {
+				spec: {
+					url: `${Config.app.baseUrl}/swagger/json`,
+				},
+			},
 			documentation: {
 				info: {
 					title: 'Hetu API',
