@@ -23,5 +23,9 @@
   "workspaces": [
     "apps/*",
     "packages/*"
-  ]
+  ],
+  "overrides": {
+    "elysia": "1.2.14",
+    "@sinclair/typebox": "0.34.15"
+  }
 }

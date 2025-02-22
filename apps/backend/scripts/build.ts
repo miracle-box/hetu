@@ -116,6 +116,7 @@ await Bun.build({
 		whitespace: true,
 		identifiers: false,
 	},
+
 	sourcemap: 'linked',
 	plugins: [
 		bunPluginEmbedSharpNative(),
@@ -124,3 +125,6 @@ await Bun.build({
 		}),
 	],
 });
+
+// Copy migrations file
+await fs.cp('./migrations', './dist/migrations', { recursive: true });

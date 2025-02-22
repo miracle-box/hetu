@@ -1,0 +1,20 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "extends": ["//"],
+  "tasks": {
+    "dev": {
+      "env": ["NODE_ENV", "API_ROOT", "TEXTURE_STORE_ROOT"],
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        ".env.development.local",
+        ".env.local",
+        ".env.development",
+        ".env"
+      ]
+    },
+    "build": {
+      "env": ["NODE_ENV"],
+      "outputs": [".next/**", "!.next/cache/**"]
+    }
+  }
+}
