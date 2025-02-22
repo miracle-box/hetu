@@ -2,9 +2,9 @@ FROM oven/bun:1 AS build
 
 WORKDIR /app
 
-COPY . .
+COPY .next/standalone .
+COPY .next/static ./apps/web/.next
+COPY public ./apps/web
 
-RUN mv ./public ./.next/standalone/apps/web
-RUN mv ./.next/static ./.next/standalone/apps/web/.next
-
-CMD ["bun", "run", ".next/standalone/apps/web/server.js"]
+WORKDIR /app/apps/web
+CMD ["bun", "run", "server.js"]
