@@ -1,18 +1,18 @@
 import { Elysia } from 'elysia';
-import { refreshHandler } from '~backend/auth/webapis/refresh';
-import { validateHandler } from '~backend/auth/webapis/validate';
-import { getProfilesHandler } from '~backend/yggdrasil/webapis/mojangapi/get-profiles';
-import { resetTextureHandler } from '~backend/yggdrasil/webapis/mojangapi/reset-texture';
-import { uploadTextureHandler } from '~backend/yggdrasil/webapis/mojangapi/upload-texture';
-import { getProfileHandler } from '~backend/yggdrasil/webapis/sessionserver/get-profile';
-import { hasJoinedHandler } from '~backend/yggdrasil/webapis/sessionserver/has-joined';
-import { joinServerHandler } from '~backend/yggdrasil/webapis/sessionserver/join-server';
 import { yggdrasilErrorsHandler } from './utils/errors';
 import { authenticateHandler } from './webapis/authserver/authenticate';
 import { invalidateHandler } from './webapis/authserver/invalidate';
+import { refreshHandler } from './webapis/authserver/refresh';
 import { signoutHandler } from './webapis/authserver/signout';
-import { getMetadataHandler } from './webapis/get-metadata';
+import { validateHandler } from './webapis/authserver/validate';
 import { prejoinHandler } from './webapis/custom/prejoin';
+import { getMetadataHandler } from './webapis/get-metadata';
+import { getProfilesHandler } from './webapis/mojangapi/get-profiles';
+import { resetTextureHandler } from './webapis/mojangapi/reset-texture';
+import { uploadTextureHandler } from './webapis/mojangapi/upload-texture';
+import { getProfileHandler } from './webapis/sessionserver/get-profile';
+import { hasJoinedHandler } from './webapis/sessionserver/has-joined';
+import { joinServerHandler } from './webapis/sessionserver/join-server';
 
 export const YggdrasilRoutes = new Elysia({
 	name: 'Routes.Yggdrasil',
