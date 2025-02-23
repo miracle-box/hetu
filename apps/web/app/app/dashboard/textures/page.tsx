@@ -1,4 +1,5 @@
 import { Button, Container, Flex, Grid, Heading, Text } from '@radix-ui/themes';
+import Link from 'next/link';
 import { AppNav } from '~web/libs/basicui/AppNav';
 import { getUserTextures } from '~web/libs/actions/api';
 import { CreateTextureDialog } from './CreateTextureDialog';
@@ -21,7 +22,13 @@ export default async function Textures() {
 				{textures && (
 					<Grid columns={{ xs: '1', sm: '2', lg: '3' }} gap="3">
 						{textures.map((texture) => (
-							<TextureCard key={texture.id} texture={texture} />
+							<TextureCard key={texture.id} texture={texture}>
+								<Button asChild>
+									<Link href={`/app/dashboard/textures/${texture.id}`}>
+										Inspect
+									</Link>
+								</Button>
+							</TextureCard>
 						))}
 					</Grid>
 				)}
