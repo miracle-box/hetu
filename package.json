@@ -5,9 +5,10 @@
     "build": "turbo build",
     "dev": "turbo dev",
     "start": "turbo start",
-    "lint": "turbo lint",
-    "typecheck": "turbo typecheck",
-    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,mjs,cjs,json,yaml,md}\""
+    "lint": "turbo lint --continue",
+    "typecheck": "turbo typecheck --continue",
+    "format": "prettier --check \"**/*.{ts,tsx,js,jsx,mjs,cjs,json,yaml,md}\"",
+    "format:fix": "prettier --write \"**/*.{ts,tsx,js,jsx,mjs,cjs,json,yaml,md}\""
   },
   "devDependencies": {
     "prettier": "^3.4.2",
