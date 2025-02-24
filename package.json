@@ -6,10 +6,8 @@
     "dev": "turbo dev",
     "start": "turbo start",
     "lint": "turbo lint",
-    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,mjs,cjs,json,yaml,md}\"",
-    "migration:generate": "turbo migration:generate",
-    "migration:drop": "turbo migration:drop",
-    "migration:run": "turbo migration:run"
+    "typecheck": "turbo typecheck",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,mjs,cjs,json,yaml,md}\""
   },
   "devDependencies": {
     "prettier": "^3.4.2",

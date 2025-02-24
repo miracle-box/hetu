@@ -39,3 +39,5 @@ yarn-error.log*
 
 # Do not include IntelliJ settings
 .idea
+
+*.tsbuildinfo

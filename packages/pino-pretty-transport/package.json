@@ -2,10 +2,16 @@
   "name": "@repo/pino-pretty-transport",
   "version": "0.0.0",
   "private": true,
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
   "exports": {
     ".": "./src/index.ts"
   },
   "dependencies": {
     "pino-pretty": "^13.0.0"
+  },
+  "devDependencies": {
+    "@repo/typescript-config": "*"
   }
 }

@@ -16,8 +16,13 @@
       "persistent": true
     },
 
+    "typecheck": {
+      "dependsOn": ["^typecheck"]
+    },
+
     "lint": {
-      "dependsOn": ["^lint"]
+      "dependsOn": ["^lint"],
+      "outputs": [".tsbuildinfo"]
     }
   }
 }

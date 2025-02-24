@@ -3,9 +3,10 @@
   "version": "0.1.0",
   "scripts": {
     "dev": "bun run --watch src/index.ts",
-    "lint": "eslint . --max-warnings 0",
-    "start": "cd dist && bun run index.js",
     "build": "bun scripts/build.ts",
+    "start": "cd dist && bun run index.js",
+    "lint": "eslint . --max-warnings 0",
+    "typecheck": "tsc --noEmit",
     "migration:generate": "drizzle-kit generate",
     "migration:drop": "drizzle-kit drop",
     "migration:run": "bun scripts/migrate.ts"
@@ -28,6 +29,7 @@
     "yaml": "^2.7.0"
   },
   "devDependencies": {
+    "@repo/typescript-config": "*",
     "@types/nodemailer": "^6.4.17",
     "bun-types": "latest",
     "drizzle-kit": "^0.30.1"

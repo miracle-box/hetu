@@ -2,6 +2,9 @@
   "name": "@repo/typebox-form-adapter",
   "version": "0.0.0",
   "private": true,
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
   "exports": {
     ".": "./src/index.ts"
   },
@@ -9,6 +12,7 @@
     "@tanstack/form-core": "^0.41.0"
   },
   "devDependencies": {
+    "@repo/typescript-config": "*",
     "@sinclair/typebox": "^0.34.15",
     "@tanstack/react-form": "^0.41.0"
   },

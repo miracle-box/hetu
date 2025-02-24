@@ -1,8 +1,8 @@
 {
   "extends": "@repo/typescript-config/react-library.json",
+  "include": ["styles.d.ts", "src/**/*", "turbo"],
   "compilerOptions": {
-    "outDir": "dist"
-  },
-  "include": ["src", "turbo"],
-  "exclude": ["node_modules", "dist"]
+    "types": ["bun-types"],
+    "tsBuildInfoFile": ".tsbuildinfo"
+  }
 }
