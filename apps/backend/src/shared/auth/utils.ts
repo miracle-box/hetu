@@ -1,4 +1,4 @@
-import { Session, SessionScope } from '~backend/auth/auth.entities';
+import { type Session, SessionScope } from '~backend/auth/auth.entities';
 
 /**
  * Reads the Bearer token from the authorization header.

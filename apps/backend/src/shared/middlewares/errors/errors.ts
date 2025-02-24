@@ -1,4 +1,4 @@
-import { TSchema, t } from 'elysia';
+import { type TSchema, t } from 'elysia';
 
 export type AppErrorInfo<TMessageParams> = {
 	status: number;

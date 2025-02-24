@@ -3,9 +3,9 @@
 import { useRouter } from 'next/navigation';
 import { Box, Button, Flex, Text, TextField } from '@radix-ui/themes';
 import { mergeForm, useForm, useStore } from '@tanstack/react-form';
-import { TypeboxValidator } from '@repo/typebox-form-adapter';
+import type { TypeboxValidator } from '@repo/typebox-form-adapter';
 import { useMutation } from '@tanstack/react-query';
-import { signinFormOpts, SigninFormValues } from './shared';
+import { signinFormOpts, type SigninFormValues } from './shared';
 import { handleSignin } from './actions';
 
 export function SigninForm() {

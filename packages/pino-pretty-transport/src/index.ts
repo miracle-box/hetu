@@ -1,4 +1,4 @@
-import pinoPretty, { type PrettyOptions, colorizerFactory } from 'pino-pretty';
+import pinoPretty, { type PrettyOptions } from 'pino-pretty';
 
 export default (opts: PrettyOptions) =>
 	pinoPretty({

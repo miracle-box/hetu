@@ -2,7 +2,7 @@
 
 import { client as api } from '~web/libs/api/eden';
 import { formError, formSuccess } from '~web/libs/form/responses';
-import { SignupFormValues } from './shared';
+import { type SignupFormValues } from './shared';
 import { setSessionCookie } from '~web/libs/actions/auth';
 
 export async function handleSignup(form: SignupFormValues) {

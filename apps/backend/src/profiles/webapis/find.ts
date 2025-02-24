@@ -1,5 +1,5 @@
 import { Elysia, t } from 'elysia';
-import { Profile, profileSchema } from '~backend/profiles/profile.entities';
+import { type Profile, profileSchema } from '~backend/profiles/profile.entities';
 import { ProfilesRepository } from '~backend/profiles/profiles.repository';
 import { AppError } from '~backend/shared/middlewares/errors/app-error';
 import { createErrorResps } from '~backend/shared/middlewares/errors/docs';

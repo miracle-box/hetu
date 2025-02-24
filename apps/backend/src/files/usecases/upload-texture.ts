@@ -1,4 +1,4 @@
-import { FileInfo, FileType } from '~backend/files/files.entities';
+import { type FileInfo, FileType } from '~backend/files/files.entities';
 import { TexturesService } from '~backend/services/textures';
 import { TextureType } from '~backend/textures/texture.entities';
 import { CryptoHasher } from 'bun';

@@ -1,6 +1,6 @@
 import { TextureType } from '~backend/textures/texture.entities';
 import sharp from 'sharp';
-import { EnumLikeValues } from '~backend/shared/typing/utils';
+import type { EnumLikeValues } from '~backend/shared/typing/utils';
 
 export const CapeType = {
 	VANILLA: 'vanilla',

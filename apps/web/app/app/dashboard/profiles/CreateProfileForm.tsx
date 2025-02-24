@@ -4,8 +4,8 @@ import { useRouter } from 'next/navigation';
 import { Box, Button, Dialog, Flex, Text, TextField } from '@radix-ui/themes';
 import { useMutation } from '@tanstack/react-query';
 import { mergeForm, useForm, useStore } from '@tanstack/react-form';
-import { TypeboxValidator } from '@repo/typebox-form-adapter';
-import { createProfileFormOpts, CreateProfileFormValues } from './shared';
+import type { TypeboxValidator } from '@repo/typebox-form-adapter';
+import { createProfileFormOpts, type CreateProfileFormValues } from './shared';
 import { handleCreateProfile } from './actions';
 
 export function CreateProfileForm() {

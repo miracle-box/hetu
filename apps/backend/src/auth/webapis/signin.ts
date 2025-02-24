@@ -2,7 +2,7 @@ import { Elysia, t } from 'elysia';
 import { UsersRepository } from '~backend/users/users.repository';
 import { SessionService } from '~backend/services/auth/session';
 import { PasswordService } from '~backend/services/auth/password';
-import { Session, sessionSchema, SessionScope } from '~backend/auth/auth.entities';
+import { type Session, sessionSchema, SessionScope } from '~backend/auth/auth.entities';
 import { AppError } from '~backend/shared/middlewares/errors/app-error';
 import { createErrorResps } from '~backend/shared/middlewares/errors/docs';
 

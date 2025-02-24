@@ -5,9 +5,9 @@ import styles from './styles.module.css';
 const Input = React.forwardRef<HTMLInputElement, React.ComponentProps<'input'>>(
 	({ className, type, ...props }, ref) => {
 		return (
-			<div className={`${styles.root} rt-TextFieldRoot rt-r-size-2 rt-variant-surface`}>
+			<div className={`${styles['root']} rt-TextFieldRoot rt-r-size-2 rt-variant-surface`}>
 				<input
-					className={`${styles.input} rt-reset rt-TextFieldInput`}
+					className={`${styles['input']} rt-reset rt-TextFieldInput`}
 					type={type}
 					ref={ref}
 					{...props}

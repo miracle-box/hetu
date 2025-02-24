@@ -13,8 +13,8 @@ import {
 import { useRouter } from 'next/navigation';
 import { mergeForm, useForm, useStore } from '@tanstack/react-form';
 import { useMutation } from '@tanstack/react-query';
-import { TypeboxValidator } from '@repo/typebox-form-adapter';
-import { createTextureFormOpts, CreateTextureFormValues } from './shared';
+import type { TypeboxValidator } from '@repo/typebox-form-adapter';
+import { createTextureFormOpts, type CreateTextureFormValues } from './shared';
 import { handleCreateTexture } from './actions';
 import { Input } from '@repo/ui/Input';
 

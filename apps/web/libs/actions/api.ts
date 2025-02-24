@@ -7,6 +7,7 @@ export async function getUserInfo() {
 	const session = await validateSession();
 	if (!session) return null;
 
+	// @ts-expect-error [TODO] Error handling will be added soon.
 	const { data, error } = await api
 		.users({
 			id: session.userId,
@@ -26,6 +27,7 @@ export async function getUserProfiles() {
 	const session = await validateSession();
 	if (!session) return null;
 
+	// @ts-expect-error [TODO] Error handling will be added soon.
 	const { data, error } = await api
 		.users({
 			id: session.userId,
@@ -45,6 +47,7 @@ export async function getUserTextures() {
 	const session = await validateSession();
 	if (!session) return null;
 
+	// @ts-expect-error [TODO] Error handling will be added soon.
 	const { data, error } = await api
 		.users({
 			id: session.userId,
@@ -64,6 +67,7 @@ export async function uploadTexture(body: { file: File; type: 'texture_skin' | '
 	const session = await validateSession();
 	if (!session) return null;
 
+	// @ts-expect-error [TODO] Error handling will be added soon.
 	const { data, error } = await api.files.index.post(
 		{
 			// @ts-expect-error [TODO] Eden incorrectly infer type as Files
@@ -91,6 +95,7 @@ export async function createTexture(body: {
 	const session = await validateSession();
 	if (!session) return null;
 
+	// @ts-expect-error [TODO] Error handling will be added soon.
 	const { data, error } = await api.textures.index.post(body, {
 		headers: { Authorization: `Bearer ${session.authToken}` },
 	});
@@ -106,6 +111,7 @@ export async function createProfile(body: { name: string }) {
 	const session = await validateSession();
 	if (!session) return null;
 
+	// @ts-expect-error [TODO] Error handling will be added soon.
 	const { data, error } = await api.profiles.index.post(body, {
 		headers: { Authorization: `Bearer ${session.authToken}` },
 	});

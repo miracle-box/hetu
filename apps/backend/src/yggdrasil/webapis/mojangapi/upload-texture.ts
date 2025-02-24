@@ -1,4 +1,4 @@
-import { Elysia, NotFoundError, Static, t } from 'elysia';
+import { Elysia, NotFoundError, t } from 'elysia';
 import { YggdrasilRepository } from '~backend/yggdrasil/yggdrasil.repository';
 import { ProfilesRepository } from '~backend/profiles/profiles.repository';
 import { TexturesRepository } from '~backend/textures/textures.repository';

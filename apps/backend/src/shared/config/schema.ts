@@ -1,4 +1,4 @@
-import { Static, Type, FormatRegistry } from '@sinclair/typebox';
+import { type Static, Type, FormatRegistry } from '@sinclair/typebox';
 
 // [TODO] TypeBox and string formats should be in a individual package
 if (!FormatRegistry.Has('email'))

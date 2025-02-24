@@ -1,6 +1,6 @@
 import { jsonb, pgTable, timestamp, varchar } from 'drizzle-orm/pg-core';
 import { createId } from '@paralleldrive/cuid2';
-import { SessionMetadata } from '~backend/auth/auth.entities';
+import { type SessionMetadata } from '~backend/auth/auth.entities';
 
 export const sessionsTable = pgTable('sessions', {
 	id: varchar('id', { length: 24 }).primaryKey().$defaultFn(createId),

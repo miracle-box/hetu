@@ -2,7 +2,7 @@
 
 import { createTexture, uploadTexture } from '~web/libs/actions/api';
 import { formError, formSuccess } from '~web/libs/form/responses';
-import { CreateTextureFormValues } from './shared';
+import { type CreateTextureFormValues } from './shared';
 
 export async function handleCreateTexture(form: CreateTextureFormValues) {
 	if (!(form.file instanceof File)) return formError('File is not valid.');
