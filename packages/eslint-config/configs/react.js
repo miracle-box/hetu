@@ -13,6 +13,7 @@ import jsxA11yPlugin from 'eslint-plugin-jsx-a11y';
  *		files?: string[],
  *		ignores?: string[],
  *		typeAwareIgnores?: string[],
+ *		useNextjs?: boolean,
  * }} options React options
  */
 export function react(options) {
@@ -22,6 +23,7 @@ export function react(options) {
 		files = [],
 		ignores = [],
 		typeAwareIgnores = [],
+		useNextjs = false,
 	} = options;
 
 	const allFiles = [...files, ...typeAwareFiles];
@@ -47,7 +49,34 @@ export function react(options) {
 	};
 
 	/** @type {Record<string, import('@typescript-eslint/utils').TSESLint.FlatConfig.RuleEntry>} */
-	const rulesOverrides = {};
+	const rulesOverrides = {
+		...(useNextjs
+			? {
+					// Next.js uses these exports
+					'react-refresh/only-export-components': [
+						'warn',
+						{
+							allowConstantExport: true,
+							allowExportNames: [
+								'dynamic',
+								'dynamicParams',
+								'revalidate',
+								'fetchCache',
+								'runtime',
+								'preferredRegion',
+								'maxDuration',
+								'config',
+								'generateStaticParams',
+								'metadata',
+								'generateMetadata',
+								'viewport',
+								'generateViewport',
+							],
+						},
+					],
+				}
+			: {}),
+	};
 
 	/** @type {Record<string, import('@typescript-eslint/utils').TSESLint.FlatConfig.RuleEntry>} */
 	const typeAwareRulesOverrides = {};

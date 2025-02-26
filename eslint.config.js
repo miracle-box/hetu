@@ -33,6 +33,7 @@ export default [
 		files: ['apps/web/**/*'],
 		typeAwareFiles: ['apps/web/**/*.?([cm])ts', 'apps/web/**/*.?([cm])tsx'],
 		typeAwareIgnores: ['apps/web/.next/**/*'],
+		useNextjs: true,
 	}),
 	...configs.next({
 		rootDir: 'apps/web',

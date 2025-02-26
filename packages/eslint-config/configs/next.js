@@ -39,29 +39,6 @@ export function next(options) {
 			rules: {
 				...nextPlugin.configs.recommended.rules,
 				...nextPlugin.configs['core-web-vitals'].rules,
-
-				// Next.js uses these exports
-				'react-refresh/only-export-components': [
-					'warn',
-					{
-						allowConstantExport: true,
-						allowExportNames: [
-							'dynamic',
-							'dynamicParams',
-							'revalidate',
-							'fetchCache',
-							'runtime',
-							'preferredRegion',
-							'maxDuration',
-							'config',
-							'generateStaticParams',
-							'metadata',
-							'generateMetadata',
-							'viewport',
-							'generateViewport',
-						],
-					},
-				],
 			},
 		},
 	];
