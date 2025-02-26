@@ -39,7 +39,7 @@ export function javascript(options) {
 				},
 			},
 			linterOptions: {
-				noInlineConfig: true,
+				reportUnusedInlineConfigs: 'error',
 				reportUnusedDisableDirectives: true,
 			},
 		},
