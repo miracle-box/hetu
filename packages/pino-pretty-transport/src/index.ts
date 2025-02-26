@@ -5,7 +5,7 @@ export default (opts: PrettyOptions) =>
 		...opts,
 		customPrettifiers: {
 			// [FIXME] No color options in time prettier.
-			time: (timestamp) => `[${timestamp}]`,
+			time: (timestamp) => `[${timestamp.toString()}]`,
 		},
 		translateTime: 'SYS:yyyy/m/dd HH:MM:ss',
 	});
