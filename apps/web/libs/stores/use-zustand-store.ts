@@ -8,6 +8,9 @@ export const useZustandStore = <T, F>(
 	const [data, setData] = useState<F>();
 
 	useEffect(() => {
+		// Needed for using zustand in Next.js (waiting for hydration)
+		// https://dev.to/abdulsamad/how-to-use-zustands-persist-middleware-in-nextjs-4lb5
+		// eslint-disable-next-line react-hooks-extra/no-direct-set-state-in-use-effect
 		setData(() => result);
 	}, [result]);
 
