@@ -7,19 +7,19 @@ import globals from 'globals';
  * JavaScript related config.
  *
  * @param {{
- * 		files: string[];
- * 		ignoredFiles?: string[];
+ *		files: string[];
+ *		ignores?: string[];
  * }} options JavaScript options
  */
 export function javascript(options) {
-	const { files = [], ignoredFiles = [] } = options;
+	const { files = [], ignores = [] } = options;
 
 	/** @type {import("eslint").Linter.Config[]} */
 	const config = [
 		{
 			name: '@repo/javascript/setup',
 			files,
-			ignores: ignoredFiles,
+			ignores,
 			languageOptions: {
 				ecmaVersion: 'latest',
 				globals: {
@@ -46,7 +46,7 @@ export function javascript(options) {
 		{
 			name: '@repo/javascript/rules',
 			files,
-			ignores: ignoredFiles,
+			ignores,
 			rules: {
 				...jsPlugin.configs.recommended.rules,
 			},

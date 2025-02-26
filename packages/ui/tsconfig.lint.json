@@ -1,0 +1,8 @@
+{
+  "extends": "@repo/typescript-config/react-library.json",
+  "include": ["styles.d.ts", "src/**/*", "turbo/**/*"],
+  "compilerOptions": {
+    "types": ["bun-types"],
+    "tsBuildInfoFile": ".tsbuildinfo"
+  }
+}

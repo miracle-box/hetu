@@ -7,11 +7,11 @@ import tsPlugin from 'typescript-eslint';
  * TypeScript related config.
  *
  * @param {{
- * 		tsconfigPath?: string;
+ *		tsconfigPath?: string;
  *		typeAwareFiles?: string[]
  *		files?: string[],
- *		ignoredFiles?: string[],
- *		ignoredTypeAwareFiles?: string[],
+ *		ignores?: string[],
+ *		typeAwareIgnores?: string[],
  * }} options TypeScript options
  */
 export function typescript(options) {
@@ -19,13 +19,13 @@ export function typescript(options) {
 		tsconfigPath = undefined,
 		typeAwareFiles = [],
 		files = [],
-		ignoredFiles = [],
-		ignoredTypeAwareFiles = [],
+		ignores = [],
+		typeAwareIgnores = [],
 	} = options;
 
 	const typeAwareEnabled = !!tsconfigPath;
 	const allFiles = [...files, ...typeAwareFiles];
-	const allIgnoredFiles = [...ignoredFiles, ...ignoredTypeAwareFiles];
+	const allIgnores = [...ignores, ...typeAwareIgnores];
 
 	/** @type {Record<string, import('@typescript-eslint/utils').TSESLint.FlatConfig.RuleEntry>} */
 	const rules = {
@@ -46,7 +46,7 @@ export function typescript(options) {
 		)?.rules ?? {}),
 	};
 
-	/** @type {import('@typescript-eslint/utils').TSESLint.FlatConfig.ConfigFile} */
+	/** @type {import('@typescript-eslint/utils').TSESLint.FlatConfig.ConfigArray} */
 	const config = [
 		{
 			name: '@repo/typescript/setup',
@@ -61,7 +61,7 @@ export function typescript(options) {
 					{
 						name: '@repo/typescript/parser',
 						files: allFiles,
-						ignores: allIgnoredFiles,
+						ignores: allIgnores,
 						languageOptions: {
 							parser: tsPlugin.parser,
 							parserOptions: {
@@ -74,7 +74,7 @@ export function typescript(options) {
 					{
 						name: '@repo/typescript/rules',
 						files: allFiles,
-						ignores: allIgnoredFiles,
+						ignores: allIgnores,
 						rules: {
 							...rules,
 						},
@@ -88,7 +88,7 @@ export function typescript(options) {
 					{
 						name: '@repo/typescript/parser-typeaware',
 						files: typeAwareFiles,
-						ignores: ignoredTypeAwareFiles,
+						ignores: typeAwareIgnores,
 						languageOptions: {
 							parser: tsPlugin.parser,
 							parserOptions: {
@@ -106,7 +106,7 @@ export function typescript(options) {
 					{
 						name: '@repo/typescript/rules-typeaware',
 						files: typeAwareFiles,
-						ignores: ignoredTypeAwareFiles,
+						ignores: typeAwareIgnores,
 						rules: {
 							...rules,
 							...typeAwareRules,

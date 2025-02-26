@@ -7,22 +7,37 @@ export default [
 	// Backend
 	...configs.javascript({
 		files: ['apps/backend/**/*'],
-		ignoredFiles: ['apps/backend/dist/**/*'],
+		ignores: ['apps/backend/dist/**/*'],
 	}),
 	...configs.typescript({
 		tsconfigPath: 'apps/backend/tsconfig.json',
 		typeAwareFiles: ['apps/backend/**/*.?([cm])ts'],
 	}),
+	...configs.drizzle({
+		files: ['apps/backend/src/**/*'],
+		drizzleObjectName: 'db',
+	}),
 
 	// Web
 	...configs.javascript({
 		files: ['apps/web/**/*'],
-		ignoredFiles: ['apps/web/.next/**/*'],
+		ignores: ['apps/web/.next/**/*'],
 	}),
 	...configs.typescript({
 		tsconfigPath: 'apps/web/tsconfig.json',
 		typeAwareFiles: ['apps/web/**/*.?([cm])ts', 'apps/web/**/*.?([cm])tsx'],
-		ignoredTypeAwareFiles: ['apps/web/.next/**/*'],
+		typeAwareIgnores: ['apps/web/.next/**/*'],
+	}),
+	...configs.react({
+		typeAwareEnabled: true,
+		files: ['apps/web/**/*'],
+		typeAwareFiles: ['apps/web/**/*.?([cm])ts', 'apps/web/**/*.?([cm])tsx'],
+		typeAwareIgnores: ['apps/web/.next/**/*'],
+	}),
+	...configs.next({
+		rootDir: 'apps/web',
+		files: ['apps/web/**/*'],
+		ignores: ['apps/web/.next/**/*'],
 	}),
 
 	// eslint-config
@@ -48,5 +63,15 @@ export default [
 		tsconfigPath: 'packages/ui/tsconfig.lint.json',
 		files: ['packages/ui/**/*.?([cm])ts'],
 		typeAwareFiles: ['packages/ui/src/**/*.?([cm])ts', 'packages/ui/src/**/*.?([cm])tsx'],
+	}),
+	...configs.react({
+		typeAwareEnabled: true,
+		files: ['packages/ui/**/*'],
+		typeAwareFiles: ['packages/ui/src/**/*.?([cm])ts', 'packages/ui/src/**/*.?([cm])tsx'],
+	}),
+
+	// Turborepo
+	...configs.turbo({
+		ignores: ['apps/backend/dist/**/*', 'apps/web/.next/**/*'],
 	}),
 ];
