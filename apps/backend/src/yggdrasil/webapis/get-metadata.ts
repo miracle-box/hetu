@@ -4,7 +4,7 @@ import { Config } from '~backend/shared/config';
 
 export const getMetadataHandler = new Elysia().get(
 	'/',
-	async () => {
+	() => {
 		return {
 			meta: {
 				serverName: Config.app.yggdrasil.serverName,

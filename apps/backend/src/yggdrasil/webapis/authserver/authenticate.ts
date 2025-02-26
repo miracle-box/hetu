@@ -24,7 +24,7 @@ export const authenticateHandler = new Elysia().post(
 			);
 		}
 
-		const passwordCorrect = PasswordService.compare(body.password, user.passwordHash);
+		const passwordCorrect = await PasswordService.compare(body.password, user.passwordHash);
 		if (!passwordCorrect) {
 			throw new ForbiddenOperationException(
 				'Invalid credentials. Invalid username or password.',

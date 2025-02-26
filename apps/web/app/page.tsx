@@ -1,7 +1,7 @@
+import Bun from 'bun';
 import { Button, Callout, Container, Flex, Heading, Text } from '@radix-ui/themes';
 import Link from 'next/link';
 import { SessionInfo } from './SessionInfo';
-
 export default function Home() {
 	return (
 		<Container>

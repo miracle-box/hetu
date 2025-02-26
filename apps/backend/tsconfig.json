@@ -1,6 +1,6 @@
 {
   "extends": "@repo/typescript-config/base.json",
-  "include": ["drizzle.config.ts", "env.d.ts", "scripts/**/*", "src/**/*"],
+  "include": ["drizzle.config.ts", "scripts/**/*", "src/**/*"],
   "compilerOptions": {
     "paths": {
       "~backend/*": ["./src/*"]

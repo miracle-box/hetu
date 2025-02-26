@@ -20,7 +20,7 @@ export const signoutHandler = new Elysia().post(
 			);
 		}
 
-		const passwordCorrect = PasswordService.compare(user.passwordHash, body.password);
+		const passwordCorrect = await PasswordService.compare(user.passwordHash, body.password);
 		if (!passwordCorrect) {
 			throw new ForbiddenOperationException(
 				'Invalid credentials. Invalid username or password.',

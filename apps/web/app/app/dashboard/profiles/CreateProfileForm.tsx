@@ -25,7 +25,7 @@ export function CreateProfileForm() {
 
 	const form = useForm({
 		...createProfileFormOpts,
-		onSubmit: async ({ value }) => submit.mutate(value),
+		onSubmit: ({ value }) => submit.mutate(value),
 	});
 	const formErrors = useStore(form.store, (state) => state.errors);
 
@@ -34,7 +34,7 @@ export function CreateProfileForm() {
 			onSubmit={(e) => {
 				e.preventDefault();
 				e.stopPropagation();
-				form.handleSubmit();
+				void form.handleSubmit();
 			}}
 		>
 			<Flex gap="3" direction="column">

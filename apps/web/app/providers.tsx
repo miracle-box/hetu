@@ -1,5 +1,6 @@
 'use client';
 
+import type React from 'react';
 import { ThemeProvider } from 'next-themes';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { QueryClientProvider } from '@tanstack/react-query';

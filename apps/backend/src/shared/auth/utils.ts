@@ -31,7 +31,7 @@ export function nowWithinDate(date: Date): boolean {
 export function isSessionOfScope<TScope extends SessionScope>(
 	session: Session,
 	scope: TScope,
-	// @ts-ignore [TODO] Don't know how to fix, but it works for now.
+	// @ts-expect-error [TODO] Don't know how to fix, but it works for now.
 ): session is Session<TScope> {
 	return session.metadata.scope === scope;
 }

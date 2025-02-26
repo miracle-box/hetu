@@ -4,49 +4,34 @@ import { Value } from '@sinclair/typebox/value';
 import { Logger } from '~backend/shared/logger';
 import { configSchema, type Config as ConfigType } from './schema';
 
-const configStatus = {
-	initialized: false,
-	data: null as unknown as ConfigType,
-};
+let initialized = false;
+let configData = {} as unknown as ConfigType;
 
-// Escapes type checking here because `prop` is not `configStatus` but `configStatus.data`
-export const Config = new Proxy<ConfigType>(configStatus as any, {
-	get(target: any, prop: keyof typeof target.data) {
-		if (!target.initialized) {
-			Logger.error(
-				new Error(
-					'Accessing the config before initialization is not allowed, the app will exit now.',
-				),
-			);
-			process.exit(1);
-		}
-		return target.data[prop];
-	},
-});
+initConfig();
 
 export function initConfig() {
 	// Initialize only once.
-	if (configStatus.initialized) return;
+	if (initialized) return;
 
 	try {
 		// [TODO] More ways of specifying config file
 		const configFile = readFileSync('./config.yaml').toString();
-		const rawConfig = YAML.parse(configFile);
+		const rawConfig: unknown = YAML.parse(configFile);
 
 		const configErrors = [...Value.Errors(configSchema, rawConfig)];
 		for (const configError of configErrors) {
 			Logger.error(
 				`Invalid config value at ${configError.path} ${
 					configError.schema.description && `(${configError.schema.description})`
-				}: ${configError.message}, but got '${configError.value}'.`,
+				}: ${configError.message}, but got '${String(configError.value)}'.`,
 			);
 		}
 		if (configErrors.length > 0) {
-			throw 'Some values in the config are invalid, exiting now.';
+			throw new Error('Some values in the config are invalid, exiting now.');
 		}
 
-		configStatus.data = Value.Parse(configSchema, rawConfig);
-		configStatus.initialized = true;
+		configData = Value.Parse(configSchema, rawConfig);
+		initialized = true;
 	} catch (e) {
 		Logger.error(e, 'Failed to load config file, exiting now.');
 		process.exit(1);
@@ -55,4 +40,16 @@ export function initConfig() {
 	Logger.info('Configuration successfully initialized.');
 }
 
-initConfig();
+export const Config = new Proxy<ConfigType>(configData, {
+	get(target: ConfigType, prop: keyof typeof target) {
+		if (!initialized) {
+			Logger.error(
+				new Error(
+					'Accessing the config before initialization is not allowed, the app will exit now.',
+				),
+			);
+			process.exit(1);
+		}
+		return target[prop];
+	},
+});

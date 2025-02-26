@@ -16,5 +16,6 @@ migrate(drizzle(queryClient), { migrationsFolder: 'migrations' })
 	})
 	.catch((e) => {
 		Logger.error(e, 'Database migration failed.');
-	})
-	.finally(() => queryClient.end());
+	});
+
+await queryClient.end();
