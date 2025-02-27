@@ -6,6 +6,7 @@ import 'eslint-plugin-only-warn';
 
 export { javascript } from './javascript.js';
 export { typescript } from './typescript.js';
+export { importLint } from './import-lint.js';
 export { react } from './react.js';
 export { next } from './next.js';
 export { turbo } from './turbo.js';

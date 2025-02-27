@@ -1,9 +1,9 @@
 // @ts-check
 
 import reactPlugin from '@eslint-react/eslint-plugin';
+import jsxA11yPlugin from 'eslint-plugin-jsx-a11y';
 import reactHooksPlugin from 'eslint-plugin-react-hooks';
 import reactRefreshPlugin from 'eslint-plugin-react-refresh';
-import jsxA11yPlugin from 'eslint-plugin-jsx-a11y';
 
 /**
  * React related config

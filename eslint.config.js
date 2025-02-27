@@ -4,11 +4,13 @@ import * as configs from '@repo/eslint-config/configs';
 
 /** @type {import('@typescript-eslint/utils').TSESLint.FlatConfig.ConfigFile} */
 export default [
-	// Backend
+	// All JavaScript
 	...configs.javascript({
-		files: ['apps/backend/**/*'],
-		ignores: ['apps/backend/dist/**/*'],
+		files: ['**/*'],
+		ignores: ['apps/backend/dist/**/*', 'apps/web/.next/**/*'],
 	}),
+
+	// Backend
 	...configs.typescript({
 		tsconfigPath: 'apps/backend/tsconfig.json',
 		typeAwareFiles: ['apps/backend/**/*.?([cm])ts'],
@@ -19,10 +21,6 @@ export default [
 	}),
 
 	// Web
-	...configs.javascript({
-		files: ['apps/web/**/*'],
-		ignores: ['apps/web/.next/**/*'],
-	}),
 	...configs.typescript({
 		tsconfigPath: 'apps/web/tsconfig.json',
 		typeAwareFiles: ['apps/web/**/*.?([cm])ts', 'apps/web/**/*.?([cm])tsx'],
@@ -41,15 +39,7 @@ export default [
 		ignores: ['apps/web/.next/**/*'],
 	}),
 
-	// eslint-config
-	...configs.javascript({
-		files: ['packages/eslint-config/**/*'],
-	}),
-
 	// pino-pretty-transport
-	...configs.javascript({
-		files: ['packages/pino-pretty-transport/**/*'],
-	}),
 	...configs.typescript({
 		tsconfigPath: 'packages/pino-pretty-transport/tsconfig.json',
 		// pino-pretty does not have complete type declarations
@@ -57,9 +47,6 @@ export default [
 	}),
 
 	// ui
-	...configs.javascript({
-		files: ['packages/ui/**/*'],
-	}),
 	...configs.typescript({
 		tsconfigPath: 'packages/ui/tsconfig.lint.json',
 		files: ['packages/ui/**/*.?([cm])ts'],
@@ -71,6 +58,11 @@ export default [
 		typeAwareFiles: ['packages/ui/src/**/*.?([cm])ts', 'packages/ui/src/**/*.?([cm])tsx'],
 	}),
 
+	// Import
+	...configs.importLint({
+		ignores: ['apps/backend/dist/**/*', 'apps/web/.next/**/*'],
+		tsconfigs: ['packages/*/tsconfig.json', 'apps/*/tsconfig.json'],
+	}),
 	// Turborepo
 	...configs.turbo({
 		ignores: ['apps/backend/dist/**/*', 'apps/web/.next/**/*'],
