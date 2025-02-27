@@ -1,9 +1,9 @@
 'use server';
 
+import type { SignupFormValues } from './shared';
+import { setSessionCookie } from '~web/libs/actions/auth';
 import { client as api } from '~web/libs/api/eden';
 import { formError, formSuccess } from '~web/libs/form/responses';
-import { type SignupFormValues } from './shared';
-import { setSessionCookie } from '~web/libs/actions/auth';
 
 export async function handleSignup(form: SignupFormValues) {
 	const { data, error } = await api.auth.signup.post({

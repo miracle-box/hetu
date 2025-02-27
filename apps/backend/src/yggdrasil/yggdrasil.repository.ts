@@ -1,10 +1,10 @@
-import { db } from '~backend/shared/db';
-import { and, eq, gt, inArray } from 'drizzle-orm';
-import { profilesTable } from '~backend/shared/db/schema/profiles';
-import type { Texture } from '~backend/textures/texture.entities';
 import type { Profile } from '~backend/profiles/profile.entities';
-import { yggServerSessionsTable } from '~backend/shared/db/schema/ygg-server-sessions';
+import type { Texture } from '~backend/textures/texture.entities';
 import type { YggServerSession } from '~backend/yggdrasil/yggdrasil.entities';
+import { and, eq, gt, inArray } from 'drizzle-orm';
+import { db } from '~backend/shared/db';
+import { profilesTable } from '~backend/shared/db/schema/profiles';
+import { yggServerSessionsTable } from '~backend/shared/db/schema/ygg-server-sessions';
 
 export abstract class YggdrasilRepository {
 	static async getProfilesDigestByNames(

@@ -1,10 +1,10 @@
 import { Elysia, t } from 'elysia';
+import { SessionScope } from '~backend/auth/auth.entities';
+import { authMiddleware } from '~backend/shared/auth/middleware';
+import { AppError } from '~backend/shared/middlewares/errors/app-error';
+import { createErrorResps } from '~backend/shared/middlewares/errors/docs';
 import { textureSchema, TextureType } from '~backend/textures/texture.entities';
 import { TexturesRepository } from '~backend/textures/textures.repository';
-import { AppError } from '~backend/shared/middlewares/errors/app-error';
-import { authMiddleware } from '~backend/shared/auth/middleware';
-import { SessionScope } from '~backend/auth/auth.entities';
-import { createErrorResps } from '~backend/shared/middlewares/errors/docs';
 
 export const createHandler = new Elysia().use(authMiddleware(SessionScope.DEFAULT)).post(
 	'/',

@@ -1,5 +1,5 @@
-import { jsonb, pgEnum, pgTable, timestamp, varchar } from 'drizzle-orm/pg-core';
 import { createId } from '@paralleldrive/cuid2';
+import { jsonb, pgEnum, pgTable, timestamp, varchar } from 'drizzle-orm/pg-core';
 
 export const verificationMethodEnum = pgEnum('verification_method', ['email']);
 

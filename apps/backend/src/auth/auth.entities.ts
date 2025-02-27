@@ -1,10 +1,8 @@
-import { type Static, t, type TSchema } from 'elysia';
 import type { TLiteral } from '@sinclair/typebox';
-import {
-	createEnumLikeValuesSchema,
-	type EnumLikeValues,
-	type Prettify,
-} from '~backend/shared/typing/utils';
+import type { Static, TSchema } from 'elysia';
+import type { EnumLikeValues, Prettify } from '~backend/shared/typing/utils';
+import { t } from 'elysia';
+import { createEnumLikeValuesSchema } from '~backend/shared/typing/utils';
 
 export const UserAuthType = {
 	PASSWORD: 'password',

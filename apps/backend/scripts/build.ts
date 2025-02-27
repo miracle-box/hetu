@@ -1,8 +1,8 @@
-import path from 'node:path';
-import fs from 'node:fs/promises';
-import { bunPluginPino } from 'bun-plugin-pino';
 import type { BunPlugin } from 'bun';
+import fs from 'node:fs/promises';
+import path from 'node:path';
 import Bun from 'bun';
+import { bunPluginPino } from 'bun-plugin-pino';
 
 function bunPluginEmbedSharpNative(): BunPlugin {
 	return {

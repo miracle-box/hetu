@@ -1,17 +1,17 @@
 import { Elysia, t } from 'elysia';
+import { SessionScope } from '~backend/auth/auth.entities';
+import { PasswordService } from '~backend/services/auth/password';
+import { SessionService } from '~backend/services/auth/session';
+import { UsersRepository } from '~backend/users/users.repository';
+import { ForbiddenOperationException } from '~backend/yggdrasil/utils/errors';
 import {
 	yggCredentialsSchema,
 	yggProfileDigestSchema,
 	yggTokenSchema,
 	yggUserSchema,
 } from '~backend/yggdrasil/yggdrasil.entities';
-import { YggdrasilService } from '~backend/yggdrasil/yggdrasil.service';
-import { UsersRepository } from '~backend/users/users.repository';
-import { PasswordService } from '~backend/services/auth/password';
-import { SessionService } from '~backend/services/auth/session';
 import { YggdrasilRepository } from '~backend/yggdrasil/yggdrasil.repository';
-import { SessionScope } from '~backend/auth/auth.entities';
-import { ForbiddenOperationException } from '~backend/yggdrasil/utils/errors';
+import { YggdrasilService } from '~backend/yggdrasil/yggdrasil.service';
 
 export const authenticateHandler = new Elysia().post(
 	'/authenticate',

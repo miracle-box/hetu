@@ -1,5 +1,7 @@
-import { type Static, t } from 'elysia';
-import { createEnumLikeValuesSchema, type EnumLikeValues } from '~backend/shared/typing/utils';
+import type { Static } from 'elysia';
+import type { EnumLikeValues } from '~backend/shared/typing/utils';
+import { t } from 'elysia';
+import { createEnumLikeValuesSchema } from '~backend/shared/typing/utils';
 
 export const FileType = {
 	TEXTURE_SKIN: 'texture_skin',

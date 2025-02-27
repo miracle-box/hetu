@@ -1,6 +1,6 @@
 import { Elysia, t } from 'elysia';
-import { version } from '../../../package.json';
 import { Config } from '~backend/shared/config';
+import { version } from '../../../package.json';
 
 export const getMetadataHandler = new Elysia().get(
 	'/',

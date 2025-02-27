@@ -1,10 +1,10 @@
 import { Elysia, t } from 'elysia';
-import { TexturesRepository } from '~backend/textures/textures.repository';
-import { StorageService } from '~backend/services/storage';
-import { AppError } from '~backend/shared/middlewares/errors/app-error';
-import { authMiddleware } from '~backend/shared/auth/middleware';
 import { SessionScope } from '~backend/auth/auth.entities';
+import { StorageService } from '~backend/services/storage';
+import { authMiddleware } from '~backend/shared/auth/middleware';
+import { AppError } from '~backend/shared/middlewares/errors/app-error';
 import { createErrorResps } from '~backend/shared/middlewares/errors/docs';
+import { TexturesRepository } from '~backend/textures/textures.repository';
 
 export const getImageHandler = new Elysia().use(authMiddleware(SessionScope.DEFAULT)).get(
 	'/:id/image',

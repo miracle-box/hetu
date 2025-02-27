@@ -1,4 +1,5 @@
-import pinoPretty, { type PrettyOptions } from 'pino-pretty';
+import type { PrettyOptions } from 'pino-pretty';
+import pinoPretty from 'pino-pretty';
 
 export default (opts: PrettyOptions) =>
 	pinoPretty({

@@ -1,6 +1,8 @@
-import { type Static, Type } from '@sinclair/typebox';
+import type { TypeboxValidator } from '@repo/typebox-form-adapter';
+import type { Static } from '@sinclair/typebox';
+import { typeboxValidator } from '@repo/typebox-form-adapter';
+import { Type } from '@sinclair/typebox';
 import { formOptions } from '@tanstack/react-form/nextjs';
-import { typeboxValidator, type TypeboxValidator } from '@repo/typebox-form-adapter';
 
 export const signupFormSchema = Type.Object({
 	email: Type.String(),

@@ -1,5 +1,7 @@
 'use client';
 
+import type { CreateTextureFormValues } from './shared';
+import type { TypeboxValidator } from '@repo/typebox-form-adapter';
 import {
 	Box,
 	Button,
@@ -10,13 +12,12 @@ import {
 	TextArea,
 	TextField,
 } from '@radix-ui/themes';
-import { useRouter } from 'next/navigation';
+import { Input } from '@repo/ui/Input';
 import { mergeForm, useForm, useStore } from '@tanstack/react-form';
 import { useMutation } from '@tanstack/react-query';
-import type { TypeboxValidator } from '@repo/typebox-form-adapter';
-import { createTextureFormOpts, type CreateTextureFormValues } from './shared';
+import { useRouter } from 'next/navigation';
 import { handleCreateTexture } from './actions';
-import { Input } from '@repo/ui/Input';
+import { createTextureFormOpts } from './shared';
 
 export function CreateTextureForm() {
 	const router = useRouter();

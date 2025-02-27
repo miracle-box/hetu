@@ -1,12 +1,13 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
-import { Box, Button, Dialog, Flex, Text, TextField } from '@radix-ui/themes';
-import { useMutation } from '@tanstack/react-query';
-import { mergeForm, useForm, useStore } from '@tanstack/react-form';
+import type { CreateProfileFormValues } from './shared';
 import type { TypeboxValidator } from '@repo/typebox-form-adapter';
-import { createProfileFormOpts, type CreateProfileFormValues } from './shared';
+import { Box, Button, Dialog, Flex, Text, TextField } from '@radix-ui/themes';
+import { mergeForm, useForm, useStore } from '@tanstack/react-form';
+import { useMutation } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
 import { handleCreateProfile } from './actions';
+import { createProfileFormOpts } from './shared';
 
 export function CreateProfileForm() {
 	const router = useRouter();

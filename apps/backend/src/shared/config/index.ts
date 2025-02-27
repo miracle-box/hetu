@@ -1,8 +1,9 @@
-import YAML from 'yaml';
+import type { Config as ConfigType } from './schema';
 import { readFileSync } from 'node:fs';
 import { Value } from '@sinclair/typebox/value';
+import YAML from 'yaml';
 import { Logger } from '~backend/shared/logger';
-import { configSchema, type Config as ConfigType } from './schema';
+import { configSchema } from './schema';
 
 let initialized = false;
 let configData = {} as unknown as ConfigType;

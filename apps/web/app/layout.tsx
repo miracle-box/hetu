@@ -1,8 +1,8 @@
-import React from 'react';
 import type { Metadata } from 'next';
-import { fontClasses } from '../libs/styling/fonts';
-import { Providers } from './providers';
 import { Theme } from '@radix-ui/themes';
+import React from 'react';
+import { Providers } from './providers';
+import { fontClasses } from '../libs/styling/fonts';
 import '@radix-ui/themes/styles.css';
 import './globals.css';
 

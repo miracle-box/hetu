@@ -1,5 +1,6 @@
+import type { Session } from '~backend/auth/auth.entities';
 import { Elysia, t } from 'elysia';
-import { type Session, sessionSchema, SessionScope } from '~backend/auth/auth.entities';
+import { sessionSchema, SessionScope } from '~backend/auth/auth.entities';
 import { AuthRepository } from '~backend/auth/auth.repository';
 import { authMiddleware } from '~backend/shared/auth/middleware';
 import { createErrorResps } from '~backend/shared/middlewares/errors/docs';

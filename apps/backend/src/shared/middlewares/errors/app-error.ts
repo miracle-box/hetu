@@ -1,4 +1,4 @@
-import { type Static } from 'elysia';
+import type { Static } from 'elysia';
 import { APP_ERRORS } from './errors';
 
 export class AppError<TErrorCode extends keyof typeof APP_ERRORS> extends Error {

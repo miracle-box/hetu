@@ -1,7 +1,8 @@
-import { type Static, t } from 'elysia';
-import { s3 } from '~backend/shared/s3/client';
+import type { Static } from 'elysia';
 import { HeadObjectCommand, PutObjectCommand, NotFound } from '@aws-sdk/client-s3';
+import { t } from 'elysia';
 import { Config } from '~backend/shared/config';
+import { s3 } from '~backend/shared/s3/client';
 
 // Entities
 export const objectInfoSchema = t.Object({

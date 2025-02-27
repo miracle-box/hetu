@@ -1,9 +1,9 @@
 import { Elysia, t } from 'elysia';
-import { ProfilesRepository } from '~backend/profiles/profiles.repository';
-import { profileSchema } from '~backend/profiles/profile.entities';
-import { AppError } from '~backend/shared/middlewares/errors/app-error';
-import { authMiddleware } from '~backend/shared/auth/middleware';
 import { SessionScope } from '~backend/auth/auth.entities';
+import { profileSchema } from '~backend/profiles/profile.entities';
+import { ProfilesRepository } from '~backend/profiles/profiles.repository';
+import { authMiddleware } from '~backend/shared/auth/middleware';
+import { AppError } from '~backend/shared/middlewares/errors/app-error';
 import { createErrorResps } from '~backend/shared/middlewares/errors/docs';
 
 export const createHandler = new Elysia().use(authMiddleware(SessionScope.DEFAULT)).post(
