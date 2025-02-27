@@ -46,6 +46,12 @@ export default [
 		files: ['packages/pino-pretty-transport/**/*.?([cm])ts'],
 	}),
 
+	// typebox-form-adapter
+	...configs.typescript({
+		tsconfigPath: 'packages/typebox-form-adapter/tsconfig.json',
+		files: ['packages/typebox-form-adapter/**/*.?([cm])ts'],
+	}),
+
 	// ui
 	...configs.typescript({
 		tsconfigPath: 'packages/ui/tsconfig.lint.json',

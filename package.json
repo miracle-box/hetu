@@ -6,8 +6,9 @@
     "build": "turbo build",
     "dev": "turbo dev",
     "start": "turbo start",
-    "lint": "turbo lint --continue",
     "typecheck": "turbo typecheck --continue",
+    "lint": "turbo lint --continue",
+    "lint:fix": "eslint . --max-warnings 0",
     "format": "prettier --check \"**/*.{ts,tsx,js,jsx,mjs,cjs,json,yaml,md}\"",
     "format:fix": "prettier --write \"**/*.{ts,tsx,js,jsx,mjs,cjs,json,yaml,md}\""
   },

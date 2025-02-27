@@ -3,6 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
+  "scripts": {
+    "lint": "bun run --cwd ../.. eslint packages/eslint-config --max-warnings 0 --cache --cache-location packages/eslint-config/.eslintcache"
+  },
   "exports": {
     "./configs": "./configs/index.js"
   },

@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "lint": "bun run --cwd ../.. eslint packages/typebox-form-adapter --max-warnings 0 --cache --cache-location packages/typebox-form-adapter/.eslintcache"
   },
   "exports": {
     ".": "./src/index.ts"

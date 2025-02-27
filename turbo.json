@@ -17,12 +17,13 @@
     },
 
     "typecheck": {
-      "dependsOn": ["^typecheck"]
+      "dependsOn": ["^typecheck"],
+      "outputs": [".tsbuildinfo"]
     },
 
     "lint": {
       "dependsOn": ["^lint"],
-      "outputs": [".tsbuildinfo"]
+      "outputs": [".eslintcache"]
     }
   }
 }

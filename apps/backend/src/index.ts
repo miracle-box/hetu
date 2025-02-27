@@ -1,4 +1,3 @@
-
 import { Elysia } from 'elysia';
 import { AuthRoutes } from '~backend/auth/auth.routes';
 import { FilesRoutes } from '~backend/files/files.routes';

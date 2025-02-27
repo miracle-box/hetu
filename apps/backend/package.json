@@ -5,8 +5,8 @@
     "dev": "bun run --watch src/index.ts",
     "build": "bun scripts/build.ts",
     "start": "cd dist && bun run index.js",
-    "lint": "eslint . --max-warnings 0",
     "typecheck": "tsc --noEmit",
+    "lint": "bun run --cwd ../.. eslint apps/backend --max-warnings 0 --cache --cache-location apps/backend/.eslintcache",
     "migration:generate": "drizzle-kit generate",
     "migration:drop": "drizzle-kit drop",
     "migration:run": "bun scripts/migrate.ts"
