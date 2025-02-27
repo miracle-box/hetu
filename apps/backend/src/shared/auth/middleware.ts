@@ -1,8 +1,9 @@
+import type { Session } from '~backend/auth/auth.entities';
+import type { User } from '~backend/users/user.entities';
 import { Elysia } from 'elysia';
+import { SessionScope } from '~backend/auth/auth.entities';
 import { SessionService } from '~backend/services/auth/session';
-import { Session, SessionScope } from '~backend/auth/auth.entities';
 import { readBearerToken } from '~backend/shared/auth/utils';
-import { User } from '~backend/users/user.entities';
 import { AppError } from '../middlewares/errors/app-error';
 
 export const authMiddleware =

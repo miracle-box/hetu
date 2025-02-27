@@ -1,12 +1,12 @@
-import { Elysia, NotFoundError, Static, t } from 'elysia';
-import { YggdrasilRepository } from '~backend/yggdrasil/yggdrasil.repository';
-import { ProfilesRepository } from '~backend/profiles/profiles.repository';
-import { TexturesRepository } from '~backend/textures/textures.repository';
-import { TextureType } from '~backend/textures/texture.entities';
-import { uploadTexture as uploadTextureUsecase } from '~backend/files/usecases/upload-texture';
-import { FileType } from '~backend/files/files.entities';
-import { authMiddleware } from '~backend/shared/auth/middleware';
+import { Elysia, NotFoundError, t } from 'elysia';
 import { SessionScope } from '~backend/auth/auth.entities';
+import { FileType } from '~backend/files/files.entities';
+import { uploadTexture as uploadTextureUsecase } from '~backend/files/usecases/upload-texture';
+import { ProfilesRepository } from '~backend/profiles/profiles.repository';
+import { authMiddleware } from '~backend/shared/auth/middleware';
+import { TextureType } from '~backend/textures/texture.entities';
+import { TexturesRepository } from '~backend/textures/textures.repository';
+import { YggdrasilRepository } from '~backend/yggdrasil/yggdrasil.repository';
 
 export const uploadTextureHandler = new Elysia().use(authMiddleware(SessionScope.YGGDRASIL)).put(
 	'/user/profile/:id/:type',

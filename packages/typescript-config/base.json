@@ -2,19 +2,36 @@
   "$schema": "https://json.schemastore.org/tsconfig",
   "display": "Default",
   "compilerOptions": {
-    "declaration": true,
-    "declarationMap": true,
-    "esModuleInterop": true,
-    "incremental": false,
-    "isolatedModules": true,
-    "lib": ["ESNext", "DOM", "DOM.Iterable"],
+    // For TS compiler
+    "incremental": true,
+
+    // Enable latest features
+    "lib": ["ESNext"],
+    "target": "ESNext",
     "module": "ESNext",
     "moduleDetection": "force",
-    "moduleResolution": "Node",
-    "noUncheckedIndexedAccess": true,
+    "allowJs": false,
+
+    // Bundler mode
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true,
+    "noEmit": true,
+
+    // Module resolution
+    "esModuleInterop": true,
+    "isolatedModules": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,
+
+    // Some stricter flags
     "strict": true,
-    "target": "ESNext"
+    "allowUnreachableCode": false,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noUncheckedIndexedAccess": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true
   }
 }

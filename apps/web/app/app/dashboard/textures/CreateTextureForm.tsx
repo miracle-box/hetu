@@ -1,5 +1,7 @@
 'use client';
 
+import type { CreateTextureFormValues } from './shared';
+import type { TypeboxValidator } from '@repo/typebox-form-adapter';
 import {
 	Box,
 	Button,
@@ -10,13 +12,12 @@ import {
 	TextArea,
 	TextField,
 } from '@radix-ui/themes';
-import { useRouter } from 'next/navigation';
+import { Input } from '@repo/ui/Input';
 import { mergeForm, useForm, useStore } from '@tanstack/react-form';
 import { useMutation } from '@tanstack/react-query';
-import { TypeboxValidator } from '@repo/typebox-form-adapter';
-import { createTextureFormOpts, CreateTextureFormValues } from './shared';
+import { useRouter } from 'next/navigation';
 import { handleCreateTexture } from './actions';
-import { Input } from '@repo/ui/Input';
+import { createTextureFormOpts } from './shared';
 
 export function CreateTextureForm() {
 	const router = useRouter();
@@ -35,7 +36,7 @@ export function CreateTextureForm() {
 
 	const form = useForm({
 		...createTextureFormOpts,
-		onSubmit: async ({ value }) => submit.mutate(value),
+		onSubmit: ({ value }) => submit.mutate(value),
 	});
 	const formErrors = useStore(form.store, (state) => state.errors);
 
@@ -44,7 +45,7 @@ export function CreateTextureForm() {
 			onSubmit={(e) => {
 				e.preventDefault();
 				e.stopPropagation();
-				form.handleSubmit();
+				void form.handleSubmit();
 			}}
 		>
 			<Flex gap="3" direction="column">
@@ -134,7 +135,7 @@ export function CreateTextureForm() {
 								type="file"
 								placeholder="Select File"
 								accept="image/png"
-								onChange={async (e) => {
+								onChange={(e) => {
 									const selectedFile = e.target.files?.[0];
 									if (selectedFile) field.handleChange(selectedFile);
 									else e.target.value = '';

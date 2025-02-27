@@ -1,12 +1,13 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+import type { SigninFormValues } from './shared';
+import type { TypeboxValidator } from '@repo/typebox-form-adapter';
 import { Box, Button, Flex, Text, TextField } from '@radix-ui/themes';
 import { mergeForm, useForm, useStore } from '@tanstack/react-form';
-import { TypeboxValidator } from '@repo/typebox-form-adapter';
 import { useMutation } from '@tanstack/react-query';
-import { signinFormOpts, SigninFormValues } from './shared';
+import { useRouter } from 'next/navigation';
 import { handleSignin } from './actions';
+import { signinFormOpts } from './shared';
 
 export function SigninForm() {
 	const router = useRouter();
@@ -23,7 +24,7 @@ export function SigninForm() {
 
 	const form = useForm({
 		...signinFormOpts,
-		onSubmit: async ({ value }) => submit.mutate(value),
+		onSubmit: ({ value }) => submit.mutate(value),
 	});
 	const formErrors = useStore(form.store, (state) => state.errors);
 
@@ -32,7 +33,7 @@ export function SigninForm() {
 			onSubmit={(e) => {
 				e.preventDefault();
 				e.stopPropagation();
-				form.handleSubmit();
+				void form.handleSubmit();
 			}}
 		>
 			<Flex gap="3" direction="column">

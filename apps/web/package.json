@@ -6,7 +6,8 @@
     "dev": "next dev --turbopack -p 3001",
     "build": "next build",
     "start": "next start -p 3001",
-    "lint": "next lint"
+    "typecheck": "tsc --noEmit",
+    "lint": "bun run --cwd ../.. eslint apps/web --max-warnings 0 --cache --cache-location apps/web/.eslintcache"
   },
   "dependencies": {
     "@elysiajs/eden": "^1.2.0",
@@ -23,8 +24,6 @@
     "zustand": "^5.0.3"
   },
   "devDependencies": {
-    "@next/eslint-plugin-next": "^15.1.7",
-    "@repo/eslint-config": "*",
     "@repo/typescript-config": "*",
     "@tanstack/react-query-devtools": "^5.62.11",
     "@types/node": "^20.17.10",

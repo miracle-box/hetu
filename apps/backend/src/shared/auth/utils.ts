@@ -1,4 +1,5 @@
-import { Session, SessionScope } from '~backend/auth/auth.entities';
+import type { Session } from '~backend/auth/auth.entities';
+import { SessionScope } from '~backend/auth/auth.entities';
 
 /**
  * Reads the Bearer token from the authorization header.
@@ -31,7 +32,7 @@ export function nowWithinDate(date: Date): boolean {
 export function isSessionOfScope<TScope extends SessionScope>(
 	session: Session,
 	scope: TScope,
-	// @ts-ignore [TODO] Don't know how to fix, but it works for now.
+	// @ts-expect-error [TODO] Don't know how to fix, but it works for now.
 ): session is Session<TScope> {
 	return session.metadata.scope === scope;
 }

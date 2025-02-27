@@ -3,7 +3,7 @@ import Elysia from 'elysia';
 class YggdrasilApiError extends Error {
 	status = 500;
 	code = 'UNKNOWN';
-	message = 'Unknown Error';
+	override message = 'Unknown Error';
 
 	constructor(message: string) {
 		super(message);
@@ -11,9 +11,9 @@ class YggdrasilApiError extends Error {
 }
 
 export class NotFoundError extends YggdrasilApiError {
-	status = 404;
-	code = 'NOT_FOUND';
-	message = 'Not Found';
+	override status = 404;
+	override code = 'NOT_FOUND';
+	override message = 'Not Found';
 
 	constructor(message: string) {
 		super(message);
@@ -21,9 +21,9 @@ export class NotFoundError extends YggdrasilApiError {
 }
 
 export class ForbiddenOperationException extends YggdrasilApiError {
-	status = 403;
-	code = 'ForbiddenOperationException';
-	message = '';
+	override status = 403;
+	override code = 'ForbiddenOperationException';
+	override message = '';
 
 	constructor(message: string) {
 		super(message);
@@ -32,8 +32,8 @@ export class ForbiddenOperationException extends YggdrasilApiError {
 }
 
 export class IllegalArgumentException extends YggdrasilApiError {
-	status = 400;
-	message = '';
+	override status = 400;
+	override message = '';
 
 	constructor(message: string) {
 		super(message);

@@ -1,8 +1,8 @@
+import type { Profile } from '~backend/profiles/profile.entities';
 import { and, eq } from 'drizzle-orm';
 import { db } from '~backend/shared/db';
 import { profilesTable } from '~backend/shared/db/schema/profiles';
 import { lower } from '~backend/shared/db/utils';
-import { Profile } from '~backend/profiles/profile.entities';
 
 export abstract class ProfilesRepository {
 	static async findByUser(userId: string): Promise<Profile[]> {

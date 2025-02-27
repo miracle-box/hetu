@@ -1,4 +1,5 @@
-import { Static, t } from 'elysia';
+import type { Static } from 'elysia';
+import { t } from 'elysia';
 
 export const yggCredentialsSchema = t.Object({
 	username: t.String(),

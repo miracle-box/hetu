@@ -1,10 +1,11 @@
+import type { Session } from '~backend/auth/auth.entities';
 import { Elysia, t } from 'elysia';
-import { UsersRepository } from '~backend/users/users.repository';
+import { sessionSchema, SessionScope } from '~backend/auth/auth.entities';
 import { PasswordService } from '~backend/services/auth/password';
 import { SessionService } from '~backend/services/auth/session';
-import { Session, sessionSchema, SessionScope } from '~backend/auth/auth.entities';
 import { AppError } from '~backend/shared/middlewares/errors/app-error';
 import { createErrorResps } from '~backend/shared/middlewares/errors/docs';
+import { UsersRepository } from '~backend/users/users.repository';
 
 export const signupHandler = new Elysia().post(
 	'/signup',

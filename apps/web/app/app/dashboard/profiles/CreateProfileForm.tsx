@@ -1,12 +1,13 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+import type { CreateProfileFormValues } from './shared';
+import type { TypeboxValidator } from '@repo/typebox-form-adapter';
 import { Box, Button, Dialog, Flex, Text, TextField } from '@radix-ui/themes';
-import { useMutation } from '@tanstack/react-query';
 import { mergeForm, useForm, useStore } from '@tanstack/react-form';
-import { TypeboxValidator } from '@repo/typebox-form-adapter';
-import { createProfileFormOpts, CreateProfileFormValues } from './shared';
+import { useMutation } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
 import { handleCreateProfile } from './actions';
+import { createProfileFormOpts } from './shared';
 
 export function CreateProfileForm() {
 	const router = useRouter();
@@ -25,7 +26,7 @@ export function CreateProfileForm() {
 
 	const form = useForm({
 		...createProfileFormOpts,
-		onSubmit: async ({ value }) => submit.mutate(value),
+		onSubmit: ({ value }) => submit.mutate(value),
 	});
 	const formErrors = useStore(form.store, (state) => state.errors);
 
@@ -34,7 +35,7 @@ export function CreateProfileForm() {
 			onSubmit={(e) => {
 				e.preventDefault();
 				e.stopPropagation();
-				form.handleSubmit();
+				void form.handleSubmit();
 			}}
 		>
 			<Flex gap="3" direction="column">

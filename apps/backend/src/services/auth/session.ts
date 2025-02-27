@@ -1,8 +1,9 @@
-import { Session, SessionMetadata, SessionScope } from '~backend/auth/auth.entities';
+import type { Session, SessionMetadata } from '~backend/auth/auth.entities';
+import type { User } from '~backend/users/user.entities';
+import { SessionScope } from '~backend/auth/auth.entities';
 import { AuthRepository } from '~backend/auth/auth.repository';
-import { UsersRepository } from '~backend/users/users.repository';
 import { isSessionOfScope, nowWithinDate } from '~backend/shared/auth/utils';
-import { User } from '~backend/users/user.entities';
+import { UsersRepository } from '~backend/users/users.repository';
 
 /**
  * Session handling related utilities.

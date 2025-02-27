@@ -1,11 +1,12 @@
 {
   "extends": "@repo/typescript-config/base.json",
-  "include": ["drizzle.config.ts", "env.d.ts", "scripts/**/*", "src/**/*"],
-  "exclude": ["node_modules"],
+  "include": ["drizzle.config.ts", "scripts/**/*", "src/**/*"],
   "compilerOptions": {
-    "types": ["bun-types"],
     "paths": {
       "~backend/*": ["./src/*"]
-    }
+    },
+
+    "types": ["bun-types"],
+    "tsBuildInfoFile": ".tsbuildinfo"
   }
 }

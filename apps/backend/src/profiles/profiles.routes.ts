@@ -1,6 +1,6 @@
 import { Elysia } from 'elysia';
-import { findHandler } from './webapis/find';
 import { createHandler } from './webapis/create';
+import { findHandler } from './webapis/find';
 import { updateHandler } from './webapis/update';
 
 export const ProfilesRoutes = new Elysia({

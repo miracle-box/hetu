@@ -4,7 +4,7 @@ import { yggTokenSchema } from '~backend/yggdrasil/yggdrasil.entities';
 
 export const validateHandler = new Elysia().use(validateTokenMiddleware(true)).post(
 	'/validate',
-	async ({ set }) => {
+	({ set }) => {
 		set.status = 'No Content';
 		// Authorization middlewares handles the token validation
 	},

@@ -1,14 +1,13 @@
 import { Elysia } from 'elysia';
-import { Config, initConfig } from './shared/config';
-import { Logger } from './shared/logger';
-import { middlewares } from '~backend/shared/middlewares';
 import { AuthRoutes } from '~backend/auth/auth.routes';
 import { FilesRoutes } from '~backend/files/files.routes';
-import { UsersRoutes } from '~backend/users/users.routes';
 import { ProfilesRoutes } from '~backend/profiles/profiles.routes';
+import { middlewares } from '~backend/shared/middlewares';
 import { TexturesRoutes } from '~backend/textures/textures.routes';
+import { UsersRoutes } from '~backend/users/users.routes';
 import { YggdrasilRoutes } from '~backend/yggdrasil/yggdrasil.routes';
-
+import { Config, initConfig } from './shared/config';
+import { Logger } from './shared/logger';
 initConfig();
 
 const app = new Elysia()
@@ -23,6 +22,6 @@ const app = new Elysia()
 	.use(TexturesRoutes)
 	.listen(Config.app.listenTo);
 
-Logger.info('Service started on ' + app.server?.url);
+Logger.info(`Service started on ${app.server?.url?.toString()}`);
 
 export type App = typeof app;

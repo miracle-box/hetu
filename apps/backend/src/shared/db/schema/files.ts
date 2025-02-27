@@ -1,5 +1,5 @@
-import { bigint, pgEnum, pgTable, timestamp, uniqueIndex, varchar } from 'drizzle-orm/pg-core';
 import { createId } from '@paralleldrive/cuid2';
+import { bigint, pgEnum, pgTable, timestamp, uniqueIndex, varchar } from 'drizzle-orm/pg-core';
 
 export const fileTypeEnum = pgEnum('file_type', ['texture_skin', 'texture_cape']);
 

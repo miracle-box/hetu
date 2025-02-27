@@ -1,18 +1,18 @@
 import { Elysia, t } from 'elysia';
-import {
-	yggProfileDigestSchema,
-	yggTokenSchema,
-	yggUserSchema,
-} from '~backend/yggdrasil/yggdrasil.entities';
-import { SessionService } from '~backend/services/auth/session';
-import { YggdrasilService } from '~backend/yggdrasil/yggdrasil.service';
 import { SessionScope } from '~backend/auth/auth.entities';
-import { YggdrasilRepository } from '~backend/yggdrasil/yggdrasil.repository';
+import { SessionService } from '~backend/services/auth/session';
 import {
 	ForbiddenOperationException,
 	IllegalArgumentException,
 } from '~backend/yggdrasil/utils/errors';
 import { validateTokenMiddleware } from '~backend/yggdrasil/validate-token.middleware';
+import {
+	yggProfileDigestSchema,
+	yggTokenSchema,
+	yggUserSchema,
+} from '~backend/yggdrasil/yggdrasil.entities';
+import { YggdrasilRepository } from '~backend/yggdrasil/yggdrasil.repository';
+import { YggdrasilService } from '~backend/yggdrasil/yggdrasil.service';
 
 export const refreshHandler = new Elysia().use(validateTokenMiddleware(true)).post(
 	'/refresh',

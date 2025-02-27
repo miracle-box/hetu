@@ -1,10 +1,11 @@
+import type { Session } from '~backend/auth/auth.entities';
 import { Elysia, t } from 'elysia';
+import { sessionSchema, SessionScope } from '~backend/auth/auth.entities';
 import { AuthRepository } from '~backend/auth/auth.repository';
 import { PasswordService } from '~backend/services/auth/password';
 import { SessionService } from '~backend/services/auth/session';
-import { Session, sessionSchema, SessionScope } from '~backend/auth/auth.entities';
-import { AppError } from '~backend/shared/middlewares/errors/app-error';
 import { authMiddleware } from '~backend/shared/auth/middleware';
+import { AppError } from '~backend/shared/middlewares/errors/app-error';
 import { createErrorResps } from '~backend/shared/middlewares/errors/docs';
 
 export const changePasswordHandler = new Elysia().use(authMiddleware(SessionScope.DEFAULT)).post(

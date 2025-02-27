@@ -1,8 +1,9 @@
-import { db } from '~backend/shared/db';
+import type { Session, SessionMetadata } from '~backend/auth/auth.entities';
 import { and, eq, gt } from 'drizzle-orm';
-import { userAuthTable } from '~backend/shared/db/schema/user-auth';
-import { Session, SessionMetadata, UserAuthType } from '~backend/auth/auth.entities';
+import { UserAuthType } from '~backend/auth/auth.entities';
+import { db } from '~backend/shared/db';
 import { sessionsTable } from '~backend/shared/db/schema/sessions';
+import { userAuthTable } from '~backend/shared/db/schema/user-auth';
 import { now } from '~backend/shared/db/utils';
 
 export abstract class AuthRepository {

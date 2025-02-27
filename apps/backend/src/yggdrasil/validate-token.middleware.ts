@@ -1,8 +1,8 @@
 import { Elysia } from 'elysia';
-import { SessionService } from '~backend/services/auth/session';
 import { SessionScope } from '~backend/auth/auth.entities';
-import { YggdrasilService } from '~backend/yggdrasil/yggdrasil.service';
+import { SessionService } from '~backend/services/auth/session';
 import { hasProperty } from '~backend/shared/typing/utils';
+import { YggdrasilService } from '~backend/yggdrasil/yggdrasil.service';
 import { ForbiddenOperationException } from './utils/errors';
 
 export const validateTokenMiddleware = (validateClientToken: boolean) => (app: Elysia) =>

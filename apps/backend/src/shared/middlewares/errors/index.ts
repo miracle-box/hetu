@@ -23,7 +23,7 @@ export const errorsHandler = (app: Elysia) =>
 						path,
 						code: 'invalid-body',
 						message: `The request contains invalid data. Please ensure the data is correct.`,
-						details: JSON.parse(error.message),
+						details: JSON.parse(error.message) as unknown,
 					},
 				};
 			case 'NOT_FOUND':

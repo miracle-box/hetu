@@ -1,10 +1,10 @@
-import postgres from 'postgres';
 import { drizzle } from 'drizzle-orm/postgres-js';
 import { migrate } from 'drizzle-orm/postgres-js/migrator';
+import postgres from 'postgres';
+import { Config, initConfig } from '~backend/shared/config';
 import { Logger } from '~backend/shared/logger';
 
 // For database migrations only, this file (drizzle.config.ts) is not used in the app.
-import { Config, initConfig } from '~backend/shared/config';
 initConfig();
 
 Logger.info('Running database migrations.');
@@ -16,5 +16,6 @@ migrate(drizzle(queryClient), { migrationsFolder: 'migrations' })
 	})
 	.catch((e) => {
 		Logger.error(e, 'Database migration failed.');
-	})
-	.finally(() => queryClient.end());
+	});
+
+await queryClient.end();

@@ -1,8 +1,9 @@
 'use client';
 
-import { ThemeProvider } from 'next-themes';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import type React from 'react';
 import { QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { ThemeProvider } from 'next-themes';
 import { getQueryClient } from '~web/libs/api/query';
 import { RenewSession } from './RenewSession';
 

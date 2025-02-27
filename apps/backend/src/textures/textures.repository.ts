@@ -1,7 +1,8 @@
-import { texturesTable } from '~backend/shared/db/schema/textures';
-import { db } from '~backend/shared/db';
+import type { Texture } from '~backend/textures/texture.entities';
 import { and, eq } from 'drizzle-orm';
-import { Texture, TextureType } from '~backend/textures/texture.entities';
+import { db } from '~backend/shared/db';
+import { texturesTable } from '~backend/shared/db/schema/textures';
+import { TextureType } from '~backend/textures/texture.entities';
 
 export abstract class TexturesRepository {
 	static async findByUser(userId: string): Promise<Texture[]> {

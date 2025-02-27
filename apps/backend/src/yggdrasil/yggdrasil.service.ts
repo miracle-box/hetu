@@ -1,14 +1,14 @@
-import { createPrivateKey, createSign } from 'node:crypto';
-import { Texture } from '~backend/textures/texture.entities';
-import {
+import type { Session } from '~backend/auth/auth.entities';
+import type { Profile } from '~backend/profiles/profile.entities';
+import type { Texture } from '~backend/textures/texture.entities';
+import type {
 	YggProfile,
 	YggProfileDigest,
 	YggProfileTextures,
 	YggTexture,
 } from '~backend/yggdrasil/yggdrasil.entities';
+import { createPrivateKey, createSign } from 'node:crypto';
 import { StorageService } from '~backend/services/storage';
-import { Profile } from '~backend/profiles/profile.entities';
-import { Session } from '~backend/auth/auth.entities';
 import { Config } from '~backend/shared/config';
 
 export abstract class YggdrasilService {

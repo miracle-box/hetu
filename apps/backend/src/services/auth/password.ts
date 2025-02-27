@@ -1,3 +1,5 @@
+import Bun from 'bun';
+
 export abstract class PasswordService {
 	static async hash(password: string): Promise<string> {
 		// From OWASP Cheatsheet recommendations

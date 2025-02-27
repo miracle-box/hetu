@@ -1,6 +1,7 @@
-import path from 'node:path';
+import type { BunPlugin } from 'bun';
 import fs from 'node:fs/promises';
-import { BunPlugin } from 'bun';
+import path from 'node:path';
+import Bun from 'bun';
 import { bunPluginPino } from 'bun-plugin-pino';
 
 function bunPluginEmbedSharpNative(): BunPlugin {
@@ -10,12 +11,14 @@ function bunPluginEmbedSharpNative(): BunPlugin {
 			const green = (str: string) => `\u001b[32m${str}\u001b[0m`;
 
 			// @ts-expect-error Sharp libvips module does not have type declarations.
-			const libvipsHelper = await import('sharp/lib/libvips.js').catch(() => {
+			const libvipsHelper: unknown = await import('sharp/lib/libvips.js').catch(() => {
 				console.log(
 					green('Sharp is not detected, skipping native module loader injection.'),
 				);
 			});
 			if (!libvipsHelper) return;
+			// @ts-expect-error Sharp libvips module does not have type declarations.
+			// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
 			const platform: string = libvipsHelper.runtimePlatformArch();
 
 			console.log(green('Bundling Sharp native modules...'));

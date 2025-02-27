@@ -1,6 +1,6 @@
 import { Button, Container, Flex, Grid, Heading, Text } from '@radix-ui/themes';
-import { AppNav } from '~web/libs/basicui/AppNav';
 import { getUserProfiles } from '~web/libs/actions/api';
+import { AppNav } from '~web/libs/basicui/AppNav';
 import { ProfileCard } from '~web/libs/basicui/ProfileCard';
 import CreateProfileDialog from './CreateProfileDialog';
 

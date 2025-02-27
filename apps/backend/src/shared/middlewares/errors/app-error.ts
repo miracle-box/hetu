@@ -1,4 +1,4 @@
-import { Static } from 'elysia';
+import type { Static } from 'elysia';
 import { APP_ERRORS } from './errors';
 
 export class AppError<TErrorCode extends keyof typeof APP_ERRORS> extends Error {
@@ -26,12 +26,12 @@ export class AppError<TErrorCode extends keyof typeof APP_ERRORS> extends Error 
 		this.status = errorInfo.status;
 
 		if (errorInfo.message.length > 0) {
-			// @ts-ignore Checked with the type of `params`
+			// @ts-expect-error Checked with the type of `params`
 			this.message = errorInfo.message.call(this, params[0]);
-			if (errorInfo.details.length > 0) this.details = params[1];
+			if (errorInfo.details['length'] > 0) this.details = params[1];
 		} else {
 			this.message = errorInfo.message.call(this);
-			if (errorInfo.details.length > 0) this.details = params[0];
+			if (errorInfo.details['length'] > 0) this.details = params[0];
 		}
 	}
 }

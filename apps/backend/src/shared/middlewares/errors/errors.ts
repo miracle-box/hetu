@@ -1,4 +1,5 @@
-import { TSchema, t } from 'elysia';
+import type { TSchema } from 'elysia';
+import { t } from 'elysia';
 
 export type AppErrorInfo<TMessageParams> = {
 	status: number;
@@ -101,4 +102,4 @@ export const APP_ERRORS = {
 		message: () => 'The file type is not supported. Please ensure the file type is correct.',
 		details: t.Void(),
 	},
-} as const satisfies Record<string, AppErrorInfo<any>>;
+} as const satisfies Record<string, AppErrorInfo<unknown>>;

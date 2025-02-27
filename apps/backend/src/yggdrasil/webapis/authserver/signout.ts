@@ -1,9 +1,9 @@
 import { Elysia, t } from 'elysia';
-import { yggCredentialsSchema } from '~backend/yggdrasil/yggdrasil.entities';
-import { UsersRepository } from '~backend/users/users.repository';
 import { PasswordService } from '~backend/services/auth/password';
 import { SessionService } from '~backend/services/auth/session';
+import { UsersRepository } from '~backend/users/users.repository';
 import { ForbiddenOperationException } from '~backend/yggdrasil/utils/errors';
+import { yggCredentialsSchema } from '~backend/yggdrasil/yggdrasil.entities';
 
 export const signoutHandler = new Elysia().post(
 	'/signout',
@@ -20,7 +20,7 @@ export const signoutHandler = new Elysia().post(
 			);
 		}
 
-		const passwordCorrect = PasswordService.compare(user.passwordHash, body.password);
+		const passwordCorrect = await PasswordService.compare(user.passwordHash, body.password);
 		if (!passwordCorrect) {
 			throw new ForbiddenOperationException(
 				'Invalid credentials. Invalid username or password.',

@@ -1,7 +1,7 @@
 import { Elysia, t } from 'elysia';
 import { SessionService } from '~backend/services/auth/session';
-import { yggTokenSchema } from '~backend/yggdrasil/yggdrasil.entities';
 import { validateTokenMiddleware } from '~backend/yggdrasil/validate-token.middleware';
+import { yggTokenSchema } from '~backend/yggdrasil/yggdrasil.entities';
 
 export const invalidateHandler = new Elysia().use(validateTokenMiddleware(false)).post(
 	'/invalidate',

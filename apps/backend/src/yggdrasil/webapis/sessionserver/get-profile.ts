@@ -1,7 +1,7 @@
 import { Elysia, NotFoundError, t } from 'elysia';
 import { yggProfileSchema } from '~backend/yggdrasil/yggdrasil.entities';
-import { YggdrasilService } from '~backend/yggdrasil/yggdrasil.service';
 import { YggdrasilRepository } from '~backend/yggdrasil/yggdrasil.repository';
+import { YggdrasilService } from '~backend/yggdrasil/yggdrasil.service';
 
 export const getProfileHandler = new Elysia().get(
 	'/session/minecraft/profile/:id',

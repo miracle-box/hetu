@@ -1,4 +1,5 @@
-import { Type, TUnion, TLiteral } from '@sinclair/typebox';
+import type { TUnion, TLiteral } from '@sinclair/typebox';
+import { Type } from '@sinclair/typebox';
 
 /**
  * Make your dev experience better.

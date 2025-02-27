@@ -1,6 +1,4 @@
-import { Inter } from 'next/font/google';
-import { DM_Mono } from 'next/font/google';
-import { Noto_Sans_SC } from 'next/font/google';
+import { Inter, DM_Mono, Noto_Sans_SC } from 'next/font/google';
 
 const interFont = Inter({
 	subsets: ['latin'],

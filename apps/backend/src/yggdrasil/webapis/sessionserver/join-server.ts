@@ -1,7 +1,7 @@
 import { Elysia, t } from 'elysia';
-import { YggdrasilRepository } from '~backend/yggdrasil/yggdrasil.repository';
 import { ForbiddenOperationException } from '~backend/yggdrasil/utils/errors';
 import { validateTokenMiddleware } from '~backend/yggdrasil/validate-token.middleware';
+import { YggdrasilRepository } from '~backend/yggdrasil/yggdrasil.repository';
 
 export const joinServerHandler = new Elysia().use(validateTokenMiddleware(false)).post(
 	'/session/minecraft/join',

@@ -1,7 +1,7 @@
 import { Elysia } from 'elysia';
-import { inspectHandler } from './webapis/inspect';
-import { getImageHandler } from './webapis/get-image';
 import { createHandler } from './webapis/create';
+import { getImageHandler } from './webapis/get-image';
+import { inspectHandler } from './webapis/inspect';
 
 export const TexturesRoutes = new Elysia({
 	name: 'Routes.Textures',

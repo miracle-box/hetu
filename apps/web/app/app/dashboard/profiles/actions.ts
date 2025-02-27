@@ -1,6 +1,6 @@
 'use server';
 
-import { CreateProfileFormValues } from './shared';
+import type { CreateProfileFormValues } from './shared';
 import { createProfile } from '~web/libs/actions/api';
 import { formError, formSuccess } from '~web/libs/form/responses';
 

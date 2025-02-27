@@ -1,7 +1,7 @@
 'use client';
 
-import React from 'react';
 import { Dialog } from '@radix-ui/themes';
+import React from 'react';
 import { CreateProfileForm } from '~web/app/app/dashboard/profiles/CreateProfileForm';
 
 export type Props = {

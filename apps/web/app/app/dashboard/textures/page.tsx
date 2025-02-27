@@ -1,8 +1,8 @@
 import { Button, Container, Flex, Grid, Heading, Text } from '@radix-ui/themes';
-import { AppNav } from '~web/libs/basicui/AppNav';
 import { getUserTextures } from '~web/libs/actions/api';
-import { CreateTextureDialog } from './CreateTextureDialog';
+import { AppNav } from '~web/libs/basicui/AppNav';
 import { TextureCard } from '~web/libs/basicui/TextureCard';
+import { CreateTextureDialog } from './CreateTextureDialog';
 
 export default async function Textures() {
 	const textures = await getUserTextures();

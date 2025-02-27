@@ -1,5 +1,5 @@
-import Link from 'next/link';
 import { Button, Flex } from '@radix-ui/themes';
+import Link from 'next/link';
 
 export function AppNav() {
 	return (
