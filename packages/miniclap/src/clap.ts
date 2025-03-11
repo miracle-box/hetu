@@ -47,8 +47,11 @@ export class Clap<
 		TArguments
 	> {
 		const schema = {
-			name,
 			...init,
+			name,
+			// Default to false if no value provided for Boolean options.
+			// @ts-expect-error BooleanConstructor is not assignable to TType, but it actually usable.
+			default: init.default === undefined && init.type === Boolean ? false : init.default,
 		};
 
 		if (this.options.has(name)) throw new Error(`Option --${name} is already defined.`);
@@ -75,8 +78,8 @@ export class Clap<
 		TArguments | { name: TName; config: typeof init }
 	> {
 		const schema = {
-			name,
 			...init,
+			name,
 		};
 
 		if (this.arguments.has(name))
@@ -245,7 +248,16 @@ export class Clap<
 		}
 
 		return {
-			result: acc,
+			// Filling the rest of the options with default values
+			result: this.options
+				.entries()
+				.reduce<Record<string, unknown>>((result, [key, option]) => {
+					if (acc[key] === undefined && option.default !== undefined)
+						result[key] = option.default;
+					else result[key] = acc[key];
+
+					return result;
+				}, {}),
 			rest: [...head, ...tail],
 		};
 	}
