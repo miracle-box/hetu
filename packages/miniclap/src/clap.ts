@@ -1,12 +1,10 @@
-import type {
-	AnyArgumentInit,
-	AnyOptionInit,
-	Argument,
-	ArgumentInit,
-	Option,
-	OptionInit,
-} from './types';
-import { isInvalidValue } from './util';
+import {
+	type AnyArgumentInit,
+	type Argument,
+	type ArgumentInit,
+	parseArgumentValue,
+} from './argument';
+import { parseOptionValue, type AnyOptionInit, type Option, type OptionInit } from './option';
 
 export class Clap<
 	const TSubcommands extends { name: string; config: Clap } = never,
@@ -164,48 +162,6 @@ export class Clap<
 		result: Record<string, unknown>;
 		rest: string[];
 	} {
-		// Extract values based on the options
-		function parseValue(
-			prev: unknown,
-			option: Option,
-			argv: string[],
-		): { value: unknown; restArgs: string[] } {
-			// Flags
-			if (option.type === Boolean) {
-				return {
-					value: true,
-					restArgs: argv,
-				};
-			}
-
-			// Not flags, should read value
-			if (!argv[0] || argv[0].startsWith('-'))
-				throw new Error(`No value provided for option: ${option.name}`);
-
-			const parser = Array.isArray(option.type) ? option.type[0] : option.type;
-			const parsedValue = parser(argv[0], option.name, prev);
-
-			// Deny nullish values
-			if (
-				parsedValue === undefined ||
-				parsedValue === null ||
-				(typeof parsedValue === 'number' && isNaN(parsedValue))
-			) {
-				throw new Error(`Invalid value for option: ${option.name}`);
-			}
-
-			const value = Array.isArray(option.type)
-				? Array.isArray(prev)
-					? [...prev, parsedValue]
-					: [parsedValue]
-				: parsedValue;
-
-			return {
-				value,
-				restArgs: argv.slice(1),
-			};
-		}
-
 		for (const [argIndex, arg] of tail.entries()) {
 			// Any args after -- are arguments, skip them
 			if (arg.startsWith('-') && arg !== '--') {
@@ -227,7 +183,7 @@ export class Clap<
 					if (!probableValue) throw new Error(`No value provided for option: ${arg}`);
 
 					// Parse the provided value is enough
-					const { value } = parseValue(acc[option.name], option, [probableValue]);
+					const { value } = parseOptionValue(acc[option.name], option, [probableValue]);
 					return this.#parseOptions(restHead, tail.slice(argIndex + 1), {
 						...acc,
 						[option.name]: value,
@@ -235,7 +191,7 @@ export class Clap<
 				}
 
 				// `--option value` and `-o value` style
-				const { value, restArgs: restTail } = parseValue(
+				const { value, restArgs: restTail } = parseOptionValue(
 					acc[option.name],
 					option,
 					tail.slice(argIndex + 1),
@@ -266,44 +222,17 @@ export class Clap<
 		const result: Record<string, unknown> = {};
 		const argvIter = argv.values();
 
-		function parseValue(arg: Argument, argv: string[]) {
-			if (argv.length <= 0) {
-				// Make sure all required arguments are provided
-				if (arg.default === undefined)
-					throw new Error(`Missing required argument: ${arg.name}`);
-				else return arg.default;
-			}
-
-			const parser = Array.isArray(arg.type) ? arg.type[0] : arg.type;
-			const parsedValue = Array.isArray(arg.type)
-				? argv.reduce<unknown[]>((acc, cur) => {
-						const item = parser(cur, arg.name, result);
-						if (isInvalidValue(item))
-							throw new Error(`Invalid value for argument: ${arg.name}`);
-
-						acc.push(item);
-						return acc;
-					}, [])
-				: // Argument existence checked above
-					parser(argv[0]!, arg.name, result);
-
-			if (isInvalidValue(parsedValue))
-				throw new Error(`Invalid value for argument: ${arg.name}`);
-
-			return parsedValue;
-		}
-
 		for (const arg of this.arguments.values()) {
 			const nextArgv = argvIter.next();
 
-			const providedValue = nextArgv.value
+			const suppliedValue = nextArgv.value
 				? // Collect all the values for the trailing array
 					Array.isArray(arg.type)
 					? [nextArgv.value, ...argvIter]
 					: [nextArgv.value]
 				: [];
 
-			result[arg.name] = parseValue(arg, providedValue);
+			result[arg.name] = parseArgumentValue(arg, suppliedValue);
 
 			console.log(arg.name, nextArgv.value);
 		}
