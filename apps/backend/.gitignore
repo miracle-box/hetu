@@ -42,3 +42,7 @@ package-lock.json
 **/*.bun
 
 dist/
+
+config.yaml
+config.*.yaml
+!config.example.yaml

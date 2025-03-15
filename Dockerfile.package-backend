@@ -4,4 +4,4 @@ WORKDIR /app
 
 COPY . .
 
-CMD ["bun", "run", "index.js"]
+CMD ["bun", "run", "index.js", "start", "--config", "/config.yaml"]
