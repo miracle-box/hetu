@@ -8,15 +8,13 @@ import { configSchema } from './schema';
 let initialized = false;
 let configData = {} as unknown as ConfigType;
 
-initConfig();
-
-export function initConfig() {
+export function initConfig(path: string) {
 	// Initialize only once.
 	if (initialized) return;
 
 	try {
 		// [TODO] More ways of specifying config file
-		const configFile = readFileSync('./config.yaml').toString();
+		const configFile = readFileSync(path).toString();
 		const rawConfig: unknown = YAML.parse(configFile);
 
 		const configErrors = [...Value.Errors(configSchema, rawConfig)];
@@ -31,7 +29,8 @@ export function initConfig() {
 			throw new Error('Some values in the config are invalid, exiting now.');
 		}
 
-		configData = Value.Parse(configSchema, rawConfig);
+		// Keep the same ref
+		Object.assign(configData, Value.Parse(configSchema, rawConfig));
 		initialized = true;
 	} catch (e) {
 		Logger.error(e, 'Failed to load config file, exiting now.');
