@@ -2,20 +2,21 @@
   "name": "@repo/backend",
   "version": "0.1.0",
   "scripts": {
-    "dev": "bun run --watch src/index.ts",
+    "dev": "bun run --watch src/index.ts start --config config.development.yaml",
     "build": "bun scripts/build.ts",
-    "start": "cd dist && bun run index.js",
+    "start": "cd dist && bun run index.js start --config ../config.development.yaml",
     "typecheck": "tsc --noEmit",
     "lint": "bun run --cwd ../.. eslint apps/backend --max-warnings 0 --cache --cache-location apps/backend/.eslintcache",
     "migration:generate": "drizzle-kit generate",
     "migration:drop": "drizzle-kit drop",
-    "migration:run": "bun scripts/migrate.ts"
+    "migration:run": "bun run index.ts migrate --config config.development.yaml"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.717.0",
     "@elysiajs/server-timing": "^1.2.0",
     "@elysiajs/swagger": "^1.2.0",
     "@paralleldrive/cuid2": "^2.2.2",
+    "@repo/miniclap": "*",
     "@repo/pino-pretty-transport": "*",
     "@sinclair/typebox": "^0.34.15",
     "@tqman/nice-logger": "^1.1.1",

@@ -129,6 +129,18 @@ export const configSchema = Type.Object({
 			}),
 		}),
 	}),
+
+	logging: Type.Object({
+		prettyPrint: Type.Object({
+			enabled: Type.Boolean(),
+			destination: Type.String(),
+		}),
+		file: Type.Object({
+			enabled: Type.Boolean(),
+			destination: Type.String(),
+			append: Type.Boolean(),
+		}),
+	}),
 });
 
 export type Config = Static<typeof configSchema>;
