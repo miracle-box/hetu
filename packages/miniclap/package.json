@@ -1,0 +1,15 @@
+{
+  "name": "@repo/miniclap",
+  "version": "0.0.0",
+  "devDependencies": {
+    "@repo/typescript-config": "*"
+  },
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "private": true,
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "lint": "bun run --cwd ../.. eslint packages/miniclap --max-warnings 0 --cache --cache-location packages/miniclap/.eslintcache"
+  }
+}

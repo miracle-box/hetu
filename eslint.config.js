@@ -39,6 +39,12 @@ export default [
 		ignores: ['apps/web/.next/**/*'],
 	}),
 
+	// miniclap
+	...configs.typescript({
+		tsconfigPath: 'packages/miniclap/tsconfig.json',
+		files: ['packages/miniclap/**/*.?([cm])ts'],
+	}),
+
 	// pino-pretty-transport
 	...configs.typescript({
 		tsconfigPath: 'packages/pino-pretty-transport/tsconfig.json',
