@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "bun run --watch src/index.ts start --config config.development.yaml",
     "build": "bun scripts/build.ts",
-    "start": "bun run dist/index.js start --config config.development.yaml",
+    "start": "cd dist && bun run index.js start --config ../config.development.yaml",
     "typecheck": "tsc --noEmit",
     "lint": "bun run --cwd ../.. eslint apps/backend --max-warnings 0 --cache --cache-location apps/backend/.eslintcache",
     "migration:generate": "drizzle-kit generate",
