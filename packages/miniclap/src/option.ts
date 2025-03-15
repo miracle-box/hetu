@@ -1,20 +1,20 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import type { SingleLetters, Schema } from './types';
+import type { SingleLetters, Schema, ValueType } from './types';
 
-export type OptionInit<TNames, TShort extends string | undefined, TType> = {
+export type OptionInit<TShort extends string | undefined, TSchema extends Schema<unknown>> = {
 	// Enforce single letter
-	short?: TShort extends TNames ? never : TShort extends SingleLetters ? TShort : never;
-	type: Schema<TType>;
-	default?: TType;
+	short?: TShort extends SingleLetters ? TShort : never;
+	type: TSchema;
+	default?: ValueType<TSchema>;
 };
 
-export type AnyOptionInit = OptionInit<any, any, any>;
+export type AnyOptionInit = OptionInit<any, any>;
 
-export type Option<TType = any> = {
+export type Option<TSchema = any> = {
 	name: string;
-	type: Schema<TType>;
-	default?: TType;
+	type: TSchema;
+	default?: ValueType<TSchema>;
 };
 
 export function parseOptionValue(

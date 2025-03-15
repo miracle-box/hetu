@@ -1,18 +1,18 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import type { Schema } from './types';
+import type { Schema, ValueType } from './types';
 import { isInvalidValue } from './utils';
 
-export type ArgumentInit<TType> = {
-	type: Schema<TType>;
-	default?: TType;
+export type ArgumentInit<TSchema extends Schema<unknown>> = {
+	type: TSchema;
+	default?: ValueType<TSchema>;
 };
 export type AnyArgumentInit = ArgumentInit<any>;
 
-export type Argument<TType = any> = {
+export type Argument<TSchema = any> = {
 	name: string;
-	type: Schema<TType>;
-	default?: TType;
+	type: TSchema;
+	default?: ValueType<TSchema>;
 };
 
 export function parseArgumentValue(arg: Argument, argv: string[]) {

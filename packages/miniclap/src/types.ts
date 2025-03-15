@@ -1,14 +1,55 @@
-// Schema
-export type Schema<TType = unknown> =
-	| ((value: string, name: string, prev: TType) => TType)
-	| [(value: string, name: string, prev: TType) => TType];
+import type { AnyArgumentInit } from './argument';
+import type { Clap } from './clap';
+import type { AnyOptionInit } from './option';
 
-export type ValueType<TMaybeSchema> = TMaybeSchema extends (...args: unknown[]) => infer TValue
-	? TValue
-	: TMaybeSchema extends [(...args: unknown[]) => infer TValue]
+type Prettify<T> = {
+	[K in keyof T]: T[K];
+} & {};
+
+export type Merge<TOrig extends object, TNew extends object> = Prettify<{
+	[K in keyof TOrig | keyof TNew]: K extends keyof TNew
+		? TNew[K]
+		: K extends keyof TOrig
+			? TOrig[K]
+			: never;
+}>;
+
+// Schema
+export type Schema<TValue> =
+	| [(value: string, name: string, prev: unknown) => TValue]
+	| ((value: string, name: string, prev: unknown) => TValue);
+
+export type ValueType<TSchema> = TSchema extends [(...arg: unknown[]) => infer TValue]
+	? TValue[]
+	: TSchema extends (...arg: unknown[]) => infer TValue
 		? TValue
 		: never;
 
+// Parse
+export type ParseResult<TClap extends Clap> =
+	TClap extends Clap<
+		infer TSubcommands extends { [K: string]: Clap },
+		infer TOptions extends { [K: string]: AnyOptionInit },
+		infer _TShortOptions,
+		infer TArguments extends { [K: string]: AnyArgumentInit }
+	>
+		? Prettify<
+				{
+					[K in keyof TSubcommands]?: ParseResult<TSubcommands[K]>;
+				} & {
+					result?: {
+						options: {
+							[K in keyof TOptions]: ValueType<TOptions[K]['type']>;
+						};
+						arguments: {
+							[K in keyof TArguments]: ValueType<TArguments[K]['type']>;
+						};
+					};
+				}
+			>
+		: 'Provide a valid Clap instance please.';
+
+// Schema
 export type SingleLetters =
 	| 'A'
 	| 'B'

@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-empty-object-type */
+
+import type { Merge, ParseResult, Schema } from './types';
 import {
 	type AnyArgumentInit,
 	type Argument,
@@ -7,21 +10,21 @@ import {
 import { parseOptionValue, type AnyOptionInit, type Option, type OptionInit } from './option';
 
 export class Clap<
-	const TSubcommands extends { name: string; config: Clap } = never,
-	const TOptions extends { name: string; config: AnyOptionInit } = never,
-	const TShortOptions extends { name: string; config: AnyOptionInit } = never,
-	const TArguments extends { name: string; config: AnyArgumentInit } = never,
+	const TSubcommands extends { [name: string]: Clap } = {},
+	const TOptions extends { [name: string]: AnyOptionInit } = {},
+	const TShortOptions extends { [name: string]: AnyOptionInit } = {},
+	const TArguments extends { [name: string]: AnyArgumentInit } = {},
 > {
 	private subcommands: Map<string, Clap> = new Map();
 	private options: Map<string, Option> = new Map();
 	private shortOptions: Map<string, Option> = new Map();
 	private arguments: Map<string, Argument> = new Map();
 
-	command<TName extends string>(
-		name: TName extends TSubcommands['name'] ? never : TName,
-		clap: Clap,
+	command<TName extends string, TClap extends Clap>(
+		name: TName extends keyof TSubcommands ? never : TName,
+		clap: TClap,
 	): Clap<
-		TSubcommands | { name: TName; config: typeof clap },
+		Merge<TSubcommands, { [K in TName]: typeof clap }>,
 		TOptions,
 		TShortOptions,
 		TArguments
@@ -32,16 +35,20 @@ export class Clap<
 		return this;
 	}
 
-	option<TName extends string, TShort extends string | undefined, TType>(
-		name: TName extends TOptions['name'] ? never : TName,
-		init: OptionInit<TShortOptions['name'], TShort, TType>,
+	option<
+		TName extends string,
+		TShort extends string | undefined,
+		TSchema extends Schema<unknown>,
+	>(
+		name: TName extends keyof TOptions ? never : TName,
+		init: OptionInit<TShort, TSchema>,
 	): Clap<
 		TSubcommands,
-		TOptions | { name: TName; config: typeof init },
-		| TShortOptions
-		| (TShort extends `${infer TShortLetter}`
-				? { name: TShortLetter; config: typeof init }
-				: never),
+		Merge<TOptions, { [K in TName]: typeof init }>,
+		Merge<
+			TShortOptions,
+			TShort extends `${infer TShortLetter}` ? { [K in TShortLetter]: typeof init } : never
+		>,
 		TArguments
 	> {
 		const schema = {
@@ -66,14 +73,14 @@ export class Clap<
 		return this;
 	}
 
-	argument<TName extends string, TType>(
-		name: TName extends TArguments['name'] ? never : TName,
-		init: ArgumentInit<TType>,
+	argument<TName extends string, TSchema extends Schema<unknown>>(
+		name: TName extends keyof TArguments ? never : TName,
+		init: ArgumentInit<TSchema>,
 	): Clap<
 		TSubcommands,
 		TOptions,
 		TShortOptions,
-		TArguments | { name: TName; config: typeof init }
+		Merge<TArguments, { [K in TName]: typeof init }>
 	> {
 		const schema = {
 			...init,
@@ -98,7 +105,7 @@ export class Clap<
 		return this;
 	}
 
-	parse(argv: string[]) {
+	parse(argv: string[]): ParseResult<typeof this> {
 		// Try to parse subcommands first
 		const subcommandResult = this.#parseSubcommands([], argv);
 
@@ -118,12 +125,33 @@ export class Clap<
 			tailOptsResult.rest.filter((arg) => arg !== '--'),
 		);
 
-		return {
-			command: subcommandResult.path,
-			options: tailOptsResult.result,
-			arguments: argumentsResult.result,
-			rest: argumentsResult.rest,
-		};
+		function createResultObject(
+			command: string[],
+			opts: Record<string, unknown>,
+			args: Record<string, unknown>,
+			rest: string[],
+		): unknown {
+			if (command.length <= 0)
+				return {
+					result: {
+						options: opts,
+						arguments: args,
+						rest,
+					},
+				};
+			else
+				return {
+					// length checked above
+					[command[0]!]: createResultObject(command.slice(1), opts, args, rest),
+				};
+		}
+
+		return createResultObject(
+			subcommandResult.path,
+			tailOptsResult.result,
+			argumentsResult.result,
+			argumentsResult.rest,
+		) as ParseResult<typeof this>;
 	}
 
 	#parseSubcommands(
@@ -233,8 +261,6 @@ export class Clap<
 				: [];
 
 			result[arg.name] = parseArgumentValue(arg, suppliedValue);
-
-			console.log(arg.name, nextArgv.value);
 		}
 
 		return {
