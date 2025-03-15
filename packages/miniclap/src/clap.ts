@@ -107,22 +107,29 @@ export class Clap<
 
 	parse(argv: string[]): ParseResult<typeof this> {
 		// Try to parse subcommands first
-		const subcommandResult = this.#parseSubcommands([], argv);
+		const subcommand = this.#parseSubcommands([], argv);
 
-		const headOptsResult = subcommandResult.context.#parseOptions([], subcommandResult.rest[0]);
+		const headOpts = subcommand.context.#parseOptions([], subcommand.rest[0]);
 		// Deny any unrecognized arguments before the last subcommand
-		if (headOptsResult.rest.length !== 0)
-			throw new Error(`Invalid subcommands: ${headOptsResult.rest.join(' ')}`);
+		if (headOpts.rest.length !== 0)
+			throw new Error(`Invalid subcommands: ${headOpts.rest.join(' ')}`);
 
-		const tailOptsResult = subcommandResult.context.#parseOptions(
-			[],
-			subcommandResult.rest[1],
-			headOptsResult.result,
-		);
+		const tailOpts = subcommand.context.#parseOptions([], subcommand.rest[1], headOpts.result);
 
-		const argumentsResult = subcommandResult.context.#parseArguments(
+		// Make sure required options are present
+		const missingOpts = subcommand.context.options
+			.keys()
+			.filter((key) => !Object.keys(tailOpts.result).includes(key))
+			.toArray();
+		if (missingOpts.length > 0) {
+			throw new Error(
+				`Missing values for options: ${missingOpts.map((opt) => '--' + opt).join(', ')}`,
+			);
+		}
+
+		const args = subcommand.context.#parseArguments(
 			// Drop the `--` separator
-			tailOptsResult.rest.filter((arg) => arg !== '--'),
+			tailOpts.rest.filter((arg) => arg !== '--'),
 		);
 
 		function createResultObject(
@@ -147,10 +154,10 @@ export class Clap<
 		}
 
 		return createResultObject(
-			subcommandResult.path,
-			tailOptsResult.result,
-			argumentsResult.result,
-			argumentsResult.rest,
+			subcommand.path,
+			tailOpts.result,
+			args.result,
+			args.rest,
 		) as ParseResult<typeof this>;
 	}
 
@@ -232,13 +239,14 @@ export class Clap<
 		}
 
 		return {
-			// Filling the rest of the options with default values
+			// Filling the rest of the options with default values,
+			// but skips required options with no values provided.
 			result: this.options
 				.entries()
 				.reduce<Record<string, unknown>>((result, [key, option]) => {
-					if (acc[key] === undefined && option.default !== undefined)
-						result[key] = option.default;
-					else result[key] = acc[key];
+					if (Object.hasOwn(acc, key))
+						if (option.default !== undefined) result[key] = option.default;
+						else result[key] = acc[key];
 
 					return result;
 				}, {}),
