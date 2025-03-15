@@ -46,3 +46,12 @@ mailing:
     user: 'user@example.org'
     password: 'smtp_password'
     sender: 'Accounts <noreply@example.org>'
+
+logging:
+  prettyPrint:
+    enabled: true
+    destination: STDOUT
+  file:
+    enabled: true
+    destination: logs/latest.log
+    append: true

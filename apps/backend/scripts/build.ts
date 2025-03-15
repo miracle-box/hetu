@@ -124,7 +124,7 @@ await Bun.build({
 	plugins: [
 		bunPluginEmbedSharpNative(),
 		bunPluginPino({
-			transports: ['@repo/pino-pretty-transport'],
+			transports: ['@repo/pino-pretty-transport', 'pino/file'],
 		}),
 	],
 });
