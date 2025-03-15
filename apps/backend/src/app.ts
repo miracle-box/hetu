@@ -20,6 +20,16 @@ export const app = new Elysia()
 	.use(TexturesRoutes);
 
 export const startApp = (listenTo: string) => {
+	// It's fine to ignore promises here.
+	// [FIXME] Elysia complains on stopping, but the shutdown callback actually works.
+	// [FIXME] Let's wait for a fix.
+	// eslint-disable-next-line @typescript-eslint/no-misused-promises
+	process.on('beforeExit', app.stop);
+	// eslint-disable-next-line @typescript-eslint/no-misused-promises
+	process.on('SIGINT', app.stop);
+	// eslint-disable-next-line @typescript-eslint/no-misused-promises
+	process.on('SIGTERM', app.stop);
+
 	app.listen(listenTo);
 	Logger.info(`Service started on ${app.server?.url?.toString()}`);
 };
