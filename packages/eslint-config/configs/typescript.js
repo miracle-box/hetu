@@ -36,6 +36,7 @@ export function typescript(options) {
 
 		'@typescript-eslint/no-unused-vars': 'off',
 		'no-redeclare': 'off',
+		'no-undef': 'off',
 	};
 
 	/** @type {Record<string, import('@typescript-eslint/utils').TSESLint.FlatConfig.RuleEntry>} */

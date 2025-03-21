@@ -4,10 +4,14 @@ import * as configs from '@repo/eslint-config/configs';
 
 /** @type {import('@typescript-eslint/utils').TSESLint.FlatConfig.ConfigFile} */
 export default [
+	// Global ignores
+	{
+		ignores: ['apps/backend/dist/**/*', 'apps/web/.next/**/*'],
+	},
+
 	// All JavaScript
 	...configs.javascript({
 		files: ['**/*'],
-		ignores: ['apps/backend/dist/**/*', 'apps/web/.next/**/*'],
 	}),
 
 	// Backend
@@ -24,19 +28,16 @@ export default [
 	...configs.typescript({
 		tsconfigPath: 'apps/web/tsconfig.json',
 		typeAwareFiles: ['apps/web/**/*.?([cm])ts', 'apps/web/**/*.?([cm])tsx'],
-		typeAwareIgnores: ['apps/web/.next/**/*'],
 	}),
 	...configs.react({
 		typeAwareEnabled: true,
 		files: ['apps/web/**/*'],
 		typeAwareFiles: ['apps/web/**/*.?([cm])ts', 'apps/web/**/*.?([cm])tsx'],
-		typeAwareIgnores: ['apps/web/.next/**/*'],
 		useNextjs: true,
 	}),
 	...configs.next({
 		rootDir: 'apps/web',
 		files: ['apps/web/**/*'],
-		ignores: ['apps/web/.next/**/*'],
 	}),
 
 	// miniclap
@@ -72,11 +73,8 @@ export default [
 
 	// Import
 	...configs.importLint({
-		ignores: ['apps/backend/dist/**/*', 'apps/web/.next/**/*'],
 		tsconfigs: ['packages/*/tsconfig.json', 'apps/*/tsconfig.json'],
 	}),
 	// Turborepo
-	...configs.turbo({
-		ignores: ['apps/backend/dist/**/*', 'apps/web/.next/**/*'],
-	}),
+	...configs.turbo({}),
 ];
