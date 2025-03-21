@@ -10,7 +10,8 @@
     "lint": "bun run --cwd ../.. eslint packages/ui --max-warnings 0 --cache --cache-location packages/ui/.eslintcache"
   },
   "dependencies": {
-    "@radix-ui/themes": "^3.1.6",
+    "@radix-ui/react-dialog": "^1.1.6",
+    "@radix-ui/react-slot": "^1.1.2",
     "@tailwindcss/cli": "^4.0.14",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -45,7 +46,7 @@
   },
   "exports": {
     "./*": "./src/components/*.tsx",
-    "./base.css": "./src/styles/base.css",
+    "./shadcn.css": "./src/styles/shadcn.css",
     "./styles.css": "./dist/styles.css",
     ".": "./src/index.ts"
   }
