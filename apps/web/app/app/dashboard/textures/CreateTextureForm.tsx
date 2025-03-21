@@ -12,7 +12,7 @@ import {
 	TextArea,
 	TextField,
 } from '@radix-ui/themes';
-import { Input } from '@repo/ui/Input';
+import { Input } from '@repo/ui/input';
 import { mergeForm, useForm, useStore } from '@tanstack/react-form';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
