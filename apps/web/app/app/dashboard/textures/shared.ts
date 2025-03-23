@@ -1,5 +1,6 @@
 import type { TypeboxValidator } from '@repo/typebox-form-adapter';
 import type { Static } from '@sinclair/typebox';
+import type { ReactFormExtendedApi } from '@tanstack/react-form';
 import { typeboxValidator } from '@repo/typebox-form-adapter';
 import { Type } from '@sinclair/typebox';
 import { formOptions } from '@tanstack/react-form/nextjs';
@@ -10,7 +11,6 @@ export const createTextureFormSchema = Type.Object({
 	type: Type.Union([Type.Literal('skin'), Type.Literal('skin_slim'), Type.Literal('cape')]),
 	file: Type.Unknown(),
 });
-export type CreateTextureFormValues = Static<typeof createTextureFormSchema>;
 
 export const createTextureFormOpts = formOptions<CreateTextureFormValues, TypeboxValidator>({
 	defaultValues: {
@@ -24,3 +24,6 @@ export const createTextureFormOpts = formOptions<CreateTextureFormValues, Typebo
 		onSubmit: createTextureFormSchema,
 	},
 });
+
+export type CreateTextureFormValues = Static<typeof createTextureFormSchema>;
+export type CreateTextureFormApi = ReactFormExtendedApi<CreateTextureFormValues, TypeboxValidator>;

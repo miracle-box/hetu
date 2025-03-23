@@ -1,9 +1,8 @@
 import type { Metadata } from 'next';
-import { Theme } from '@radix-ui/themes';
+import { cn } from '@repo/ui';
 import React from 'react';
 import { Providers } from './providers';
 import { fontClasses } from '../libs/styling/fonts';
-import '@radix-ui/themes/styles.css';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -17,11 +16,9 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<html suppressHydrationWarning lang="en" className={fontClasses}>
+		<html suppressHydrationWarning lang="en" className={cn(fontClasses)}>
 			<body>
-				<Theme>
-					<Providers>{children}</Providers>
-				</Theme>
+				<Providers>{children}</Providers>
 			</body>
 		</html>
 	);

@@ -1,180 +1,127 @@
-'use client';
+import type { CreateTextureFormApi } from './shared';
+import { Input } from '@repo/ui/input';
+import { SegmentedControl, SegmentedControlItem } from '@repo/ui/segmented-control';
+import { Textarea } from '@repo/ui/textarea';
+import { useStore } from '@tanstack/react-form';
+import React from 'react';
 
-import type { CreateTextureFormValues } from './shared';
-import type { TypeboxValidator } from '@repo/typebox-form-adapter';
-import {
-	Box,
-	Button,
-	Dialog,
-	Flex,
-	SegmentedControl,
-	Text,
-	TextArea,
-	TextField,
-} from '@radix-ui/themes';
-import { Input } from '@repo/ui/Input';
-import { mergeForm, useForm, useStore } from '@tanstack/react-form';
-import { useMutation } from '@tanstack/react-query';
-import { useRouter } from 'next/navigation';
-import { handleCreateTexture } from './actions';
-import { createTextureFormOpts } from './shared';
+type Props = {
+	form: CreateTextureFormApi;
+};
 
-export function CreateTextureForm() {
-	const router = useRouter();
-
-	const submit = useMutation({
-		mutationFn: (values: CreateTextureFormValues) => handleCreateTexture(values),
-		onSuccess: (data) => {
-			if ('formState' in data)
-				mergeForm<CreateTextureFormValues, TypeboxValidator>(form, data.formState);
-
-			if ('data' in data) {
-				router.push(`/app/dashboard/textures/${data.data.id}`);
-			}
-		},
-	});
-
-	const form = useForm({
-		...createTextureFormOpts,
-		onSubmit: ({ value }) => submit.mutate(value),
-	});
+export function CreateTextureForm({ form }: Props) {
 	const formErrors = useStore(form.store, (state) => state.errors);
 
 	return (
 		<form
+			className="flex flex-col gap-2"
 			onSubmit={(e) => {
 				e.preventDefault();
 				e.stopPropagation();
 				void form.handleSubmit();
 			}}
 		>
-			<Flex gap="3" direction="column">
-				<form.Field name="name">
-					{(field) => (
-						<label>
-							<Text size="2" weight="bold">
-								Name
-							</Text>
-							<TextField.Root
-								name="name"
-								placeholder="Name"
-								type="text"
+			<form.Field name="name">
+				{(field) => (
+					<label>
+						<span>Name</span>
+						<Input
+							name="name"
+							type="text"
+							placeholder="Name"
+							value={field.state.value}
+							onChange={(e) => field.handleChange(e.target.value)}
+						/>
+						{field.state.meta.errors.map((error) => (
+							<span key={error as string} className="text-destructive">
+								{error}
+							</span>
+						))}
+					</label>
+				)}
+			</form.Field>
+
+			<form.Field name="description">
+				{(field) => (
+					<label>
+						<span>Description</span>
+						<Textarea
+							name="description"
+							placeholder="Description"
+							value={field.state.value}
+							onChange={(e) => field.handleChange(e.target.value)}
+						/>
+						{field.state.meta.errors.map((error) => (
+							<span key={error as string} className="text-destructive">
+								{error}
+							</span>
+						))}
+					</label>
+				)}
+			</form.Field>
+
+			<form.Field name="type">
+				{(field) => (
+					<div>
+						<div className="flex flex-col gap-2">
+							<span>Type</span>
+							<SegmentedControl
+								// defaultValue="skin"
 								value={field.state.value}
-								onChange={(e) => field.handleChange(e.target.value)}
-							/>
-							{field.state.meta.errors.map((error) => (
-								<Text key={error as string} color="red" size="2">
-									{error}
-								</Text>
-							))}
-						</label>
-					)}
-				</form.Field>
-
-				<form.Field name="description">
-					{(field) => (
-						<label>
-							<Text size="2" weight="bold">
-								Description
-							</Text>
-							<TextArea
-								name="description"
-								placeholder="Description"
-								value={field.state.value}
-								onChange={(e) => field.handleChange(e.target.value)}
-							/>
-							{field.state.meta.errors.map((error) => (
-								<Text key={error as string} color="red" size="2">
-									{error}
-								</Text>
-							))}
-						</label>
-					)}
-				</form.Field>
-
-				<form.Field name="type">
-					{(field) => (
-						<label>
-							<Flex direction="column" gap="1">
-								<Text size="2" weight="bold">
-									Type
-								</Text>
-								<SegmentedControl.Root
-									defaultValue="skin"
-									value={field.state.value}
-									onValueChange={(value) =>
-										field.handleChange(value as 'skin' | 'skin_slim' | 'cape')
-									}
-								>
-									<SegmentedControl.Item value="skin">
-										Skin (Normal)
-									</SegmentedControl.Item>
-									<SegmentedControl.Item value="skin_slim">
-										Skin (Slim)
-									</SegmentedControl.Item>
-									<SegmentedControl.Item value="cape">Cape</SegmentedControl.Item>
-								</SegmentedControl.Root>
-							</Flex>
-							{field.state.meta.errors.map((error) => (
-								<Text key={error as string} color="red" size="2">
-									{error}
-								</Text>
-							))}
-						</label>
-					)}
-				</form.Field>
-
-				<form.Field name="file">
-					{(field) => (
-						<label>
-							<Text size="2" weight="bold">
-								File
-							</Text>
-							<Input
-								name="file"
-								type="file"
-								placeholder="Select File"
-								accept="image/png"
-								onChange={(e) => {
-									const selectedFile = e.target.files?.[0];
-									if (selectedFile) field.handleChange(selectedFile);
-									else e.target.value = '';
+								onValueChange={(value) => {
+									field.handleChange(value as 'skin' | 'skin_slim' | 'cape');
 								}}
-							/>
-							{field.state.meta.errors.map((error) => (
-								<Text key={error as string} color="red" size="2">
-									{error}
-								</Text>
-							))}
-						</label>
-					)}
-				</form.Field>
+							>
+								<SegmentedControlItem value="skin">
+									Skin (Normal)
+								</SegmentedControlItem>
+								<SegmentedControlItem value="skin_slim">
+									Skin (Slim)
+								</SegmentedControlItem>
+								<SegmentedControlItem value="cape">Cape</SegmentedControlItem>
+							</SegmentedControl>
+						</div>
 
-				<Box>
-					{formErrors.map((error) => (
-						<Text key={error as string} color="red" size="2">
-							{error}
-						</Text>
-					))}
-				</Box>
+						{field.state.meta.errors.map((error) => (
+							<span key={error as string} className="text-destructive">
+								{error}
+							</span>
+						))}
+					</div>
+				)}
+			</form.Field>
 
-				<form.Subscribe
-					selector={(formState) => [formState.canSubmit, formState.isSubmitting]}
-				>
-					{([canSubmit, isSubmitting]) => (
-						<Flex justify="end" mt="3" gap="3">
-							<Dialog.Close>
-								<Button variant="soft" color="gray">
-									Cancel
-								</Button>
-							</Dialog.Close>
-							<Button type="submit" disabled={!canSubmit} loading={isSubmitting}>
-								Create texture
-							</Button>
-						</Flex>
-					)}
-				</form.Subscribe>
-			</Flex>
+			<form.Field name="file">
+				{(field) => (
+					<label>
+						<span>File</span>
+						<Input
+							name="file"
+							type="file"
+							placeholder="Select File"
+							accept="image/png"
+							onChange={(e) => {
+								const selectedFile = e.target.files?.[0];
+								if (selectedFile) field.handleChange(selectedFile);
+								else e.target.value = '';
+							}}
+						/>
+						{field.state.meta.errors.map((error) => (
+							<span key={error as string} className="text-destructive">
+								{error}
+							</span>
+						))}
+					</label>
+				)}
+			</form.Field>
+
+			<div>
+				{formErrors.map((error) => (
+					<span key={error as string} className="text-destructive">
+						{error}
+					</span>
+				))}
+			</div>
 		</form>
 	);
 }

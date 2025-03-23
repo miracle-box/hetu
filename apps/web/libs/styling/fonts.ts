@@ -1,3 +1,4 @@
+import { cn } from '@repo/ui';
 import { Inter, DM_Mono, Noto_Sans_SC } from 'next/font/google';
 
 const interFont = Inter({
@@ -18,4 +19,4 @@ const notoSansSCFont = Noto_Sans_SC({
 	preload: false,
 });
 
-export const fontClasses = `${interFont.variable} ${dmMonoFont.variable} ${notoSansSCFont.variable}`;
+export const fontClasses = cn(interFont.variable, dmMonoFont.variable, notoSansSCFont.variable);

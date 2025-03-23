@@ -1,9 +1,9 @@
-import { Button, Flex } from '@radix-ui/themes';
+import { Button } from '@repo/ui/button';
 import Link from 'next/link';
 
 export function AppNav() {
 	return (
-		<Flex gap="3">
+		<nav className="flex gap-2">
 			<Button asChild>
 				<Link href="/app/dashboard">Dashboard</Link>
 			</Button>
@@ -13,6 +13,6 @@ export function AppNav() {
 			<Button asChild>
 				<Link href="/app/dashboard/textures">Textures</Link>
 			</Button>
-		</Flex>
+		</nav>
 	);
 }

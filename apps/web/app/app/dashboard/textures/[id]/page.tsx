@@ -1,4 +1,5 @@
-import { Callout, Container, Flex, Heading } from '@radix-ui/themes';
+import { Alert, AlertTitle } from '@repo/ui/alert';
+import { Large } from '@repo/ui/typography';
 import { AppNav } from '~web/libs/basicui/AppNav';
 
 export type Props = {
@@ -9,14 +10,16 @@ export default async function InspectTexture({ params }: Props) {
 	const { id } = await params;
 
 	return (
-		<Container>
-			<Flex gap="3" direction="column">
-				<Heading>Texture: {id}</Heading>
+		<main className="container mx-auto">
+			<div className="flex flex-col gap-2">
+				<Large>Texture: {id}</Large>
 
 				<AppNav />
 
-				<Callout.Root>ID param: {id}</Callout.Root>
-			</Flex>
-		</Container>
+				<Alert>
+					<AlertTitle>ID param: {id}</AlertTitle>
+				</Alert>
+			</div>
+		</main>
 	);
 }

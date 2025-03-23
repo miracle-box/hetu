@@ -2,10 +2,13 @@
 
 import type { SignupFormValues } from './shared';
 import type { TypeboxValidator } from '@repo/typebox-form-adapter';
-import { Box, Button, Flex, Text, TextField } from '@radix-ui/themes';
+import { Button } from '@repo/ui/button';
+import { Icon } from '@repo/ui/icon';
+import { Input } from '@repo/ui/input';
 import { mergeForm, useForm, useStore } from '@tanstack/react-form';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
+import React from 'react';
 import { handleSignup } from './actions';
 import { signupFormOpts } from './shared';
 
@@ -30,130 +33,126 @@ export function SignupForm() {
 
 	return (
 		<form
+			className="flex flex-col gap-4"
 			onSubmit={(e) => {
 				e.preventDefault();
 				e.stopPropagation();
 				void form.handleSubmit();
 			}}
 		>
-			<Flex gap="3" direction="column">
-				<form.Field name="email">
-					{(field) => (
-						<label>
-							<Text size="2" weight="bold">
-								Email
-							</Text>
-							<TextField.Root
-								name="email"
-								placeholder="Email"
-								type="email"
-								value={field.state.value}
-								onChange={(e) => field.handleChange(e.target.value)}
-							/>
-							{field.state.meta.errors.map((error) => (
-								<Text key={error as string} color="red" size="2">
-									{error}
-								</Text>
-							))}
-						</label>
-					)}
-				</form.Field>
+			<form.Field name="email">
+				{(field) => (
+					<label className="flex flex-col gap-1">
+						<span className="font-medium">Email</span>
+						<Input
+							name="email"
+							type="email"
+							placeholder="Email"
+							value={field.state.value}
+							onChange={(e) => field.handleChange(e.target.value)}
+						/>
+						{field.state.meta.errors.map((error) => (
+							<span key={error as string} className="text-destructive text-sm">
+								{error}
+							</span>
+						))}
+					</label>
+				)}
+			</form.Field>
 
-				<form.Field name="name">
-					{(field) => (
-						<label>
-							<Text size="2" weight="bold">
-								Username
-							</Text>
-							<TextField.Root
-								name="name"
-								placeholder="Username"
-								type="text"
-								value={field.state.value}
-								onChange={(e) => field.handleChange(e.target.value)}
-							/>
-							{field.state.meta.errors.map((error) => (
-								<Text key={error as string} color="red" size="2">
-									{error}
-								</Text>
-							))}
-						</label>
-					)}
-				</form.Field>
+			<form.Field name="name">
+				{(field) => (
+					<label className="flex flex-col gap-1">
+						<span className="font-medium">Username</span>
+						<Input
+							name="name"
+							type="text"
+							placeholder="Username"
+							value={field.state.value}
+							onChange={(e) => field.handleChange(e.target.value)}
+						/>
+						{field.state.meta.errors.map((error) => (
+							<span key={error as string} className="text-destructive text-sm">
+								{error}
+							</span>
+						))}
+					</label>
+				)}
+			</form.Field>
 
-				<form.Field name="password">
-					{(field) => (
-						<label>
-							<Text size="2" weight="bold">
-								Password
-							</Text>
-							<TextField.Root
-								name="password"
-								placeholder="Password"
-								type="password"
-								value={field.state.value}
-								onChange={(e) => field.handleChange(e.target.value)}
-							/>
-							{field.state.meta.errors.map((error) => (
-								<Text key={error as string} color="red" size="2">
-									{error}
-								</Text>
-							))}
-						</label>
-					)}
-				</form.Field>
+			<form.Field name="password">
+				{(field) => (
+					<label className="flex flex-col gap-1">
+						<span className="font-medium">Password</span>
+						<Input
+							name="password"
+							type="password"
+							placeholder="Password"
+							value={field.state.value}
+							onChange={(e) => field.handleChange(e.target.value)}
+						/>
+						{field.state.meta.errors.map((error) => (
+							<span key={error as string} className="text-destructive text-sm">
+								{error}
+							</span>
+						))}
+					</label>
+				)}
+			</form.Field>
 
-				<form.Field
-					name="confirmPassword"
-					validators={{
-						onChangeListenTo: ['password'],
-						onChange: ({ value, fieldApi }) => {
-							if (value !== fieldApi.form.getFieldValue('password'))
-								return 'Passwords do not match';
+			<form.Field
+				name="confirmPassword"
+				validators={{
+					onChangeListenTo: ['password'],
+					onChange: ({ value, fieldApi }) => {
+						if (value !== fieldApi.form.getFieldValue('password'))
+							return 'Passwords do not match';
 
-							return undefined;
-						},
-					}}
-				>
-					{(field) => (
-						<label>
-							<Text size="2" weight="bold">
-								Confirm password
-							</Text>
-							<TextField.Root
-								name="confirmPassword"
-								placeholder="Confirm password"
-								type="password"
-								value={field.state.value}
-								onChange={(e) => field.handleChange(e.target.value)}
-							/>
-							{field.state.meta.errors.map((error) => (
-								<Text key={error as string} color="red" size="2">
-									{error}
-								</Text>
-							))}
-						</label>
-					)}
-				</form.Field>
+						return undefined;
+					},
+				}}
+			>
+				{(field) => (
+					<label className="flex flex-col gap-1">
+						<span className="font-medium">Confirm password</span>
+						<Input
+							name="confirmPassword"
+							type="password"
+							placeholder="Confirm password"
+							value={field.state.value}
+							onChange={(e) => field.handleChange(e.target.value)}
+						/>
+						{field.state.meta.errors.map((error) => (
+							<span key={error as string} className="text-destructive text-sm">
+								{error}
+							</span>
+						))}
+					</label>
+				)}
+			</form.Field>
 
-				<Box>
-					{formErrors.map((error) => (
-						<Text key={error as string} color="red" size="2">
-							{error}
-						</Text>
-					))}
-				</Box>
+			<div>
+				{formErrors.map((error) => (
+					<span key={error as string} className="text-destructive text-sm">
+						{error}
+					</span>
+				))}
+			</div>
 
-				<form.Subscribe
-					selector={(formState) => [formState.canSubmit, formState.isSubmitting]}
-				>
-					{([canSubmit, isSubmitting]) => (
-						<Button type="submit" disabled={!canSubmit} loading={isSubmitting}>
-							Sign Up
-						</Button>
-					)}
-				</form.Subscribe>
-			</Flex>
+			<form.Subscribe selector={(formState) => [formState.canSubmit, formState.isSubmitting]}>
+				{([canSubmit, isSubmitting]) => (
+					<Button type="submit" className="w-full" disabled={!canSubmit}>
+						{isSubmitting ? (
+							<>
+								<Icon.Loader2 className="mr-2 h-4 w-4 animate-spin" />
+								Signing up...
+							</>
+						) : (
+							'Sign Up'
+						)}
+					</Button>
+				)}
+			</form.Subscribe>
 		</form>
 	);
 }
