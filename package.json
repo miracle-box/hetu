@@ -8,7 +8,6 @@
     "start": "turbo start",
     "typecheck": "turbo typecheck --continue",
     "lint": "turbo lint --continue",
-    "lint:fix": "eslint . --max-warnings 0",
     "format": "prettier --check \"**/*.{ts,tsx,js,jsx,mjs,cjs,json,yaml,md}\"",
     "format:fix": "prettier --write \"**/*.{ts,tsx,js,jsx,mjs,cjs,json,yaml,md}\""
   },
