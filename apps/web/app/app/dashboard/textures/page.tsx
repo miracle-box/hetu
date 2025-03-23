@@ -1,4 +1,6 @@
-import { Button, Container, Flex, Grid, Heading, Text } from '@radix-ui/themes';
+import { cn } from '@repo/ui';
+import { Button } from '@repo/ui/button';
+import { Large } from '@repo/ui/typography';
 import { getUserTextures } from '~web/libs/actions/api';
 import { AppNav } from '~web/libs/basicui/AppNav';
 import { TextureCard } from '~web/libs/basicui/TextureCard';
@@ -8,9 +10,9 @@ export default async function Textures() {
 	const textures = await getUserTextures();
 
 	return (
-		<Container>
-			<Flex gap="3" direction="column">
-				<Heading>Textures</Heading>
+		<main className="container mx-auto">
+			<div className="flex flex-col gap-2">
+				<Large>Textures</Large>
 
 				<AppNav />
 
@@ -19,15 +21,21 @@ export default async function Textures() {
 				</CreateTextureDialog>
 
 				{textures && (
-					<Grid columns={{ xs: '1', sm: '2', lg: '3' }} gap="3">
+					<div
+						className={cn(
+							'grid grid-flow-row grid-cols-1 gap-2',
+							'md:grid-cols-2',
+							'xl:grid-cols-3',
+						)}
+					>
 						{textures.map((texture) => (
 							<TextureCard key={texture.id} texture={texture} />
 						))}
-					</Grid>
+					</div>
 				)}
 
-				{textures && textures.length <= 0 && <Text>No textures</Text>}
-			</Flex>
-		</Container>
+				{textures && textures.length <= 0 && <span>No textures</span>}
+			</div>
+		</main>
 	);
 }

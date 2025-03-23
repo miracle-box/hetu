@@ -1,4 +1,7 @@
-import { Badge, Card, Code, DataList } from '@radix-ui/themes';
+import { Badge } from '@repo/ui/badge';
+import { Card, CardContent, CardHeader } from '@repo/ui/card';
+import { DataList, DataListItem, DataListLabel, DataListValue } from '@repo/ui/data-list';
+import { InlineCode, Large } from '@repo/ui/typography';
 
 export type Props = {
 	profile: {
@@ -14,48 +17,50 @@ export type Props = {
 export function ProfileCard({ profile }: Props) {
 	return (
 		<Card>
-			<DataList.Root>
-				<DataList.Item>
-					<DataList.Label>Username</DataList.Label>
-					<DataList.Value>{profile.name}</DataList.Value>
-				</DataList.Item>
-				<DataList.Item>
-					<DataList.Label>UUID</DataList.Label>
-					<DataList.Value>
-						<Code>{profile.id}</Code>
-					</DataList.Value>
-				</DataList.Item>
-				<DataList.Item>
-					<DataList.Label>Primary Profile</DataList.Label>
-					<DataList.Value>
-						{profile.isPrimary ? (
-							<Badge color="green">Primary</Badge>
-						) : (
-							<Badge color="gray">Not Primary</Badge>
-						)}
-					</DataList.Value>
-				</DataList.Item>
-				<DataList.Item>
-					<DataList.Label>Skin</DataList.Label>
-					<DataList.Value>
-						{profile.skinTextureId ? (
-							<Code>{profile.skinTextureId}</Code>
-						) : (
-							<Badge color="gray">No texture</Badge>
-						)}
-					</DataList.Value>
-				</DataList.Item>
-				<DataList.Item>
-					<DataList.Label>Cape</DataList.Label>
-					<DataList.Value>
-						{profile.capeTextureId ? (
-							<Code>{profile.capeTextureId}</Code>
-						) : (
-							<Badge color="gray">No texture</Badge>
-						)}
-					</DataList.Value>
-				</DataList.Item>
-			</DataList.Root>
+			<CardHeader>
+				<Large>{profile.name}</Large>
+			</CardHeader>
+
+			<CardContent>
+				<DataList orientation="vertical" className="gap-2">
+					<DataListItem>
+						<DataListLabel>UUID</DataListLabel>
+						<DataListValue>
+							<InlineCode>{profile.id}</InlineCode>
+						</DataListValue>
+					</DataListItem>
+					<DataListItem>
+						<DataListLabel>Primary Profile</DataListLabel>
+						<DataListValue>
+							{profile.isPrimary ? (
+								<Badge variant="secondary">Primary</Badge>
+							) : (
+								<Badge variant="outline">Not primary</Badge>
+							)}
+						</DataListValue>
+					</DataListItem>
+					<DataListItem>
+						<DataListLabel>Skin</DataListLabel>
+						<DataListValue>
+							{profile.skinTextureId ? (
+								<InlineCode>{profile.skinTextureId}</InlineCode>
+							) : (
+								<Badge variant="outline">No texture</Badge>
+							)}
+						</DataListValue>
+					</DataListItem>
+					<DataListItem>
+						<DataListLabel>Cape</DataListLabel>
+						<DataListValue>
+							{profile.capeTextureId ? (
+								<InlineCode>{profile.capeTextureId}</InlineCode>
+							) : (
+								<Badge variant="outline">No texture</Badge>
+							)}
+						</DataListValue>
+					</DataListItem>
+				</DataList>
+			</CardContent>
 		</Card>
 	);
 }

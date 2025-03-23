@@ -1,91 +1,53 @@
 'use client';
 
-import type { CreateProfileFormValues } from './shared';
-import type { TypeboxValidator } from '@repo/typebox-form-adapter';
-import { Box, Button, Dialog, Flex, Text, TextField } from '@radix-ui/themes';
-import { mergeForm, useForm, useStore } from '@tanstack/react-form';
-import { useMutation } from '@tanstack/react-query';
-import { useRouter } from 'next/navigation';
-import { handleCreateProfile } from './actions';
-import { createProfileFormOpts } from './shared';
+import type { CreateProfileFormApi } from './shared';
+import { Input } from '@repo/ui/input';
+import { useStore } from '@tanstack/react-form';
+import React from 'react';
 
-export function CreateProfileForm() {
-	const router = useRouter();
+type Props = {
+	form: CreateProfileFormApi;
+};
 
-	const submit = useMutation({
-		mutationFn: (values: CreateProfileFormValues) => handleCreateProfile(values),
-		onSuccess: (data) => {
-			if ('formState' in data)
-				mergeForm<CreateProfileFormValues, TypeboxValidator>(form, data.formState);
-
-			if ('data' in data) {
-				router.push(`/app/dashboard/profiles/${data.data.id}`);
-			}
-		},
-	});
-
-	const form = useForm({
-		...createProfileFormOpts,
-		onSubmit: ({ value }) => submit.mutate(value),
-	});
+export function CreateProfileForm({ form }: Props) {
 	const formErrors = useStore(form.store, (state) => state.errors);
 
 	return (
 		<form
+			className="flex flex-col gap-2"
 			onSubmit={(e) => {
 				e.preventDefault();
 				e.stopPropagation();
 				void form.handleSubmit();
 			}}
 		>
-			<Flex gap="3" direction="column">
-				<form.Field name="name">
-					{(field) => (
-						<label>
-							<Text size="2" weight="bold">
-								Name
-							</Text>
-							<TextField.Root
-								name="name"
-								placeholder="Name"
-								type="text"
-								value={field.state.value}
-								onChange={(e) => field.handleChange(e.target.value)}
-							/>
-							{field.state.meta.errors.map((error) => (
-								<Text key={error as string} color="red" size="2">
-									{error}
-								</Text>
-							))}
-						</label>
-					)}
-				</form.Field>
+			<form.Field name="name">
+				{(field) => (
+					<label>
+						<span>Name</span>
+						<Input
+							name="name"
+							type="text"
+							placeholder="Name"
+							value={field.state.value}
+							onChange={(e) => field.handleChange(e.target.value)}
+						/>
+						{field.state.meta.errors.map((error) => (
+							<span key={error as string} className="text-destructive">
+								{error}
+							</span>
+						))}
+					</label>
+				)}
+			</form.Field>
 
-				<Box>
-					{formErrors.map((error) => (
-						<Text key={error as string} color="red" size="2">
-							{error}
-						</Text>
-					))}
-				</Box>
-
-				<form.Subscribe
-					selector={(formState) => [formState.canSubmit, formState.isSubmitting]}
-				>
-					{([canSubmit, isSubmitting]) => (
-						<Flex justify="end" mt="3" gap="3">
-							<Dialog.Close>
-								<Button variant="soft" color="gray">
-									Cancel
-								</Button>
-							</Dialog.Close>
-							<Button type="submit" disabled={!canSubmit} loading={isSubmitting}>
-								Create profile
-							</Button>
-						</Flex>
-					)}
-				</form.Subscribe>
-			</Flex>
+			<div>
+				{formErrors.map((error) => (
+					<span key={error as string} className="text-destructive">
+						{error}
+					</span>
+				))}
+			</div>
 		</form>
 	);
 }
