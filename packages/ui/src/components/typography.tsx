@@ -32,7 +32,7 @@ export function Blockuote({ children }: React.ComponentProps<'blockquote'>) {
 
 export function InlineCode({ children }: React.ComponentProps<'code'>) {
 	return (
-		<code className="bg-muted relative rounded px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold">
+		<code className="bg-muted relative rounded px-[0.3rem] py-[0.2rem] font-mono text-sm">
 			{children}
 		</code>
 	);
