@@ -27,7 +27,7 @@
     "packages/*"
   ],
   "overrides": {
-    "elysia": "1.2.14",
-    "@sinclair/typebox": "0.34.15"
+    "elysia": "1.2.25",
+    "@sinclair/typebox": "0.34.27"
   }
 }

@@ -12,7 +12,8 @@
   "dependencies": {
     "@elysiajs/eden": "^1.2.0",
     "@repo/ui": "*",
-    "@sinclair/typebox": "^0.34.15",
+    "@sinclair/typebox": "^0.34.27",
+    "@sinclair/typemap": "^0.9.0",
     "@tailwindcss/postcss": "^4.0.14",
     "@tanstack/react-form": "^1.2.0",
     "@tanstack/react-query": "^5.62.11",
@@ -31,6 +32,6 @@
     "@types/react": "^19.0.2",
     "@types/react-dom": "^19.0.2",
     "bun-types": "latest",
-    "elysia": "^1.2.14"
+    "elysia": "^1.2.25"
   }
 }
