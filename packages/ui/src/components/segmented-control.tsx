@@ -28,7 +28,7 @@ function SegmentedControl({
 			type="single"
 			asChild={false}
 			className={cn(
-				'border-input relative isolate inline-grid h-9 min-w-[max-content] auto-cols-fr grid-flow-col items-stretch rounded-md border text-center align-top shadow-xs',
+				'border-input relative isolate inline-grid h-9 min-w-max auto-cols-fr grid-flow-col items-stretch rounded-md border text-center align-top shadow-xs',
 				'disabled:opacity-50',
 				className,
 			)}
@@ -45,14 +45,14 @@ function SegmentedControl({
 					'before:bg-input before:absolute before:inset-[3px] before:h-[calc(100%-6px)] before:w-[calc(100%-6px)] before:rounded-sm',
 					'[:where([data-slot=segmented-control-item][data-state=on])_~_&]:block',
 					// Positioning
-					'in-nth-1:w-[calc(100%/1)] [:where([data-slot=segmented-control-item][data-state=on]:nth-child(1))_~_&]:translate-x-[0%]',
-					'in-nth-2:w-[calc(100%/2)] [:where([data-slot=segmented-control-item][data-state=on]:nth-child(2))_~_&]:translate-x-[100%]',
-					'in-nth-3:w-[calc(100%/3)] [:where([data-slot=segmented-control-item][data-state=on]:nth-child(3))_~_&]:translate-x-[200%]',
-					'in-nth-4:w-[calc(100%/4)] [:where([data-slot=segmented-control-item][data-state=on]:nth-child(4))_~_&]:translate-x-[300%]',
-					'in-nth-5:w-[calc(100%/5)] [:where([data-slot=segmented-control-item][data-state=on]:nth-child(5))_~_&]:translate-x-[400%]',
-					'in-nth-5:w-[calc(100%/6)] [:where([data-slot=segmented-control-item][data-state=on]:nth-child(6))_~_&]:translate-x-[500%]',
-					'in-nth-5:w-[calc(100%/7)] [:where([data-slot=segmented-control-item][data-state=on]:nth-child(7))_~_&]:translate-x-[600%]',
-					'in-nth-5:w-[calc(100%/8)] [:where([data-slot=segmented-control-item][data-state=on]:nth-child(8))_~_&]:translate-x-[700%]',
+					'nth-2:w-[calc(100%/1)] [:where([data-slot=segmented-control-item][data-state=on]:nth-child(1))_~_&]:translate-x-[0%]',
+					'nth-3:w-[calc(100%/2)] [:where([data-slot=segmented-control-item][data-state=on]:nth-child(2))_~_&]:translate-x-[100%]',
+					'nth-4:w-[calc(100%/3)] [:where([data-slot=segmented-control-item][data-state=on]:nth-child(3))_~_&]:translate-x-[200%]',
+					'nth-5:w-[calc(100%/4)] [:where([data-slot=segmented-control-item][data-state=on]:nth-child(4))_~_&]:translate-x-[300%]',
+					'nth-6:w-[calc(100%/5)] [:where([data-slot=segmented-control-item][data-state=on]:nth-child(5))_~_&]:translate-x-[400%]',
+					'nth-7:w-[calc(100%/6)] [:where([data-slot=segmented-control-item][data-state=on]:nth-child(6))_~_&]:translate-x-[500%]',
+					'nth-8:w-[calc(100%/7)] [:where([data-slot=segmented-control-item][data-state=on]:nth-child(7))_~_&]:translate-x-[600%]',
+					'nth-9:w-[calc(100%/8)] [:where([data-slot=segmented-control-item][data-state=on]:nth-child(8))_~_&]:translate-x-[700%]',
 				)}
 			/>
 		</ToggleGroupPrimitive.Root>
@@ -91,7 +91,7 @@ function SegmentedControlItem({
 			<span
 				data-slot="segmented-control-label"
 				className={cn(
-					'border-box relative z-10 m-[3px] flex grow items-center justify-center rounded-sm transition-all',
+					'border-box relative z-10 m-[3px] flex grow items-center justify-center gap-2 rounded-sm px-2 transition-all',
 					'group-hover:bg-input/30',
 					// Focus ring
 					'group-focus-visible:outline-ring group-focus-visible:ring-ring/50 group-focus-visible:ring-[4px] group-focus-visible:ring-offset-[3px] group-focus-visible:outline group-focus-visible:outline-offset-[3px]',
@@ -111,7 +111,7 @@ function SegmentedControlItem({
 				<span
 					data-slot="segmented-control-label-active"
 					className={cn(
-						'text-foreground absolute font-medium -tracking-[0.01em] transition-opacity duration-75',
+						'text-foreground font-medium -tracking-[0.01em] transition-opacity duration-75',
 						'group-[[data-state=off]]:opacity-0',
 					)}
 				>
