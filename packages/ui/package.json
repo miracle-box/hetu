@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.6",
+    "@radix-ui/react-label": "^2.1.2",
     "@radix-ui/react-slot": "^1.1.2",
     "@radix-ui/react-toggle-group": "^1.1.2",
     "@tailwindcss/cli": "^4.0.14",
@@ -24,11 +25,13 @@
   "peerDependencies": {
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "@tanstack/react-form": "^1.2.0",
     "@types/react": "^19.0.2",
     "@types/react-dom": "^19.0.2"
   },
   "devDependencies": {
     "@repo/typescript-config": "*",
+    "@tanstack/react-form": "^1.2.0",
     "@turbo/gen": "^2.3.3",
     "@types/react": "^19.0.2",
     "@types/react-dom": "^19.0.2",
@@ -46,7 +49,12 @@
     ]
   },
   "exports": {
-    "./*": "./src/components/*.tsx",
+    "./*": [
+      "./src/components/*.tsx"
+    ],
+    "./hooks/*": [
+      "./src/hooks/*.ts"
+    ],
     "./shadcn.css": "./src/styles/shadcn.css",
     "./styles.css": "./dist/styles.css",
     ".": "./src/index.ts"

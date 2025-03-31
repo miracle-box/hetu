@@ -1,29 +1,26 @@
-import type { TypeboxValidator } from '@repo/typebox-form-adapter';
 import type { Static } from '@sinclair/typebox';
-import type { ReactFormExtendedApi } from '@tanstack/react-form';
-import { typeboxValidator } from '@repo/typebox-form-adapter';
 import { Type } from '@sinclair/typebox';
+import { Zod } from '@sinclair/typemap';
 import { formOptions } from '@tanstack/react-form/nextjs';
 
 export const createTextureFormSchema = Type.Object({
 	name: Type.String({ minLength: 3, maxLength: 128 }),
 	description: Type.String(),
 	type: Type.Union([Type.Literal('skin'), Type.Literal('skin_slim'), Type.Literal('cape')]),
-	file: Type.Unknown(),
+	file: Type.Object({
+		name: Type.String(),
+	}),
 });
+export type CreateTextureFormValues = Static<typeof createTextureFormSchema>;
 
-export const createTextureFormOpts = formOptions<CreateTextureFormValues, TypeboxValidator>({
+export const createTextureFormOpts = formOptions({
 	defaultValues: {
 		name: '',
 		description: '',
 		type: 'skin',
-		file: null,
-	},
-	validatorAdapter: typeboxValidator(),
+		file: { name: 'No file selected.' },
+	} as CreateTextureFormValues,
 	validators: {
-		onSubmit: createTextureFormSchema,
+		onSubmit: Zod(createTextureFormSchema),
 	},
 });
-
-export type CreateTextureFormValues = Static<typeof createTextureFormSchema>;
-export type CreateTextureFormApi = ReactFormExtendedApi<CreateTextureFormValues, TypeboxValidator>;
