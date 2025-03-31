@@ -1,7 +1,6 @@
 'use client';
 
 import type { CreateTextureFormValues } from './shared';
-import type { TypeboxValidator } from '@repo/typebox-form-adapter';
 import { Button } from '@repo/ui/button';
 import {
 	Dialog,
@@ -13,8 +12,9 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from '@repo/ui/dialog';
+import { useAppForm } from '@repo/ui/hooks/use-app-form';
 import { Icon } from '@repo/ui/icon';
-import { mergeForm, useForm } from '@tanstack/react-form';
+import { mergeForm } from '@tanstack/react-form';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import React from 'react';
@@ -32,8 +32,7 @@ export function CreateTextureDialog({ children }: Props) {
 	const request = useMutation({
 		mutationFn: (values: CreateTextureFormValues) => handleCreateTexture(values),
 		onSuccess: (data) => {
-			if ('formState' in data)
-				mergeForm<CreateTextureFormValues, TypeboxValidator>(form, data.formState);
+			if ('formState' in data) mergeForm<CreateTextureFormValues>(form, data.formState);
 
 			if ('data' in data) {
 				void router.push(`/app/dashboard/textures/${data.data.id}`);
@@ -41,10 +40,11 @@ export function CreateTextureDialog({ children }: Props) {
 		},
 	});
 
-	const form = useForm({
+	const form = useAppForm({
 		...createTextureFormOpts,
 		onSubmit: ({ value }) => request.mutate(value),
 	});
+	const formId = React.useId();
 
 	return (
 		<Dialog>
@@ -52,37 +52,37 @@ export function CreateTextureDialog({ children }: Props) {
 
 			<DialogContent>
 				<DialogHeader>
-					<DialogTitle>Create texture</DialogTitle>
-					<DialogDescription>Upload a texture for your profiles.</DialogDescription>
+					<DialogTitle>Create Texture</DialogTitle>
+					<DialogDescription>Upload and manage your textures.</DialogDescription>
 				</DialogHeader>
 
-				<CreateTextureForm form={form} />
+				<CreateTextureForm form={form} formId={formId} />
 
 				<DialogFooter>
 					<DialogClose asChild>
 						<Button variant="secondary">Cancel</Button>
 					</DialogClose>
 
-					<form.Subscribe
-						selector={(formState) => [formState.canSubmit, formState.isSubmitting]}
-					>
-						{([canSubmit, isSubmitting]) => (
-							<Button
-								disabled={!canSubmit}
-								onClick={() => {
-									void form.handleSubmit();
-								}}
-							>
-								{isSubmitting ? (
-									<Icon.Loader2 className="animate-spin" />
-								) : (
-									'Create texture'
-								)}
-							</Button>
-						)}
-					</form.Subscribe>
+					<form.AppForm>
+						<form.Submit>
+							{(canSubmit, isSubmitting) => (
+								<Button type="submit" form={formId} disabled={!canSubmit}>
+									{isSubmitting ? (
+										<>
+											<Icon.Loader2 className="mr-2 h-4 w-4 animate-spin" />
+											Creating Texture...
+										</>
+									) : (
+										'Create Texture'
+									)}
+								</Button>
+							)}
+						</form.Submit>
+					</form.AppForm>
 				</DialogFooter>
 			</DialogContent>
 		</Dialog>
 	);
 }
+
+export default CreateTextureDialog;

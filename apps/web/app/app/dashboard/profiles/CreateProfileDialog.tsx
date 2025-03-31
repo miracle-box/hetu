@@ -1,7 +1,6 @@
 'use client';
 
 import type { CreateProfileFormValues } from './shared';
-import type { TypeboxValidator } from '@repo/typebox-form-adapter';
 import { Button } from '@repo/ui/button';
 import {
 	Dialog,
@@ -13,8 +12,9 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from '@repo/ui/dialog';
+import { useAppForm } from '@repo/ui/hooks/use-app-form';
 import { Icon } from '@repo/ui/icon';
-import { mergeForm, useForm } from '@tanstack/react-form';
+import { mergeForm } from '@tanstack/react-form';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import React from 'react';
@@ -32,8 +32,7 @@ export function CreateProfileDialog({ children }: Props) {
 	const request = useMutation({
 		mutationFn: (values: CreateProfileFormValues) => handleCreateProfile(values),
 		onSuccess: (data) => {
-			if ('formState' in data)
-				mergeForm<CreateProfileFormValues, TypeboxValidator>(form, data.formState);
+			if ('formState' in data) mergeForm<CreateProfileFormValues>(form, data.formState);
 
 			if ('data' in data) {
 				void router.push(`/app/dashboard/profiles/${data.data.id}`);
@@ -41,10 +40,11 @@ export function CreateProfileDialog({ children }: Props) {
 		},
 	});
 
-	const form = useForm({
+	const form = useAppForm({
 		...createProfileFormOpts,
 		onSubmit: ({ value }) => request.mutate(value),
 	});
+	const formId = React.useId();
 
 	return (
 		<Dialog>
@@ -56,31 +56,29 @@ export function CreateProfileDialog({ children }: Props) {
 					<DialogDescription>Your first profile is primary profile.</DialogDescription>
 				</DialogHeader>
 
-				<CreateProfileForm form={form} />
+				<CreateProfileForm form={form} formId={formId} />
 
 				<DialogFooter>
 					<DialogClose asChild>
 						<Button variant="secondary">Cancel</Button>
 					</DialogClose>
 
-					<form.Subscribe
-						selector={(formState) => [formState.canSubmit, formState.isSubmitting]}
-					>
-						{([canSubmit, isSubmitting]) => (
-							<Button
-								disabled={!canSubmit}
-								onClick={() => {
-									void form.handleSubmit();
-								}}
-							>
-								{isSubmitting ? (
-									<Icon.Loader2 className="animate-spin" />
-								) : (
-									'Create profile'
-								)}
-							</Button>
-						)}
-					</form.Subscribe>
+					<form.AppForm>
+						<form.Submit>
+							{(canSubmit, isSubmitting) => (
+								<Button type="submit" form={formId} disabled={!canSubmit}>
+									{isSubmitting ? (
+										<>
+											<Icon.Loader2 className="mr-2 h-4 w-4 animate-spin" />
+											Creating Profile...
+										</>
+									) : (
+										'Create Profile'
+									)}
+								</Button>
+							)}
+						</form.Submit>
+					</form.AppForm>
 				</DialogFooter>
 			</DialogContent>
 		</Dialog>

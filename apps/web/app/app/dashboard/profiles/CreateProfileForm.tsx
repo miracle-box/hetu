@@ -1,53 +1,39 @@
 'use client';
 
-import type { CreateProfileFormApi } from './shared';
+import { withForm } from '@repo/ui/hooks/use-app-form';
 import { Input } from '@repo/ui/input';
-import { useStore } from '@tanstack/react-form';
 import React from 'react';
+import { createProfileFormOpts } from './shared';
 
-type Props = {
-	form: CreateProfileFormApi;
-};
+export const CreateProfileForm = withForm({
+	props: {
+		formId: 'create-profile-form',
+	},
+	render: function Render({ form, formId }) {
+		return (
+			<form.AppForm>
+				<form.Form formId={formId} className="flex flex-col gap-4">
+					<form.AppField
+						name="name"
+						children={(field) => (
+							<field.SimpleField
+								label="Name"
+								desc="Player name should be 3-16 characters long. Numbers, letters, and underscores are allowed."
+							>
+								<Input
+									type="text"
+									placeholder="Name"
+									value={field.state.value}
+									onChange={(e) => field.handleChange(e.target.value)}
+								/>
+							</field.SimpleField>
+						)}
+					/>
 
-export function CreateProfileForm({ form }: Props) {
-	const formErrors = useStore(form.store, (state) => state.errors);
-
-	return (
-		<form
-			className="flex flex-col gap-2"
-			onSubmit={(e) => {
-				e.preventDefault();
-				e.stopPropagation();
-				void form.handleSubmit();
-			}}
-		>
-			<form.Field name="name">
-				{(field) => (
-					<label>
-						<span>Name</span>
-						<Input
-							name="name"
-							type="text"
-							placeholder="Name"
-							value={field.state.value}
-							onChange={(e) => field.handleChange(e.target.value)}
-						/>
-						{field.state.meta.errors.map((error) => (
-							<span key={error as string} className="text-destructive">
-								{error}
-							</span>
-						))}
-					</label>
-				)}
-			</form.Field>
-
-			<div>
-				{formErrors.map((error) => (
-					<span key={error as string} className="text-destructive">
-						{error}
-					</span>
-				))}
-			</div>
-		</form>
-	);
-}
+					<form.Message />
+				</form.Form>
+			</form.AppForm>
+		);
+	},
+	...createProfileFormOpts,
+});

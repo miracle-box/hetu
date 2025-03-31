@@ -10,9 +10,11 @@ export async function handleSignin(form: SigninFormValues) {
 
 	if (error)
 		switch (error.status) {
-			case 422:
+			case 400:
+			case 500:
+				return formError(error.value.error.message);
 			default:
-				return formError(error.value as unknown as string);
+				return formError(error.value.message ?? 'An unknown error occurred');
 		}
 
 	await setSessionCookie({

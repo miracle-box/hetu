@@ -1,107 +1,81 @@
 'use client';
 
-import type { SigninFormValues } from './shared';
-import type { TypeboxValidator } from '@repo/typebox-form-adapter';
 import { Button } from '@repo/ui/button';
+import { useAppForm } from '@repo/ui/hooks/use-app-form';
 import { Icon } from '@repo/ui/icon';
 import { Input } from '@repo/ui/input';
-import { mergeForm, useForm, useStore } from '@tanstack/react-form';
+import { mergeForm } from '@tanstack/react-form';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 import { handleSignin } from './actions';
-import { signinFormOpts } from './shared';
+import { signinFormOpts, type SigninFormValues } from './shared';
 
 export function SigninForm() {
 	const router = useRouter();
 
-	const submit = useMutation({
+	const request = useMutation({
 		mutationFn: (values: SigninFormValues) => handleSignin(values),
 		onSuccess: (data) => {
-			if ('formState' in data)
-				mergeForm<SigninFormValues, TypeboxValidator>(form, data.formState);
+			if ('formState' in data) mergeForm<SigninFormValues>(form, data.formState);
 
 			if ('data' in data) router.push('/');
 		},
 	});
 
-	const form = useForm({
+	const form = useAppForm({
 		...signinFormOpts,
-		onSubmit: ({ value }) => submit.mutate(value),
+		onSubmit: ({ value }) => request.mutate(value),
 	});
-	const formErrors = useStore(form.store, (state) => state.errors);
 
 	return (
-		<form
-			className="flex flex-col gap-4"
-			onSubmit={(e) => {
-				e.preventDefault();
-				e.stopPropagation();
-				void form.handleSubmit();
-			}}
-		>
-			<form.Field name="email">
-				{(field) => (
-					<label className="flex flex-col gap-1">
-						<span className="font-medium">Email</span>
-						<Input
-							name="email"
-							type="email"
-							placeholder="Email"
-							value={field.state.value}
-							onChange={(e) => field.handleChange(e.target.value)}
-						/>
-						{field.state.meta.errors.map((error) => (
-							<span key={error as string} className="text-destructive text-sm">
-								{error}
-							</span>
-						))}
-					</label>
-				)}
-			</form.Field>
+		<form.AppForm>
+			<form.Form className="flex flex-col gap-4">
+				<form.AppField
+					name="email"
+					children={(field) => (
+						<field.SimpleField label="Email">
+							<Input
+								type="email"
+								placeholder="Email"
+								value={field.state.value}
+								onChange={(e) => field.handleChange(e.target.value)}
+							/>
+						</field.SimpleField>
+					)}
+				/>
 
-			<form.Field name="password">
-				{(field) => (
-					<label className="flex flex-col gap-1">
-						<span className="font-medium">Password</span>
-						<Input
-							name="password"
-							type="password"
-							placeholder="Password"
-							value={field.state.value}
-							onChange={(e) => field.handleChange(e.target.value)}
-						/>
-						{field.state.meta.errors.map((error) => (
-							<span key={error as string} className="text-destructive text-sm">
-								{error}
-							</span>
-						))}
-					</label>
-				)}
-			</form.Field>
+				<form.AppField
+					name="password"
+					children={(field) => (
+						<field.SimpleField label="Email">
+							<Input
+								type="password"
+								placeholder="Password"
+								value={field.state.value}
+								onChange={(e) => field.handleChange(e.target.value)}
+							/>
+						</field.SimpleField>
+					)}
+				/>
 
-			<div>
-				{formErrors.map((error) => (
-					<span key={error as string} className="text-destructive text-sm">
-						{error}
-					</span>
-				))}
-			</div>
+				<form.Message />
 
-			<form.Subscribe selector={(formState) => [formState.canSubmit, formState.isSubmitting]}>
-				{([canSubmit, isSubmitting]) => (
-					<Button type="submit" className="w-full" disabled={!canSubmit}>
-						{isSubmitting ? (
-							<>
-								<Icon.Loader2 className="mr-2 h-4 w-4 animate-spin" />
-								Signing in...
-							</>
-						) : (
-							'Sign In'
-						)}
-					</Button>
-				)}
-			</form.Subscribe>
-		</form>
+				<form.Submit>
+					{(canSubmit, isSubmitting) => (
+						<Button type="submit" className="w-full" disabled={!canSubmit}>
+							{isSubmitting ? (
+								<>
+									<Icon.Loader2 className="mr-2 h-4 w-4 animate-spin" />
+									Signing in...
+								</>
+							) : (
+								'Sign In'
+							)}
+						</Button>
+					)}
+				</form.Submit>
+			</form.Form>
+		</form.AppForm>
 	);
 }
