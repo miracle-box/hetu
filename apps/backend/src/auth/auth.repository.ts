@@ -144,10 +144,16 @@ export abstract class AuthRepository {
 		return verification ?? null;
 	}
 
-	static async findVerifiedVerificationById(id: string): Promise<Verification | null> {
+	static async findVerifiedVerification(
+		id: string,
+		type: VerificationType,
+		scenario: VerificationScenario,
+	): Promise<Verification | null> {
 		const verification = await db.query.verificationsTable.findFirst({
 			where: and(
 				eq(verificationsTable.id, id),
+				eq(verificationsTable.type, type),
+				eq(verificationsTable.scenario, scenario),
 				gt(verificationsTable.expiresAt, now()),
 				gt(verificationsTable.triesLeft, 0),
 				eq(verificationsTable.verified, true),
@@ -175,5 +181,12 @@ export abstract class AuthRepository {
 			throw new Error('Failed to update verification.');
 		}
 		return updatedVerification;
+	}
+
+	static async revokeVerificationById(id: string): Promise<void> {
+		await db
+			.update(verificationsTable)
+			.set({ expiresAt: now() })
+			.where(eq(verificationsTable.id, id));
 	}
 }

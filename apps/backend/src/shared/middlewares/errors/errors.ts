@@ -31,6 +31,12 @@ export const APP_ERRORS = {
 			'A user with the same name or email already exists. Please use a different name or email.',
 		details: t.Void(),
 	},
+	'auth/invalid-signup-verification': {
+		status: 400,
+		message: () =>
+			'The provided verification is invalid. Please check the verification status and try again.',
+		details: t.Void(),
+	},
 	'auth/invalid-verification-type': {
 		status: 400,
 		message: () => 'The verification type is invalid. Please use a known verification type.',

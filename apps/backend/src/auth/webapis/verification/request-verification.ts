@@ -17,6 +17,8 @@ export const requestVerificationHandler = new Elysia().post(
 	'/verification/request',
 	async ({ body }) => {
 		if (body.type === VerificationType.EMAIL) {
+			// [TODO] Check if the email is already signed up in [signup] scenario
+
 			const code = randomInt(0, 10 ** 8)
 				.toString()
 				.padStart(8, '0');
