@@ -25,10 +25,9 @@ export type EnumLikeValues<TEnumLike extends EnumLike> = TEnumLike[keyof TEnumLi
  */
 export function createEnumLikeValuesSchema<TEnumLike extends EnumLike>(
 	enumLike: TEnumLike,
-): TUnion<TLiteral<TEnumLike[keyof TEnumLike]>[]> {
-	return Type.Union(
-		Object.values(enumLike).map((v) => Type.Literal(v as TEnumLike[keyof TEnumLike])),
-	);
+	// This is intended as it's hard to convert a union to a tuple.
+): TUnion<[TLiteral<TEnumLike[keyof TEnumLike]>]> {
+	return Type.Union(Object.values(enumLike).map((v) => Type.Literal(v))) as never;
 }
 
 /**
