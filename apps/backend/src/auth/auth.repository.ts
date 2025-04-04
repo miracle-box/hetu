@@ -146,13 +146,11 @@ export abstract class AuthRepository {
 
 	static async findVerifiedVerification(
 		id: string,
-		type: VerificationType,
 		scenario: VerificationScenario,
 	): Promise<Verification | null> {
 		const verification = await db.query.verificationsTable.findFirst({
 			where: and(
 				eq(verificationsTable.id, id),
-				eq(verificationsTable.type, type),
 				eq(verificationsTable.scenario, scenario),
 				gt(verificationsTable.expiresAt, now()),
 				gt(verificationsTable.triesLeft, 0),

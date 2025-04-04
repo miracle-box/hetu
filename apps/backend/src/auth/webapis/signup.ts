@@ -1,11 +1,6 @@
 import type { Session } from '~backend/auth/auth.entities';
 import { Elysia, t } from 'elysia';
-import {
-	sessionSchema,
-	SessionScope,
-	VerificationScenario,
-	VerificationType,
-} from '~backend/auth/auth.entities';
+import { sessionSchema, SessionScope, VerificationScenario } from '~backend/auth/auth.entities';
 import { PasswordService } from '~backend/services/auth/password';
 import { SessionService } from '~backend/services/auth/session';
 import { AppError } from '~backend/shared/middlewares/errors/app-error';
@@ -24,11 +19,9 @@ export const signupHandler = new Elysia().post(
 		// [TODO] Probably these checks (and the revocation process) should be placed in a separate usecase
 		const verif = await AuthRepository.findVerifiedVerification(
 			body.verificationId,
-			VerificationType.EMAIL,
 			VerificationScenario.SIGNUP,
 		);
-		if (!verif) throw new AppError('auth/invalid-signup-verification');
-		// Revoke the verification after redeem.
+		if (!verif) throw new AppError('auth/invalid-verification');
 		await AuthRepository.revokeVerificationById(body.verificationId);
 
 		const user = await UsersRepository.createWithPassword({
@@ -60,7 +53,7 @@ export const signupHandler = new Elysia().post(
 			200: t.Object({
 				session: sessionSchema(t.Literal(SessionScope.DEFAULT)),
 			}),
-			...createErrorResps(409),
+			...createErrorResps(400, 409),
 		},
 		detail: {
 			summary: 'Sign Up',

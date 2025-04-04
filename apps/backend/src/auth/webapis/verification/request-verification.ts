@@ -2,6 +2,7 @@ import { randomInt } from 'node:crypto';
 import { Elysia, t } from 'elysia';
 import {
 	verificationDigestSchema,
+	VerificationScenario,
 	verificationScenarioSchema,
 	VerificationType,
 	verificationTypeSchema,
@@ -12,12 +13,22 @@ import { MailingService } from '~backend/services/mailing';
 import { Logger } from '~backend/shared/logger';
 import { AppError } from '~backend/shared/middlewares/errors/app-error';
 import { createErrorResps } from '~backend/shared/middlewares/errors/docs';
+import { UsersRepository } from '~backend/users/users.repository';
 
 export const requestVerificationHandler = new Elysia().post(
 	'/verification/request',
 	async ({ body }) => {
 		if (body.type === VerificationType.EMAIL) {
-			// [TODO] Check if the email is already signed up in [signup] scenario
+			const user = await UsersRepository.findByEmail(body.target);
+			// [TODO] Make each TYPE and SCENARIO a separate usecase or something, to separate these checks.
+			// Check if the email is already signed up in [signup] scenario
+			if (body.scenario === VerificationScenario.SIGNUP && user) {
+				throw new AppError('auth/user-exists');
+			}
+			// Check if the user exists in [password_reset] scenario
+			if (body.scenario === VerificationScenario.PASSWORD_RESET && !user) {
+				throw new AppError('users/not-found');
+			}
 
 			const code = randomInt(0, 10 ** 8)
 				.toString()
@@ -25,6 +36,7 @@ export const requestVerificationHandler = new Elysia().post(
 			const codeHash = await PasswordService.hash(code);
 
 			const verif = await AuthRepository.createVerification({
+				userId: user?.id,
 				type: body.type,
 				scenario: body.scenario,
 				// [TODO] Should be configurable (now 10 minutes)
@@ -60,7 +72,7 @@ export const requestVerificationHandler = new Elysia().post(
 			200: t.Object({
 				verification: verificationDigestSchema,
 			}),
-			...createErrorResps(400, 503),
+			...createErrorResps(400, 404, 409, 503),
 		},
 		detail: {
 			summary: 'Request Verification',

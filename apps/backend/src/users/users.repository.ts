@@ -27,6 +27,30 @@ export abstract class UsersRepository {
 	}
 
 	/**
+	 * Find user by email.
+	 *
+	 * @param email Email
+	 */
+	static async findByEmail(email: string): Promise<User | null> {
+		const user = await db.query.usersTable.findFirst({
+			columns: {
+				id: true,
+				email: true,
+				name: true,
+			},
+			where: eq(usersTable.email, email),
+		});
+
+		if (!user) return null;
+
+		return {
+			id: user.id,
+			email: user.email,
+			name: user.name,
+		};
+	}
+
+	/**
 	 * Find user and password hash by email.
 	 *
 	 * @param email Email
