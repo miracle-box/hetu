@@ -2,6 +2,7 @@ import { Elysia } from 'elysia';
 import { changePasswordHandler } from './webapis/change-password';
 import { listSessionsHandler } from './webapis/list-sessions';
 import { refreshHandler } from './webapis/refresh';
+import { resetPasswordHandler } from './webapis/reset-password';
 import { revokeAllSessionsHandler } from './webapis/revoke-all-sessions';
 import { revokeSessionHandler } from './webapis/revoke-session';
 import { signinHandler } from './webapis/signin';
@@ -22,5 +23,6 @@ export const AuthRoutes = new Elysia({
 	.use(revokeSessionHandler)
 	.use(revokeAllSessionsHandler)
 	.use(changePasswordHandler)
+	.use(resetPasswordHandler)
 	.use(requestVerificationHandler)
 	.use(verifyVerificationHandler);
