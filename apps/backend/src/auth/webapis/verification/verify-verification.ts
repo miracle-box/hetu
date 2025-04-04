@@ -23,12 +23,12 @@ export const verifyVerificationHandler = new Elysia().post(
 			throw new AppError('auth/verification-invalid-code');
 		}
 
-		await AuthRepository.updateVerificationById(body.id, {
+		const verifiedVerif = await AuthRepository.updateVerificationById(body.id, {
 			verified: true,
 		});
 
 		return {
-			verification: verif,
+			verification: verifiedVerif,
 		};
 	},
 	{
