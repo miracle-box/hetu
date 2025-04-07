@@ -48,7 +48,7 @@ export function SigninForm() {
 				<form.AppField
 					name="password"
 					children={(field) => (
-						<field.SimpleField label="Email">
+						<field.SimpleField label="Password">
 							<Input
 								type="password"
 								placeholder="Password"

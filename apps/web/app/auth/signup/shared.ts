@@ -8,6 +8,8 @@ export const signupFormSchema = Type.Object({
 	name: Type.String(),
 	password: Type.String(),
 	confirmPassword: Type.String(),
+	verificationId: Type.String(),
+	verificationCode: Type.String({ minLength: 8, maxLength: 8 }),
 });
 export type SignupFormValues = Static<typeof signupFormSchema>;
 
@@ -17,6 +19,8 @@ export const signupFormOpts = formOptions({
 		name: '',
 		password: '',
 		confirmPassword: '',
+		verificationId: '',
+		verificationCode: '',
 	} as SignupFormValues,
 	validators: {
 		onSubmit: Zod(signupFormSchema),
