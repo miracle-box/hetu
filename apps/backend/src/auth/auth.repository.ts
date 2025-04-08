@@ -5,7 +5,7 @@ import type {
 	VerificationScenario,
 	VerificationType,
 } from '~backend/auth/auth.entities';
-import { and, eq, gt } from 'drizzle-orm';
+import { and, eq, gt, TransactionRollbackError } from 'drizzle-orm';
 import { UserAuthType } from '~backend/auth/auth.entities';
 import { db } from '~backend/shared/db';
 import { sessionsTable } from '~backend/shared/db/schema/sessions';
@@ -105,7 +105,12 @@ export abstract class AuthRepository {
 		return updatedSession;
 	}
 
-	static async createVerification(params: {
+	/**
+	 * Create a new verification and revoke any existing records.
+	 * @param params Verification params
+	 * @returns Created verification
+	 */
+	static async createOnlyVerification(params: {
 		userId?: string;
 		type: VerificationType;
 		scenario: VerificationScenario;
@@ -115,24 +120,45 @@ export abstract class AuthRepository {
 		triesLeft: number;
 		expiresAt: Date;
 	}): Promise<Verification> {
-		const [verif] = await db
-			.insert(verificationsTable)
-			.values({
-				userId: params.userId,
-				type: params.type,
-				scenario: params.scenario,
-				target: params.target,
-				secret: params.secret,
-				verified: params.verified,
-				triesLeft: params.triesLeft,
-				expiresAt: params.expiresAt,
-			})
-			.returning();
+		try {
+			const verif = await db.transaction(async (tx) => {
+				// Revoke any existing verification for the target
+				await tx
+					.update(verificationsTable)
+					.set({ expiresAt: now() })
+					.where(
+						and(
+							eq(verificationsTable.target, params.target),
+							gt(verificationsTable.expiresAt, now()),
+						),
+					);
 
-		if (!verif) {
-			throw new Error('Failed to create verification.');
+				const [verifRecord] = await db
+					.insert(verificationsTable)
+					.values({
+						userId: params.userId,
+						type: params.type,
+						scenario: params.scenario,
+						target: params.target,
+						secret: params.secret,
+						verified: params.verified,
+						triesLeft: params.triesLeft,
+						expiresAt: params.expiresAt,
+					})
+					.returning();
+
+				return verifRecord;
+			});
+
+			if (!verif) {
+				throw new Error('Failed to create verification.');
+			}
+			return verif;
+		} catch (e) {
+			if (e instanceof TransactionRollbackError)
+				throw new Error('Failed to create verification');
+			throw e;
 		}
-		return verif;
 	}
 
 	static async findVerificationById(id: string): Promise<Verification | null> {

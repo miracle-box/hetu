@@ -25,17 +25,13 @@ export const requestVerificationHandler = new Elysia().post(
 			if (body.scenario === VerificationScenario.SIGNUP && user) {
 				throw new AppError('auth/user-exists');
 			}
-			// Check if the user exists in [password_reset] scenario
-			if (body.scenario === VerificationScenario.PASSWORD_RESET && !user) {
-				throw new AppError('users/not-found');
-			}
 
 			const code = randomInt(0, 10 ** 8)
 				.toString()
 				.padStart(8, '0');
 			const codeHash = await PasswordService.hash(code);
 
-			const verif = await AuthRepository.createVerification({
+			const verif = await AuthRepository.createOnlyVerification({
 				userId: user?.id,
 				type: body.type,
 				scenario: body.scenario,
@@ -48,12 +44,18 @@ export const requestVerificationHandler = new Elysia().post(
 				triesLeft: 3,
 			});
 
-			try {
-				await MailingService.sendVerification(body.target, code, verif);
-			} catch (e) {
+			// Check if the user exists in [password_reset] scenario
+			if (body.scenario === VerificationScenario.PASSWORD_RESET && !user) {
+				// DO NOT send the email
+				return {
+					verification: verif,
+				};
+			}
+
+			await MailingService.sendVerification(body.target, code, verif).catch((e) => {
 				Logger.error(e, 'Error sending verification email.');
 				throw new AppError('auth/verification-email-error');
-			}
+			});
 
 			return {
 				verification: verif,
