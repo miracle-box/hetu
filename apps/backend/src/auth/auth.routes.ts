@@ -8,6 +8,7 @@ import { revokeSessionHandler } from './webapis/revoke-session';
 import { signinHandler } from './webapis/signin';
 import { signupHandler } from './webapis/signup';
 import { validateHandler } from './webapis/validate';
+import { inspectVerificationHandler } from './webapis/verification/inspect-verification';
 import { requestVerificationHandler } from './webapis/verification/request-verification';
 import { verifyVerificationHandler } from './webapis/verification/verify-verification';
 
@@ -25,4 +26,5 @@ export const AuthRoutes = new Elysia({
 	.use(changePasswordHandler)
 	.use(resetPasswordHandler)
 	.use(requestVerificationHandler)
-	.use(verifyVerificationHandler);
+	.use(verifyVerificationHandler)
+	.use(inspectVerificationHandler);
