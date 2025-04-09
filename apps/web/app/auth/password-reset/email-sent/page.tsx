@@ -1,8 +1,9 @@
 import { Button } from '@repo/ui/button';
 import { Large } from '@repo/ui/typography';
 import Link from 'next/link';
+import GoVerify from './GoVerify';
 
-export default function PasswordReset() {
+export default function EmailSent() {
 	return (
 		<main className="container mx-auto">
 			<div className="flex flex-col gap-2">
@@ -13,6 +14,8 @@ export default function PasswordReset() {
 					<br />
 					Please check your inbox and follow the instructions in the email.
 				</p>
+
+				<GoVerify />
 
 				<Button variant="secondary" asChild>
 					<Link href="/">Go back to landing page</Link>

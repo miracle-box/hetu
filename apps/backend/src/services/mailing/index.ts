@@ -17,7 +17,7 @@ export abstract class MailingService {
 			from: Config.mailing.smtp.sender,
 			to: email,
 			subject: 'Hetu Account Verification',
-			text: 'Your verification code for [' + verif.scenario + '] is: ' + code,
+			text: `Your verification code for [${verif.scenario}] is: ${code}\nVerification ID: ${verif.id}`,
 		});
 	}
 }
