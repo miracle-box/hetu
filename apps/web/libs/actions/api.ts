@@ -70,7 +70,6 @@ export async function uploadTexture(body: { file: File; type: 'texture_skin' | '
 	// @ts-expect-error [TODO] Error handling will be added soon.
 	const { data, error } = await api.files.index.post(
 		{
-			// @ts-expect-error [TODO] Eden incorrectly infer type as Files
 			type: body.type,
 			file: body.file,
 		},

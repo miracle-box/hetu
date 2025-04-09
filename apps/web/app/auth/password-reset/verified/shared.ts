@@ -3,26 +3,20 @@ import { Type } from '@sinclair/typebox';
 import { Zod } from '@sinclair/typemap';
 import { formOptions } from '@tanstack/react-form/nextjs';
 
-export const signupFormSchema = Type.Object({
-	email: Type.String(),
-	name: Type.String(),
+export const newPasswordFormSchema = Type.Object({
 	password: Type.String(),
 	confirmPassword: Type.String(),
 	verificationId: Type.String(),
-	verificationCode: Type.String({ minLength: 8, maxLength: 8 }),
 });
-export type SignupFormValues = Static<typeof signupFormSchema>;
+export type NewPasswordFormValues = Static<typeof newPasswordFormSchema>;
 
-export const signupFormOpts = formOptions({
+export const newPasswordFormOpts = formOptions({
 	defaultValues: {
-		email: '',
-		name: '',
 		password: '',
 		confirmPassword: '',
 		verificationId: '',
-		verificationCode: '',
-	} as SignupFormValues,
+	} as NewPasswordFormValues,
 	validators: {
-		onSubmit: Zod(signupFormSchema),
+		onSubmit: Zod(newPasswordFormSchema),
 	},
 });

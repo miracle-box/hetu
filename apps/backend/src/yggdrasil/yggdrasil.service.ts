@@ -7,7 +7,7 @@ import type {
 	YggProfileTextures,
 	YggTexture,
 } from '~backend/yggdrasil/yggdrasil.entities';
-import { createPrivateKey, createSign } from 'node:crypto';
+import crypto from 'node:crypto';
 import { StorageService } from '~backend/services/storage';
 import { Config } from '~backend/shared/config';
 
@@ -84,12 +84,12 @@ export abstract class YggdrasilService {
 	}
 
 	static sign(pem: string, data: string): string {
-		const key = createPrivateKey({
+		const key = crypto.createPrivateKey({
 			key: pem,
 			format: 'pem',
 		});
 
-		const signer = createSign('RSA-SHA1');
+		const signer = crypto.createSign('RSA-SHA1');
 		signer.update(data);
 		return signer.sign(key, 'base64');
 	}

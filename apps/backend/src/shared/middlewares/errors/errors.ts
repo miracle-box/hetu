@@ -31,6 +31,44 @@ export const APP_ERRORS = {
 			'A user with the same name or email already exists. Please use a different name or email.',
 		details: t.Void(),
 	},
+	'auth/invalid-verification': {
+		status: 400,
+		message: () =>
+			'The provided verification is invalid. Please check the verification status and try again.',
+		details: t.Void(),
+	},
+	'auth/invalid-verification-type': {
+		status: 400,
+		message: () => 'The verification type is invalid. Please use a known verification type.',
+		details: t.Void(),
+	},
+	'auth/verification-email-error': {
+		status: 503,
+		message: () =>
+			'An error occurred while sending the verification email. Please try again later.',
+		details: t.Void(),
+	},
+	'auth/verification-not-exists': {
+		status: 404,
+		message: () => 'The requested verification does not exist. Please check and try again.',
+		details: t.Void(),
+	},
+	'auth/verification-already-verified': {
+		status: 409,
+		message: () =>
+			'The verification code has already been verified. Use this one for your operation.',
+		details: t.Void(),
+	},
+	'auth/verification-expired': {
+		status: 410,
+		message: () => 'The verification code has expired. Please request a new one.',
+		details: t.Void(),
+	},
+	'auth/verification-invalid-code': {
+		status: 403,
+		message: () => 'The verification code is invalid. Please check and try again.',
+		details: t.Void(),
+	},
 	'users/forbidden': {
 		status: 403,
 		message: () =>

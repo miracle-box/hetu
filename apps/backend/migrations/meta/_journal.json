@@ -15,6 +15,13 @@
       "when": 1736078015330,
       "tag": "0001_woozy_scarecrow",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1743700119063,
+      "tag": "0002_tan_wallop",
+      "breakpoints": true
     }
   ]
 }

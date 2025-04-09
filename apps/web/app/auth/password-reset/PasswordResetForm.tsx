@@ -8,23 +8,24 @@ import { mergeForm } from '@tanstack/react-form';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import React from 'react';
-import { handleSignin } from './actions';
-import { signinFormOpts, type SigninFormValues } from './shared';
+import { handleRequestPasswordResetEmailVerification } from './actions';
+import { passwordResetFormOpts, type PasswordResetFormValues } from './shared';
 
-export function SigninForm() {
+export function PasswordResetForm() {
 	const router = useRouter();
 
 	const request = useMutation({
-		mutationFn: (values: SigninFormValues) => handleSignin(values),
+		mutationFn: (values: PasswordResetFormValues) =>
+			handleRequestPasswordResetEmailVerification(values),
 		onSuccess: (data) => {
-			if ('formState' in data) mergeForm<SigninFormValues>(form, data.formState);
+			if ('formState' in data) mergeForm<PasswordResetFormValues>(form, data.formState);
 
-			if ('data' in data) router.push('/');
+			if ('data' in data) router.push('/auth/password-reset/email-sent');
 		},
 	});
 
 	const form = useAppForm({
-		...signinFormOpts,
+		...passwordResetFormOpts,
 		onSubmit: ({ value }) => request.mutate(value),
 	});
 
@@ -45,20 +46,6 @@ export function SigninForm() {
 					)}
 				/>
 
-				<form.AppField
-					name="password"
-					children={(field) => (
-						<field.SimpleField label="Password">
-							<Input
-								type="password"
-								placeholder="Password"
-								value={field.state.value}
-								onChange={(e) => field.handleChange(e.target.value)}
-							/>
-						</field.SimpleField>
-					)}
-				/>
-
 				<form.Message />
 
 				<form.Submit>
@@ -67,10 +54,10 @@ export function SigninForm() {
 							{isSubmitting ? (
 								<>
 									<Icon.Loader2 className="mr-2 h-4 w-4 animate-spin" />
-									Signing in...
+									Sending reset link...
 								</>
 							) : (
-								'Sign In'
+								'Send Reset Link'
 							)}
 						</Button>
 					)}

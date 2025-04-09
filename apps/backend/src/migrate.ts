@@ -7,7 +7,7 @@ export const runMigration = async (url: string) => {
 	Logger.info('Running database migrations.');
 
 	const queryClient = postgres(url, { max: 1 });
-	migrate(drizzle(queryClient), { migrationsFolder: 'migrations' })
+	await migrate(drizzle(queryClient), { migrationsFolder: 'migrations' })
 		.then(() => {
 			Logger.info('Database migration success.');
 		})

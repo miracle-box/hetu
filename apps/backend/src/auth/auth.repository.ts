@@ -1,9 +1,16 @@
-import type { Session, SessionMetadata } from '~backend/auth/auth.entities';
-import { and, eq, gt } from 'drizzle-orm';
+import type {
+	Session,
+	SessionMetadata,
+	Verification,
+	VerificationScenario,
+	VerificationType,
+} from '~backend/auth/auth.entities';
+import { and, eq, gt, TransactionRollbackError } from 'drizzle-orm';
 import { UserAuthType } from '~backend/auth/auth.entities';
 import { db } from '~backend/shared/db';
 import { sessionsTable } from '~backend/shared/db/schema/sessions';
 import { userAuthTable } from '~backend/shared/db/schema/user-auth';
+import { verificationsTable } from '~backend/shared/db/schema/verifications';
 import { now } from '~backend/shared/db/utils';
 
 export abstract class AuthRepository {
@@ -96,5 +103,114 @@ export abstract class AuthRepository {
 			throw new Error('Failed to renew session.');
 		}
 		return updatedSession;
+	}
+
+	/**
+	 * Create a new verification and revoke any existing records.
+	 * @param params Verification params
+	 * @returns Created verification
+	 */
+	static async createOnlyVerification(params: {
+		userId?: string;
+		type: VerificationType;
+		scenario: VerificationScenario;
+		target: string;
+		secret: string;
+		verified: boolean;
+		triesLeft: number;
+		expiresAt: Date;
+	}): Promise<Verification> {
+		try {
+			const verif = await db.transaction(async (tx) => {
+				// Revoke any existing verification for the target
+				await tx
+					.update(verificationsTable)
+					.set({ expiresAt: now() })
+					.where(
+						and(
+							eq(verificationsTable.target, params.target),
+							gt(verificationsTable.expiresAt, now()),
+						),
+					);
+
+				const [verifRecord] = await db
+					.insert(verificationsTable)
+					.values({
+						userId: params.userId,
+						type: params.type,
+						scenario: params.scenario,
+						target: params.target,
+						secret: params.secret,
+						verified: params.verified,
+						triesLeft: params.triesLeft,
+						expiresAt: params.expiresAt,
+					})
+					.returning();
+
+				return verifRecord;
+			});
+
+			if (!verif) {
+				throw new Error('Failed to create verification.');
+			}
+			return verif;
+		} catch (e) {
+			if (e instanceof TransactionRollbackError)
+				throw new Error('Failed to create verification');
+			throw e;
+		}
+	}
+
+	static async findVerificationById(id: string): Promise<Verification | null> {
+		// Checks are done in the application, so we don't need to filter here.
+		const verification = await db.query.verificationsTable.findFirst({
+			where: and(eq(verificationsTable.id, id)),
+		});
+
+		return verification ?? null;
+	}
+
+	static async findVerifiedVerification(
+		id: string,
+		scenario: VerificationScenario,
+	): Promise<Verification | null> {
+		const verification = await db.query.verificationsTable.findFirst({
+			where: and(
+				eq(verificationsTable.id, id),
+				eq(verificationsTable.scenario, scenario),
+				gt(verificationsTable.expiresAt, now()),
+				gt(verificationsTable.triesLeft, 0),
+				eq(verificationsTable.verified, true),
+			),
+		});
+
+		return verification ?? null;
+	}
+
+	static async updateVerificationById(
+		id: string,
+		params: {
+			verified?: boolean;
+			triesLeft?: number;
+			expiresAt?: Date;
+		},
+	): Promise<Verification> {
+		const [updatedVerification] = await db
+			.update(verificationsTable)
+			.set(params)
+			.where(eq(verificationsTable.id, id))
+			.returning();
+
+		if (!updatedVerification) {
+			throw new Error('Failed to update verification.');
+		}
+		return updatedVerification;
+	}
+
+	static async revokeVerificationById(id: string): Promise<void> {
+		await db
+			.update(verificationsTable)
+			.set({ expiresAt: now() })
+			.where(eq(verificationsTable.id, id));
 	}
 }
