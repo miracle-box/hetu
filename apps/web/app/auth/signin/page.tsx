@@ -16,7 +16,7 @@ export default function Signin() {
 				</Button>
 
 				<Button variant="secondary" asChild>
-					<Link href="/auth/password-reset">I forgot my details</Link>
+					<Link href="/auth/password-reset">I have forgotten my details</Link>
 				</Button>
 
 				<Button variant="secondary" asChild>
