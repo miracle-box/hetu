@@ -1,9 +1,8 @@
 'use client';
 
 import { withForm } from '@repo/ui/hooks/use-app-form';
-import { Button } from '@repo/ui/button';
-import { Icon } from '@repo/ui/icon';
 import { Input } from '@repo/ui/input';
+import { RequestVerificationButton } from '~web/libs/components/RequestVerificationButton';
 import { signupFormOpts } from './schema';
 
 export const SignupFormView = withForm({
@@ -26,25 +25,15 @@ export const SignupFormView = withForm({
 										value={field.state.value}
 										onChange={(e) => field.handleChange(e.target.value)}
 									/>
-									<Button
-										onClick={handleSendCode}
-										disabled={
-											!field.state.value ||
-											verifRequestMutation.isPending ||
-											countdown > 0
-										}
-									>
-										{verifRequestMutation.isPending ? (
-											<>
-												<Icon.Loader2 className="mr-2 h-4 w-4 animate-spin" />
-												Sending...
-											</>
-										) : countdown > 0 ? (
-											`Resend (${countdown}s)`
-										) : (
-											'Send Code'
-										)}
-									</Button>
+
+									<RequestVerificationButton
+										type="email"
+										scenario="signup"
+										getTarget={() => form.getFieldValue('email')}
+										onVerificationRequested={(id) => {
+											form.setFieldValue('verificationId', id);
+										}}
+									/>
 								</div>
 							</field.SimpleField>
 						)}
@@ -116,26 +105,6 @@ export const SignupFormView = withForm({
 					/>
 
 					<form.Message />
-
-					<form.Submit>
-						{(canSubmit, isSubmitting) => (
-							<Button
-								type="submit"
-								className="w-full"
-								disabled={!canSubmit}
-								aria-busy={isSubmitting}
-							>
-								{isSubmitting ? (
-									<>
-										<Icon.Loader2 className="mr-2 h-4 w-4 animate-spin" />
-										Creating Account...
-									</>
-								) : (
-									'Sign Up'
-								)}
-							</Button>
-						)}
-					</form.Submit>
 				</form.Form>
 			</form.AppForm>
 		);
