@@ -1,88 +1,112 @@
 'use server';
 
+import { Left, Right } from 'purify-ts/Either';
 import { validateSession } from '~web/libs/actions/auth';
 import { client as api } from '~web/libs/api/eden';
 
 export async function getUserInfo() {
 	const session = await validateSession();
-	if (!session) return null;
 
-	// @ts-expect-error [TODO] Error handling will be added soon.
-	const { data, error } = await api
+	return api
 		.users({
 			id: session.userId,
 		})
 		.get({
 			headers: { Authorization: `Bearer ${session.authToken}` },
+		})
+		.then(({ data, error }) => {
+			if (error)
+				switch (error.status) {
+					default:
+						return Left(error.value.error.message);
+				}
+
+			return Right(data);
+		})
+		.catch(() => {
+			return Left('Failed to fetch user info.');
 		});
-
-	if (!data) {
-		return null;
-	}
-
-	return data.user;
 }
 
 export async function getUserProfiles() {
 	const session = await validateSession();
-	if (!session) return null;
+	if (!session) return Left('Unauthorized');
 
-	// @ts-expect-error [TODO] Error handling will be added soon.
-	const { data, error } = await api
+	return api
 		.users({
 			id: session.userId,
 		})
 		.profiles.get({
 			headers: { Authorization: `Bearer ${session.authToken}` },
+		})
+		.then(({ data, error }) => {
+			if (error)
+				switch (error.status) {
+					default:
+						return Left(error.value.error.message);
+				}
+
+			return Right(data);
+		})
+		.catch(() => {
+			return Left('Failed to fetch profiles.');
 		});
-
-	if (!data) {
-		return null;
-	}
-
-	return data.profiles;
 }
 
 export async function getUserTextures() {
 	const session = await validateSession();
-	if (!session) return null;
+	if (!session) return Left('Unauthorized');
 
-	// @ts-expect-error [TODO] Error handling will be added soon.
-	const { data, error } = await api
+	return api
 		.users({
 			id: session.userId,
 		})
 		.textures.get({
 			headers: { Authorization: `Bearer ${session.authToken}` },
+		})
+		.then(({ data, error }) => {
+			if (error)
+				switch (error.status) {
+					default:
+						return Left(error.value.error.message);
+				}
+
+			return Right(data);
+		})
+		.catch(() => {
+			return Left('Failed to fetch textures.');
 		});
-
-	if (!data) {
-		return null;
-	}
-
-	return data.textures;
 }
 
 export async function uploadTexture(body: { file: File; type: 'texture_skin' | 'texture_cape' }) {
 	const session = await validateSession();
-	if (!session) return null;
 
-	// @ts-expect-error [TODO] Error handling will be added soon.
-	const { data, error } = await api.files.index.post(
-		{
-			type: body.type,
-			file: body.file,
-		},
-		{
-			headers: { Authorization: `Bearer ${session.authToken}` },
-		},
-	);
+	return api.files.index
+		.post(
+			{
+				type: body.type,
+				file: body.file,
+			},
+			{
+				headers: { Authorization: `Bearer ${session.authToken}` },
+			},
+		)
+		.then(({ data, error }) => {
+			if (error) {
+				switch (error.status) {
+					// 201 is not an error.
+					case 201:
+						break;
+					default:
+						return Left(error.value.error.message);
+				}
+			}
 
-	if (!data) {
-		return null;
-	}
-
-	return data.file;
+			return Right(data);
+		})
+		.catch(() => {
+			return Left('Failed to upload texture.');
+		});
 }
 
 export async function createTexture(body: {
@@ -92,32 +116,104 @@ export async function createTexture(body: {
 	hash: string;
 }) {
 	const session = await validateSession();
-	if (!session) return null;
 
-	// @ts-expect-error [TODO] Error handling will be added soon.
-	const { data, error } = await api.textures.index.post(body, {
-		headers: { Authorization: `Bearer ${session.authToken}` },
-	});
+	return api.textures.index
+		.post(body, {
+			headers: { Authorization: `Bearer ${session.authToken}` },
+		})
+		.then(({ data, error }) => {
+			if (error)
+				switch (error.status) {
+					// 201 is not an error.
+					case 201:
+						break;
+					default:
+						return Left(error.value.error.message);
+				}
 
-	if (!data) {
-		return null;
-	}
-
-	return data.texture;
+			return Right(data);
+		})
+		.catch(() => {
+			return Left('Failed to create texture.');
+		});
 }
 
 export async function createProfile(body: { name: string }) {
 	const session = await validateSession();
-	if (!session) return null;
 
-	// @ts-expect-error [TODO] Error handling will be added soon.
-	const { data, error } = await api.profiles.index.post(body, {
-		headers: { Authorization: `Bearer ${session.authToken}` },
-	});
+	return api.profiles.index
+		.post(body, {
+			headers: { Authorization: `Bearer ${session.authToken}` },
+		})
+		.then(({ data, error }) => {
+			if (error)
+				switch (error.status) {
+					// 201 is not an error.
+					case 201:
+						break;
+					default:
+						return Left(error.value.error.message);
+				}
 
-	if (!data) {
-		return null;
-	}
+			return Right(data);
+		})
+		.catch(() => {
+			return Left('Failed to create profile.');
+		});
+}
 
-	return data.profile;
+export async function inspectVerification(id: string) {
+	return api.auth
+		.verification({ id })
+		.get()
+		.then(({ data, error }) => {
+			if (error)
+				switch (error.status) {
+					default:
+						return Left(error.value.error.message);
+				}
+
+			return Right(data);
+		})
+		.catch(() => {
+			return Left('Failed to fetch verification.');
+		});
+}
+
+export async function requestVerification(body: {
+	type: 'email';
+	scenario: 'signup' | 'password_reset';
+	target: string;
+}) {
+	return api.auth.verification.request
+		.post(body)
+		.then(({ data, error }) => {
+			if (error)
+				switch (error.status) {
+					default:
+						return Left(error.value.error.message);
+				}
+
+			return Right(data);
+		})
+		.catch(() => {
+			return Left('Failed to request verification.');
+		});
+}
+
+export async function verifyResetVerification(body: { id: string; code: string }) {
+	return api.auth.verification.verify
+		.post(body)
+		.then(({ data, error }) => {
+			if (error)
+				switch (error.status) {
+					default:
+						return Left(error.value.error.message);
+				}
+
+			return Right(data);
+		})
+		.catch(() => {
+			return Left('Failed to verify verification.');
+		});
 }
