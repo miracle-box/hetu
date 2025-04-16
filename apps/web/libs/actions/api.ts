@@ -94,9 +94,9 @@ export async function uploadTexture(body: { file: File; type: 'texture_skin' | '
 		.then(({ data, error }) => {
 			if (error) {
 				switch (error.status) {
-					// 201 is not an error.
+					// [FIXME] 201 is not an error. This is a workaround for Eden Treaty bug
 					case 201:
-						break;
+						return Right(error.value);
 					default:
 						return Left(error.value.error.message);
 				}
@@ -124,9 +124,9 @@ export async function createTexture(body: {
 		.then(({ data, error }) => {
 			if (error)
 				switch (error.status) {
-					// 201 is not an error.
+					// [FIXME] 201 is not an error. This is a workaround for Eden Treaty bug
 					case 201:
-						break;
+						return Right(error.value);
 					default:
 						return Left(error.value.error.message);
 				}
@@ -148,9 +148,9 @@ export async function createProfile(body: { name: string }) {
 		.then(({ data, error }) => {
 			if (error)
 				switch (error.status) {
-					// 201 is not an error.
+					// [FIXME] 201 is not an error. This is a workaround for Eden Treaty bug
 					case 201:
-						break;
+						return Right(error.value);
 					default:
 						return Left(error.value.error.message);
 				}
