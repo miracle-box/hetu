@@ -4,7 +4,7 @@ import type { SigninFormValues } from '~web/libs/modules/auth/forms/SigninForm';
 import { EitherAsync } from 'purify-ts/EitherAsync';
 import { signin } from '~web/libs/actions/api';
 import { setSessionCookie } from '~web/libs/actions/auth';
-import { formError, formSuccess } from '~web/libs/forms/responses';
+import { formError } from '~web/libs/forms/responses';
 
 export async function handleSignin(form: SigninFormValues) {
 	return EitherAsync.fromPromise(() =>
@@ -22,6 +22,5 @@ export async function handleSignin(form: SigninFormValues) {
 				expiresAt: new Date(resp.session.expiresAt),
 			});
 		})
-		.map((resp) => formSuccess(resp))
 		.mapLeft((message) => formError(message));
 }

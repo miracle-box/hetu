@@ -4,7 +4,7 @@ import type { SignupFormValues } from '~web/libs/modules/auth/forms/SignupForm';
 import { EitherAsync } from 'purify-ts/EitherAsync';
 import { signup } from '~web/libs/actions/api';
 import { setSessionCookie } from '~web/libs/actions/auth';
-import { formError, formSuccess } from '~web/libs/forms/responses';
+import { formError } from '~web/libs/forms/responses';
 
 export async function handleSignup(form: SignupFormValues) {
 	return EitherAsync.fromPromise(() =>
@@ -24,6 +24,5 @@ export async function handleSignup(form: SignupFormValues) {
 				expiresAt: new Date(resp.session.expiresAt),
 			});
 		})
-		.map((resp) => formSuccess(resp))
 		.mapLeft((message) => formError(message));
 }

@@ -4,7 +4,7 @@ import type { NewPasswordFormValues } from '~web/libs/modules/auth/forms/NewPass
 import { EitherAsync } from 'purify-ts/EitherAsync';
 import { resetPassword } from '~web/libs/actions/api';
 import { setSessionCookie } from '~web/libs/actions/auth';
-import { formError, formSuccess } from '~web/libs/forms/responses';
+import { formError } from '~web/libs/forms/responses';
 
 export async function handleResetPassword(form: NewPasswordFormValues) {
 	return EitherAsync.fromPromise(() =>
@@ -22,6 +22,5 @@ export async function handleResetPassword(form: NewPasswordFormValues) {
 				expiresAt: new Date(resp.session.expiresAt),
 			});
 		})
-		.map((resp) => formSuccess(resp))
 		.mapLeft((message) => formError(message));
 }
