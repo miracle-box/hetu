@@ -2,9 +2,9 @@
 
 import 'server-only';
 import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
 import { cache } from 'react';
 import { client as api } from '~web/libs/api/eden';
-import { redirect } from 'next/navigation';
 
 type SessionCookie = {
 	id: string;

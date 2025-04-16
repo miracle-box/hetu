@@ -217,3 +217,59 @@ export async function verifyResetVerification(body: { id: string; code: string }
 			return Left('Failed to verify verification.');
 		});
 }
+
+export async function resetPassword(body: { newPassword: string; verificationId: string }) {
+	return api.auth['reset-password']
+		.post(body)
+		.then(({ data, error }) => {
+			if (error)
+				switch (error.status) {
+					default:
+						return Left(error.value.error.message);
+				}
+
+			return Right(data);
+		})
+		.catch(() => {
+			return Left('Failed to reset password.');
+		});
+}
+
+export async function signin(body: { email: string; password: string }) {
+	return api.auth.signin
+		.post(body)
+		.then(({ data, error }) => {
+			if (error)
+				switch (error.status) {
+					default:
+						return Left(error.value.error.message);
+				}
+
+			return Right(data);
+		})
+		.catch(() => {
+			return Left('Failed to sign in.');
+		});
+}
+
+export async function signup(body: {
+	name: string;
+	email: string;
+	password: string;
+	verificationId: string;
+}) {
+	return api.auth.signup
+		.post(body)
+		.then(({ data, error }) => {
+			if (error)
+				switch (error.status) {
+					default:
+						return Left(error.value.error.message);
+				}
+
+			return Right(data);
+		})
+		.catch(() => {
+			return Left('Failed to sign up.');
+		});
+}
