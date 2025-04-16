@@ -51,7 +51,16 @@ export const CreateTextureFormView = withForm({
 									type="file"
 									onChange={(e) => {
 										const file = e.target.files?.[0];
-										if (file) field.handleChange(file);
+										if (!file) return;
+
+										void file.bytes().then((fileBytes) => {
+											const base64 = fileBytes.toBase64();
+											field.handleChange({
+												name: file.name,
+												type: file.type,
+												base64,
+											});
+										});
 									}}
 								/>
 							</field.SimpleField>
