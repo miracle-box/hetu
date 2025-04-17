@@ -201,7 +201,7 @@ export async function requestVerification(body: {
 		});
 }
 
-export async function verifyResetVerification(body: { id: string; code: string }) {
+export async function verifyVerification(body: { id: string; code: string }) {
 	return api.auth.verification.verify
 		.post(body)
 		.then(({ data, error }) => {

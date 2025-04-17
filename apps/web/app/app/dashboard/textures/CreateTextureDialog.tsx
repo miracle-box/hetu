@@ -14,9 +14,9 @@ import {
 import { Icon } from '@repo/ui/icon';
 import { mergeForm } from '@tanstack/react-form';
 import { useMutation } from '@tanstack/react-query';
-import { useRouter } from 'next/navigation';
 import React from 'react';
 
+import { respToEither } from '~web/libs/forms/responses';
 import {
 	useCreateTextureForm,
 	type CreateTextureFormValues,
@@ -28,18 +28,10 @@ export type Props = {
 };
 
 export function CreateTextureDialog({ children }: Props) {
-	const router = useRouter();
-
 	const request = useMutation({
 		mutationFn: (values: CreateTextureFormValues) => handleCreateTexture(values),
 		onSuccess: (resp) =>
-			resp
-				.map((data) => {
-					router.push(`/app/dashboard/textures/${data.texture.id}`);
-				})
-				.mapLeft((state) => {
-					mergeForm<CreateTextureFormValues>(form, state);
-				}),
+			respToEither(resp).mapLeft((state) => mergeForm<CreateTextureFormValues>(form, state)),
 	});
 
 	const { form, formId, FormView } = useCreateTextureForm({

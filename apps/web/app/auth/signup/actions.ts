@@ -1,20 +1,27 @@
 'use server';
 
 import type { SignupFormValues } from '~web/libs/modules/auth/forms/SignupForm';
+import { redirect } from 'next/navigation';
 import { EitherAsync } from 'purify-ts/EitherAsync';
-import { signup } from '~web/libs/actions/api';
+import { signup, verifyVerification } from '~web/libs/actions/api';
 import { setSessionCookie } from '~web/libs/actions/auth';
-import { formError } from '~web/libs/forms/responses';
+import { eitherToResp, formError } from '~web/libs/forms/responses';
 
 export async function handleSignup(form: SignupFormValues) {
-	return EitherAsync.fromPromise(() =>
-		signup({
-			email: form.email,
-			name: form.name,
-			password: form.password,
-			verificationId: form.verificationId,
+	const requests = EitherAsync.fromPromise(() =>
+		verifyVerification({
+			id: form.verificationId,
+			code: form.verificationCode,
 		}),
 	)
+		.chain(() =>
+			signup({
+				email: form.email,
+				name: form.name,
+				password: form.password,
+				verificationId: form.verificationId,
+			}),
+		)
 		.ifRight(async (resp) => {
 			await setSessionCookie({
 				id: resp.session.id,
@@ -23,6 +30,10 @@ export async function handleSignup(form: SignupFormValues) {
 				// [TODO] Workaround for Eden bug of incorrectly transforming Date object
 				expiresAt: new Date(resp.session.expiresAt),
 			});
+
+			redirect('/');
 		})
 		.mapLeft((message) => formError(message));
+
+	return eitherToResp(await requests.run());
 }

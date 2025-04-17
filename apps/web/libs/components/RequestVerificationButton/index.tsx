@@ -4,7 +4,8 @@ import { Button } from '@repo/ui/button';
 import { useCountdown } from '@repo/ui/hooks/use-countdown';
 import { Icon } from '@repo/ui/icon';
 import { useMutation } from '@tanstack/react-query';
-import { requestVerification } from '~web/libs/actions/api';
+import { respToEither } from '~web/libs/forms/responses';
+import { handleRequestVerification } from './actions';
 
 export type Props = {
 	// [TODO] Share common types between frontend and backend.
@@ -24,21 +25,22 @@ export function RequestVerificationButton({
 	const [countdown, setCountdown] = useCountdown(0);
 	const requestVerificationMutation = useMutation({
 		mutationFn: (target: string) =>
-			requestVerification({
+			handleRequestVerification({
 				type,
 				scenario,
 				target,
 			}),
-		onSuccess: (data) =>
-			data
-				.map(({ verification }) => {
-					setCountdown(60);
-					onVerificationRequested(verification.id);
-				})
-				.mapLeft((message) => {
+		onSuccess: (resp) =>
+			respToEither(resp).bimap(
+				(message) => {
 					// [TODO] Notify user about the error!
 					void message;
-				}),
+				},
+				({ verification }) => {
+					setCountdown(60);
+					onVerificationRequested(verification.id);
+				},
+			),
 	});
 
 	const handleSendCode = () => {
