@@ -4,7 +4,7 @@ import { Button } from '@repo/ui/button';
 import { useCountdown } from '@repo/ui/hooks/use-countdown';
 import { Icon } from '@repo/ui/icon';
 import { useMutation } from '@tanstack/react-query';
-import { respToEither } from '~web/libs/forms/responses';
+import { respToEither } from '~web/libs/actions/resp';
 import { handleRequestVerification } from './actions';
 
 export type Props = {

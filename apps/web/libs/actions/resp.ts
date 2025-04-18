@@ -1,22 +1,5 @@
 import { Either, Left, Right } from 'purify-ts/Either';
 
-export function formError(stateOrMessage: string | object) {
-	if (typeof stateOrMessage === 'string')
-		// Consider string as form error.
-		return {
-			errorMap: {
-				onServer: {
-					form: stateOrMessage,
-					fields: {},
-				},
-			},
-			errors: [stateOrMessage],
-		};
-	else
-		// Will merge form state on client side.
-		return stateOrMessage;
-}
-
 /**
  * Convert `Either` class to a plain object, then you can return it in Server Actions.
  *

@@ -1,7 +1,7 @@
 'use server';
 
 import { requestVerification } from '~web/libs/actions/api';
-import { eitherToResp } from '~web/libs/forms/responses';
+import { eitherToResp } from '~web/libs/actions/resp';
 
 export async function handleRequestVerification(params: {
 	// [TODO] Share common types between frontend and backend.
