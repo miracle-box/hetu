@@ -14,6 +14,7 @@ export type Props = {
 	getTarget: () => string;
 	// [TODO] Use entire response, not just the ID.
 	onVerificationRequested: (verificationId: string) => void;
+	onError: (message: string) => void;
 };
 
 export function RequestVerificationButton({
@@ -21,6 +22,7 @@ export function RequestVerificationButton({
 	scenario,
 	getTarget,
 	onVerificationRequested,
+	onError,
 }: Props) {
 	const [countdown, setCountdown] = useCountdown(0);
 	const requestVerificationMutation = useMutation({
@@ -33,8 +35,7 @@ export function RequestVerificationButton({
 		onSuccess: (resp) =>
 			respToEither(resp).bimap(
 				(message) => {
-					// [TODO] Notify user about the error!
-					void message;
+					onError(message);
 				},
 				({ verification }) => {
 					setCountdown(60);

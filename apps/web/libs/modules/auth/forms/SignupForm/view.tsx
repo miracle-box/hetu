@@ -17,15 +17,18 @@ export const SignupFormView = withForm({
 					<form.AppField
 						name="email"
 						children={(field) => (
-							<field.SimpleField label="Email">
-								<div className="flex w-full items-center gap-2">
-									<Input
-										type="email"
-										placeholder="Email"
-										value={field.state.value}
-										onChange={(e) => field.handleChange(e.target.value)}
-									/>
+							<field.Item>
+								<field.Label>Email</field.Label>
 
+								<div className="flex w-full items-center gap-2">
+									<field.Control>
+										<Input
+											type="email"
+											placeholder="Email"
+											value={field.state.value}
+											onChange={(e) => field.handleChange(e.target.value)}
+										/>
+									</field.Control>
 									<RequestVerificationButton
 										type="email"
 										scenario="signup"
@@ -33,9 +36,18 @@ export const SignupFormView = withForm({
 										onVerificationRequested={(id) => {
 											form.setFieldValue('verificationId', id);
 										}}
+										onError={(message) => {
+											field.setMeta((meta) => ({
+												...meta,
+												errorMap: {
+													onServer: [{ message }],
+												},
+											}));
+										}}
 									/>
 								</div>
-							</field.SimpleField>
+								<field.Message />
+							</field.Item>
 						)}
 					/>
 
