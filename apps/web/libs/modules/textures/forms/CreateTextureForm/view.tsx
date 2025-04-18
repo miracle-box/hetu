@@ -5,9 +5,11 @@ import { Input } from '@repo/ui/input';
 import { SegmentedControl, SegmentedControlItem } from '@repo/ui/segmented-control';
 import { Textarea } from '@repo/ui/textarea';
 import React from 'react';
-import { createTextureFormOpts } from './shared';
+import { fileToBase64 } from '~web/libs/utils/file';
+import { createTextureFormOpts } from './schema';
 
-export const CreateTextureForm = withForm({
+export const CreateTextureFormView = withForm({
+	...createTextureFormOpts,
 	props: {
 		formId: 'create-texture-form',
 	},
@@ -50,7 +52,15 @@ export const CreateTextureForm = withForm({
 									type="file"
 									onChange={(e) => {
 										const file = e.target.files?.[0];
-										if (file) field.handleChange(file);
+										if (!file) return;
+
+										void fileToBase64(file).then((base64) => {
+											field.handleChange({
+												name: file.name,
+												type: file.type,
+												base64,
+											});
+										});
 									}}
 								/>
 							</field.SimpleField>
@@ -85,5 +95,4 @@ export const CreateTextureForm = withForm({
 			</form.AppForm>
 		);
 	},
-	...createTextureFormOpts,
 });

@@ -11,5 +11,5 @@ export function useCountdown(initialCount: number) {
 		return () => clearInterval(timer);
 	}, [countdown]);
 
-	return { countdown, setCountdown };
+	return [countdown, setCountdown] as const;
 }

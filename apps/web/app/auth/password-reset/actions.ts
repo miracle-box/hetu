@@ -1,23 +1,18 @@
 'use server';
 
-import type { PasswordResetFormValues } from './shared';
-import { client as api } from '~web/libs/api/eden';
-import { formError, formSuccess } from '~web/libs/form/responses';
+import type { PasswordResetFormValues } from '~web/libs/modules/auth/forms/PasswordResetForm';
+import { requestVerification } from '~web/libs/actions/api';
+import { eitherToResp } from '~web/libs/actions/resp';
+import { formError } from '~web/libs/utils/form';
 
-export async function handleRequestPasswordResetEmailVerification(form: PasswordResetFormValues) {
-	const { data, error } = await api.auth.verification.request.post({
-		type: 'email',
-		scenario: 'password_reset',
-		target: form.email,
-	});
+export async function handleRequestReset(form: PasswordResetFormValues) {
+	const resp = (
+		await requestVerification({
+			type: 'email',
+			scenario: 'password_reset',
+			target: form.email,
+		})
+	).mapLeft((message) => formError(message));
 
-	if (error)
-		switch (error.status) {
-			default:
-				// @ts-expect-error [FIXME] Error typing is to be fixed
-				// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-				return formError(error.value.error.message as unknown as string);
-		}
-
-	return formSuccess(data);
+	return eitherToResp(resp);
 }

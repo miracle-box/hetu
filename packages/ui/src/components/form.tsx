@@ -4,8 +4,8 @@ import { useStore } from '@tanstack/react-form';
 
 import * as React from 'react';
 
-import { useFieldContext, useFormContext } from '#hooks/use-app-form.ts';
-import { cn } from '#lib/utils.ts';
+import { useFieldContext, useFormContext } from '#hooks/use-app-form';
+import { cn } from '#lib/utils';
 
 const FormIdContext = React.createContext<string | null>(null);
 

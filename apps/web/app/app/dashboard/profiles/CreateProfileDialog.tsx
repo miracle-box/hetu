@@ -1,6 +1,5 @@
 'use client';
 
-import type { CreateProfileFormValues } from './shared';
 import { Button } from '@repo/ui/button';
 import {
 	Dialog,
@@ -12,15 +11,17 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from '@repo/ui/dialog';
-import { useAppForm } from '@repo/ui/hooks/use-app-form';
 import { Icon } from '@repo/ui/icon';
 import { mergeForm } from '@tanstack/react-form';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import React from 'react';
+import { respToEither } from '~web/libs/actions/resp';
+import {
+	useCreateProfileForm,
+	type CreateProfileFormValues,
+} from '~web/libs/modules/profiles/forms/CreateProfileForm';
 import { handleCreateProfile } from './actions';
-import { CreateProfileForm } from './CreateProfileForm';
-import { createProfileFormOpts } from './shared';
 
 export type Props = {
 	children: React.ReactNode;
@@ -31,20 +32,19 @@ export function CreateProfileDialog({ children }: Props) {
 
 	const request = useMutation({
 		mutationFn: (values: CreateProfileFormValues) => handleCreateProfile(values),
-		onSuccess: (data) => {
-			if ('formState' in data) mergeForm<CreateProfileFormValues>(form, data.formState);
-
-			if ('data' in data) {
-				void router.push(`/app/dashboard/profiles/${data.data.id}`);
-			}
-		},
+		onSuccess: (resp) =>
+			respToEither(resp)
+				.map(({ profile }) => {
+					router.push(`/app/dashboard/profiles/${profile.id}`);
+				})
+				.mapLeft((state) => {
+					mergeForm<CreateProfileFormValues>(form, state);
+				}),
 	});
 
-	const form = useAppForm({
-		...createProfileFormOpts,
+	const { form, formId, FormView } = useCreateProfileForm({
 		onSubmit: ({ value }) => request.mutate(value),
 	});
-	const formId = React.useId();
 
 	return (
 		<Dialog>
@@ -56,7 +56,7 @@ export function CreateProfileDialog({ children }: Props) {
 					<DialogDescription>Your first profile is primary profile.</DialogDescription>
 				</DialogHeader>
 
-				<CreateProfileForm form={form} formId={formId} />
+				<FormView />
 
 				<DialogFooter>
 					<DialogClose asChild>

@@ -17,7 +17,10 @@ export default async function Dashboard() {
 					<AlertTitle>You are logged in as</AlertTitle>
 
 					<AlertDescription>
-						{userInfo && `${userInfo?.name} (${userInfo?.email})`}
+						{userInfo
+							.map((info) => `${info.user.name} (${info.user.email})`)
+							.mapLeft((message) => message)
+							.extract()}
 					</AlertDescription>
 				</Alert>
 			</div>

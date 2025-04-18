@@ -1,6 +1,5 @@
 'use client';
 
-import type { CreateTextureFormValues } from './shared';
 import { Button } from '@repo/ui/button';
 import {
 	Dialog,
@@ -12,15 +11,18 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from '@repo/ui/dialog';
-import { useAppForm } from '@repo/ui/hooks/use-app-form';
 import { Icon } from '@repo/ui/icon';
 import { mergeForm } from '@tanstack/react-form';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import React from 'react';
+
+import { respToEither } from '~web/libs/actions/resp';
+import {
+	useCreateTextureForm,
+	type CreateTextureFormValues,
+} from '~web/libs/modules/textures/forms/CreateTextureForm';
 import { handleCreateTexture } from './actions';
-import { CreateTextureForm } from './CreateTextureForm';
-import { createTextureFormOpts } from './shared';
 
 export type Props = {
 	children: React.ReactNode;
@@ -31,20 +33,15 @@ export function CreateTextureDialog({ children }: Props) {
 
 	const request = useMutation({
 		mutationFn: (values: CreateTextureFormValues) => handleCreateTexture(values),
-		onSuccess: (data) => {
-			if ('formState' in data) mergeForm<CreateTextureFormValues>(form, data.formState);
-
-			if ('data' in data) {
-				void router.push(`/app/dashboard/textures/${data.data.id}`);
-			}
-		},
+		onSuccess: (resp) =>
+			respToEither(resp)
+				.mapLeft((state) => mergeForm<CreateTextureFormValues>(form, state))
+				.ifRight(({ texture }) => router.push(`/app/dashboard/textures/${texture.id}`)),
 	});
 
-	const form = useAppForm({
-		...createTextureFormOpts,
+	const { form, formId, FormView } = useCreateTextureForm({
 		onSubmit: ({ value }) => request.mutate(value),
 	});
-	const formId = React.useId();
 
 	return (
 		<Dialog>
@@ -56,7 +53,7 @@ export function CreateTextureDialog({ children }: Props) {
 					<DialogDescription>Upload and manage your textures.</DialogDescription>
 				</DialogHeader>
 
-				<CreateTextureForm form={form} formId={formId} />
+				<FormView />
 
 				<DialogFooter>
 					<DialogClose asChild>

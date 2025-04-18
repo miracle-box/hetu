@@ -1,8 +1,8 @@
 import { Button } from '@repo/ui/button';
 import { Large } from '@repo/ui/typography';
 import Link from 'next/link';
-import { inspectVerification, verifyResetVerification } from './actions';
-import { NewPasswordForm } from './NewPasswordForm';
+import { inspectVerification, verifyVerification } from '~web/libs/actions/api';
+import { NewPassword } from './NewPassword';
 
 type SearchParams = Promise<{ id?: string; secret?: string }>;
 
@@ -14,20 +14,24 @@ export default async function Verified({ searchParams }: { searchParams: SearchP
 	}
 
 	const verif = await inspectVerification(id);
-	if (!verif) {
+	if (verif.isLeft()) {
 		return <ThisPageLayout>Verification link expired</ThisPageLayout>;
 	}
 
-	if (!verif.verification.verified) {
-		const verified = await verifyResetVerification(id, secret);
-		if (!verified) {
+	if (!verif.extract().verification.verified) {
+		const verifyResponse = await verifyVerification({
+			id,
+			code: secret,
+		});
+
+		if (verifyResponse.isLeft()) {
 			return <ThisPageLayout>Failed to verify your request</ThisPageLayout>;
 		}
 	}
 
 	return (
 		<ThisPageLayout>
-			<NewPasswordForm verificationId={id} />
+			<NewPassword verificationId={id} />
 		</ThisPageLayout>
 	);
 }

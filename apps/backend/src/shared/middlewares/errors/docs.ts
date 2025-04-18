@@ -21,6 +21,10 @@ export const errorResponseSchema = t.Object({
  *
  * `500 Internal Server Error` is included by default.
  *
+ * `422 Unprocessable Entity` is included by default.
+ * ? It is a workaround for Elysia infers VALIDATION error type wrongly,
+ * ? but I think this error code should be documented as well.
+ *
  * @param codes - Error codes (except 500)
  * @returns error responses object for Elysia
  *
@@ -35,11 +39,9 @@ export const errorResponseSchema = t.Object({
  * }
  * ```
  */
-export const createErrorResps = <TCodes extends number[]>(
-	...codes: TCodes
-): { [K in TCodes[number] | 500]: typeof errorResponseSchema } => {
-	const completeCodes = codes.concat([500]);
+export const createErrorResps = <TCodes extends number[]>(...codes: TCodes) => {
+	const completeCodes = codes.concat([422, 500]);
 	return Object.fromEntries(completeCodes.map((code) => [code, errorResponseSchema])) as {
-		[K in TCodes[number] | 500]: typeof errorResponseSchema;
+		[K in TCodes[number] | 500 | 422]: typeof errorResponseSchema;
 	};
 };

@@ -55,7 +55,7 @@ export const errorsHandler = (app: Elysia) =>
 				};
 			default:
 				// [TODO] Add request ID for tracing
-				Logger.error(error, `Error happened when handling request on ${path}`);
+				Logger.error(error, `Unhandled error happened when handling request on ${path}`);
 
 				return {
 					error: {

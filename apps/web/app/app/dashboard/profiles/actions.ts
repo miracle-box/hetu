@@ -1,12 +1,11 @@
 'use server';
 
-import type { CreateProfileFormValues } from './shared';
+import type { CreateProfileFormValues } from '~web/libs/modules/profiles/forms/CreateProfileForm';
 import { createProfile } from '~web/libs/actions/api';
-import { formError, formSuccess } from '~web/libs/form/responses';
+import { eitherToResp } from '~web/libs/actions/resp';
+import { formError } from '~web/libs/utils/form';
 
 export async function handleCreateProfile(form: CreateProfileFormValues) {
-	const profile = await createProfile({ name: form.name });
-	if (!profile) return formError('Unable to create profile.');
-
-	return formSuccess(profile);
+	const resp = (await createProfile(form)).mapLeft((error) => formError(error));
+	return eitherToResp(resp);
 }

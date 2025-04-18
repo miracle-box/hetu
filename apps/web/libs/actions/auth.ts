@@ -2,6 +2,7 @@
 
 import 'server-only';
 import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
 import { cache } from 'react';
 import { client as api } from '~web/libs/api/eden';
 
@@ -88,9 +89,7 @@ export async function renewSessionCookie() {
 
 export const validateSession = cache(async () => {
 	const session = await readSessionCookie();
-
-	// [TODO] Probably redirect to login page
-	if (!session) return null;
+	if (!session) redirect('/auth/signin');
 
 	return {
 		authToken: `${session.id}:${session.token}`,

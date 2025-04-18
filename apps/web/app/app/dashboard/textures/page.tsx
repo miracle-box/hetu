@@ -7,7 +7,7 @@ import { TextureCard } from '~web/libs/basicui/TextureCard';
 import { CreateTextureDialog } from './CreateTextureDialog';
 
 export default async function Textures() {
-	const textures = await getUserTextures();
+	const texturesResp = await getUserTextures();
 
 	return (
 		<main className="container mx-auto">
@@ -20,21 +20,29 @@ export default async function Textures() {
 					<Button>Create texture</Button>
 				</CreateTextureDialog>
 
-				{textures && (
-					<div
-						className={cn(
-							'grid grid-flow-row grid-cols-1 gap-2',
-							'md:grid-cols-2',
-							'xl:grid-cols-3',
-						)}
-					>
-						{textures.map((texture) => (
-							<TextureCard key={texture.id} texture={texture} />
-						))}
-					</div>
-				)}
+				{texturesResp
+					.bimap(
+						(message) => <span>{message}</span>,
 
-				{textures && textures.length <= 0 && <span>No textures</span>}
+						({ textures }) => (
+							<div
+								className={cn(
+									'grid grid-flow-row grid-cols-1 gap-2',
+									'md:grid-cols-2',
+									'xl:grid-cols-3',
+								)}
+							>
+								{textures.length > 0 ? (
+									textures.map((texture) => (
+										<TextureCard key={texture.id} texture={texture} />
+									))
+								) : (
+									<span>No textures</span>
+								)}
+							</div>
+						),
+					)
+					.extract()}
 			</div>
 		</main>
 	);
