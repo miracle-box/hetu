@@ -2,7 +2,7 @@
 
 import type { CreateTextureFormValues } from '~web/libs/modules/textures/forms/CreateTextureForm';
 import { EitherAsync } from 'purify-ts/EitherAsync';
-import { createTexture, uploadTexture } from '~web/libs/actions/api';
+import { createTexture, uploadFile } from '~web/libs/actions/api';
 import { eitherToResp, formError } from '~web/libs/forms/responses';
 
 export async function handleCreateTexture(form: CreateTextureFormValues) {
@@ -10,7 +10,7 @@ export async function handleCreateTexture(form: CreateTextureFormValues) {
 	const file = new File([fileBytes], form.file.name, { type: form.file.type });
 
 	const requests = EitherAsync.fromPromise(() =>
-		uploadTexture({
+		uploadFile({
 			// Type is manually checked above.
 			file: file,
 			type: form.type === 'cape' ? 'texture_cape' : 'texture_skin',

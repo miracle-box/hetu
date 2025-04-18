@@ -140,4 +140,9 @@ export const APP_ERRORS = {
 		message: () => 'The file type is not supported. Please ensure the file type is correct.',
 		details: t.Void(),
 	},
+	'files/upload-failed': {
+		status: 401,
+		message: () => 'Failed to upload the file. Please try again later.',
+		details: t.Void(),
+	},
 } as const satisfies Record<string, AppErrorInfo<unknown>>;

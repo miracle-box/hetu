@@ -78,7 +78,7 @@ export async function getUserTextures() {
 		});
 }
 
-export async function uploadTexture(body: { file: File; type: 'texture_skin' | 'texture_cape' }) {
+export async function uploadFile(body: { file: File; type: 'texture_skin' | 'texture_cape' }) {
 	const session = await validateSession();
 
 	return api.files.index

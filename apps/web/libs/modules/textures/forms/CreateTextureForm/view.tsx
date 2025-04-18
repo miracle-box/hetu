@@ -5,6 +5,7 @@ import { Input } from '@repo/ui/input';
 import { SegmentedControl, SegmentedControlItem } from '@repo/ui/segmented-control';
 import { Textarea } from '@repo/ui/textarea';
 import React from 'react';
+import { fileToBase64 } from '~web/libs/utils/file';
 import { createTextureFormOpts } from './schema';
 
 export const CreateTextureFormView = withForm({
@@ -53,8 +54,7 @@ export const CreateTextureFormView = withForm({
 										const file = e.target.files?.[0];
 										if (!file) return;
 
-										void file.bytes().then((fileBytes) => {
-											const base64 = fileBytes.toBase64();
+										void fileToBase64(file).then((base64) => {
 											field.handleChange({
 												name: file.name,
 												type: file.type,
