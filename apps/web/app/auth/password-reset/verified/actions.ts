@@ -1,7 +1,6 @@
 'use server';
 
 import type { NewPasswordFormValues } from '~web/libs/modules/auth/forms/NewPasswordForm';
-import { redirect } from 'next/navigation';
 import { EitherAsync } from 'purify-ts/EitherAsync';
 import { resetPassword } from '~web/libs/actions/api';
 import { setSessionCookie } from '~web/libs/actions/auth';
@@ -22,8 +21,6 @@ export async function handleResetPassword(form: NewPasswordFormValues) {
 				// [TODO] Workaround for Eden bug of incorrectly transforming Date object
 				expiresAt: new Date(resp.session.expiresAt),
 			});
-
-			redirect('/');
 		})
 		.mapLeft((message) => formError(message));
 

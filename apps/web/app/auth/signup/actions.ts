@@ -1,7 +1,6 @@
 'use server';
 
 import type { SignupFormValues } from '~web/libs/modules/auth/forms/SignupForm';
-import { redirect } from 'next/navigation';
 import { EitherAsync } from 'purify-ts/EitherAsync';
 import { signup, verifyVerification } from '~web/libs/actions/api';
 import { setSessionCookie } from '~web/libs/actions/auth';
@@ -30,8 +29,6 @@ export async function handleSignup(form: SignupFormValues) {
 				// [TODO] Workaround for Eden bug of incorrectly transforming Date object
 				expiresAt: new Date(resp.session.expiresAt),
 			});
-
-			redirect('/');
 		})
 		.mapLeft((message) => formError(message));
 

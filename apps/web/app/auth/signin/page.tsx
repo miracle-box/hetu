@@ -6,15 +6,20 @@ import { Large } from '@repo/ui/typography';
 import { mergeForm } from '@tanstack/react-form';
 import { useMutation } from '@tanstack/react-query';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { respToEither } from '~web/libs/forms/responses';
 import { useSigninForm, type SigninFormValues } from '~web/libs/modules/auth/forms/SigninForm';
 import { handleSignin } from './actions';
 
 export default function Signin() {
+	const router = useRouter();
+
 	const signinMutation = useMutation({
 		mutationFn: handleSignin,
 		onSuccess: (resp) => {
-			respToEither(resp).mapLeft((message) => mergeForm<SigninFormValues>(form, message));
+			respToEither(resp)
+				.mapLeft((message) => mergeForm<SigninFormValues>(form, message))
+				.ifRight(() => router.push('/'));
 		},
 	});
 

@@ -1,7 +1,6 @@
 'use server';
 
 import type { CreateTextureFormValues } from '~web/libs/modules/textures/forms/CreateTextureForm';
-import { redirect } from 'next/navigation';
 import { EitherAsync } from 'purify-ts/EitherAsync';
 import { createTexture, uploadTexture } from '~web/libs/actions/api';
 import { eitherToResp, formError } from '~web/libs/forms/responses';
@@ -25,9 +24,6 @@ export async function handleCreateTexture(form: CreateTextureFormValues) {
 				type: form.type,
 			}),
 		)
-		.ifRight((data) => {
-			redirect(`/app/dashboard/textures/${data.texture.id}`);
-		})
 		.mapLeft((message) => formError(message));
 
 	return eitherToResp(await requests.run());

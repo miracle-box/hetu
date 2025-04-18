@@ -1,9 +1,12 @@
+'use client';
+
 import { Button } from '@repo/ui/button';
 import { Icon } from '@repo/ui/icon';
 import { Large } from '@repo/ui/typography';
 import { mergeForm } from '@tanstack/react-form';
 import { useMutation } from '@tanstack/react-query';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import React from 'react';
 import { respToEither } from '~web/libs/forms/responses';
 import {
@@ -13,10 +16,14 @@ import {
 import { handleRequestReset } from './actions';
 
 export default function PasswordReset() {
+	const router = useRouter();
+
 	const requestResetMutation = useMutation({
 		mutationFn: (values: PasswordResetFormValues) => handleRequestReset(values),
 		onSuccess: (resp) => {
-			respToEither(resp).mapLeft((state) => mergeForm<PasswordResetFormValues>(form, state));
+			respToEither(resp)
+				.mapLeft((state) => mergeForm<PasswordResetFormValues>(form, state))
+				.ifRight(() => router.push('/auth/password-reset/email-sent'));
 		},
 	});
 

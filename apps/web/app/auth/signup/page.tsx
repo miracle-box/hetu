@@ -1,18 +1,25 @@
+'use client';
+
 import { Button } from '@repo/ui/button';
 import { Icon } from '@repo/ui/icon';
 import { Large } from '@repo/ui/typography';
 import { mergeForm } from '@tanstack/react-form';
 import { useMutation } from '@tanstack/react-query';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { respToEither } from '~web/libs/forms/responses';
 import { useSignupForm, type SignupFormValues } from '~web/libs/modules/auth/forms/SignupForm';
 import { handleSignup } from './actions';
 
 export default function Signup() {
+	const router = useRouter();
+
 	const signupMutation = useMutation({
 		mutationFn: handleSignup,
 		onSuccess: (resp) => {
-			respToEither(resp).mapLeft((message) => mergeForm<SignupFormValues>(form, message));
+			respToEither(resp)
+				.mapLeft((message) => mergeForm<SignupFormValues>(form, message))
+				.ifRight(() => router.push('/'));
 		},
 	});
 
