@@ -1,3 +1,4 @@
 export * from './lib/utils';
-export * from './lib/badge-variants';
-export * from './lib/button-variants';
+export * from './lib/badge-styles';
+export * from './lib/button-styles';
+export * from './lib/navigation-menu-styles';
