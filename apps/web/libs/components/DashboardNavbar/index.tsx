@@ -12,11 +12,6 @@ const navigationItems = [
 	{ segment: 'profiles', label: 'Profiles', link: '/app/dashboard/profiles' },
 	{ segment: 'textures', label: 'Textures', link: '/app/dashboard/textures' },
 	{ segment: 'settings', label: 'Settings', link: '/app/dashboard/settings' },
-	{ segment: 'settings2', label: 'Settings', link: '/app/dashboard/settings' },
-	{ segment: 'settings3', label: 'Settings', link: '/app/dashboard/settings' },
-	{ segment: 'settings4', label: 'Settings', link: '/app/dashboard/settings' },
-	{ segment: 'settings5', label: 'Settings', link: '/app/dashboard/settings' },
-	{ segment: 'settings6', label: 'Settings', link: '/app/dashboard/settings' },
 ] as const;
 
 export function DashboardNavbar() {
