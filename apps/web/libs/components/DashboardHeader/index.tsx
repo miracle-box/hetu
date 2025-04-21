@@ -1,5 +1,3 @@
-'use client';
-
 import { cn, navigationMenuTriggerStyle } from '@repo/ui';
 import { Avatar, AvatarFallback, AvatarImage } from '@repo/ui/avatar';
 import {
@@ -17,7 +15,7 @@ export function DashboardHeader() {
 	return (
 		<header className="z-10 mx-auto flex h-16 w-full items-center px-4">
 			{/* Logo */}
-			<div className="mr-4 flex items-center gap-2">
+			<div className="mr-4 hidden items-center gap-2 sm:flex">
 				<Link
 					href="/app/dashboard"
 					className="flex items-center gap-4 rounded-md focus-visible:outline-3 focus-visible:outline-offset-2"
@@ -44,7 +42,7 @@ export function DashboardHeader() {
 				</NavigationMenuList>
 			</NavigationMenu>
 
-			<div className="flex items-center gap-4">
+			<div className="hidden items-center gap-4 md:flex">
 				<Links />
 
 				<Avatar className="size-8">

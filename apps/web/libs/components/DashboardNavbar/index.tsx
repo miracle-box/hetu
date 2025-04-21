@@ -12,6 +12,11 @@ const navigationItems = [
 	{ segment: 'profiles', label: 'Profiles', link: '/app/dashboard/profiles' },
 	{ segment: 'textures', label: 'Textures', link: '/app/dashboard/textures' },
 	{ segment: 'settings', label: 'Settings', link: '/app/dashboard/settings' },
+	{ segment: 'settings2', label: 'Settings', link: '/app/dashboard/settings' },
+	{ segment: 'settings3', label: 'Settings', link: '/app/dashboard/settings' },
+	{ segment: 'settings4', label: 'Settings', link: '/app/dashboard/settings' },
+	{ segment: 'settings5', label: 'Settings', link: '/app/dashboard/settings' },
+	{ segment: 'settings6', label: 'Settings', link: '/app/dashboard/settings' },
 ] as const;
 
 export function DashboardNavbar() {
@@ -45,36 +50,40 @@ export function DashboardNavbar() {
 	}, [activeSegment, buttonsRefMap]);
 
 	return (
-		<div className="relative">
-			<nav className="bg-background scrollbar-none sticky top-0 z-10 w-full overflow-x-auto border-b">
-				<div className="relative mx-auto flex items-center px-4 py-1">
-					{navigationItems.map((item) => (
-						<Button
-							key={item.segment}
-							ref={(el) => {
-								registerButtonRef(item.segment, el);
-							}}
-							variant="ghost"
-							size="sm"
-							className={cn('p-3 text-sm', {
-								'text-muted-foreground': activeSegment !== item.segment,
-							})}
-							asChild
-						>
-							<Link href={item.link}>{item.label}</Link>
-						</Button>
-					))}
-				</div>
-			</nav>
+		<div
+			className={cn(
+				'bg-background sticky top-0 z-10',
+				// Fake border for easier indicator override
+				'after:bg-border after:absolute after:bottom-0 after:left-0 after:h-px after:w-full',
+			)}
+		>
+			<nav className="scrollbar-none relative flex w-full overflow-x-auto px-4 py-1">
+				{navigationItems.map((item) => (
+					<Button
+						key={item.segment}
+						ref={(el) => {
+							registerButtonRef(item.segment, el);
+						}}
+						variant="ghost"
+						size="sm"
+						className={cn('p-3 text-sm', {
+							'text-muted-foreground': activeSegment !== item.segment,
+						})}
+						asChild
+					>
+						<Link href={item.link}>{item.label}</Link>
+					</Button>
+				))}
 
-			{/* Indicator */}
-			<span
-				className="bg-primary absolute bottom-0 left-4 z-20 h-[2px] transition-all duration-200"
-				style={{
-					width: `${indicatorStyle.width}px`,
-					transform: `translateX(${indicatorStyle.transform}px)`,
-				}}
-			/>
+				{/* Indicator */}
+				<span
+					className="bg-primary absolute bottom-0 left-4 z-10 h-[2px] transition-all ease-out"
+					style={{
+						width: `${indicatorStyle.width}px`,
+						transform: `translateX(${indicatorStyle.transform}px)`,
+					}}
+				/>
+			</nav>
 		</div>
 	);
 }
