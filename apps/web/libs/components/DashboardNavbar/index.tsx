@@ -15,16 +15,24 @@ const navigationItems = [
 ] as const;
 
 export function DashboardNavbar() {
-	const buttonsRef = React.useRef<Map<string, HTMLButtonElement | null>>(new Map());
+	const [buttonsRefMap, setButtonsRefMap] = React.useState(() => new Map<string, HTMLElement>());
+
+	// Help updating the indicator on initial render, and manages button refs.
+	const registerButtonRef = React.useCallback((key: string, el: HTMLElement | null) => {
+		if (!el) return;
+		setButtonsRefMap((prev) => {
+			if (prev.get(key) === el) return prev;
+			const newMap = new Map(prev);
+			newMap.set(key, el);
+			return newMap;
+		});
+	}, []);
 
 	const activeSegment = useSelectedLayoutSegment();
-	React.useEffect(() => {
-		console.log(activeSegment);
-	}, [activeSegment]);
 
 	const indicatorStyle = React.useMemo(() => {
-		const activeBtn = buttonsRef.current.get(activeSegment ?? '');
-		const firstBtn = buttonsRef.current.get(navigationItems[0].segment);
+		const activeBtn = buttonsRefMap.get(activeSegment ?? '');
+		const firstBtn = buttonsRefMap.get(navigationItems[0].segment);
 
 		if (!activeBtn || !firstBtn) return { width: 0, transform: 0 };
 
@@ -34,7 +42,7 @@ export function DashboardNavbar() {
 			width,
 			transform: left - firstBtn.getBoundingClientRect().left,
 		};
-	}, [activeSegment, buttonsRef]);
+	}, [activeSegment, buttonsRefMap]);
 
 	return (
 		<div className="relative">
@@ -44,7 +52,7 @@ export function DashboardNavbar() {
 						<Button
 							key={item.segment}
 							ref={(el) => {
-								buttonsRef.current.set(item.segment, el);
+								registerButtonRef(item.segment, el);
 							}}
 							variant="ghost"
 							size="sm"
