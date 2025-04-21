@@ -1,3 +1,5 @@
+'use client';
+
 import { cn, navigationMenuTriggerStyle } from '@repo/ui';
 import { Avatar, AvatarFallback, AvatarImage } from '@repo/ui/avatar';
 import {
@@ -10,10 +12,17 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 import { Links } from './Links';
+import { MobileMenu } from './MobileMenu';
 
 export function DashboardHeader() {
+	const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+
 	return (
-		<header className="z-10 mx-auto flex h-16 w-full items-center px-4">
+		<header
+			className={cn('bg-background mx-auto flex h-16 w-full items-center px-4', {
+				'sticky top-0 z-20': isMenuOpen,
+			})}
+		>
 			{/* Logo */}
 			<div className="mr-4 hidden items-center gap-2 sm:flex">
 				<Link
@@ -42,6 +51,7 @@ export function DashboardHeader() {
 				</NavigationMenuList>
 			</NavigationMenu>
 
+			{/* Avatar and links on desktop */}
 			<div className="hidden items-center gap-4 md:flex">
 				<Links />
 
@@ -51,6 +61,9 @@ export function DashboardHeader() {
 					<AvatarFallback>U</AvatarFallback>
 				</Avatar>
 			</div>
+
+			{/* Navigation on mobile */}
+			<MobileMenu onMenuToggle={setIsMenuOpen} />
 		</header>
 	);
 }
