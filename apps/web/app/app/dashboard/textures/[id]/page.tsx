@@ -1,6 +1,5 @@
 import { Alert, AlertTitle } from '@repo/ui/alert';
 import { Large } from '@repo/ui/typography';
-import { AppNav } from '~web/libs/basicui/AppNav';
 
 export type Props = {
 	params: Promise<{ id: string }>;
@@ -13,8 +12,6 @@ export default async function InspectTexture({ params }: Props) {
 		<main className="container mx-auto">
 			<div className="flex flex-col gap-2">
 				<Large>Texture: {id}</Large>
-
-				<AppNav />
 
 				<Alert>
 					<AlertTitle>ID param: {id}</AlertTitle>

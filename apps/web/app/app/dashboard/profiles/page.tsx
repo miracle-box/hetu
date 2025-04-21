@@ -2,7 +2,6 @@ import { cn } from '@repo/ui';
 import { Button } from '@repo/ui/button';
 import { Large } from '@repo/ui/typography';
 import { getUserProfiles } from '~web/libs/actions/api';
-import { AppNav } from '~web/libs/basicui/AppNav';
 import { ProfileCard } from '~web/libs/basicui/ProfileCard';
 import CreateProfileDialog from './CreateProfileDialog';
 
@@ -13,8 +12,6 @@ export default async function Profiles() {
 		<main className="container mx-auto">
 			<div className="flex flex-col gap-2">
 				<Large>Profiles</Large>
-
-				<AppNav />
 
 				<CreateProfileDialog>
 					<Button>Create profile</Button>
