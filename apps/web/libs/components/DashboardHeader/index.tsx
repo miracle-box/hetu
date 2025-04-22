@@ -1,6 +1,7 @@
 'use client';
 
 import { cn, navigationMenuTriggerStyle } from '@repo/ui';
+import { useBreakpoint } from '@repo/ui/hooks/use-breakpoint';
 import {
 	NavigationMenu,
 	NavigationMenuItem,
@@ -12,9 +13,9 @@ import Link from 'next/link';
 import React from 'react';
 import { DesktopNav } from './DesktopNav';
 import { MobileNav } from './MobileNav';
-
 export function DashboardHeader() {
 	const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+	const widerThanMd = useBreakpoint('md');
 
 	return (
 		<header
@@ -50,11 +51,8 @@ export function DashboardHeader() {
 				</NavigationMenuList>
 			</NavigationMenu>
 
-			{/* Avatar and links on desktop */}
-			<DesktopNav />
-
-			{/* Navigation on mobile */}
-			<MobileNav onMenuToggle={setIsMenuOpen} />
+			{/* Avatar and links on desktop / Navigation menu on mobile */}
+			{widerThanMd ? <DesktopNav /> : <MobileNav onMenuToggle={setIsMenuOpen} />}
 		</header>
 	);
 }
