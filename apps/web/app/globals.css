@@ -1,5 +1,5 @@
-@import '@repo/ui/styles.css';
 @import '@repo/ui/shadcn.css';
+@import '@repo/ui/styles.css';
 
 :root {
 	--font-sans: var(--font-inter), var(--font-noto-sans-sc), -apple-system, BlinkMacSystemFont,

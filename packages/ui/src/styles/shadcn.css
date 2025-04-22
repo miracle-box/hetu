@@ -1,3 +1,7 @@
+/*
+ * Import this file in project to setup Tailwind CSS
+ */
+
 @import './base.css';
 @import './theme.css';
 
