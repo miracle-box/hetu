@@ -2,7 +2,6 @@ import { cn } from '@repo/ui';
 import { Button } from '@repo/ui/button';
 import { Large } from '@repo/ui/typography';
 import { getUserTextures } from '~web/libs/actions/api';
-import { AppNav } from '~web/libs/basicui/AppNav';
 import { TextureCard } from '~web/libs/basicui/TextureCard';
 import { CreateTextureDialog } from './CreateTextureDialog';
 
@@ -13,8 +12,6 @@ export default async function Textures() {
 		<main className="container mx-auto">
 			<div className="flex flex-col gap-2">
 				<Large>Textures</Large>
-
-				<AppNav />
 
 				<CreateTextureDialog>
 					<Button>Create texture</Button>

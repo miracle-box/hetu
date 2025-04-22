@@ -1,7 +1,6 @@
 'use client';
 
 import { cn, navigationMenuTriggerStyle } from '@repo/ui';
-import { Avatar, AvatarFallback, AvatarImage } from '@repo/ui/avatar';
 import {
 	NavigationMenu,
 	NavigationMenuItem,
@@ -11,13 +10,20 @@ import {
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
-import { Links } from './Links';
+import { DesktopNav } from './DesktopNav';
+import { MobileNav } from './MobileNav';
 
 export function DashboardHeader() {
+	const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+
 	return (
-		<header className="z-10 mx-auto flex h-16 w-full items-center px-4">
+		<header
+			className={cn('bg-background mx-auto flex h-16 w-full items-center px-4', {
+				'sticky top-0 z-20': isMenuOpen,
+			})}
+		>
 			{/* Logo */}
-			<div className="mr-4 flex items-center gap-2">
+			<div className="mr-4 hidden items-center gap-2 sm:flex">
 				<Link
 					href="/app/dashboard"
 					className="flex items-center gap-4 rounded-md focus-visible:outline-3 focus-visible:outline-offset-2"
@@ -44,15 +50,11 @@ export function DashboardHeader() {
 				</NavigationMenuList>
 			</NavigationMenu>
 
-			<div className="flex items-center gap-4">
-				<Links />
+			{/* Avatar and links on desktop */}
+			<DesktopNav />
 
-				<Avatar className="size-8">
-					{/* [TODO] Replace with actual avatar */}
-					<AvatarImage src="/favicon.ico" alt="User Avatar" />
-					<AvatarFallback>U</AvatarFallback>
-				</Avatar>
-			</div>
+			{/* Navigation on mobile */}
+			<MobileNav onMenuToggle={setIsMenuOpen} />
 		</header>
 	);
 }
