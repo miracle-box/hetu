@@ -34,7 +34,7 @@ export function MobileNav({ onMenuToggle }: MobileMenuProps) {
 			</Button>
 
 			<div
-				// Not works on Safari
+				// Find in page prevention not works on Safari
 				// See: https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/inert
 				// Prevent focusing when menu is closed.
 				inert={!mobileNavOpen}
