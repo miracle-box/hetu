@@ -3,7 +3,7 @@ import { Button } from '@repo/ui/button';
 import { Large } from '@repo/ui/typography';
 import { getUserProfiles } from '~web/libs/actions/api';
 import { ProfileCard } from '~web/libs/basicui/ProfileCard';
-import CreateProfileDialog from './CreateProfileDialog';
+import { CreateProfileModal } from './CreateProfileModal';
 
 export default async function Profiles() {
 	const profilesResp = await getUserProfiles();
@@ -13,9 +13,9 @@ export default async function Profiles() {
 			<div className="flex flex-col gap-2">
 				<Large>Profiles</Large>
 
-				<CreateProfileDialog>
+				<CreateProfileModal>
 					<Button>Create profile</Button>
-				</CreateProfileDialog>
+				</CreateProfileModal>
 
 				{profilesResp
 					.bimap(
