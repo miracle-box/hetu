@@ -79,10 +79,10 @@ export const CreateTextureFormView = withForm({
 									className="blcok w-full"
 								>
 									<SegmentedControlItem value="skin">
-										Skin (Normal)
+										Normal Skin
 									</SegmentedControlItem>
 									<SegmentedControlItem value="skin_slim">
-										Skin (Slim)
+										Slim Skin
 									</SegmentedControlItem>
 									<SegmentedControlItem value="cape">Cape</SegmentedControlItem>
 								</SegmentedControl>

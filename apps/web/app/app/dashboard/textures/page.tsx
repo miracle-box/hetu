@@ -3,7 +3,7 @@ import { Button } from '@repo/ui/button';
 import { Large } from '@repo/ui/typography';
 import { getUserTextures } from '~web/libs/actions/api';
 import { TextureCard } from '~web/libs/basicui/TextureCard';
-import { CreateTextureDialog } from './CreateTextureDialog';
+import { CreateTextureModal } from './CreateTextureModal';
 
 export default async function Textures() {
 	const texturesResp = await getUserTextures();
@@ -13,9 +13,9 @@ export default async function Textures() {
 			<div className="flex flex-col gap-2">
 				<Large>Textures</Large>
 
-				<CreateTextureDialog>
+				<CreateTextureModal>
 					<Button>Create texture</Button>
-				</CreateTextureDialog>
+				</CreateTextureModal>
 
 				{texturesResp
 					.bimap(

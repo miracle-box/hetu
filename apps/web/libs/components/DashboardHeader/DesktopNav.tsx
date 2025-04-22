@@ -5,7 +5,7 @@ import { links } from './links';
 
 export function DesktopNav() {
 	return (
-		<div className="hidden items-center gap-4 md:flex">
+		<div className="flex items-center gap-4">
 			<div className="flex items-center">
 				{links.map((item) => (
 					<Button

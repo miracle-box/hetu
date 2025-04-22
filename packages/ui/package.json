@@ -4,14 +4,12 @@
   "private": true,
   "scripts": {
     "gen:component": "turbo gen react-component",
-    "dev": "tailwindcss --watch -i ./src/styles/styles.css -o ./dist/styles.css",
-    "build": "tailwindcss -i ./src/styles/styles.css -o ./dist/styles.css",
     "typecheck": "tsc --noEmit",
     "lint": "bun run --cwd ../.. eslint packages/ui --max-warnings 0 --cache --cache-location packages/ui/.eslintcache"
   },
   "dependencies": {
     "@radix-ui/react-avatar": "^1.1.6",
-    "@radix-ui/react-dialog": "^1.1.6",
+    "@radix-ui/react-dialog": "^1.1.10",
     "@radix-ui/react-label": "^2.1.2",
     "@radix-ui/react-navigation-menu": "^1.2.9",
     "@radix-ui/react-slot": "^1.1.2",
@@ -21,8 +19,8 @@
     "clsx": "^2.1.1",
     "lucide-react": "^0.483.0",
     "tailwind-merge": "^3.0.2",
-    "tailwindcss": "^4.0.14",
-    "tw-animate-css": "^1.2.4"
+    "tw-animate-css": "^1.2.4",
+    "vaul": "^1.1.2"
   },
   "peerDependencies": {
     "react": "^19.0.0",
@@ -58,7 +56,7 @@
       "./src/hooks/*.ts"
     ],
     "./shadcn.css": "./src/styles/shadcn.css",
-    "./styles.css": "./dist/styles.css",
+    "./styles.css": "./src/styles/styles.css",
     ".": "./src/index.ts"
   }
 }

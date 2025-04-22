@@ -1,1 +1,5 @@
-@import './shadcn.css';
+/*
+ * Import this file in project to generate styles for shared UI components
+ */
+
+@source '..';

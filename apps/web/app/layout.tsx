@@ -18,7 +18,13 @@ export default function RootLayout({
 	return (
 		<html suppressHydrationWarning lang="en" className={cn(fontClasses)}>
 			<body>
-				<Providers>{children}</Providers>
+				{/* Vaul drawer background wrapper */}
+				<div
+					className="bg-background relative flex min-h-screen flex-col"
+					data-vaul-drawer-wrapper
+				>
+					<Providers>{children}</Providers>
+				</div>
 			</body>
 		</html>
 	);
