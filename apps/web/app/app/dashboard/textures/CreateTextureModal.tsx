@@ -5,7 +5,7 @@ import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 
-import { respToEither } from '~web/libs/actions/resp';
+import { respToEither } from '~web/libs/utils/resp';
 import { CreateTextureModalView } from '~web/libs/modules/textures/components/CreateTextureModalView';
 import {
 	useCreateTextureForm,

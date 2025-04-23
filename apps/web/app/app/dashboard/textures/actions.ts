@@ -3,7 +3,7 @@
 import type { CreateTextureFormValues } from '~web/libs/modules/textures/forms/CreateTextureForm';
 import { EitherAsync } from 'purify-ts/EitherAsync';
 import { createTexture, uploadFile } from '~web/libs/actions/api';
-import { eitherToResp } from '~web/libs/actions/resp';
+import { eitherToResp } from '~web/libs/utils/resp';
 import { formError } from '~web/libs/utils/form';
 
 export async function handleCreateTexture(form: CreateTextureFormValues) {

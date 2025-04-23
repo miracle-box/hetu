@@ -2,7 +2,7 @@
 
 import type { PasswordResetFormValues } from '~web/libs/modules/auth/forms/PasswordResetForm';
 import { requestVerification } from '~web/libs/actions/api';
-import { eitherToResp } from '~web/libs/actions/resp';
+import { eitherToResp } from '~web/libs/utils/resp';
 import { formError } from '~web/libs/utils/form';
 
 export async function handleRequestReset(form: PasswordResetFormValues) {

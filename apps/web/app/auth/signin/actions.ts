@@ -4,7 +4,7 @@ import type { SigninFormValues } from '~web/libs/modules/auth/forms/SigninForm';
 import { EitherAsync } from 'purify-ts/EitherAsync';
 import { signin } from '~web/libs/actions/api';
 import { setSessionCookie } from '~web/libs/actions/auth';
-import { eitherToResp } from '~web/libs/actions/resp';
+import { eitherToResp } from '~web/libs/utils/resp';
 import { formError } from '~web/libs/utils/form';
 
 export async function handleSignin(form: SigninFormValues) {

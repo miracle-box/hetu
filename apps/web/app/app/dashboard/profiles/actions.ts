@@ -2,7 +2,7 @@
 
 import type { CreateProfileFormValues } from '~web/libs/modules/profiles/forms/CreateProfileForm';
 import { createProfile } from '~web/libs/actions/api';
-import { eitherToResp } from '~web/libs/actions/resp';
+import { eitherToResp } from '~web/libs/utils/resp';
 import { formError } from '~web/libs/utils/form';
 
 export async function handleCreateProfile(form: CreateProfileFormValues) {
