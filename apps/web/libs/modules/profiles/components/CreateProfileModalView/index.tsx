@@ -13,7 +13,6 @@ import {
 } from '@repo/ui/dialog';
 import {
 	Drawer,
-	DrawerClose,
 	DrawerContent,
 	DrawerDescription,
 	DrawerFooter,
@@ -76,31 +75,32 @@ export function CreateProfileModalView({
 		<Drawer shouldScaleBackground>
 			<DrawerTrigger asChild>{Trigger}</DrawerTrigger>
 			<DrawerContent>
-				<DrawerHeader>
-					<DrawerTitle>Create profile</DrawerTitle>
-					<DrawerDescription>Your first profile is primary profile.</DrawerDescription>
-				</DrawerHeader>
+				{/* Scroll wrapper */}
+				<div className="overflow-y-scroll">
+					<DrawerHeader>
+						<DrawerTitle>Create profile</DrawerTitle>
+						<DrawerDescription>
+							Your first profile is primary profile.
+						</DrawerDescription>
+					</DrawerHeader>
 
-				<div className="px-4">
-					<FormView />
+					<div className="px-4">
+						<FormView />
+					</div>
+
+					<DrawerFooter>
+						<Button type="submit" form={formId} disabled={!canSubmit}>
+							{isSubmitting ? (
+								<>
+									<Icon.Loader2 className="mr-2 h-4 w-4 animate-spin" />
+									Creating Profile...
+								</>
+							) : (
+								'Create Profile'
+							)}
+						</Button>
+					</DrawerFooter>
 				</div>
-
-				<DrawerFooter>
-					<DrawerClose asChild>
-						<Button variant="secondary">Cancel</Button>
-					</DrawerClose>
-
-					<Button type="submit" form={formId} disabled={!canSubmit}>
-						{isSubmitting ? (
-							<>
-								<Icon.Loader2 className="mr-2 h-4 w-4 animate-spin" />
-								Creating Profile...
-							</>
-						) : (
-							'Create Profile'
-						)}
-					</Button>
-				</DrawerFooter>
 			</DrawerContent>
 		</Drawer>
 	);

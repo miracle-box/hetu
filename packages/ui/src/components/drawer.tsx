@@ -4,6 +4,7 @@ import * as React from 'react';
 import { Drawer as DrawerPrimitive } from 'vaul';
 
 import { cn } from '#lib/utils';
+import { Icon } from './icon';
 
 function Drawer({ ...props }: React.ComponentProps<typeof DrawerPrimitive.Root>) {
 	return <DrawerPrimitive.Root data-slot="drawer" {...props} />;
@@ -40,8 +41,15 @@ function DrawerOverlay({
 function DrawerContent({
 	className,
 	children,
+	withoutHandle,
+	withoutClose,
+	closeButtonSide = 'right',
 	...props
-}: React.ComponentProps<typeof DrawerPrimitive.Content>) {
+}: React.ComponentProps<typeof DrawerPrimitive.Content> & {
+	withoutHandle?: boolean;
+	withoutClose?: boolean;
+	closeButtonSide?: 'left' | 'right';
+}) {
 	return (
 		<DrawerPortal data-slot="drawer-portal">
 			<DrawerOverlay />
@@ -57,7 +65,23 @@ function DrawerContent({
 				)}
 				{...props}
 			>
-				<div className="bg-muted mx-auto mt-4 hidden h-2 w-[100px] shrink-0 rounded-full group-data-[vaul-drawer-direction=bottom]/drawer-content:block" />
+				{!withoutHandle && (
+					<div className="bg-muted/50 absolute left-[50%] mx-auto -mt-2.5 -ml-[25px] hidden h-1 w-[50px] shrink-0 rounded-full backdrop-blur-sm group-data-[vaul-drawer-direction=bottom]/drawer-content:block" />
+				)}
+
+				{!withoutClose && (
+					<DrawerClose
+						className={cn(
+							'bg-muted/50 absolute top-4 flex size-7 items-center justify-center rounded-full backdrop-blur-sm',
+							{
+								'right-4': closeButtonSide === 'right',
+								'left-4': closeButtonSide === 'left',
+							},
+						)}
+					>
+						<Icon.X className="text-muted-foreground block h-4 w-4" size="1rem" />
+					</DrawerClose>
+				)}
 				{children}
 			</DrawerPrimitive.Content>
 		</DrawerPortal>
@@ -88,7 +112,7 @@ function DrawerTitle({ className, ...props }: React.ComponentProps<typeof Drawer
 	return (
 		<DrawerPrimitive.Title
 			data-slot="drawer-title"
-			className={cn('text-foreground font-semibold', className)}
+			className={cn('text-foreground text-xl font-semibold', className)}
 			{...props}
 		/>
 	);
