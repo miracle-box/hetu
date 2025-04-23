@@ -39,7 +39,7 @@ export function MobileNav({ onMenuToggle }: MobileMenuProps) {
 				// Prevent focusing when menu is closed.
 				inert={!mobileNavOpen}
 				className={cn(
-					'bg-background top-16 left-0 z-20 w-screen overflow-y-auto transition-all duration-300 ease-in-out',
+					'bg-background ease-drawer top-16 left-0 z-20 w-screen overflow-y-auto transition-all duration-500',
 					{
 						'absolute h-0': !mobileNavOpen,
 						'fixed h-[calc(100dvh-4rem)]': mobileNavOpen,
