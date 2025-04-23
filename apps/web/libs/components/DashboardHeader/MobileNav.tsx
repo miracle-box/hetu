@@ -3,6 +3,7 @@
 import { cn } from '@repo/ui';
 import { Avatar, AvatarFallback, AvatarImage } from '@repo/ui/avatar';
 import { Button } from '@repo/ui/button';
+import { useScrollLock } from '@repo/ui/hooks/use-scroll-lock';
 import { useToggle } from '@repo/ui/hooks/use-toggle';
 import { Icon } from '@repo/ui/icon';
 import Link from 'next/link';
@@ -14,10 +15,17 @@ type MobileMenuProps = {
 
 export function MobileNav({ onMenuToggle }: MobileMenuProps) {
 	const [mobileNavOpen, toggleMobileNav] = useToggle();
+	const { lock: lockScroll, unlock: unlockScroll } = useScrollLock({
+		autoLock: false,
+	});
 
 	const handleToggle = () => {
 		const newState = !mobileNavOpen;
 		toggleMobileNav();
+
+		if (newState === true) lockScroll();
+		else unlockScroll();
+
 		onMenuToggle?.(newState);
 	};
 
@@ -34,12 +42,12 @@ export function MobileNav({ onMenuToggle }: MobileMenuProps) {
 			</Button>
 
 			<div
-				// Not works on Safari
+				// Find in page prevention not works on Safari
 				// See: https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/inert
 				// Prevent focusing when menu is closed.
 				inert={!mobileNavOpen}
 				className={cn(
-					'bg-background top-16 left-0 z-20 w-screen overflow-y-auto transition-all duration-300 ease-in-out',
+					'bg-background ease-drawer top-16 left-0 z-20 w-screen overflow-y-auto transition-all duration-500',
 					{
 						'absolute h-0': !mobileNavOpen,
 						'fixed h-[calc(100dvh-4rem)]': mobileNavOpen,

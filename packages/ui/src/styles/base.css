@@ -27,6 +27,10 @@
 	);
 }
 
+@theme {
+	--ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
 @layer utilities {
 	.scrollbar-none::-webkit-scrollbar {
 		display: none;

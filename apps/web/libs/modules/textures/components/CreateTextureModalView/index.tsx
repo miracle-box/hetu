@@ -13,7 +13,6 @@ import {
 } from '@repo/ui/dialog';
 import {
 	Drawer,
-	DrawerClose,
 	DrawerContent,
 	DrawerDescription,
 	DrawerFooter,
@@ -76,25 +75,19 @@ export function CreateTextureModalView({
 		<Drawer shouldScaleBackground>
 			<DrawerTrigger asChild>{Trigger}</DrawerTrigger>
 			<DrawerContent>
-				<DrawerHeader>
-					<DrawerTitle>Create Texture</DrawerTitle>
-					<DrawerDescription>Upload and manage your textures.</DrawerDescription>
-				</DrawerHeader>
-
-				<hr />
-
 				{/* Scroll wrapper */}
-				<div className="overflow-y-scroll pt-4">
+				<div className="overflow-y-scroll">
+					<DrawerHeader>
+						<DrawerTitle>Create Texture</DrawerTitle>
+						<DrawerDescription>Upload and manage your textures.</DrawerDescription>
+					</DrawerHeader>
+
 					<div className="px-4">
 						<FormView />
 					</div>
 
 					<DrawerFooter>
-						<DrawerClose asChild>
-							<Button variant="secondary">Cancel</Button>
-						</DrawerClose>
-
-						<Button type="submit" form={formId} disabled={!canSubmit}>
+						<Button size="lg" type="submit" form={formId} disabled={!canSubmit}>
 							{isSubmitting ? (
 								<>
 									<Icon.Loader2 className="mr-2 h-4 w-4 animate-spin" />
