@@ -2,7 +2,6 @@ import { Alert, AlertDescription, AlertTitle } from '@repo/ui/alert';
 import { Button } from '@repo/ui/button';
 import { Large } from '@repo/ui/typography';
 import Link from 'next/link';
-import { SessionInfo } from './SessionInfo';
 export default function Home() {
 	return (
 		<main className="container mx-auto">
@@ -30,14 +29,6 @@ export default function Home() {
 								Node.js {typeof process !== 'undefined' ? process.version : '×'}
 							</span>
 						</div>
-					</AlertDescription>
-				</Alert>
-
-				<Alert>
-					<AlertTitle>Session info</AlertTitle>
-
-					<AlertDescription>
-						<SessionInfo />
 					</AlertDescription>
 				</Alert>
 			</div>

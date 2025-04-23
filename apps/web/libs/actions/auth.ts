@@ -61,38 +61,56 @@ export async function renewSessionCookie() {
 	const session = await readSessionCookie();
 	if (!session) {
 		await clearSessionCookie();
-		return;
+		return null;
 	}
 
-	// [TODO] Make this configurable or constant (now 7 days)
-	// Auto renew session if it's close to expiration
-	if (Date.now() + 1000 * 3600 * 24 * 7 >= session.expiresAt.getTime()) {
-		const { data: renewedSession } = await api.auth.validate.post(null, {
-			headers: {
-				Authorization: `Bearer ${session.id}:${session.token}`,
-			},
-		});
-		if (!renewedSession) {
-			await clearSessionCookie();
-			return;
-		}
+	const { data: renewedSession } = await api.auth.validate.post(null, {
+		headers: {
+			Authorization: `Bearer ${session.id}:${session.token}`,
+		},
+	});
 
-		await setSessionCookie({
-			id: renewedSession.session.id,
-			userId: renewedSession.session.userId,
-			token: renewedSession.session.token,
-			// [TODO] Workaround for Eden bug of incorrectly transforming Date object
-			expiresAt: new Date(renewedSession.session.expiresAt),
-		});
+	// Clear potentially invalid cookie data on failure.
+	if (!renewedSession) {
+		await clearSessionCookie();
+		return null;
 	}
+
+	const newSessionCookie = {
+		id: renewedSession.session.id,
+		userId: renewedSession.session.userId,
+		token: renewedSession.session.token,
+		// [TODO] Workaround for Eden bug of incorrectly transforming Date object
+		expiresAt: new Date(renewedSession.session.expiresAt),
+	};
+
+	await setSessionCookie(newSessionCookie);
+
+	return newSessionCookie;
 }
 
-export const validateSession = cache(async () => {
+export const readSession = cache(async () => {
 	const session = await readSessionCookie();
+	// Redirect to signin page if not logged in.
 	if (!session) redirect('/auth/signin');
 
 	return {
 		authToken: `${session.id}:${session.token}`,
 		userId: session.userId,
+		expiresAt: session.expiresAt,
 	};
 });
+
+/**
+ * Helper for renewing session cookie.
+ *
+ * * This should be called in a client component as it sets cookie for renewed sessions.
+ *
+ * ! **Never return session secret directly! Write it in secured cookies instead!**
+ *
+ * @returns Session expiry date if logged in
+ */
+export async function validateSession() {
+	const sessionCookie = await renewSessionCookie();
+	return sessionCookie?.expiresAt;
+}
