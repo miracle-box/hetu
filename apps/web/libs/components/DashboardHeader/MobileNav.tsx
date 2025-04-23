@@ -3,6 +3,7 @@
 import { cn } from '@repo/ui';
 import { Avatar, AvatarFallback, AvatarImage } from '@repo/ui/avatar';
 import { Button } from '@repo/ui/button';
+import { useScrollLock } from '@repo/ui/hooks/use-scroll-lock';
 import { useToggle } from '@repo/ui/hooks/use-toggle';
 import { Icon } from '@repo/ui/icon';
 import Link from 'next/link';
@@ -14,10 +15,17 @@ type MobileMenuProps = {
 
 export function MobileNav({ onMenuToggle }: MobileMenuProps) {
 	const [mobileNavOpen, toggleMobileNav] = useToggle();
+	const { lock: lockScroll, unlock: unlockScroll } = useScrollLock({
+		autoLock: false,
+	});
 
 	const handleToggle = () => {
 		const newState = !mobileNavOpen;
 		toggleMobileNav();
+
+		if (newState === true) lockScroll();
+		else unlockScroll();
+
 		onMenuToggle?.(newState);
 	};
 
