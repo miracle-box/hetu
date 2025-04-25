@@ -4,12 +4,12 @@ import { mergeForm, useStore } from '@tanstack/react-form';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import React from 'react';
-import { respToEither } from '~web/libs/utils/resp';
 import { CreateProfileModalView } from '~web/libs/modules/profiles/components/CreateProfileModalView';
 import {
 	useCreateProfileForm,
 	type CreateProfileFormValues,
 } from '~web/libs/modules/profiles/forms/CreateProfileForm';
+import { respToEither } from '~web/libs/utils/resp';
 import { handleCreateProfile } from './actions';
 
 export type Props = {
