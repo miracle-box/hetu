@@ -1,6 +1,9 @@
 'use server';
 
 import 'server-only';
+import { createSecretKey } from 'node:crypto';
+import { SignJWT } from 'jose/jwt/sign';
+import { jwtVerify } from 'jose/jwt/verify';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { cache } from 'react';
@@ -10,8 +13,38 @@ type SessionCookie = {
 	id: string;
 	userId: string;
 	token: string;
-	expiresAt: Date;
+	issuedAt: number;
+	expiresAt: number;
 };
+
+export async function signSessionJwt(session: SessionCookie) {
+	const key = createSecretKey(process.env.JWT_SECRET, 'utf8');
+
+	const jwt = await new SignJWT({
+		id: session.id,
+		token: session.token,
+	})
+		.setProtectedHeader({ alg: 'HS256' })
+		.setSubject(session.userId)
+		.setIssuedAt(session.issuedAt)
+		.setExpirationTime(session.expiresAt)
+		.sign(key);
+
+	return jwt;
+}
+
+export async function readSessionJwt(jwt: string) {
+	const key = createSecretKey(process.env.JWT_SECRET, 'utf8');
+	const result = await jwtVerify(jwt, key);
+
+	return {
+		id: result.payload['id'] as string,
+		userId: result.payload.sub!,
+		token: result.payload['token'] as string,
+		issuedAt: result.payload.iat!,
+		expiresAt: result.payload.exp!,
+	} satisfies SessionCookie;
+}
 
 export async function setSessionCookie(session: SessionCookie) {
 	const cookieStore = await cookies();
@@ -19,42 +52,28 @@ export async function setSessionCookie(session: SessionCookie) {
 		httpOnly: true,
 		secure: true,
 		expires: session.expiresAt,
-		sameSite: 'lax',
+		sameSite: 'strict',
 		path: '/',
 	} as const;
 
-	cookieStore.set('sessionId', session.id, cookieOpts);
-	cookieStore.set('sessionUserId', session.userId, cookieOpts);
-	cookieStore.set('sessionToken', session.token, cookieOpts);
-	cookieStore.set('sessionExpiry', session.expiresAt.getTime().toString(), cookieOpts);
+	const jwtString = await signSessionJwt(session);
+	cookieStore.set('session', jwtString, cookieOpts);
 }
 
 export async function clearSessionCookie() {
 	const cookieStore = await cookies();
 
-	cookieStore.delete('sessionId');
-	cookieStore.delete('sessionUserId');
-	cookieStore.delete('sessionToken');
-	cookieStore.delete('sessionExpiry');
+	cookieStore.delete('session');
 }
 
 export async function readSessionCookie(): Promise<SessionCookie | null> {
 	const cookieStore = await cookies();
 
-	const sessionId = cookieStore.get('sessionId')?.value;
-	const sessionUserId = cookieStore.get('sessionUserId')?.value;
-	const sessionToken = cookieStore.get('sessionToken')?.value;
-	const sessionExpiry = Number(cookieStore.get('sessionExpiry')?.value);
+	const jwtString = cookieStore.get('session')?.value;
+	if (!jwtString) return null;
 
-	if (!sessionId || !sessionUserId || !sessionToken) return null;
-	const expiryNumber = Number.isNaN(sessionExpiry) ? 0 : sessionExpiry;
-
-	return {
-		id: sessionId,
-		userId: sessionUserId,
-		token: sessionToken,
-		expiresAt: new Date(expiryNumber),
-	};
+	const sessionCookie = readSessionJwt(jwtString);
+	return sessionCookie;
 }
 
 export async function renewSessionCookie() {
@@ -81,8 +100,9 @@ export async function renewSessionCookie() {
 		userId: renewedSession.session.userId,
 		token: renewedSession.session.token,
 		// [TODO] Workaround for Eden bug of incorrectly transforming Date object
-		expiresAt: new Date(renewedSession.session.expiresAt),
-	};
+		expiresAt: new Date(renewedSession.session.expiresAt).getTime(),
+		issuedAt: Date.now(),
+	} satisfies SessionCookie;
 
 	await setSessionCookie(newSessionCookie);
 
@@ -97,7 +117,6 @@ export const readSession = cache(async () => {
 	return {
 		authToken: `${session.id}:${session.token}`,
 		userId: session.userId,
-		expiresAt: session.expiresAt,
 	};
 });
 
@@ -107,10 +126,18 @@ export const readSession = cache(async () => {
  * * This should be called in a client component as it sets cookie for renewed sessions.
  *
  * ! **Never return session secret directly! Write it in secured cookies instead!**
- *
- * @returns Session expiry date if logged in
  */
 export async function validateSession() {
 	const sessionCookie = await renewSessionCookie();
-	return sessionCookie?.expiresAt;
+
+	if (!sessionCookie)
+		return {
+			signedIn: false,
+			expiresAt: null,
+		};
+
+	return {
+		signedIn: true,
+		expiresAt: sessionCookie.expiresAt,
+	};
 }
