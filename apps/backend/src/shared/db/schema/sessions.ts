@@ -7,5 +7,6 @@ export const sessionsTable = pgTable('sessions', {
 	token: varchar('token', { length: 24 }).notNull().$defaultFn(createId),
 	userId: varchar('user_id', { length: 24 }).notNull(),
 	metadata: jsonb('metadata').$type<SessionMetadata>().notNull(),
-	expiresAt: timestamp('expires_at', { withTimezone: true }).notNull(),
+	createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+	updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
 });

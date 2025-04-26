@@ -6,7 +6,8 @@ import type {
 	VerificationType,
 } from '~backend/auth/auth.entities';
 import { and, eq, gt, TransactionRollbackError } from 'drizzle-orm';
-import { UserAuthType } from '~backend/auth/auth.entities';
+import { SessionLifecycle, UserAuthType } from '~backend/auth/auth.entities';
+import { getLifecycle } from '~backend/shared/auth/utils';
 import { db } from '~backend/shared/db';
 import { sessionsTable } from '~backend/shared/db/schema/sessions';
 import { userAuthTable } from '~backend/shared/db/schema/user-auth';
@@ -52,7 +53,7 @@ export abstract class AuthRepository {
 
 	static async findSessionById(sessionId: string): Promise<Session | null> {
 		const session = await db.query.sessionsTable.findFirst({
-			where: and(eq(sessionsTable.id, sessionId), gt(sessionsTable.expiresAt, now())),
+			where: and(eq(sessionsTable.id, sessionId)),
 		});
 
 		return session ?? null;
@@ -60,7 +61,7 @@ export abstract class AuthRepository {
 
 	static async findSessionsByUser(userId: string): Promise<Session[]> {
 		return db.query.sessionsTable.findMany({
-			where: and(eq(sessionsTable.userId, userId), gt(sessionsTable.expiresAt, now())),
+			where: and(eq(sessionsTable.userId, userId)),
 		});
 	}
 
@@ -75,14 +76,12 @@ export abstract class AuthRepository {
 	static async createSession(params: {
 		userId: string;
 		metadata: SessionMetadata;
-		expiresAt: Date;
 	}): Promise<Session> {
 		const [createdSession] = await db
 			.insert(sessionsTable)
 			.values({
 				userId: params.userId,
 				metadata: params.metadata,
-				expiresAt: params.expiresAt,
 			})
 			.returning();
 
@@ -92,17 +91,48 @@ export abstract class AuthRepository {
 		return createdSession;
 	}
 
-	static async renewSession(sessionId: string, expiresAt: Date): Promise<Session> {
-		const [updatedSession] = await db
-			.update(sessionsTable)
-			.set({ expiresAt })
-			.where(and(eq(sessionsTable.id, sessionId), gt(sessionsTable.expiresAt, now())))
-			.returning();
+	static async updateSession(
+		sessionId: string,
+		params: {
+			updatedAt: Date;
+		},
+	): Promise<Session> {
+		try {
+			return await db.transaction(async (tx) => {
+				const session = await tx.query.sessionsTable.findFirst({
+					where: and(eq(sessionsTable.id, sessionId)),
+				});
 
-		if (!updatedSession) {
-			throw new Error('Failed to renew session.');
+				const lifecycle = getLifecycle(session);
+				// [TODO] Not suitable to do the check here, let's rewrite later.
+				if (
+					lifecycle === SessionLifecycle.RefreshOnly ||
+					lifecycle === SessionLifecycle.Expired
+				) {
+					throw new Error('Session is not active and can not be renewed.');
+				}
+
+				const [updatedSession] = await tx
+					.update(sessionsTable)
+					.set({
+						updatedAt: params.updatedAt,
+					})
+					.where(and(eq(sessionsTable.id, sessionId)))
+					.returning();
+
+				if (!updatedSession) {
+					throw new Error('Failed to update session.');
+				}
+
+				return updatedSession;
+			});
+		} catch (e) {
+			if (e instanceof TransactionRollbackError) {
+				throw new Error('Failed to update session.');
+			}
+
+			throw e;
 		}
-		return updatedSession;
 	}
 
 	/**

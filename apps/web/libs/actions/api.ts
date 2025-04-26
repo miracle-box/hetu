@@ -1,11 +1,11 @@
 'use server';
 
 import { Left, Right } from 'purify-ts/Either';
-import { validateSession } from '~web/libs/actions/auth';
+import { readSession } from '~web/libs/actions/auth';
 import { client as api } from '~web/libs/api/eden';
 
 export async function getUserInfo() {
-	const session = await validateSession();
+	const session = await readSession();
 
 	return api
 		.users({
@@ -29,7 +29,7 @@ export async function getUserInfo() {
 }
 
 export async function getUserProfiles() {
-	const session = await validateSession();
+	const session = await readSession();
 	if (!session) return Left('Unauthorized');
 
 	return api
@@ -54,7 +54,7 @@ export async function getUserProfiles() {
 }
 
 export async function getUserTextures() {
-	const session = await validateSession();
+	const session = await readSession();
 	if (!session) return Left('Unauthorized');
 
 	return api
@@ -79,7 +79,7 @@ export async function getUserTextures() {
 }
 
 export async function uploadFile(body: { file: File; type: 'texture_skin' | 'texture_cape' }) {
-	const session = await validateSession();
+	const session = await readSession();
 
 	return api.files.index
 		.post(
@@ -115,7 +115,7 @@ export async function createTexture(body: {
 	description: string;
 	hash: string;
 }) {
-	const session = await validateSession();
+	const session = await readSession();
 
 	return api.textures.index
 		.post(body, {
@@ -139,7 +139,7 @@ export async function createTexture(body: {
 }
 
 export async function createProfile(body: { name: string }) {
-	const session = await validateSession();
+	const session = await readSession();
 
 	return api.profiles.index
 		.post(body, {
@@ -271,5 +271,43 @@ export async function signup(body: {
 		})
 		.catch(() => {
 			return Left('Failed to sign up.');
+		});
+}
+
+export async function renewSession(authToken: string) {
+	return api.auth.validate
+		.post(null, {
+			headers: { Authorization: `Bearer ${authToken}` },
+		})
+		.then(({ data, error }) => {
+			if (error)
+				switch (error.status) {
+					default:
+						return Left(error.value.error.message);
+				}
+
+			return Right(data);
+		})
+		.catch(() => {
+			return Left('Failed to renew session.');
+		});
+}
+
+export async function refreshSession(authToken: string) {
+	return api.auth.sessions.refresh
+		.post(null, {
+			headers: { Authorization: `Bearer ${authToken}` },
+		})
+		.then(({ data, error }) => {
+			if (error)
+				switch (error.status) {
+					default:
+						return Left(error.value.error.message);
+				}
+
+			return Right(data);
+		})
+		.catch(() => {
+			return Left('Failed to refresh session.');
 		});
 }

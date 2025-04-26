@@ -8,11 +8,11 @@ import { useMutation } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React from 'react';
-import { respToEither } from '~web/libs/actions/resp';
 import {
 	usePasswordResetForm,
 	type PasswordResetFormValues,
 } from '~web/libs/modules/auth/forms/PasswordResetForm';
+import { respToEither } from '~web/libs/utils/resp';
 import { handleRequestReset } from './actions';
 
 export default function PasswordReset() {

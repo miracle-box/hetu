@@ -1,94 +1,109 @@
 'use server';
 
 import 'server-only';
+import { SignJWT } from 'jose/jwt/sign';
+import { jwtVerify } from 'jose/jwt/verify';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
+import { EitherAsync } from 'purify-ts/EitherAsync';
 import { cache } from 'react';
-import { client as api } from '~web/libs/api/eden';
+import { refreshSession, renewSession } from './api';
+
+// [TODO] Use type from backend instead.
+type Session = {
+	id: string;
+	userId: string;
+	token: string;
+	createdAt: Date;
+	updatedAt: Date;
+};
 
 type SessionCookie = {
 	id: string;
 	userId: string;
 	token: string;
-	expiresAt: Date;
+	createdAt: number;
+	updatedAt: number;
 };
 
-export async function setSessionCookie(session: SessionCookie) {
+export async function signSessionJwt(session: SessionCookie): Promise<string> {
+	const secret = new TextEncoder().encode(process.env.JWT_SECRET);
+
+	const jwt = await new SignJWT({
+		id: session.id,
+		token: session.token,
+		createdAt: session.createdAt,
+	})
+		.setProtectedHeader({ alg: 'HS256' })
+		.setSubject(session.userId)
+		.setIssuedAt(session.updatedAt)
+		// [TODO] Expiration time should be configurable (30d after creation time now)
+		.setExpirationTime(session.createdAt + 30 * 24 * 3600 * 1000)
+		.sign(secret);
+
+	return jwt;
+}
+
+export async function readSessionJwt(jwt: string): Promise<SessionCookie> {
+	const secret = new TextEncoder().encode(process.env.JWT_SECRET);
+	const result = await jwtVerify(jwt, secret);
+
+	return {
+		id: result.payload['id'] as string,
+		userId: result.payload.sub!,
+		token: result.payload['token'] as string,
+		createdAt: result.payload['createdAt'] as number,
+		updatedAt: result.payload.iat!,
+	} satisfies SessionCookie;
+}
+
+export async function writeSessionCookie(session: SessionCookie) {
 	const cookieStore = await cookies();
 	const cookieOpts = {
 		httpOnly: true,
 		secure: true,
-		expires: session.expiresAt,
-		sameSite: 'lax',
+		// [TODO] Expiration time should be configurable (30d after creation time now)
+		expires: session.createdAt + 30 * 24 * 3600 * 1000,
+		sameSite: 'strict',
 		path: '/',
 	} as const;
 
-	cookieStore.set('sessionId', session.id, cookieOpts);
-	cookieStore.set('sessionUserId', session.userId, cookieOpts);
-	cookieStore.set('sessionToken', session.token, cookieOpts);
-	cookieStore.set('sessionExpiry', session.expiresAt.getTime().toString(), cookieOpts);
+	const jwtString = await signSessionJwt(session);
+	cookieStore.set('session', jwtString, cookieOpts);
 }
 
 export async function clearSessionCookie() {
 	const cookieStore = await cookies();
 
-	cookieStore.delete('sessionId');
-	cookieStore.delete('sessionUserId');
-	cookieStore.delete('sessionToken');
-	cookieStore.delete('sessionExpiry');
+	cookieStore.delete('session');
 }
 
 export async function readSessionCookie(): Promise<SessionCookie | null> {
 	const cookieStore = await cookies();
 
-	const sessionId = cookieStore.get('sessionId')?.value;
-	const sessionUserId = cookieStore.get('sessionUserId')?.value;
-	const sessionToken = cookieStore.get('sessionToken')?.value;
-	const sessionExpiry = Number(cookieStore.get('sessionExpiry')?.value);
+	const jwtString = cookieStore.get('session')?.value;
+	if (!jwtString) return null;
 
-	if (!sessionId || !sessionUserId || !sessionToken) return null;
-	const expiryNumber = Number.isNaN(sessionExpiry) ? 0 : sessionExpiry;
-
-	return {
-		id: sessionId,
-		userId: sessionUserId,
-		token: sessionToken,
-		expiresAt: new Date(expiryNumber),
-	};
+	const sessionCookie = readSessionJwt(jwtString);
+	return sessionCookie;
 }
 
-export async function renewSessionCookie() {
-	const session = await readSessionCookie();
-	if (!session) {
-		await clearSessionCookie();
-		return;
-	}
-
-	// [TODO] Make this configurable or constant (now 7 days)
-	// Auto renew session if it's close to expiration
-	if (Date.now() + 1000 * 3600 * 24 * 7 >= session.expiresAt.getTime()) {
-		const { data: renewedSession } = await api.auth.validate.post(null, {
-			headers: {
-				Authorization: `Bearer ${session.id}:${session.token}`,
-			},
-		});
-		if (!renewedSession) {
-			await clearSessionCookie();
-			return;
-		}
-
-		await setSessionCookie({
-			id: renewedSession.session.id,
-			userId: renewedSession.session.userId,
-			token: renewedSession.session.token,
-			// [TODO] Workaround for Eden bug of incorrectly transforming Date object
-			expiresAt: new Date(renewedSession.session.expiresAt),
-		});
-	}
+/**
+ * [FIXME] Workaround for Eden bug of incorrectly transforming Date object
+ */
+export async function sessionToCookie(session: Session) {
+	return Promise.resolve({
+		id: session.id,
+		userId: session.userId,
+		token: session.token,
+		createdAt: new Date(session.createdAt).getTime(),
+		updatedAt: new Date(session.updatedAt).getTime(),
+	});
 }
 
-export const validateSession = cache(async () => {
+export const readSession = cache(async () => {
 	const session = await readSessionCookie();
+	// Redirect to signin page if not logged in.
 	if (!session) redirect('/auth/signin');
 
 	return {
@@ -96,3 +111,41 @@ export const validateSession = cache(async () => {
 		userId: session.userId,
 	};
 });
+
+/**
+ * Helper for renewing session cookie.
+ *
+ * * This should be called in a client component as it sets cookie for renewed sessions.
+ *
+ * ! **Never return session secret directly! Write it in secured cookies instead!**
+ */
+export async function validateSession() {
+	const session = await readSessionCookie();
+	if (!session) return { signedIn: false };
+
+	const now = Date.now();
+	const authToken = `${session.id}:${session.token}`;
+
+	// [TODO] Make these time spans configurable
+	// Renew session every hour.
+	if (now - session.updatedAt > 3600 * 1000) {
+		const renewRequest = EitherAsync.fromPromise(() => renewSession(authToken))
+			.map(({ session }) => sessionToCookie(session))
+			.map((session) => writeSessionCookie(session))
+			.mapLeft(() => clearSessionCookie());
+
+		const result = await renewRequest.run();
+		if (result.isLeft()) return { signedIn: false };
+	}
+
+	// Refresh session every day
+	if (now - session.createdAt > 24 * 3600 * 1000) {
+		const refreshedSession = await EitherAsync.fromPromise(() => refreshSession(authToken))
+			.map(({ session }) => sessionToCookie(session))
+			.map((session) => writeSessionCookie(session))
+			.mapLeft(() => clearSessionCookie());
+		if (refreshedSession.isLeft()) return { signedIn: false };
+	}
+
+	return { signedIn: true };
+}

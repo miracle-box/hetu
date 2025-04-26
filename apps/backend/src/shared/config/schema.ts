@@ -27,6 +27,18 @@ export const configSchema = Type.Object({
 			description: 'application base URL',
 		}),
 
+		session: Type.Object({
+			ttlMs: Type.Integer({
+				description: 'session TTL in milliseconds',
+			}),
+			inactiveAfterMs: Type.Integer({
+				description: 'session will be inactive after this time',
+			}),
+			maxLifespanMs: Type.Integer({
+				description: 'session will be invalid after this time',
+			}),
+		}),
+
 		yggdrasil: Type.Object({
 			serverName: Type.String({
 				description: 'Yggdrasil server name',
@@ -132,13 +144,23 @@ export const configSchema = Type.Object({
 
 	logging: Type.Object({
 		prettyPrint: Type.Object({
-			enabled: Type.Boolean(),
-			destination: Type.String(),
+			enabled: Type.Boolean({
+				description: 'enable pretty-printed logs',
+			}),
+			destination: Type.String({
+				description: 'destination for pretty-printed logs',
+			}),
 		}),
 		file: Type.Object({
-			enabled: Type.Boolean(),
-			destination: Type.String(),
-			append: Type.Boolean(),
+			enabled: Type.Boolean({
+				description: 'enable logging to files',
+			}),
+			destination: Type.String({
+				description: 'destination for file logs',
+			}),
+			append: Type.Boolean({
+				description: 'open log files in appending mode',
+			}),
 		}),
 	}),
 });
