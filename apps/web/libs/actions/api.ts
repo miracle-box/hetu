@@ -273,3 +273,41 @@ export async function signup(body: {
 			return Left('Failed to sign up.');
 		});
 }
+
+export async function renewSession(authToken: string) {
+	return api.auth.validate
+		.post(null, {
+			headers: { Authorization: `Bearer ${authToken}` },
+		})
+		.then(({ data, error }) => {
+			if (error)
+				switch (error.status) {
+					default:
+						return Left(error.value.error.message);
+				}
+
+			return Right(data);
+		})
+		.catch(() => {
+			return Left('Failed to renew session.');
+		});
+}
+
+export async function refreshSession(authToken: string) {
+	return api.auth.sessions.refresh
+		.post(null, {
+			headers: { Authorization: `Bearer ${authToken}` },
+		})
+		.then(({ data, error }) => {
+			if (error)
+				switch (error.status) {
+					default:
+						return Left(error.value.error.message);
+				}
+
+			return Right(data);
+		})
+		.catch(() => {
+			return Left('Failed to refresh session.');
+		});
+}

@@ -3,7 +3,7 @@
 import type { SignupFormValues } from '~web/libs/modules/auth/forms/SignupForm';
 import { EitherAsync } from 'purify-ts/EitherAsync';
 import { signup, verifyVerification } from '~web/libs/actions/api';
-import { setSessionCookie } from '~web/libs/actions/auth';
+import { sessionToCookie, writeSessionCookie } from '~web/libs/actions/auth';
 import { formError } from '~web/libs/utils/form';
 import { eitherToResp } from '~web/libs/utils/resp';
 
@@ -22,15 +22,9 @@ export async function handleSignup(form: SignupFormValues) {
 				verificationId: form.verificationId,
 			}),
 		)
-		.ifRight(async (resp) => {
-			await setSessionCookie({
-				id: resp.session.id,
-				userId: resp.session.userId,
-				token: resp.session.token,
-				// [TODO] Workaround for Eden bug of incorrectly transforming Date object
-				expiresAt: new Date(resp.session.expiresAt),
-			});
-		})
+		.map(({ session }) => sessionToCookie(session))
+		// Do not return session to client!
+		.map((session) => writeSessionCookie(session))
 		.mapLeft((message) => formError(message));
 
 	return eitherToResp(await requests.run());

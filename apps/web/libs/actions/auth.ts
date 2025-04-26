@@ -1,57 +1,69 @@
 'use server';
 
 import 'server-only';
-import { createSecretKey } from 'node:crypto';
 import { SignJWT } from 'jose/jwt/sign';
 import { jwtVerify } from 'jose/jwt/verify';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
+import { EitherAsync } from 'purify-ts/EitherAsync';
 import { cache } from 'react';
-import { client as api } from '~web/libs/api/eden';
+import { refreshSession, renewSession } from './api';
+
+// [TODO] Use type from backend instead.
+type Session = {
+	id: string;
+	userId: string;
+	token: string;
+	createdAt: Date;
+	updatedAt: Date;
+};
 
 type SessionCookie = {
 	id: string;
 	userId: string;
 	token: string;
-	issuedAt: number;
-	expiresAt: number;
+	createdAt: number;
+	updatedAt: number;
 };
 
-export async function signSessionJwt(session: SessionCookie) {
-	const key = createSecretKey(process.env.JWT_SECRET, 'utf8');
+export async function signSessionJwt(session: SessionCookie): Promise<string> {
+	const secret = new TextEncoder().encode(process.env.JWT_SECRET);
 
 	const jwt = await new SignJWT({
 		id: session.id,
 		token: session.token,
+		createdAt: session.createdAt,
 	})
 		.setProtectedHeader({ alg: 'HS256' })
 		.setSubject(session.userId)
-		.setIssuedAt(session.issuedAt)
-		.setExpirationTime(session.expiresAt)
-		.sign(key);
+		.setIssuedAt(session.updatedAt)
+		// [TODO] Expiration time should be configurable (30d after creation time now)
+		.setExpirationTime(session.createdAt + 30 * 24 * 3600 * 1000)
+		.sign(secret);
 
 	return jwt;
 }
 
-export async function readSessionJwt(jwt: string) {
-	const key = createSecretKey(process.env.JWT_SECRET, 'utf8');
-	const result = await jwtVerify(jwt, key);
+export async function readSessionJwt(jwt: string): Promise<SessionCookie> {
+	const secret = new TextEncoder().encode(process.env.JWT_SECRET);
+	const result = await jwtVerify(jwt, secret);
 
 	return {
 		id: result.payload['id'] as string,
 		userId: result.payload.sub!,
 		token: result.payload['token'] as string,
-		issuedAt: result.payload.iat!,
-		expiresAt: result.payload.exp!,
+		createdAt: result.payload['createdAt'] as number,
+		updatedAt: result.payload.iat!,
 	} satisfies SessionCookie;
 }
 
-export async function setSessionCookie(session: SessionCookie) {
+export async function writeSessionCookie(session: SessionCookie) {
 	const cookieStore = await cookies();
 	const cookieOpts = {
 		httpOnly: true,
 		secure: true,
-		expires: session.expiresAt,
+		// [TODO] Expiration time should be configurable (30d after creation time now)
+		expires: session.createdAt + 30 * 24 * 3600 * 1000,
 		sameSite: 'strict',
 		path: '/',
 	} as const;
@@ -76,37 +88,17 @@ export async function readSessionCookie(): Promise<SessionCookie | null> {
 	return sessionCookie;
 }
 
-export async function renewSessionCookie() {
-	const session = await readSessionCookie();
-	if (!session) {
-		await clearSessionCookie();
-		return null;
-	}
-
-	const { data: renewedSession } = await api.auth.validate.post(null, {
-		headers: {
-			Authorization: `Bearer ${session.id}:${session.token}`,
-		},
+/**
+ * [FIXME] Workaround for Eden bug of incorrectly transforming Date object
+ */
+export async function sessionToCookie(session: Session) {
+	return Promise.resolve({
+		id: session.id,
+		userId: session.userId,
+		token: session.token,
+		createdAt: new Date(session.createdAt).getTime(),
+		updatedAt: new Date(session.updatedAt).getTime(),
 	});
-
-	// Clear potentially invalid cookie data on failure.
-	if (!renewedSession) {
-		await clearSessionCookie();
-		return null;
-	}
-
-	const newSessionCookie = {
-		id: renewedSession.session.id,
-		userId: renewedSession.session.userId,
-		token: renewedSession.session.token,
-		// [TODO] Workaround for Eden bug of incorrectly transforming Date object
-		expiresAt: new Date(renewedSession.session.expiresAt).getTime(),
-		issuedAt: Date.now(),
-	} satisfies SessionCookie;
-
-	await setSessionCookie(newSessionCookie);
-
-	return newSessionCookie;
 }
 
 export const readSession = cache(async () => {
@@ -128,16 +120,32 @@ export const readSession = cache(async () => {
  * ! **Never return session secret directly! Write it in secured cookies instead!**
  */
 export async function validateSession() {
-	const sessionCookie = await renewSessionCookie();
+	const session = await readSessionCookie();
+	if (!session) return { signedIn: false };
 
-	if (!sessionCookie)
-		return {
-			signedIn: false,
-			expiresAt: null,
-		};
+	const now = Date.now();
+	const authToken = `${session.id}:${session.token}`;
 
-	return {
-		signedIn: true,
-		expiresAt: sessionCookie.expiresAt,
-	};
+	// [TODO] Make these time spans configurable
+	// Renew session every hour.
+	if (now - session.updatedAt > 3600 * 1000) {
+		const renewRequest = EitherAsync.fromPromise(() => renewSession(authToken))
+			.map(({ session }) => sessionToCookie(session))
+			.map((session) => writeSessionCookie(session))
+			.mapLeft(() => clearSessionCookie());
+
+		const result = await renewRequest.run();
+		if (result.isLeft()) return { signedIn: false };
+	}
+
+	// Refresh session every day
+	if (now - session.createdAt > 24 * 3600 * 1000) {
+		const refreshedSession = await EitherAsync.fromPromise(() => refreshSession(authToken))
+			.map(({ session }) => sessionToCookie(session))
+			.map((session) => writeSessionCookie(session))
+			.mapLeft(() => clearSessionCookie());
+		if (refreshedSession.isLeft()) return { signedIn: false };
+	}
+
+	return { signedIn: true };
 }
