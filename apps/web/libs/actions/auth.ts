@@ -140,11 +140,13 @@ export async function validateSession() {
 
 	// Refresh session every day
 	if (now - session.createdAt > 24 * 3600 * 1000) {
-		const refreshedSession = await EitherAsync.fromPromise(() => refreshSession(authToken))
+		const refreshRequest = EitherAsync.fromPromise(() => refreshSession(authToken))
 			.map(({ session }) => sessionToCookie(session))
 			.map((session) => writeSessionCookie(session))
 			.mapLeft(() => clearSessionCookie());
-		if (refreshedSession.isLeft()) return { signedIn: false };
+
+		const result = await refreshRequest.run();
+		if (result.isLeft()) return { signedIn: false };
 	}
 
 	return { signedIn: true };
