@@ -1,8 +1,8 @@
-import type { Session, SessionMetadata } from '~backend/auth/auth.entities';
 import type { User } from '~backend/users/user.entities';
+import { SessionLifecycle, type Session, type SessionMetadata } from '~backend/auth/auth.entities';
 import { SessionScope } from '~backend/auth/auth.entities';
 import { AuthRepository } from '~backend/auth/auth.repository';
-import { isSessionOfScope, nowWithinDate } from '~backend/shared/auth/utils';
+import { getLifecycle, isSessionOfScope } from '~backend/shared/auth/utils';
 import { UsersRepository } from '~backend/users/users.repository';
 
 /**
@@ -10,11 +10,15 @@ import { UsersRepository } from '~backend/users/users.repository';
  */
 export abstract class SessionService {
 	static async findUserSessions(userId: string): Promise<Session[]> {
-		return await AuthRepository.findSessionsByUser(userId);
+		return (await AuthRepository.findSessionsByUser(userId)).filter(
+			(session) => getLifecycle(session) !== SessionLifecycle.Expired,
+		);
 	}
 
 	static async findById(sessionId: string): Promise<Session | null> {
-		return await AuthRepository.findSessionById(sessionId);
+		const session = await AuthRepository.findSessionById(sessionId);
+		if (getLifecycle(session) === SessionLifecycle.Expired) return null;
+		return session;
 	}
 
 	static async revoke(sessionId: string): Promise<void> {
@@ -29,12 +33,14 @@ export abstract class SessionService {
 		sessionId: string,
 		token: string,
 		scope: TScope,
+		allowedLifecycle: SessionLifecycle[],
 	): Promise<{ user: User; session: Session<TScope> } | null> {
 		const session = await AuthRepository.findSessionById(sessionId);
 		if (
 			!session ||
 			session.token !== token ||
-			!nowWithinDate(session.expiresAt) ||
+			getLifecycle(session) === SessionLifecycle.Expired ||
+			!allowedLifecycle.includes(getLifecycle(session)) ||
 			!isSessionOfScope(session, scope)
 		) {
 			return null;
@@ -50,8 +56,12 @@ export abstract class SessionService {
 		return AuthRepository.createSession({
 			userId,
 			metadata,
-			// [TODO] Should be configurable (now 30 days)
-			expiresAt: new Date(Date.now() + 1000 * 3600 * 24 * 30),
+		});
+	}
+
+	static async renew(id: string): Promise<Session> {
+		return AuthRepository.updateSession(id, {
+			updatedAt: new Date(),
 		});
 	}
 }

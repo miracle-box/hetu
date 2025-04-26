@@ -1,5 +1,6 @@
-import type { Session } from '~backend/auth/auth.entities';
+import { SessionLifecycle, type Session } from '~backend/auth/auth.entities';
 import { SessionScope } from '~backend/auth/auth.entities';
+import { Config } from '../config';
 
 /**
  * Reads the Bearer token from the authorization header.
@@ -15,14 +16,6 @@ export function readBearerToken(authorizationHeader: string): string | null {
 }
 
 /**
- * Checks if a date is in the future.
- * @param date - The date to check.
- */
-export function nowWithinDate(date: Date): boolean {
-	return Date.now() < date.getTime();
-}
-
-/**
  * Type Guard to check if a session has a specific scope.
  *
  * @param session - The session to check.
@@ -35,4 +28,17 @@ export function isSessionOfScope<TScope extends SessionScope>(
 	// @ts-expect-error [TODO] Don't know how to fix, but it works for now.
 ): session is Session<TScope> {
 	return session.metadata.scope === scope;
+}
+
+export function getLifecycle(session?: Session | null): SessionLifecycle {
+	if (!session) return SessionLifecycle.Expired;
+
+	const lifeTime = Date.now() - session.createdAt.getTime();
+
+	if (lifeTime > Config.app.session.maxLifespanMs) return SessionLifecycle.Expired;
+	if (lifeTime > Config.app.session.inactiveAfterMs) return SessionLifecycle.RefreshOnly;
+	if (Date.now() - session.updatedAt.getTime() > Config.app.session.ttlMs)
+		return SessionLifecycle.Renewable;
+
+	return SessionLifecycle.Active;
 }

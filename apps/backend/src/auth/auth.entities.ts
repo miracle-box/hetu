@@ -44,7 +44,8 @@ export const sessionSchema = <TScope extends TSchema>(TScope: TScope) =>
 		id: t.String(),
 		token: t.String(),
 		userId: t.String(),
-		expiresAt: t.Date(),
+		createdAt: t.Date(),
+		updatedAt: t.Date(),
 		metadata: sessionMetadataSchema(TScope),
 	});
 
@@ -100,3 +101,13 @@ export const verificationDigestSchema = t.Object({
 
 export type Verification = Static<typeof verificationSchema>;
 export type VerificationDigest = Static<typeof verificationDigestSchema>;
+
+// Session lifecycle management
+export const SessionLifecycle = {
+	Active: 1,
+	Renewable: 2,
+	RefreshOnly: 3,
+	Expired: 4,
+} as const;
+
+export type SessionLifecycle = EnumLikeValues<typeof SessionLifecycle>;

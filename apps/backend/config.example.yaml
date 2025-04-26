@@ -1,6 +1,13 @@
 app:
   listenTo: '3000'
   baseUrl: 'https://api.example.org'
+  session:
+    # 1 day TTL for sessions
+    ttlMs: 86400000
+    # Cannot be renewed after 7 days
+    inactiveAfterMs: 604800000
+    # At most 30 days lifespan
+    maxLifespanMs: 2592000000
   yggdrasil:
     serverName: 'Hetu'
     links:
