@@ -91,6 +91,12 @@ export const APP_ERRORS = {
 		message: () => 'Authentication service is temporarily unavailable. Please try again later.',
 		details: t.Void(),
 	},
+	'auth/oauth2-already-bound': {
+		status: 409,
+		message: () =>
+			'The OAuth account is already bound to another user. Sign in with that account or unlink it before trying again.',
+		details: t.Void(),
+	},
 	'users/forbidden': {
 		status: 403,
 		message: () =>

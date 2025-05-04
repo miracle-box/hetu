@@ -10,11 +10,11 @@ import {
 import { AuthRepository } from '~backend/auth/auth.repository';
 import { PasswordService } from '~backend/services/auth/password';
 import { MailingService } from '~backend/services/mailing';
+import { Config } from '~backend/shared/config';
 import { Logger } from '~backend/shared/logger';
 import { AppError } from '~backend/shared/middlewares/errors/app-error';
 import { createErrorResps } from '~backend/shared/middlewares/errors/docs';
 import { UsersRepository } from '~backend/users/users.repository';
-import { Config } from '~backend/shared/config';
 
 export const requestVerificationHandler = new Elysia().post(
 	'/verification/request',

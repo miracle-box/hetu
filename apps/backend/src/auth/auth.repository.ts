@@ -51,6 +51,17 @@ export abstract class AuthRepository {
 			});
 	}
 
+	static async findOAuth2Binding(provider: string, profileId: string) {
+		const authRecord = await db.query.userAuthTable.findFirst({
+			where: and(
+				eq(userAuthTable.provider, provider),
+				eq(userAuthTable.credential, profileId),
+			),
+		});
+
+		return authRecord ?? null;
+	}
+
 	static async findSessionById(sessionId: string): Promise<Session | null> {
 		const session = await db.query.sessionsTable.findFirst({
 			where: and(eq(sessionsTable.id, sessionId)),

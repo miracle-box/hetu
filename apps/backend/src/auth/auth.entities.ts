@@ -89,6 +89,17 @@ export type SessionDigest<TScope extends SessionScope = SessionScope> = Prettify
 	Static<ReturnType<typeof sessionDigestSchema<TLiteral<TScope>>>>
 >;
 
+// OAuth2 user profile
+export const oauth2ProfileSchema = t.Object({
+	id: t.String(),
+	email: t.Optional(t.String()),
+	username: t.Optional(t.String()),
+	avatarUrl: t.Optional(t.String()),
+	nickname: t.Optional(t.String()),
+});
+
+export type OAuth2Profile = Static<typeof oauth2ProfileSchema>;
+
 // Verification
 export const VerificationType = {
 	EMAIL: 'email',

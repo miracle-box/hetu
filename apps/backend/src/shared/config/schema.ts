@@ -49,6 +49,10 @@ export const configSchema = Type.Object({
 					}),
 					profileMap: Type.Object({
 						id: Type.String(),
+						email: Type.Union([Type.Literal(false), Type.String()]),
+						username: Type.Union([Type.Literal(false), Type.String()]),
+						avatarUrl: Type.Union([Type.Literal(false), Type.String()]),
+						nickname: Type.Union([Type.Literal(false), Type.String()]),
 					}),
 				}),
 			),
