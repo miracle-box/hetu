@@ -135,8 +135,41 @@ export abstract class AuthRepository {
 		}
 	}
 
+	static async createVerification(params: {
+		userId?: string;
+		type: VerificationType;
+		scenario: VerificationScenario;
+		target: string;
+		secret: string;
+		verified: boolean;
+		triesLeft: number;
+		expiresAt: Date;
+	}): Promise<Verification> {
+		const [verifRecord] = await db
+			.insert(verificationsTable)
+			.values({
+				userId: params.userId,
+				type: params.type,
+				scenario: params.scenario,
+				target: params.target,
+				secret: params.secret,
+				verified: params.verified,
+				triesLeft: params.triesLeft,
+				expiresAt: params.expiresAt,
+			})
+			.returning();
+
+		if (!verifRecord) {
+			throw new Error('Failed to create verification.');
+		}
+
+		return verifRecord;
+	}
+
 	/**
 	 * Create a new verification and revoke any existing records.
+	 *
+	 * @todo [FIXME] This should be split into separate functions!
 	 * @param params Verification params
 	 * @returns Created verification
 	 */
@@ -163,7 +196,7 @@ export abstract class AuthRepository {
 						),
 					);
 
-				const [verifRecord] = await db
+				const [verifRecord] = await tx
 					.insert(verificationsTable)
 					.values({
 						userId: params.userId,

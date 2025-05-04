@@ -37,6 +37,12 @@ export const APP_ERRORS = {
 			'The provided verification is invalid. Please check the verification status and try again.',
 		details: t.Void(),
 	},
+	'auth/invalid-verification-scenario': {
+		status: 400,
+		message: () =>
+			'The verification scenario is invalid. Please use a valid verification scenario.',
+		details: t.Void(),
+	},
 	'auth/invalid-verification-type': {
 		status: 400,
 		message: () => 'The verification type is invalid. Please use a known verification type.',
@@ -67,6 +73,11 @@ export const APP_ERRORS = {
 	'auth/verification-invalid-code': {
 		status: 403,
 		message: () => 'The verification code is invalid. Please check and try again.',
+		details: t.Void(),
+	},
+	'auth/invalid-oauth2-provider': {
+		status: 400,
+		message: () => 'The OAuth2 provider is not supported. Please check and try again.',
 		details: t.Void(),
 	},
 	'users/forbidden': {
