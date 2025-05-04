@@ -255,6 +255,7 @@ export abstract class AuthRepository {
 		params: {
 			verified?: boolean;
 			triesLeft?: number;
+			secret?: string;
 			expiresAt?: Date;
 		},
 	): Promise<Verification> {

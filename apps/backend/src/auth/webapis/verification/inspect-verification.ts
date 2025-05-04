@@ -1,5 +1,5 @@
 import { Elysia, t } from 'elysia';
-import { verificationDigestSchema } from '~backend/auth/auth.entities';
+import { verificationDigestSchema, VerificationType } from '~backend/auth/auth.entities';
 import { AuthRepository } from '~backend/auth/auth.repository';
 import { AppError } from '~backend/shared/middlewares/errors/app-error';
 import { createErrorResps } from '~backend/shared/middlewares/errors/docs';
@@ -13,9 +13,31 @@ export const inspectVerificationHandler = new Elysia().get(
 		if (verif.expiresAt < new Date()) throw new AppError('auth/verification-expired');
 		if (verif.triesLeft <= 0) throw new AppError('auth/verification-expired');
 
-		return {
-			verification: verif,
-		};
+		if (verif.type === VerificationType.EMAIL)
+			return {
+				verification: {
+					id: verif.id,
+					type: VerificationType.EMAIL,
+					scenario: verif.scenario,
+					target: verif.target,
+					verified: verif.verified,
+				},
+			};
+
+		if (verif.type === VerificationType.OAUTH2)
+			return {
+				verification: {
+					id: verif.id,
+					type: VerificationType.EMAIL,
+					scenario: verif.scenario,
+					target: verif.target,
+					challenge: null,
+					verified: verif.verified,
+				},
+			};
+
+		// Verification type have no handlers, consider as invalid here.
+		throw new AppError('auth/invalid-verification');
 	},
 	{
 		params: t.Object({
@@ -25,7 +47,7 @@ export const inspectVerificationHandler = new Elysia().get(
 			200: t.Object({
 				verification: verificationDigestSchema,
 			}),
-			...createErrorResps(404, 410),
+			...createErrorResps(400, 404, 410),
 		},
 		detail: {
 			summary: 'Inspect Verification',

@@ -80,6 +80,11 @@ export const APP_ERRORS = {
 		message: () => 'The OAuth2 provider is not supported. Please check and try again.',
 		details: t.Void(),
 	},
+	'auth/invalid-oauth2-grant': {
+		status: 400,
+		message: () => 'Failed to obtain access token. Please check and try again.',
+		details: t.Void(),
+	},
 	'users/forbidden': {
 		status: 403,
 		message: () =>
