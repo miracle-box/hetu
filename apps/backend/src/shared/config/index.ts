@@ -41,7 +41,7 @@ export function initConfig(path: string) {
 export const Config = new Proxy<ConfigType>(configData, {
 	get(target: ConfigType, prop: keyof typeof target) {
 		if (!initialized) {
-			throw new Error('Accessing the config before initialization is not allowed.');
+			throw new Error('Accessing config values before initialization is not allowed.');
 		}
 		return target[prop];
 	},

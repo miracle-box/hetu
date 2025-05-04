@@ -39,6 +39,54 @@ export const configSchema = Type.Object({
 			}),
 		}),
 
+		oauth: Type.Object(
+			{
+				providers: Type.Record(
+					Type.String(),
+					// [TODO] Add OIDC "protocol"
+					Type.Object({
+						protocol: Type.Literal('oauth2', {
+							description: 'use OAuth2 for this provider',
+						}),
+						clientID: Type.String({
+							description: 'client ID obtained from the provider',
+						}),
+						clientSecret: Type.String({
+							description: 'client secret obtained from the provider',
+						}),
+						pkce: Type.Union(
+							[Type.Literal(false), Type.Literal('S256'), Type.Literal('plain')],
+							{
+								description: 'PKCE code challenge method',
+							},
+						),
+						scopes: Type.Array(Type.String(), {
+							description: 'scopes for this provider',
+						}),
+						endpoints: Type.Object({
+							authorization: Type.String({
+								description: 'authorization endpoint',
+							}),
+							token: Type.String({
+								description: 'token endpoint',
+							}),
+							userinfo: Type.String({
+								description: 'user info endpoint',
+							}),
+						}),
+						profileMap: Type.Object({
+							id: Type.String({
+								description: 'path of id field in profile response',
+							}),
+						}),
+					}),
+				),
+			},
+			{
+				description: 'OAuth client configuration',
+			},
+		),
+
 		yggdrasil: Type.Object({
 			serverName: Type.String({
 				description: 'Yggdrasil server name',
