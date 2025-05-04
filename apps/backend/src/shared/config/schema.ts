@@ -18,123 +18,74 @@ if (!FormatRegistry.Has('uri'))
 
 export const configSchema = Type.Object({
 	app: Type.Object({
-		listenTo: Type.String({
-			description: 'http server options',
-		}),
+		listenTo: Type.String(),
 
-		baseUrl: Type.String({
-			format: 'uri',
-			description: 'application base URL',
-		}),
+		baseUrl: Type.String({ format: 'uri' }),
 
 		session: Type.Object({
-			ttlMs: Type.Integer({
-				description: 'session TTL in milliseconds',
-			}),
-			inactiveAfterMs: Type.Integer({
-				description: 'session will be inactive after this time',
-			}),
-			maxLifespanMs: Type.Integer({
-				description: 'session will be invalid after this time',
-			}),
+			ttlMs: Type.Integer(),
+			inactiveAfterMs: Type.Integer(),
+			maxLifespanMs: Type.Integer(),
 		}),
 
-		oauth: Type.Object(
-			{
-				providers: Type.Record(
-					Type.String(),
-					// [TODO] Add OIDC "protocol"
-					Type.Object({
-						protocol: Type.Literal('oauth2', {
-							description: 'use OAuth2 for this provider',
-						}),
-						clientID: Type.String({
-							description: 'client ID obtained from the provider',
-						}),
-						clientSecret: Type.String({
-							description: 'client secret obtained from the provider',
-						}),
-						pkce: Type.Union(
-							[Type.Literal(false), Type.Literal('S256'), Type.Literal('plain')],
-							{
-								description: 'PKCE code challenge method',
-							},
-						),
-						scopes: Type.Array(Type.String(), {
-							description: 'scopes for this provider',
-						}),
-						endpoints: Type.Object({
-							authorization: Type.String({
-								description: 'authorization endpoint',
-							}),
-							token: Type.String({
-								description: 'token endpoint',
-							}),
-							userinfo: Type.String({
-								description: 'user info endpoint',
-							}),
-						}),
-						profileMap: Type.Object({
-							id: Type.String({
-								description: 'path of id field in profile response',
-							}),
-						}),
+		oauth: Type.Object({
+			providers: Type.Record(
+				Type.String(),
+				// [TODO] Add OIDC "protocol"
+				Type.Object({
+					protocol: Type.Literal('oauth2'),
+					clientID: Type.String(),
+					clientSecret: Type.String(),
+					pkce: Type.Union([
+						Type.Literal(false),
+						Type.Literal('S256'),
+						Type.Literal('plain'),
+					]),
+					scopes: Type.Array(Type.String()),
+					endpoints: Type.Object({
+						authorization: Type.String({ format: 'uri' }),
+						token: Type.String({ format: 'uri' }),
+						userinfo: Type.String({ format: 'uri' }),
 					}),
-				),
-			},
-			{
-				description: 'OAuth client configuration',
-			},
-		),
+					profileMap: Type.Object({
+						id: Type.String(),
+					}),
+				}),
+			),
+		}),
 
 		yggdrasil: Type.Object({
-			serverName: Type.String({
-				description: 'Yggdrasil server name',
-			}),
+			serverName: Type.String(),
 
 			links: Type.Object({
 				homepage: Type.String({
 					format: 'uri',
-					description: 'homepage URL',
 				}),
 				register: Type.String({
 					format: 'uri',
-					description: 'sign up URL',
 				}),
 			}),
 
-			skinDomains: Type.Array(Type.String(), {
-				description: 'allowed skin domains',
-			}),
+			skinDomains: Type.Array(Type.String()),
 
 			profileKeypair: Type.Object({
-				private: Type.String({
-					description: 'private profile signing key',
-				}),
-				public: Type.String({
-					description: 'public profile signing key',
-				}),
+				private: Type.String(),
+				public: Type.String(),
 			}),
 		}),
 	}),
 
 	debug: Type.Object({
-		logRequests: Type.Boolean({
-			description: 'log HTTP requests',
-		}),
-		enableServerTiming: Type.Boolean({
-			description: 'send Server Timing headers',
-		}),
+		logRequests: Type.Boolean(),
+		enableServerTiming: Type.Boolean(),
 	}),
 
 	database: Type.Object({
 		url: Type.String({
 			format: 'uri',
-			description: 'database connection URL',
 		}),
 		migrationUrl: Type.String({
 			format: 'uri',
-			description: 'database migration URL',
 		}),
 	}),
 
@@ -142,73 +93,42 @@ export const configSchema = Type.Object({
 		s3: Type.Object({
 			endpoint: Type.String({
 				format: 'uri',
-				description: 'S3 storage endpoint',
 			}),
 			publicRoot: Type.String({
 				format: 'uri',
-				description: 'public access root URL',
 			}),
-			bucket: Type.String({
-				description: 'S3 bucket name',
-			}),
-			prefix: Type.String({
-				description: 'storage path prefix',
-			}),
+			bucket: Type.String(),
+			prefix: Type.String(),
 			accessKey: Type.Object({
-				id: Type.String({
-					description: 'access key ID',
-				}),
-				secret: Type.String({
-					description: 'access key secret',
-				}),
+				id: Type.String(),
+				secret: Type.String(),
 			}),
 		}),
 	}),
 
 	mailing: Type.Object({
 		smtp: Type.Object({
-			host: Type.String({
-				description: 'SMTP server host',
-			}),
+			host: Type.String(),
 			port: Type.Number({
 				minimum: 1,
 				maximum: 65535,
-				description: 'SMTP server port',
 			}),
-			secure: Type.Boolean({
-				description: 'use TLS encryption',
-			}),
-			user: Type.String({
-				description: 'SMTP username',
-			}),
-			password: Type.String({
-				description: 'SMTP password',
-			}),
-			sender: Type.String({
-				description: 'email sender line',
-			}),
+			secure: Type.Boolean(),
+			user: Type.String(),
+			password: Type.String(),
+			sender: Type.String(),
 		}),
 	}),
 
 	logging: Type.Object({
 		prettyPrint: Type.Object({
-			enabled: Type.Boolean({
-				description: 'enable pretty-printed logs',
-			}),
-			destination: Type.String({
-				description: 'destination for pretty-printed logs',
-			}),
+			enabled: Type.Boolean(),
+			destination: Type.String(),
 		}),
 		file: Type.Object({
-			enabled: Type.Boolean({
-				description: 'enable logging to files',
-			}),
-			destination: Type.String({
-				description: 'destination for file logs',
-			}),
-			append: Type.Boolean({
-				description: 'open log files in appending mode',
-			}),
+			enabled: Type.Boolean(),
+			destination: Type.String(),
+			append: Type.Boolean(),
 		}),
 	}),
 });
