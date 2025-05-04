@@ -7,10 +7,36 @@ import { createEnumLikeValuesSchema } from '~backend/shared/typing/utils';
 // Authentication
 export const UserAuthType = {
 	PASSWORD: 'password',
+	OAUTH2: 'oauth2',
 } as const;
 
 export const userAuthTypeSchema = createEnumLikeValuesSchema(UserAuthType);
 export type UserAuthType = EnumLikeValues<typeof UserAuthType>;
+
+export type BaseAuth = {
+	id: string;
+	userId: string;
+	credential: string;
+	createdAt: Date;
+	updatedAt: Date;
+};
+
+export type PasswordAuth = BaseAuth & {
+	type: typeof UserAuthType.PASSWORD;
+};
+
+export type OAuthAuth = BaseAuth & {
+	type: typeof UserAuthType.OAUTH2;
+	provider: string;
+	metadata: {
+		accessToken: string;
+		refreshToken?: string;
+		idToken?: string;
+		expiresAt?: number;
+	};
+};
+
+export type AuthMetadata = OAuthAuth['metadata'] | null;
 
 // Session
 export const SessionScope = {
@@ -66,11 +92,14 @@ export type SessionDigest<TScope extends SessionScope = SessionScope> = Prettify
 // Verification
 export const VerificationType = {
 	EMAIL: 'email',
+	OAUTH2: 'oauth2',
 } as const;
 
 export const VerificationScenario = {
 	SIGNUP: 'signup',
 	PASSWORD_RESET: 'password_reset',
+	OAUTH2_BIND: 'oauth2_bind',
+	OAUTH2_SIGNIN: 'oauth2_signin',
 } as const;
 
 export const verificationTypeSchema = createEnumLikeValuesSchema(VerificationType);
@@ -91,13 +120,34 @@ export const verificationSchema = t.Object({
 	expiresAt: t.Date(),
 });
 
-export const verificationDigestSchema = t.Object({
+export const baseVerificationDigestSchema = t.Object({
 	id: t.String(),
-	type: verificationTypeSchema,
 	scenario: verificationScenarioSchema,
 	target: t.String(),
 	verified: t.Boolean(),
 });
+
+const oauth2VerificationDigestSchema = t.Intersect([
+	baseVerificationDigestSchema,
+	t.Object({
+		type: t.Literal(VerificationType.OAUTH2),
+		challenge: t.Nullable(t.String()),
+	}),
+]);
+
+const emailVerificationDigestSchema = t.Intersect([
+	baseVerificationDigestSchema,
+	t.Object({
+		type: t.Literal(VerificationType.EMAIL),
+	}),
+]);
+
+export const verificationDigestSchema = t.Union(
+	[oauth2VerificationDigestSchema, emailVerificationDigestSchema],
+	{
+		discriminator: 'type',
+	},
+);
 
 export type Verification = Static<typeof verificationSchema>;
 export type VerificationDigest = Static<typeof verificationDigestSchema>;
