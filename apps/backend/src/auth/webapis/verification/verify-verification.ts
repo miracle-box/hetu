@@ -2,9 +2,10 @@ import { Elysia, t } from 'elysia';
 import { verificationDigestSchema, VerificationType } from '~backend/auth/auth.entities';
 import { AuthRepository } from '~backend/auth/auth.repository';
 import { PasswordService } from '~backend/services/auth/password';
+import { Config } from '~backend/shared/config';
+import { Logger } from '~backend/shared/logger';
 import { AppError } from '~backend/shared/middlewares/errors/app-error';
 import { createErrorResps } from '~backend/shared/middlewares/errors/docs';
-import { Config } from '~backend/shared/config';
 
 export const verifyVerificationHandler = new Elysia().post(
 	'/verification/verify',
@@ -62,12 +63,23 @@ export const verifyVerificationHandler = new Elysia().post(
 						? `&code_verifier=${verif.secret}`
 						: '',
 				),
-			}).then((resp) => resp.json())) as { error: string } | { access_token: string };
+			}).then((resp) => resp.json())) as
+				| { error: string }
+				| { access_token: string; token_type: string };
 
 			if ('error' in tokenResponse) {
 				await AuthRepository.revokeVerificationById(body.id);
 				// [TODO] Add error type in details.
 				throw new AppError('auth/invalid-oauth2-grant');
+			}
+
+			if (tokenResponse.token_type !== 'bearer') {
+				Logger.error(
+					`Invalid token type "${tokenResponse.token_type}" obtained from OAuth2 provider "${verif.target}". Only "bearer" is supported.`,
+				);
+				await AuthRepository.revokeVerificationById(body.id);
+
+				throw new AppError('auth/oauth2-misconfigured');
 			}
 
 			const verifiedVerif = await AuthRepository.updateVerificationById(verif.id, {
@@ -100,7 +112,7 @@ export const verifyVerificationHandler = new Elysia().post(
 			200: t.Object({
 				verification: verificationDigestSchema,
 			}),
-			...createErrorResps(400, 403, 404, 409, 410),
+			...createErrorResps(400, 403, 404, 409, 410, 500),
 		},
 		detail: {
 			summary: 'Verify Verification',

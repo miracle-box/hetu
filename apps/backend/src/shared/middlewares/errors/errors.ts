@@ -82,7 +82,13 @@ export const APP_ERRORS = {
 	},
 	'auth/invalid-oauth2-grant': {
 		status: 400,
-		message: () => 'Failed to obtain access token. Please check and try again.',
+		message: () =>
+			'Failed to obtain access token or the token is invalid. Please check and try again.',
+		details: t.Void(),
+	},
+	'auth/oauth2-misconfigured': {
+		status: 500,
+		message: () => 'Authentication service is temporarily unavailable. Please try again later.',
 		details: t.Void(),
 	},
 	'users/forbidden': {
