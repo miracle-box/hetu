@@ -112,6 +112,7 @@ export const checkOauth2BindingHandler = new Elysia()
 				200: t.Object({
 					user: userSchema,
 					oauth2Profile: oauth2ProfileSchema,
+					alreadyBound: t.Boolean(),
 				}),
 				...createErrorResps(409, 500),
 			},
