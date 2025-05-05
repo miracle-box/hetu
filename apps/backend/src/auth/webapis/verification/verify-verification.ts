@@ -56,7 +56,8 @@ export const verifyVerificationHandler = new Elysia().post(
 				},
 
 				body:
-					`grant_type=authorization_code&code=${body.code}&client_id=${provider.clientID}` +
+					`grant_type=authorization_code&code=${body.code}&client_id=${provider.clientId}&client_secret=${provider.clientSecret}` +
+					`&scope=${provider.profileScopes.join(' ')}` +
 					body.redirectUri
 						? // Type checked above
 							`&redirect_uri=${encodeURIComponent(body.redirectUri!)}`

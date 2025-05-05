@@ -34,19 +34,19 @@ export const configSchema = Type.Object({
 				// [TODO] Add OIDC "protocol"
 				Type.Object({
 					protocol: Type.Literal('oauth2'),
-					clientID: Type.String(),
+					clientId: Type.String(),
 					clientSecret: Type.String(),
 					pkce: Type.Union([
 						Type.Literal(false),
 						Type.Literal('S256'),
 						Type.Literal('plain'),
 					]),
-					scopes: Type.Array(Type.String()),
 					endpoints: Type.Object({
 						authorization: Type.String({ format: 'uri' }),
 						token: Type.String({ format: 'uri' }),
 						userinfo: Type.String({ format: 'uri' }),
 					}),
+					profileScopes: Type.Array(Type.String()),
 					profileMap: Type.Object({
 						id: Type.String(),
 						email: Type.Union([Type.Literal(false), Type.String()]),
