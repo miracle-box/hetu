@@ -55,14 +55,14 @@ export const verifyVerificationHandler = new Elysia().post(
 					'Content-Type': 'application/x-www-form-urlencoded',
 				},
 
-				// [TODO] `redirect_uri` is not handled for now, add them later.
-				// 	      See: https://datatracker.ietf.org/doc/html/rfc6749#section-4.1.3
-				body: encodeURI(
+				body:
 					`grant_type=authorization_code&code=${body.code}&client_id=${provider.clientID}` +
-						provider.pkce
-						? `&code_verifier=${verif.secret}`
-						: '',
-				),
+					body.redirectUri
+						? // Type checked above
+							`&redirect_uri=${encodeURIComponent(body.redirectUri!)}`
+						: '' + provider.pkce
+							? `&code_verifier=${verif.secret}`
+							: '',
 			}).then((resp) => resp.json())) as
 				| { error: string }
 				| { access_token: string; token_type: string };
@@ -107,6 +107,8 @@ export const verifyVerificationHandler = new Elysia().post(
 		body: t.Object({
 			id: t.String(),
 			code: t.String(),
+			// Only exists in OAuth2 verifications
+			redirectUri: t.Optional(t.String({ format: 'uri' })),
 		}),
 		response: {
 			200: t.Object({
