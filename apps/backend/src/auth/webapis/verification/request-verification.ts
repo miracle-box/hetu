@@ -86,7 +86,7 @@ export const requestVerificationHandler = new Elysia().post(
 				throw new AppError('auth/invalid-verification-scenario');
 			}
 
-			const provider = Object.entries(Config.app.oauth.providers).find(
+			const provider = Object.entries(Config.app.oauth2.providers).find(
 				([key]) => key === body.target,
 			)?.[1];
 

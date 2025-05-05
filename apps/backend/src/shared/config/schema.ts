@@ -28,7 +28,7 @@ export const configSchema = Type.Object({
 			maxLifespanMs: Type.Integer(),
 		}),
 
-		oauth: Type.Object({
+		oauth2: Type.Object({
 			providers: Type.Record(
 				Type.String(),
 				// [TODO] Add OIDC "protocol"

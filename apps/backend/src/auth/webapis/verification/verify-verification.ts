@@ -42,7 +42,7 @@ export const verifyVerificationHandler = new Elysia().post(
 		}
 
 		if (verif.type === VerificationType.OAUTH2) {
-			const provider = Object.entries(Config.app.oauth.providers).find(
+			const provider = Object.entries(Config.app.oauth2.providers).find(
 				([key]) => key === verif.target,
 			)?.[1];
 			if (!provider) throw new AppError('auth/invalid-oauth2-provider');
