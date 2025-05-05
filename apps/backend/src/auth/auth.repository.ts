@@ -1,4 +1,5 @@
 import type {
+	OAuthAuth,
 	Session,
 	SessionMetadata,
 	Verification,
@@ -47,6 +48,34 @@ export abstract class AuthRepository {
 				targetWhere: eq(userAuthTable.type, UserAuthType.PASSWORD),
 				set: {
 					credential: params.passwordHash,
+				},
+			});
+	}
+
+	static async upsertOAuth2(params: {
+		userId: string;
+		provider: string;
+		oauth2ProfileId: string;
+		metadata: OAuthAuth['metadata'];
+	}): Promise<void> {
+		await db
+			.insert(userAuthTable)
+			.values({
+				userId: params.userId,
+				type: UserAuthType.OAUTH2,
+				provider: params.provider,
+				credential: params.oauth2ProfileId,
+				metadata: params.metadata,
+			})
+			.onConflictDoUpdate({
+				target: [userAuthTable.userId, userAuthTable.type, userAuthTable.provider],
+				targetWhere: and(
+					eq(userAuthTable.type, UserAuthType.OAUTH2),
+					eq(userAuthTable.provider, params.provider),
+				),
+				set: {
+					credential: params.oauth2ProfileId,
+					metadata: params.metadata,
 				},
 			});
 	}

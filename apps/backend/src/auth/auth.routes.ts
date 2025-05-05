@@ -1,5 +1,6 @@
 import { Elysia } from 'elysia';
 import { checkOauth2BindingHandler } from '~backend/auth/webapis/oauth2/check-oauth2-binding';
+import { confirmOauth2BindingHandler } from '~backend/auth/webapis/oauth2/confirm-oauth2-binding';
 import { changePasswordHandler } from './webapis/change-password';
 import { listSessionsHandler } from './webapis/list-sessions';
 import { refreshHandler } from './webapis/refresh';
@@ -29,4 +30,5 @@ export const AuthRoutes = new Elysia({
 	.use(requestVerificationHandler)
 	.use(verifyVerificationHandler)
 	.use(inspectVerificationHandler)
-	.use(checkOauth2BindingHandler);
+	.use(checkOauth2BindingHandler)
+	.use(confirmOauth2BindingHandler);
