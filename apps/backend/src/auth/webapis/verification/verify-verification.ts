@@ -49,21 +49,18 @@ export const verifyVerificationHandler = new Elysia().post(
 
 			const tokenUri = provider.endpoints.token;
 			// [TODO] Response format is defined in section 5.1 and 5.2, move them to individual types.
+			const tokenRequestBody =
+				`grant_type=authorization_code&code=${body.code}&client_id=${provider.clientId}&client_secret=${provider.clientSecret}` +
+				`&scope=${provider.profileScopes.join(' ')}${
+					body.redirectUri ? `&redirect_uri=${encodeURIComponent(body.redirectUri)}` : ''
+				}${provider.pkce ? `&code_verifier=${verif.secret}` : ''}`;
+			console.log(tokenRequestBody);
 			const tokenResponse = (await fetch(tokenUri, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/x-www-form-urlencoded',
 				},
-
-				body:
-					`grant_type=authorization_code&code=${body.code}&client_id=${provider.clientId}&client_secret=${provider.clientSecret}` +
-					`&scope=${provider.profileScopes.join(' ')}` +
-					body.redirectUri
-						? // Type checked above
-							`&redirect_uri=${encodeURIComponent(body.redirectUri!)}`
-						: '' + provider.pkce
-							? `&code_verifier=${verif.secret}`
-							: '',
+				body: tokenRequestBody,
 			}).then((resp) => resp.json())) as
 				| { error: string }
 				| { access_token: string; token_type: string };
@@ -71,10 +68,12 @@ export const verifyVerificationHandler = new Elysia().post(
 			if ('error' in tokenResponse) {
 				await AuthRepository.revokeVerificationById(body.id);
 				// [TODO] Add error type in details.
+
+				console.log(tokenResponse);
 				throw new AppError('auth/invalid-oauth2-grant');
 			}
 
-			if (tokenResponse.token_type !== 'bearer') {
+			if (tokenResponse.token_type.toLowerCase() !== 'bearer') {
 				Logger.error(
 					`Invalid token type "${tokenResponse.token_type}" obtained from OAuth2 provider "${verif.target}". Only "bearer" is supported.`,
 				);

@@ -34,6 +34,8 @@ export const confirmOauth2BindingHandler = new Elysia()
 			// [FIXME] Checked by session middleware but we have to re-check here for type safety.
 			if (!user) throw new AppError('users/not-found');
 
+			await AuthRepository.revokeVerificationById(verif.id);
+
 			const profile = await fetch(provider.endpoints.userinfo, {
 				method: 'GET',
 				headers: {

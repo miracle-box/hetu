@@ -68,7 +68,7 @@ export abstract class AuthRepository {
 				metadata: params.metadata,
 			})
 			.onConflictDoUpdate({
-				target: [userAuthTable.userId, userAuthTable.type, userAuthTable.provider],
+				target: [userAuthTable.userId, userAuthTable.provider],
 				targetWhere: and(
 					eq(userAuthTable.type, UserAuthType.OAUTH2),
 					eq(userAuthTable.provider, params.provider),
