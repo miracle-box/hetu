@@ -94,7 +94,13 @@ export const APP_ERRORS = {
 	'auth/oauth2-already-bound': {
 		status: 409,
 		message: () =>
-			'The OAuth account is already bound to another user. Sign in with that account or unlink it before trying again.',
+			'The OAuth2 account is already bound to another user. Sign in with that account or unlink it before trying again.',
+		details: t.Void(),
+	},
+	'auth/oauth2-not-bound': {
+		status: 403,
+		message: () =>
+			'The OAuth2 account is not linked with any local user. Please bind it before trying again.',
 		details: t.Void(),
 	},
 	'users/forbidden': {
