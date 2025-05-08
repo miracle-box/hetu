@@ -15,13 +15,13 @@ export const profilesTable = pgTable(
 		createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
 		updatedAt: timestamp('updated_at', { withTimezone: true }).$onUpdate(() => new Date()),
 	},
-	(t) => ({
+	(t) => [
 		// Only one primary profile for each user
 		// Workaround for drizzle-orm #2506
-		uniquePrimaryProfile: uniqueIndex('unique_primary_profile')
+		uniqueIndex('unique_primary_profile')
 			.on(t.authorId)
 			.where(sql`"profiles"."is_primary" = TRUE`),
 		// Ensures that the player name is unique and player name is case-insensitive in Minecraft
-		uniqueLowercaseName: uniqueIndex('unique_lowercase_name').on(lower(t.name)),
-	}),
+		uniqueIndex('unique_lowercase_name').on(lower(t.name)),
+	],
 );

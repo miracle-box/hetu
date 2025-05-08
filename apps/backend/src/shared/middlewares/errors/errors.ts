@@ -37,6 +37,12 @@ export const APP_ERRORS = {
 			'The provided verification is invalid. Please check the verification status and try again.',
 		details: t.Void(),
 	},
+	'auth/invalid-verification-scenario': {
+		status: 400,
+		message: () =>
+			'The verification scenario is invalid. Please use a valid verification scenario.',
+		details: t.Void(),
+	},
 	'auth/invalid-verification-type': {
 		status: 400,
 		message: () => 'The verification type is invalid. Please use a known verification type.',
@@ -67,6 +73,34 @@ export const APP_ERRORS = {
 	'auth/verification-invalid-code': {
 		status: 403,
 		message: () => 'The verification code is invalid. Please check and try again.',
+		details: t.Void(),
+	},
+	'auth/invalid-oauth2-provider': {
+		status: 400,
+		message: () => 'The OAuth2 provider is not supported. Please check and try again.',
+		details: t.Void(),
+	},
+	'auth/invalid-oauth2-grant': {
+		status: 400,
+		message: () =>
+			'Failed to obtain access token or the token is invalid. Please check and try again.',
+		details: t.Void(),
+	},
+	'auth/oauth2-misconfigured': {
+		status: 500,
+		message: () => 'Authentication service is temporarily unavailable. Please try again later.',
+		details: t.Void(),
+	},
+	'auth/oauth2-already-bound': {
+		status: 409,
+		message: () =>
+			'The OAuth2 account is already bound to another user. Sign in with that account or unlink it before trying again.',
+		details: t.Void(),
+	},
+	'auth/oauth2-not-bound': {
+		status: 403,
+		message: () =>
+			'The OAuth2 account is not linked with any local user. Please bind it before trying again.',
 		details: t.Void(),
 	},
 	'users/forbidden': {

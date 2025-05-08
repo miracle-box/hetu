@@ -17,15 +17,14 @@ export function initConfig(path: string) {
 		const rawConfig: unknown = YAML.parse(configFile);
 
 		const configErrors = [...Value.Errors(configSchema, rawConfig)];
-		for (const configError of configErrors) {
-			console.error(
-				'\x1b[31m' +
-					`Invalid config value at ${configError.path} ${
-						configError.schema.description && `(${configError.schema.description})`
-					}: ${configError.message}, but got '${String(configError.value)}'.`,
-			);
-		}
 		if (configErrors.length > 0) {
+			console.error('Invalid configuration values found:');
+			for (const configError of configErrors) {
+				console.error(
+					`\t- ${configError.path}: ${configError.message}, but got '${String(configError.value)}'.`,
+				);
+			}
+
 			throw new Error('Some values in the config are invalid.');
 		}
 
@@ -33,7 +32,8 @@ export function initConfig(path: string) {
 		Object.assign(configData, Value.Parse(configSchema, rawConfig));
 		initialized = true;
 	} catch (e) {
-		console.error(e, '\x1b[31m' + 'Failed to load config file, exiting now.');
+		console.error('Failed to load config file, error details are printed below.');
+		console.error(e);
 		process.exit(1);
 	}
 }
@@ -41,7 +41,7 @@ export function initConfig(path: string) {
 export const Config = new Proxy<ConfigType>(configData, {
 	get(target: ConfigType, prop: keyof typeof target) {
 		if (!initialized) {
-			throw new Error('Accessing the config before initialization is not allowed.');
+			throw new Error('Accessing config values before initialization is not allowed.');
 		}
 		return target[prop];
 	},

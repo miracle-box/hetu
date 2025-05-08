@@ -14,8 +14,8 @@ export const filesTable = pgTable(
 		createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
 		updatedAt: timestamp('updated_at', { withTimezone: true }).$onUpdate(() => new Date()),
 	},
-	(t) => ({
+	(t) => [
 		// Files are unique in its type
-		uniqueFileInType: uniqueIndex('unique_file_in_type').on(t.hash, t.type),
-	}),
+		uniqueIndex('unique_file_in_type').on(t.hash, t.type),
+	],
 );

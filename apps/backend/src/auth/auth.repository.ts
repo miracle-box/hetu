@@ -1,4 +1,5 @@
 import type {
+	OAuthAuth,
 	Session,
 	SessionMetadata,
 	Verification,
@@ -49,6 +50,45 @@ export abstract class AuthRepository {
 					credential: params.passwordHash,
 				},
 			});
+	}
+
+	static async upsertOAuth2(params: {
+		userId: string;
+		provider: string;
+		oauth2ProfileId: string;
+		metadata: OAuthAuth['metadata'];
+	}): Promise<void> {
+		await db
+			.insert(userAuthTable)
+			.values({
+				userId: params.userId,
+				type: UserAuthType.OAUTH2,
+				provider: params.provider,
+				credential: params.oauth2ProfileId,
+				metadata: params.metadata,
+			})
+			.onConflictDoUpdate({
+				target: [userAuthTable.userId, userAuthTable.provider],
+				targetWhere: and(
+					eq(userAuthTable.type, UserAuthType.OAUTH2),
+					eq(userAuthTable.provider, params.provider),
+				),
+				set: {
+					credential: params.oauth2ProfileId,
+					metadata: params.metadata,
+				},
+			});
+	}
+
+	static async findOAuth2Binding(provider: string, profileId: string) {
+		const authRecord = await db.query.userAuthTable.findFirst({
+			where: and(
+				eq(userAuthTable.provider, provider),
+				eq(userAuthTable.credential, profileId),
+			),
+		});
+
+		return authRecord ?? null;
 	}
 
 	static async findSessionById(sessionId: string): Promise<Session | null> {
@@ -135,8 +175,41 @@ export abstract class AuthRepository {
 		}
 	}
 
+	static async createVerification(params: {
+		userId?: string;
+		type: VerificationType;
+		scenario: VerificationScenario;
+		target: string;
+		secret: string;
+		verified: boolean;
+		triesLeft: number;
+		expiresAt: Date;
+	}): Promise<Verification> {
+		const [verifRecord] = await db
+			.insert(verificationsTable)
+			.values({
+				userId: params.userId,
+				type: params.type,
+				scenario: params.scenario,
+				target: params.target,
+				secret: params.secret,
+				verified: params.verified,
+				triesLeft: params.triesLeft,
+				expiresAt: params.expiresAt,
+			})
+			.returning();
+
+		if (!verifRecord) {
+			throw new Error('Failed to create verification.');
+		}
+
+		return verifRecord;
+	}
+
 	/**
 	 * Create a new verification and revoke any existing records.
+	 *
+	 * @todo [FIXME] This should be split into separate functions!
 	 * @param params Verification params
 	 * @returns Created verification
 	 */
@@ -163,7 +236,7 @@ export abstract class AuthRepository {
 						),
 					);
 
-				const [verifRecord] = await db
+				const [verifRecord] = await tx
 					.insert(verificationsTable)
 					.values({
 						userId: params.userId,
@@ -222,6 +295,7 @@ export abstract class AuthRepository {
 		params: {
 			verified?: boolean;
 			triesLeft?: number;
+			secret?: string;
 			expiresAt?: Date;
 		},
 	): Promise<Verification> {

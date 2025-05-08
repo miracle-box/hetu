@@ -26,6 +26,25 @@ app:
         <Your public key here>
         -----END PUBLIC KEY-----
 
+  oauth2:
+    providers:
+      microsoft:
+        protocol: 'oauth2'
+        clientId: 'your-client-id'
+        clientSecret: 'your-client-secret'
+        pkce: 'S256'
+        endpoints:
+          authorization: 'https://login.microsoftonline.com/consumers/oauth2/v2.0/authorize'
+          token: 'https://login.microsoftonline.com/consumers/oauth2/v2.0/token'
+          userinfo: 'https://graph.microsoft.com/oidc/userinfo'
+        profileScopes: ['openid', 'email', 'profile']
+        profileMap:
+          id: '/sub'
+          email: '/email'
+          username: '/email'
+          avatarUrl: false
+          nickname: false
+
 debug:
   logRequests: true
   enableServerTiming: true
