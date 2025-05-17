@@ -2,6 +2,8 @@ import { drizzle } from 'drizzle-orm/postgres-js';
 import postgres from 'postgres';
 import { Config } from '~backend/shared/config';
 
+import { createTransactionHelper } from '~backend/shared/db/transactions.ts';
+
 import * as relations from './relations';
 import * as filesSchemas from './schema/files';
 import * as profilesSchemas from './schema/profiles';
@@ -28,3 +30,5 @@ const queryClient = postgres(Config.database.url, {});
 
 export const rawDb = queryClient;
 export const db = drizzle(queryClient, { schema });
+
+export const { withTransaction, useDatabase } = createTransactionHelper(db);
