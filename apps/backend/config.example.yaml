@@ -74,6 +74,7 @@ mailing:
     sender: 'Accounts <noreply@example.org>'
 
 logging:
+  level: info
   prettyPrint:
     enabled: true
     destination: STDOUT

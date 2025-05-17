@@ -125,6 +125,15 @@ export const configSchema = Type.Object({
 	}),
 
 	logging: Type.Object({
+		level: Type.Union([
+			Type.Literal('trace'),
+			Type.Literal('debug'),
+			Type.Literal('info'),
+			Type.Literal('warn'),
+			Type.Literal('error'),
+			Type.Literal('fatal'),
+			Type.Literal('silent'),
+		]),
 		prettyPrint: Type.Object({
 			enabled: Type.Boolean(),
 			destination: Type.String(),

@@ -6,12 +6,14 @@ function getDesti(desti: string) {
 }
 
 export const Logger = pino({
+	level: Config.logging.level,
 	transport: {
 		targets: [
 			...(Config.logging.prettyPrint.enabled
 				? [
 						{
 							target: '@repo/pino-pretty-transport',
+							level: Config.logging.level,
 							options: {
 								destination: getDesti(Config.logging.prettyPrint.destination),
 							},
@@ -22,6 +24,7 @@ export const Logger = pino({
 				? [
 						{
 							target: 'pino/file',
+							level: Config.logging.level,
 							options: {
 								destination: getDesti(Config.logging.file.destination),
 								mkdir: true,
