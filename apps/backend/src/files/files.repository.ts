@@ -1,13 +1,15 @@
 import type { FileInfo } from '~backend/files/files.entities';
 import { and, eq } from 'drizzle-orm';
 import { FileType } from '~backend/files/files.entities';
-import { db } from '~backend/shared/db';
+import { useDatabase } from '~backend/shared/db';
 import { filesTable } from '~backend/shared/db/schema/files';
 
 export abstract class FilesRepository {
 	static async create(
 		params: Pick<FileInfo, 'hash' | 'size' | 'type' | 'mimeType'>,
 	): Promise<FileInfo> {
+		const db = useDatabase();
+
 		const [fileRecord] = await db.insert(filesTable).values(params).returning();
 
 		if (!fileRecord) throw new Error('Failed to create file record.');
@@ -15,6 +17,8 @@ export abstract class FilesRepository {
 	}
 
 	static async findByHash(hash: string, type: FileType): Promise<FileInfo | null> {
+		const db = useDatabase();
+
 		const fileRecord = await db.query.filesTable.findFirst({
 			where: and(eq(filesTable.hash, hash), eq(filesTable.type, type)),
 		});
@@ -29,6 +33,8 @@ export abstract class FilesRepository {
 	 * @param type File type (optional)
 	 */
 	static async findById(id: string, type?: FileType): Promise<FileInfo | null> {
+		const db = useDatabase();
+
 		const fileRecord = await db.query.filesTable.findFirst({
 			where: type
 				? and(eq(filesTable.id, id), eq(filesTable.type, type))

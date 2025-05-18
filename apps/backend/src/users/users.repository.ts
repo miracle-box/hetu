@@ -1,8 +1,7 @@
 import type { User } from '~backend/users/user.entities';
 import { eq, or } from 'drizzle-orm';
-import { TransactionRollbackError } from 'drizzle-orm/errors';
 import { UserAuthType } from '~backend/auth/auth.entities';
-import { db } from '~backend/shared/db';
+import { useDatabase } from '~backend/shared/db';
 import { userAuthTable } from '~backend/shared/db/schema/user-auth';
 import { usersTable } from '~backend/shared/db/schema/users';
 
@@ -16,6 +15,8 @@ export abstract class UsersRepository {
 	 * @param name Username
 	 */
 	static async emailOrNameExists(email: string, name: string): Promise<boolean> {
+		const db = useDatabase();
+
 		const existingUser = await db.query.usersTable.findFirst({
 			columns: {
 				id: true,
@@ -32,6 +33,8 @@ export abstract class UsersRepository {
 	 * @param email Email
 	 */
 	static async findByEmail(email: string): Promise<User | null> {
+		const db = useDatabase();
+
 		const user = await db.query.usersTable.findFirst({
 			columns: {
 				id: true,
@@ -61,6 +64,8 @@ export abstract class UsersRepository {
 		  })
 		| null
 	> {
+		const db = useDatabase();
+
 		const userWithAuthMethod = await db.query.usersTable.findFirst({
 			columns: {
 				id: true,
@@ -89,63 +94,31 @@ export abstract class UsersRepository {
 	}
 
 	/**
-	 * Create a user with password auth method.
-	 *
-	 * **You should check the name and email for existence before creating a user.**
-	 *
-	 * @param params User creation params.
+	 * Create a user.
+	 * @param params user info
 	 */
-	static async createWithPassword(params: {
-		name: string;
-		email: string;
-		passwordHash: string;
-	}): Promise<User> {
-		try {
-			const user = await db.transaction(async (tx) => {
-				const [insertedUser] = await tx
-					.insert(usersTable)
-					.values({
-						name: params.name,
-						email: params.email,
-					})
-					.returning({
-						id: usersTable.id,
-						name: usersTable.name,
-						email: usersTable.email,
-					})
-					.onConflictDoNothing();
+	static async insertUser(params: { name: string; email: string }) {
+		const db = useDatabase();
 
-				if (!insertedUser) {
-					tx.rollback();
-					return;
-				}
+		const [insertedUser] = await db
+			.insert(usersTable)
+			.values({
+				name: params.name,
+				email: params.email,
+			})
+			.returning({
+				id: usersTable.id,
+				name: usersTable.name,
+				email: usersTable.email,
+			})
+			.onConflictDoNothing();
 
-				const [insertedAuth] = await tx
-					.insert(userAuthTable)
-					.values({
-						type: UserAuthType.PASSWORD,
-						userId: insertedUser.id,
-						credential: params.passwordHash,
-					})
-					.returning();
-
-				if (!insertedAuth) {
-					tx.rollback();
-					return;
-				}
-
-				return insertedUser;
-			});
-
-			if (!user) throw new Error('Failed to create user');
-			return user;
-		} catch (e) {
-			if (e instanceof TransactionRollbackError) throw new Error('Failed to create user');
-			throw e;
-		}
+		return insertedUser ?? null;
 	}
 
 	static async findById(id: string): Promise<User | null> {
+		const db = useDatabase();
+
 		const user = await db.query.usersTable.findFirst({
 			where: eq(usersTable.id, id),
 		});

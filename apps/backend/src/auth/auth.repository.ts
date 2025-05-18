@@ -6,17 +6,18 @@ import type {
 	VerificationScenario,
 	VerificationType,
 } from '~backend/auth/auth.entities';
-import { and, eq, gt, TransactionRollbackError } from 'drizzle-orm';
-import { SessionLifecycle, UserAuthType } from '~backend/auth/auth.entities';
-import { getLifecycle } from '~backend/shared/auth/utils';
-import { db } from '~backend/shared/db';
+import { and, eq, gt } from 'drizzle-orm';
+import { UserAuthType } from '~backend/auth/auth.entities';
+import { useDatabase } from '~backend/shared/db';
 import { sessionsTable } from '~backend/shared/db/schema/sessions';
 import { userAuthTable } from '~backend/shared/db/schema/user-auth';
 import { verificationsTable } from '~backend/shared/db/schema/verifications';
-import { now } from '~backend/shared/db/utils';
+import { now } from '~backend/shared/db/sql';
 
 export abstract class AuthRepository {
 	static async getPassword(userId: string): Promise<string | null> {
+		const db = useDatabase();
+
 		const passwordRecord = await db.query.userAuthTable.findFirst({
 			columns: {
 				credential: true,
@@ -36,6 +37,8 @@ export abstract class AuthRepository {
 	 * @param params Values for the password record
 	 */
 	static async upsertPassword(params: { userId: string; passwordHash: string }): Promise<void> {
+		const db = useDatabase();
+
 		await db
 			.insert(userAuthTable)
 			.values({
@@ -58,6 +61,8 @@ export abstract class AuthRepository {
 		oauth2ProfileId: string;
 		metadata: OAuthAuth['metadata'];
 	}): Promise<void> {
+		const db = useDatabase();
+
 		await db
 			.insert(userAuthTable)
 			.values({
@@ -81,6 +86,8 @@ export abstract class AuthRepository {
 	}
 
 	static async findOAuth2Binding(provider: string, profileId: string) {
+		const db = useDatabase();
+
 		const authRecord = await db.query.userAuthTable.findFirst({
 			where: and(
 				eq(userAuthTable.provider, provider),
@@ -92,6 +99,8 @@ export abstract class AuthRepository {
 	}
 
 	static async findSessionById(sessionId: string): Promise<Session | null> {
+		const db = useDatabase();
+
 		const session = await db.query.sessionsTable.findFirst({
 			where: and(eq(sessionsTable.id, sessionId)),
 		});
@@ -100,16 +109,22 @@ export abstract class AuthRepository {
 	}
 
 	static async findSessionsByUser(userId: string): Promise<Session[]> {
+		const db = useDatabase();
+
 		return db.query.sessionsTable.findMany({
 			where: and(eq(sessionsTable.userId, userId)),
 		});
 	}
 
 	static async revokeSessionById(id: string): Promise<void> {
+		const db = useDatabase();
+
 		await db.delete(sessionsTable).where(eq(sessionsTable.id, id));
 	}
 
 	static async revokeSessionsByUser(userId: string): Promise<void> {
+		const db = useDatabase();
+
 		await db.delete(sessionsTable).where(eq(sessionsTable.userId, userId));
 	}
 
@@ -117,6 +132,8 @@ export abstract class AuthRepository {
 		userId: string;
 		metadata: SessionMetadata;
 	}): Promise<Session> {
+		const db = useDatabase();
+
 		const [createdSession] = await db
 			.insert(sessionsTable)
 			.values({
@@ -137,42 +154,21 @@ export abstract class AuthRepository {
 			updatedAt: Date;
 		},
 	): Promise<Session> {
-		try {
-			return await db.transaction(async (tx) => {
-				const session = await tx.query.sessionsTable.findFirst({
-					where: and(eq(sessionsTable.id, sessionId)),
-				});
+		const db = useDatabase();
 
-				const lifecycle = getLifecycle(session);
-				// [TODO] Not suitable to do the check here, let's rewrite later.
-				if (
-					lifecycle === SessionLifecycle.RefreshOnly ||
-					lifecycle === SessionLifecycle.Expired
-				) {
-					throw new Error('Session is not active and can not be renewed.');
-				}
+		const [updatedSession] = await db
+			.update(sessionsTable)
+			.set({
+				updatedAt: params.updatedAt,
+			})
+			.where(and(eq(sessionsTable.id, sessionId)))
+			.returning();
 
-				const [updatedSession] = await tx
-					.update(sessionsTable)
-					.set({
-						updatedAt: params.updatedAt,
-					})
-					.where(and(eq(sessionsTable.id, sessionId)))
-					.returning();
-
-				if (!updatedSession) {
-					throw new Error('Failed to update session.');
-				}
-
-				return updatedSession;
-			});
-		} catch (e) {
-			if (e instanceof TransactionRollbackError) {
-				throw new Error('Failed to update session.');
-			}
-
-			throw e;
+		if (!updatedSession) {
+			throw new Error('Failed to update session.');
 		}
+
+		return updatedSession;
 	}
 
 	static async createVerification(params: {
@@ -185,6 +181,8 @@ export abstract class AuthRepository {
 		triesLeft: number;
 		expiresAt: Date;
 	}): Promise<Verification> {
+		const db = useDatabase();
+
 		const [verifRecord] = await db
 			.insert(verificationsTable)
 			.values({
@@ -207,64 +205,30 @@ export abstract class AuthRepository {
 	}
 
 	/**
-	 * Create a new verification and revoke any existing records.
+	 * Revoke verifications for a specific target in a scenario.
 	 *
-	 * @todo [FIXME] This should be split into separate functions!
-	 * @param params Verification params
-	 * @returns Created verification
+	 * ! Do not use this for OAuth verifications, their `target` only indicates the provider!
+	 *
+	 * @param params
 	 */
-	static async createOnlyVerification(params: {
-		userId?: string;
-		type: VerificationType;
-		scenario: VerificationScenario;
-		target: string;
-		secret: string;
-		verified: boolean;
-		triesLeft: number;
-		expiresAt: Date;
-	}): Promise<Verification> {
-		try {
-			const verif = await db.transaction(async (tx) => {
-				// Revoke any existing verification for the target
-				await tx
-					.update(verificationsTable)
-					.set({ expiresAt: now() })
-					.where(
-						and(
-							eq(verificationsTable.target, params.target),
-							gt(verificationsTable.expiresAt, now()),
-						),
-					);
+	static async revokeVerifications(params: { scenario: VerificationScenario; target: string }) {
+		const db = useDatabase();
 
-				const [verifRecord] = await tx
-					.insert(verificationsTable)
-					.values({
-						userId: params.userId,
-						type: params.type,
-						scenario: params.scenario,
-						target: params.target,
-						secret: params.secret,
-						verified: params.verified,
-						triesLeft: params.triesLeft,
-						expiresAt: params.expiresAt,
-					})
-					.returning();
-
-				return verifRecord;
-			});
-
-			if (!verif) {
-				throw new Error('Failed to create verification.');
-			}
-			return verif;
-		} catch (e) {
-			if (e instanceof TransactionRollbackError)
-				throw new Error('Failed to create verification');
-			throw e;
-		}
+		await db
+			.update(verificationsTable)
+			.set({ expiresAt: now() })
+			.where(
+				and(
+					eq(verificationsTable.target, params.target),
+					eq(verificationsTable.scenario, params.scenario),
+					gt(verificationsTable.expiresAt, now()),
+				),
+			);
 	}
 
 	static async findVerificationById(id: string): Promise<Verification | null> {
+		const db = useDatabase();
+
 		// Checks are done in the application, so we don't need to filter here.
 		const verification = await db.query.verificationsTable.findFirst({
 			where: and(eq(verificationsTable.id, id)),
@@ -277,6 +241,8 @@ export abstract class AuthRepository {
 		id: string,
 		scenario: VerificationScenario,
 	): Promise<Verification | null> {
+		const db = useDatabase();
+
 		const verification = await db.query.verificationsTable.findFirst({
 			where: and(
 				eq(verificationsTable.id, id),
@@ -299,6 +265,8 @@ export abstract class AuthRepository {
 			expiresAt?: Date;
 		},
 	): Promise<Verification> {
+		const db = useDatabase();
+
 		const [updatedVerification] = await db
 			.update(verificationsTable)
 			.set(params)
@@ -312,6 +280,8 @@ export abstract class AuthRepository {
 	}
 
 	static async revokeVerificationById(id: string): Promise<void> {
+		const db = useDatabase();
+
 		await db
 			.update(verificationsTable)
 			.set({ expiresAt: now() })

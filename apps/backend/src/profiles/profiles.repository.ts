@@ -1,17 +1,21 @@
 import type { Profile } from '~backend/profiles/profile.entities';
 import { and, eq } from 'drizzle-orm';
-import { db } from '~backend/shared/db';
+import { useDatabase } from '~backend/shared/db';
 import { profilesTable } from '~backend/shared/db/schema/profiles';
-import { lower } from '~backend/shared/db/utils';
+import { lower } from '~backend/shared/db/sql';
 
 export abstract class ProfilesRepository {
 	static async findByUser(userId: string): Promise<Profile[]> {
+		const db = useDatabase();
+
 		return db.query.profilesTable.findMany({
 			where: eq(profilesTable.authorId, userId),
 		});
 	}
 
 	static async findPrimaryByUser(userId: string): Promise<Profile | null> {
+		const db = useDatabase();
+
 		const profile = await db.query.profilesTable.findFirst({
 			where: and(eq(profilesTable.authorId, userId), eq(profilesTable.isPrimary, true)),
 		});
@@ -20,6 +24,8 @@ export abstract class ProfilesRepository {
 	}
 
 	static async findById(id: string): Promise<Profile | null> {
+		const db = useDatabase();
+
 		const profile = await db.query.profilesTable.findFirst({
 			where: eq(profilesTable.id, id),
 		});
@@ -28,6 +34,8 @@ export abstract class ProfilesRepository {
 	}
 
 	static async findByName(name: string): Promise<Profile | null> {
+		const db = useDatabase();
+
 		const profile = await db.query.profilesTable.findFirst({
 			where: eq(lower(profilesTable.name), name.toLowerCase()),
 		});
@@ -47,6 +55,8 @@ export abstract class ProfilesRepository {
 		name: string;
 		isPrimary: boolean;
 	}): Promise<Profile> {
+		const db = useDatabase();
+
 		const [profile] = await db
 			.insert(profilesTable)
 			.values({
@@ -68,6 +78,8 @@ export abstract class ProfilesRepository {
 			capeTextureId?: string | null;
 		},
 	): Promise<Profile> {
+		const db = useDatabase();
+
 		const [profile] = await db
 			.update(profilesTable)
 			.set(params)
