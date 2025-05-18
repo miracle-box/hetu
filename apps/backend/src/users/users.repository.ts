@@ -1,6 +1,5 @@
 import type { User } from '~backend/users/user.entities';
 import { eq, or } from 'drizzle-orm';
-import { TransactionRollbackError } from 'drizzle-orm/errors';
 import { UserAuthType } from '~backend/auth/auth.entities';
 import { useDatabase } from '~backend/shared/db';
 import { userAuthTable } from '~backend/shared/db/schema/user-auth';
@@ -95,62 +94,26 @@ export abstract class UsersRepository {
 	}
 
 	/**
-	 * Create a user with password auth method.
-	 *
-	 * **You should check the name and email for existence before creating a user.**
-	 *
-	 * @param params User creation params.
+	 * Create a user.
+	 * @param params user info
 	 */
-	static async createWithPassword(params: {
-		name: string;
-		email: string;
-		passwordHash: string;
-	}): Promise<User> {
+	static async insertUser(params: { name: string; email: string }) {
 		const db = useDatabase();
 
-		try {
-			const user = await db.transaction(async (tx) => {
-				const [insertedUser] = await tx
-					.insert(usersTable)
-					.values({
-						name: params.name,
-						email: params.email,
-					})
-					.returning({
-						id: usersTable.id,
-						name: usersTable.name,
-						email: usersTable.email,
-					})
-					.onConflictDoNothing();
+		const [insertedUser] = await db
+			.insert(usersTable)
+			.values({
+				name: params.name,
+				email: params.email,
+			})
+			.returning({
+				id: usersTable.id,
+				name: usersTable.name,
+				email: usersTable.email,
+			})
+			.onConflictDoNothing();
 
-				if (!insertedUser) {
-					tx.rollback();
-					return;
-				}
-
-				const [insertedAuth] = await tx
-					.insert(userAuthTable)
-					.values({
-						type: UserAuthType.PASSWORD,
-						userId: insertedUser.id,
-						credential: params.passwordHash,
-					})
-					.returning();
-
-				if (!insertedAuth) {
-					tx.rollback();
-					return;
-				}
-
-				return insertedUser;
-			});
-
-			if (!user) throw new Error('Failed to create user');
-			return user;
-		} catch (e) {
-			if (e instanceof TransactionRollbackError) throw new Error('Failed to create user');
-			throw e;
-		}
+		return insertedUser ?? null;
 	}
 
 	static async findById(id: string): Promise<User | null> {

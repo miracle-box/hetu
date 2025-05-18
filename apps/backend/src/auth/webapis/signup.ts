@@ -7,6 +7,7 @@ import { AppError } from '~backend/shared/middlewares/errors/app-error';
 import { createErrorResps } from '~backend/shared/middlewares/errors/docs';
 import { UsersRepository } from '~backend/users/users.repository';
 import { AuthRepository } from '../auth.repository';
+import { withTransaction } from '~backend/shared/db';
 
 export const signupHandler = new Elysia().post(
 	'/signup',
@@ -24,11 +25,27 @@ export const signupHandler = new Elysia().post(
 		if (!verif) throw new AppError('auth/invalid-verification');
 		await AuthRepository.revokeVerificationById(body.verificationId);
 
-		const user = await UsersRepository.createWithPassword({
-			name: body.name,
-			email: body.email,
-			passwordHash,
+		const user = await withTransaction(async ({ transaction }) => {
+			const insertedUser = await UsersRepository.insertUser({
+				name: body.name,
+				email: body.email,
+			});
+
+			if (!insertedUser) {
+				transaction.rollback();
+				return;
+			}
+
+			await AuthRepository.upsertPassword({
+				userId: insertedUser.id,
+				passwordHash,
+			});
+
+			return insertedUser;
 		});
+
+		// Something failed to insert, it is not an expected condition
+		if (!user) throw new Error('Can not create user and password.');
 
 		const session = (await SessionService.create(user.id, {
 			scope: SessionScope.DEFAULT,

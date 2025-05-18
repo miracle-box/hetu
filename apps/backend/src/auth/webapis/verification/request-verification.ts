@@ -11,6 +11,7 @@ import { AuthRepository } from '~backend/auth/auth.repository';
 import { PasswordService } from '~backend/services/auth/password';
 import { MailingService } from '~backend/services/mailing';
 import { Config } from '~backend/shared/config';
+import { withTransaction } from '~backend/shared/db';
 import { Logger } from '~backend/shared/logger';
 import { AppError } from '~backend/shared/middlewares/errors/app-error';
 import { createErrorResps } from '~backend/shared/middlewares/errors/docs';
@@ -40,17 +41,25 @@ export const requestVerificationHandler = new Elysia().post(
 				.padStart(8, '0');
 			const codeHash = await PasswordService.hash(code);
 
-			const verif = await AuthRepository.createOnlyVerification({
-				userId: user?.id,
-				type: body.type,
-				scenario: body.scenario,
-				// [TODO] Should be configurable (now 10 minutes)
-				expiresAt: new Date(Date.now() + 1000 * 60 * 10),
-				target: body.target,
-				secret: codeHash,
-				verified: false,
-				// [TODO] Manage in a centralized way
-				triesLeft: 3,
+			// Ensures existing verifications are revoked before creating a new one.
+			const verif = await withTransaction(async () => {
+				await AuthRepository.revokeVerifications({
+					scenario: body.scenario,
+					target: body.target,
+				});
+
+				return await AuthRepository.createVerification({
+					userId: user?.id,
+					type: body.type,
+					scenario: body.scenario,
+					// [TODO] Should be configurable (now 10 minutes)
+					expiresAt: new Date(Date.now() + 1000 * 60 * 10),
+					target: body.target,
+					secret: codeHash,
+					verified: false,
+					// [TODO] Manage in a centralized way
+					triesLeft: 3,
+				});
 			});
 
 			const resp = {

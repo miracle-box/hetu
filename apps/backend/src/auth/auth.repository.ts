@@ -6,9 +6,8 @@ import type {
 	VerificationScenario,
 	VerificationType,
 } from '~backend/auth/auth.entities';
-import { and, eq, gt, TransactionRollbackError } from 'drizzle-orm';
-import { SessionLifecycle, UserAuthType } from '~backend/auth/auth.entities';
-import { getLifecycle } from '~backend/shared/auth/utils';
+import { and, eq, gt } from 'drizzle-orm';
+import { UserAuthType } from '~backend/auth/auth.entities';
 import { useDatabase } from '~backend/shared/db';
 import { sessionsTable } from '~backend/shared/db/schema/sessions';
 import { userAuthTable } from '~backend/shared/db/schema/user-auth';
@@ -157,42 +156,19 @@ export abstract class AuthRepository {
 	): Promise<Session> {
 		const db = useDatabase();
 
-		try {
-			return await db.transaction(async (tx) => {
-				const session = await tx.query.sessionsTable.findFirst({
-					where: and(eq(sessionsTable.id, sessionId)),
-				});
+		const [updatedSession] = await db
+			.update(sessionsTable)
+			.set({
+				updatedAt: params.updatedAt,
+			})
+			.where(and(eq(sessionsTable.id, sessionId)))
+			.returning();
 
-				const lifecycle = getLifecycle(session);
-				// [TODO] Not suitable to do the check here, let's rewrite later.
-				if (
-					lifecycle === SessionLifecycle.RefreshOnly ||
-					lifecycle === SessionLifecycle.Expired
-				) {
-					throw new Error('Session is not active and can not be renewed.');
-				}
-
-				const [updatedSession] = await tx
-					.update(sessionsTable)
-					.set({
-						updatedAt: params.updatedAt,
-					})
-					.where(and(eq(sessionsTable.id, sessionId)))
-					.returning();
-
-				if (!updatedSession) {
-					throw new Error('Failed to update session.');
-				}
-
-				return updatedSession;
-			});
-		} catch (e) {
-			if (e instanceof TransactionRollbackError) {
-				throw new Error('Failed to update session.');
-			}
-
-			throw e;
+		if (!updatedSession) {
+			throw new Error('Failed to update session.');
 		}
+
+		return updatedSession;
 	}
 
 	static async createVerification(params: {
@@ -229,63 +205,25 @@ export abstract class AuthRepository {
 	}
 
 	/**
-	 * Create a new verification and revoke any existing records.
+	 * Revoke verifications for a specific target in a scenario.
 	 *
-	 * @todo [FIXME] This should be split into separate functions!
-	 * @param params Verification params
-	 * @returns Created verification
+	 * ! Do not use this for OAuth verifications, their `target` only indicates the provider!
+	 *
+	 * @param params
 	 */
-	static async createOnlyVerification(params: {
-		userId?: string;
-		type: VerificationType;
-		scenario: VerificationScenario;
-		target: string;
-		secret: string;
-		verified: boolean;
-		triesLeft: number;
-		expiresAt: Date;
-	}): Promise<Verification> {
+	static async revokeVerifications(params: { scenario: VerificationScenario; target: string }) {
 		const db = useDatabase();
 
-		try {
-			const verif = await db.transaction(async (tx) => {
-				// Revoke any existing verification for the target
-				await tx
-					.update(verificationsTable)
-					.set({ expiresAt: now() })
-					.where(
-						and(
-							eq(verificationsTable.target, params.target),
-							gt(verificationsTable.expiresAt, now()),
-						),
-					);
-
-				const [verifRecord] = await tx
-					.insert(verificationsTable)
-					.values({
-						userId: params.userId,
-						type: params.type,
-						scenario: params.scenario,
-						target: params.target,
-						secret: params.secret,
-						verified: params.verified,
-						triesLeft: params.triesLeft,
-						expiresAt: params.expiresAt,
-					})
-					.returning();
-
-				return verifRecord;
-			});
-
-			if (!verif) {
-				throw new Error('Failed to create verification.');
-			}
-			return verif;
-		} catch (e) {
-			if (e instanceof TransactionRollbackError)
-				throw new Error('Failed to create verification');
-			throw e;
-		}
+		await db
+			.update(verificationsTable)
+			.set({ expiresAt: now() })
+			.where(
+				and(
+					eq(verificationsTable.target, params.target),
+					eq(verificationsTable.scenario, params.scenario),
+					gt(verificationsTable.expiresAt, now()),
+				),
+			);
 	}
 
 	static async findVerificationById(id: string): Promise<Verification | null> {

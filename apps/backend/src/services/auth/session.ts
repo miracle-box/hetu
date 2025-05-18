@@ -4,6 +4,7 @@ import { SessionScope } from '~backend/auth/auth.entities';
 import { AuthRepository } from '~backend/auth/auth.repository';
 import { getLifecycle, isSessionOfScope } from '~backend/shared/auth/utils';
 import { UsersRepository } from '~backend/users/users.repository';
+import { withTransaction } from '~backend/shared/db';
 
 /**
  * Session handling related utilities.
@@ -60,8 +61,19 @@ export abstract class SessionService {
 	}
 
 	static async renew(id: string): Promise<Session> {
-		return AuthRepository.updateSession(id, {
-			updatedAt: new Date(),
+		return await withTransaction(async () => {
+			const session = await AuthRepository.findSessionById(id);
+			const lifecycle = getLifecycle(session);
+			if (
+				lifecycle === SessionLifecycle.RefreshOnly ||
+				lifecycle === SessionLifecycle.Expired
+			) {
+				throw new Error('Session is not active and can not be renewed.');
+			}
+
+			return await AuthRepository.updateSession(id, {
+				updatedAt: new Date(),
+			});
 		});
 	}
 }
