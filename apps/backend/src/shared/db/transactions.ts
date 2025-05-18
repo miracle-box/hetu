@@ -1,7 +1,7 @@
+import type { drizzleClient } from './drizzle';
 import { AsyncLocalStorage } from 'node:async_hooks';
-import { drizzle } from 'drizzle-orm/postgres-js';
 
-type DrizzleDatabase = ReturnType<typeof drizzle>;
+type DrizzleDatabase = typeof drizzleClient;
 
 type DrizzleTransaction<TDb extends DrizzleDatabase = DrizzleDatabase> = Parameters<
 	Parameters<TDb['transaction']>[0]
