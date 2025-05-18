@@ -53,9 +53,13 @@ export const logger = () => {
 							path: ctx.path,
 							params: ctx.params,
 							query: ctx.query,
+							headers: ctx.headers,
+							body: ctx.body,
 						},
 						response: {
 							status: ctx.set.status,
+							headers: ctx.set.headers,
+							body: ctx.response,
 						},
 						durationMs: duration / 1000_000,
 					}
@@ -66,13 +70,9 @@ export const logger = () => {
 							path: ctx.path,
 							params: ctx.params,
 							query: ctx.query,
-							headers: ctx.headers,
-							body: ctx.body,
 						},
 						response: {
 							status: ctx.set.status,
-							headers: ctx.set.headers,
-							body: ctx.response,
 						},
 						durationMs: duration / 1000_000,
 					};
@@ -96,9 +96,14 @@ export const logger = () => {
 							path: ctx.path,
 							params: ctx.params,
 							query: ctx.query,
+							headers: ctx.headers,
+							body: ctx.body,
 						},
 						response: {
 							status: ctx.set.status,
+							headers: ctx.set.headers,
+							code: ctx.code,
+							error: ctx.error ?? ctx.response,
 						},
 						durationMs: duration / 1000_000,
 					}
@@ -109,14 +114,9 @@ export const logger = () => {
 							path: ctx.path,
 							params: ctx.params,
 							query: ctx.query,
-							headers: ctx.headers,
-							body: ctx.body,
 						},
 						response: {
 							status: ctx.set.status,
-							headers: ctx.set.headers,
-							code: ctx.code,
-							error: ctx.error ?? ctx.response,
 						},
 						durationMs: duration / 1000_000,
 					};
