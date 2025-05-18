@@ -75,10 +75,12 @@ mailing:
 
 logging:
   level: info
-  prettyPrint:
-    enabled: true
-    destination: STDOUT
-  file:
-    enabled: true
-    destination: logs/latest.log
-    append: true
+  logDatabaseQueries: false
+  transports:
+    prettyPrint:
+      enabled: true
+      destination: STDOUT
+    file:
+      enabled: true
+      destination: logs/latest.log
+      append: true

@@ -134,14 +134,17 @@ export const configSchema = Type.Object({
 			Type.Literal('fatal'),
 			Type.Literal('silent'),
 		]),
-		prettyPrint: Type.Object({
-			enabled: Type.Boolean(),
-			destination: Type.String(),
-		}),
-		file: Type.Object({
-			enabled: Type.Boolean(),
-			destination: Type.String(),
-			append: Type.Boolean(),
+		logDatabaseQueries: Type.Boolean(),
+		transports: Type.Object({
+			prettyPrint: Type.Object({
+				enabled: Type.Boolean(),
+				destination: Type.String(),
+			}),
+			file: Type.Object({
+				enabled: Type.Boolean(),
+				destination: Type.String(),
+				append: Type.Boolean(),
+			}),
 		}),
 	}),
 });
