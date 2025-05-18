@@ -6,7 +6,6 @@ import { middlewares } from '~backend/shared/middlewares';
 import { TexturesRoutes } from '~backend/textures/textures.routes';
 import { UsersRoutes } from '~backend/users/users.routes';
 import { YggdrasilRoutes } from '~backend/yggdrasil/yggdrasil.routes';
-import { Logger } from './shared/logger';
 
 export const app = new Elysia()
 	// Putting yggdrasil routes here avoids the error being handled twice
@@ -29,5 +28,4 @@ export const startApp = (listenTo: string) => {
 	process.on('SIGTERM', app.stop);
 
 	app.listen(listenTo);
-	Logger.info(`Service started on ${app.server?.url?.toString()}`);
 };

@@ -76,6 +76,8 @@ mailing:
 logging:
   level: info
   logDatabaseQueries: false
+  logRequests: false
+  logRequestDetails: false
   transports:
     prettyPrint:
       enabled: true

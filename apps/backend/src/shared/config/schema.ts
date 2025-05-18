@@ -135,6 +135,8 @@ export const configSchema = Type.Object({
 			Type.Literal('silent'),
 		]),
 		logDatabaseQueries: Type.Boolean(),
+		logRequests: Type.Boolean(),
+		logRequestDetails: Type.Boolean(),
 		transports: Type.Object({
 			prettyPrint: Type.Object({
 				enabled: Type.Boolean(),
