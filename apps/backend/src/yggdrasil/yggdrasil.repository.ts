@@ -2,7 +2,7 @@ import type { Profile } from '~backend/profiles/profile.entities';
 import type { Texture } from '~backend/textures/texture.entities';
 import type { YggServerSession } from '~backend/yggdrasil/yggdrasil.entities';
 import { and, eq, gt, inArray } from 'drizzle-orm';
-import { db } from '~backend/shared/db';
+import { useDatabase } from '~backend/shared/db';
 import { profilesTable } from '~backend/shared/db/schema/profiles';
 import { yggServerSessionsTable } from '~backend/shared/db/schema/ygg-server-sessions';
 
@@ -10,6 +10,8 @@ export abstract class YggdrasilRepository {
 	static async getProfilesDigestByNames(
 		names: string[],
 	): Promise<Pick<Profile, 'id' | 'name'>[]> {
+		const db = useDatabase();
+
 		return db.query.profilesTable.findMany({
 			columns: {
 				id: true,
@@ -20,6 +22,8 @@ export abstract class YggdrasilRepository {
 	}
 
 	static async getProfilesDigestByUser(userId: string): Promise<Pick<Profile, 'id' | 'name'>[]> {
+		const db = useDatabase();
+
 		return db.query.profilesTable.findMany({
 			columns: {
 				id: true,
@@ -30,6 +34,8 @@ export abstract class YggdrasilRepository {
 	}
 
 	static async getProfileDigestById(id: string): Promise<Pick<Profile, 'id' | 'name'> | null> {
+		const db = useDatabase();
+
 		return (
 			(await db.query.profilesTable.findFirst({
 				columns: {
@@ -48,6 +54,8 @@ export abstract class YggdrasilRepository {
 		  })
 		| null
 	> {
+		const db = useDatabase();
+
 		return (
 			(await db.query.profilesTable.findFirst({
 				columns: {
@@ -80,6 +88,8 @@ export abstract class YggdrasilRepository {
 		  })
 		| null
 	> {
+		const db = useDatabase();
+
 		return (
 			(await db.query.profilesTable.findFirst({
 				columns: {
@@ -106,6 +116,8 @@ export abstract class YggdrasilRepository {
 	}
 
 	static async findJoinRecordById(serverId: string): Promise<YggServerSession | null> {
+		const db = useDatabase();
+
 		return (
 			(await db.query.yggServerSessionsTable.findFirst({
 				where: and(
@@ -122,6 +134,8 @@ export abstract class YggdrasilRepository {
 		clientIp: string;
 		expiresAt: Date;
 	}): Promise<void> {
+		const db = useDatabase();
+
 		await db
 			.insert(yggServerSessionsTable)
 			.values({

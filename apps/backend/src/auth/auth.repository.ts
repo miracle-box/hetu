@@ -9,14 +9,16 @@ import type {
 import { and, eq, gt, TransactionRollbackError } from 'drizzle-orm';
 import { SessionLifecycle, UserAuthType } from '~backend/auth/auth.entities';
 import { getLifecycle } from '~backend/shared/auth/utils';
-import { db } from '~backend/shared/db';
+import { useDatabase } from '~backend/shared/db';
 import { sessionsTable } from '~backend/shared/db/schema/sessions';
 import { userAuthTable } from '~backend/shared/db/schema/user-auth';
 import { verificationsTable } from '~backend/shared/db/schema/verifications';
-import { now } from '~backend/shared/db/utils';
+import { now } from '~backend/shared/db/sql';
 
 export abstract class AuthRepository {
 	static async getPassword(userId: string): Promise<string | null> {
+		const db = useDatabase();
+
 		const passwordRecord = await db.query.userAuthTable.findFirst({
 			columns: {
 				credential: true,
@@ -36,6 +38,8 @@ export abstract class AuthRepository {
 	 * @param params Values for the password record
 	 */
 	static async upsertPassword(params: { userId: string; passwordHash: string }): Promise<void> {
+		const db = useDatabase();
+
 		await db
 			.insert(userAuthTable)
 			.values({
@@ -58,6 +62,8 @@ export abstract class AuthRepository {
 		oauth2ProfileId: string;
 		metadata: OAuthAuth['metadata'];
 	}): Promise<void> {
+		const db = useDatabase();
+
 		await db
 			.insert(userAuthTable)
 			.values({
@@ -81,6 +87,8 @@ export abstract class AuthRepository {
 	}
 
 	static async findOAuth2Binding(provider: string, profileId: string) {
+		const db = useDatabase();
+
 		const authRecord = await db.query.userAuthTable.findFirst({
 			where: and(
 				eq(userAuthTable.provider, provider),
@@ -92,6 +100,8 @@ export abstract class AuthRepository {
 	}
 
 	static async findSessionById(sessionId: string): Promise<Session | null> {
+		const db = useDatabase();
+
 		const session = await db.query.sessionsTable.findFirst({
 			where: and(eq(sessionsTable.id, sessionId)),
 		});
@@ -100,16 +110,22 @@ export abstract class AuthRepository {
 	}
 
 	static async findSessionsByUser(userId: string): Promise<Session[]> {
+		const db = useDatabase();
+
 		return db.query.sessionsTable.findMany({
 			where: and(eq(sessionsTable.userId, userId)),
 		});
 	}
 
 	static async revokeSessionById(id: string): Promise<void> {
+		const db = useDatabase();
+
 		await db.delete(sessionsTable).where(eq(sessionsTable.id, id));
 	}
 
 	static async revokeSessionsByUser(userId: string): Promise<void> {
+		const db = useDatabase();
+
 		await db.delete(sessionsTable).where(eq(sessionsTable.userId, userId));
 	}
 
@@ -117,6 +133,8 @@ export abstract class AuthRepository {
 		userId: string;
 		metadata: SessionMetadata;
 	}): Promise<Session> {
+		const db = useDatabase();
+
 		const [createdSession] = await db
 			.insert(sessionsTable)
 			.values({
@@ -137,6 +155,8 @@ export abstract class AuthRepository {
 			updatedAt: Date;
 		},
 	): Promise<Session> {
+		const db = useDatabase();
+
 		try {
 			return await db.transaction(async (tx) => {
 				const session = await tx.query.sessionsTable.findFirst({
@@ -185,6 +205,8 @@ export abstract class AuthRepository {
 		triesLeft: number;
 		expiresAt: Date;
 	}): Promise<Verification> {
+		const db = useDatabase();
+
 		const [verifRecord] = await db
 			.insert(verificationsTable)
 			.values({
@@ -223,6 +245,8 @@ export abstract class AuthRepository {
 		triesLeft: number;
 		expiresAt: Date;
 	}): Promise<Verification> {
+		const db = useDatabase();
+
 		try {
 			const verif = await db.transaction(async (tx) => {
 				// Revoke any existing verification for the target
@@ -265,6 +289,8 @@ export abstract class AuthRepository {
 	}
 
 	static async findVerificationById(id: string): Promise<Verification | null> {
+		const db = useDatabase();
+
 		// Checks are done in the application, so we don't need to filter here.
 		const verification = await db.query.verificationsTable.findFirst({
 			where: and(eq(verificationsTable.id, id)),
@@ -277,6 +303,8 @@ export abstract class AuthRepository {
 		id: string,
 		scenario: VerificationScenario,
 	): Promise<Verification | null> {
+		const db = useDatabase();
+
 		const verification = await db.query.verificationsTable.findFirst({
 			where: and(
 				eq(verificationsTable.id, id),
@@ -299,6 +327,8 @@ export abstract class AuthRepository {
 			expiresAt?: Date;
 		},
 	): Promise<Verification> {
+		const db = useDatabase();
+
 		const [updatedVerification] = await db
 			.update(verificationsTable)
 			.set(params)
@@ -312,6 +342,8 @@ export abstract class AuthRepository {
 	}
 
 	static async revokeVerificationById(id: string): Promise<void> {
+		const db = useDatabase();
+
 		await db
 			.update(verificationsTable)
 			.set({ expiresAt: now() })
