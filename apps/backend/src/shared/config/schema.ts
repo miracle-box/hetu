@@ -80,7 +80,6 @@ export const configSchema = Type.Object({
 	}),
 
 	debug: Type.Object({
-		logRequests: Type.Boolean(),
 		enableServerTiming: Type.Boolean(),
 	}),
 
@@ -125,14 +124,28 @@ export const configSchema = Type.Object({
 	}),
 
 	logging: Type.Object({
-		prettyPrint: Type.Object({
-			enabled: Type.Boolean(),
-			destination: Type.String(),
-		}),
-		file: Type.Object({
-			enabled: Type.Boolean(),
-			destination: Type.String(),
-			append: Type.Boolean(),
+		level: Type.Union([
+			Type.Literal('trace'),
+			Type.Literal('debug'),
+			Type.Literal('info'),
+			Type.Literal('warn'),
+			Type.Literal('error'),
+			Type.Literal('fatal'),
+			Type.Literal('silent'),
+		]),
+		logDatabaseQueries: Type.Boolean(),
+		logRequests: Type.Boolean(),
+		logRequestDetails: Type.Boolean(),
+		transports: Type.Object({
+			prettyPrint: Type.Object({
+				enabled: Type.Boolean(),
+				destination: Type.String(),
+			}),
+			file: Type.Object({
+				enabled: Type.Boolean(),
+				destination: Type.String(),
+				append: Type.Boolean(),
+			}),
 		}),
 	}),
 });

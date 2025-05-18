@@ -46,7 +46,6 @@ app:
           nickname: false
 
 debug:
-  logRequests: true
   enableServerTiming: true
 
 database:
@@ -74,10 +73,15 @@ mailing:
     sender: 'Accounts <noreply@example.org>'
 
 logging:
-  prettyPrint:
-    enabled: true
-    destination: STDOUT
-  file:
-    enabled: true
-    destination: logs/latest.log
-    append: true
+  level: info
+  logDatabaseQueries: false
+  logRequests: false
+  logRequestDetails: false
+  transports:
+    prettyPrint:
+      enabled: true
+      destination: STDOUT
+    file:
+      enabled: true
+      destination: logs/latest.log
+      append: true

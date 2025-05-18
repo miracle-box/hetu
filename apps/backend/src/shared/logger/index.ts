@@ -6,26 +6,31 @@ function getDesti(desti: string) {
 }
 
 export const Logger = pino({
+	level: Config.logging.level,
 	transport: {
 		targets: [
-			...(Config.logging.prettyPrint.enabled
+			...(Config.logging.transports.prettyPrint.enabled
 				? [
 						{
 							target: '@repo/pino-pretty-transport',
+							level: Config.logging.level,
 							options: {
-								destination: getDesti(Config.logging.prettyPrint.destination),
+								destination: getDesti(
+									Config.logging.transports.prettyPrint.destination,
+								),
 							},
 						},
 					]
 				: []),
-			...(Config.logging.file.enabled
+			...(Config.logging.transports.file.enabled
 				? [
 						{
 							target: 'pino/file',
+							level: Config.logging.level,
 							options: {
-								destination: getDesti(Config.logging.file.destination),
+								destination: getDesti(Config.logging.transports.file.destination),
 								mkdir: true,
-								append: Config.logging.file.append,
+								append: Config.logging.transports.file.append,
 							},
 						},
 					]
