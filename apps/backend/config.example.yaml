@@ -46,7 +46,6 @@ app:
           nickname: false
 
 debug:
-  logRequests: true
   enableServerTiming: true
 
 database:

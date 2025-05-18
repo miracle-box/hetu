@@ -80,7 +80,6 @@ export const configSchema = Type.Object({
 	}),
 
 	debug: Type.Object({
-		logRequests: Type.Boolean(),
 		enableServerTiming: Type.Boolean(),
 	}),
 
