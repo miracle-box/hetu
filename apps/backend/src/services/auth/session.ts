@@ -3,8 +3,8 @@ import { SessionLifecycle, type Session, type SessionMetadata } from '~backend/a
 import { SessionScope } from '~backend/auth/auth.entities';
 import { AuthRepository } from '~backend/auth/auth.repository';
 import { getLifecycle, isSessionOfScope } from '~backend/shared/auth/utils';
-import { UsersRepository } from '~backend/users/users.repository';
 import { withTransaction } from '~backend/shared/db';
+import { UsersRepository } from '~backend/users/users.repository';
 
 /**
  * Session handling related utilities.

@@ -1,5 +1,6 @@
 import pino from 'pino';
 import { Config } from '~backend/shared/config';
+import { requestIdStore } from '~backend/shared/middlewares/request-id';
 
 function getDesti(desti: string) {
 	return desti.toUpperCase() === 'STDOUT' ? 1 : desti.toUpperCase() === 'STDERR' ? 2 : desti;
@@ -7,6 +8,11 @@ function getDesti(desti: string) {
 
 export const Logger = pino({
 	level: Config.logging.level,
+	mixin: () => {
+		// Get request id from middleware's AsyncLocalStorage
+		const requestId = requestIdStore.getStore();
+		return { requestId };
+	},
 	transport: {
 		targets: [
 			...(Config.logging.transports.prettyPrint.enabled

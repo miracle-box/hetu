@@ -3,11 +3,11 @@ import { Elysia, t } from 'elysia';
 import { sessionSchema, SessionScope, VerificationScenario } from '~backend/auth/auth.entities';
 import { PasswordService } from '~backend/services/auth/password';
 import { SessionService } from '~backend/services/auth/session';
+import { withTransaction } from '~backend/shared/db';
 import { AppError } from '~backend/shared/middlewares/errors/app-error';
 import { createErrorResps } from '~backend/shared/middlewares/errors/docs';
 import { UsersRepository } from '~backend/users/users.repository';
 import { AuthRepository } from '../auth.repository';
-import { withTransaction } from '~backend/shared/db';
 
 export const signupHandler = new Elysia().post(
 	'/signup',

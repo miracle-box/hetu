@@ -4,7 +4,7 @@ import { Logger } from '~backend/shared/logger';
 export class PinoDrizzleLogger implements DrizzleLogger {
 	logQuery(query: string, params: unknown[]): void {
 		const interpolated = this.interpolateQuery(query, params);
-		Logger.debug({ query, params }, 'Database query: ' + interpolated);
+		Logger.debug({ sql: query, params }, 'Database query: ' + interpolated);
 	}
 
 	private interpolateQuery(query: string, parameters?: unknown[]) {
