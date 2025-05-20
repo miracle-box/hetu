@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  //  This is for better linting performance.
+  "references": [
+    { "path": "./apps/backend/tsconfig.json" },
+    { "path": "./apps/web/tsconfig.json" },
+    { "path": "./packages/eslint-config/jsconfig.json" },
+    { "path": "./packages/miniclap/tsconfig.json" },
+    { "path": "./packages/pino-pretty-transport/tsconfig.json" },
+    { "path": "./packages/ui/tsconfig.lint.json" }
+  ]
+}
