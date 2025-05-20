@@ -3,7 +3,7 @@ import { SessionLifecycle, SessionScope } from '~backend/auth/auth.entities';
 import { SessionService } from '~backend/services/auth/session';
 import { hasProperty } from '~backend/shared/typing/utils';
 import { YggdrasilService } from '~backend/yggdrasil/yggdrasil.service';
-import { ForbiddenOperationException } from './utils/errors';
+import { ForbiddenOperationException } from '../shared/middlewares/errors/yggdrasil-error';
 
 type AuthMiddlewareOptions = {
 	allowedLifecycle: Exclude<SessionLifecycle, (typeof SessionLifecycle)['Expired']>[];

@@ -4,7 +4,7 @@ import { SessionService } from '~backend/services/auth/session';
 import {
 	ForbiddenOperationException,
 	IllegalArgumentException,
-} from '~backend/yggdrasil/utils/errors';
+} from '~backend/shared/middlewares/errors/yggdrasil-error';
 import { validateTokenMiddleware } from '~backend/yggdrasil/validate-token.middleware';
 import {
 	yggProfileDigestSchema,
