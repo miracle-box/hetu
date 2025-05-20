@@ -1,8 +1,8 @@
 import { Elysia, t } from 'elysia';
 import { PasswordService } from '~backend/services/auth/password';
 import { SessionService } from '~backend/services/auth/session';
+import { ForbiddenOperationException } from '~backend/shared/middlewares/errors/yggdrasil-error';
 import { UsersRepository } from '~backend/users/users.repository';
-import { ForbiddenOperationException } from '~backend/yggdrasil/utils/errors';
 import { yggCredentialsSchema } from '~backend/yggdrasil/yggdrasil.entities';
 
 export const signoutHandler = new Elysia().post(

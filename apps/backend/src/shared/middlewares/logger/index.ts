@@ -1,3 +1,4 @@
+import type { ElysiaOnErrorContext } from '~backend/shared/middlewares/errors/types';
 import process from 'node:process';
 import { Elysia } from 'elysia';
 import { version as elysiaVersion } from 'elysia/package.json';
@@ -81,49 +82,53 @@ export const logger = () => {
 				details,
 				`Handled (${ctx.set.status} ✔) ${ctx.request.method} ${url.pathname} in ${formatDuration(duration)}.`,
 			);
-		})
-		.onError((ctx) => {
-			const url = new URL(ctx.request.url);
-			const duration = timeToNow(
-				(ctx.store as { [REQUEST_START_TIME_KEY]: bigint })[REQUEST_START_TIME_KEY],
-			);
-
-			const details = Config.logging.logRequestDetails
-				? {
-						request: {
-							method: ctx.request.method,
-							route: ctx.route,
-							path: ctx.path,
-							params: ctx.params,
-							query: ctx.query,
-							headers: ctx.headers,
-							body: ctx.body,
-						},
-						response: {
-							status: ctx.set.status,
-							headers: ctx.set.headers,
-							code: ctx.code,
-							error: ctx.error ?? ctx.response,
-						},
-						durationMs: duration / 1000_000,
-					}
-				: {
-						request: {
-							method: ctx.request.method,
-							route: ctx.route,
-							path: ctx.path,
-							params: ctx.params,
-							query: ctx.query,
-						},
-						response: {
-							status: ctx.set.status,
-						},
-						durationMs: duration / 1000_000,
-					};
-
-			Logger.debug(
-				details,
-				`Handled (${ctx.set.status} ✗) ${ctx.request.method} ${url.pathname} in ${formatDuration(duration)}.`,
-			);
 		});
+};
+
+export const onErrorLogger = (ctx: ElysiaOnErrorContext) => {
+	const url = new URL(ctx.request.url);
+	const duration = timeToNow(
+		(ctx.store as { [REQUEST_START_TIME_KEY]: bigint })[REQUEST_START_TIME_KEY],
+	);
+
+	// Correctly typed.
+	const status =
+		'status' in (ctx.error as Error) ? (ctx.error as Error & { status: number }).status : 500;
+
+	const details = Config.logging.logRequestDetails
+		? {
+				request: {
+					method: ctx.request.method,
+					route: ctx.route,
+					path: ctx.path,
+					params: ctx.params,
+					query: ctx.query,
+					headers: ctx.headers,
+					body: ctx.body,
+				},
+				response: {
+					status,
+					headers: ctx.set.headers,
+					body: ctx.response,
+				},
+				durationMs: duration / 1000_000,
+			}
+		: {
+				request: {
+					method: ctx.request.method,
+					route: ctx.route,
+					path: ctx.path,
+					params: ctx.params,
+					query: ctx.query,
+				},
+				response: {
+					status,
+				},
+				durationMs: duration / 1000_000,
+			};
+
+	Logger.debug(
+		details,
+		`Handled (${ctx.set.status} ✗) ${ctx.request.method} ${url.pathname} in ${formatDuration(duration)}.`,
+	);
 };

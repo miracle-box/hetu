@@ -1,5 +1,5 @@
 import { Elysia } from 'elysia';
-import { errorsHandler } from './errors';
+import { errorsMiddleware } from './errors';
 import { logger } from './logger';
 import { requestId } from './request-id';
 import { serverTiming } from './server-timing';
@@ -11,6 +11,6 @@ export const middlewares = (app: Elysia) =>
 		.use(swaggerMiddleware)
 		.use(logger)
 		.use(requestId)
+		.use(errorsMiddleware)
 		.use(serverTiming)
-		.use(errorsHandler)
 		.use(gracefulShutdown);

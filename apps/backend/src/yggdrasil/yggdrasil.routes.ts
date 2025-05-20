@@ -1,5 +1,4 @@
 import { Elysia } from 'elysia';
-import { yggdrasilErrorsHandler } from './utils/errors';
 import { authenticateHandler } from './webapis/authserver/authenticate';
 import { invalidateHandler } from './webapis/authserver/invalidate';
 import { refreshHandler } from './webapis/authserver/refresh';
@@ -18,7 +17,6 @@ export const YggdrasilRoutes = new Elysia({
 	name: 'Routes.Yggdrasil',
 	prefix: '/yggdrasil',
 })
-	.use(yggdrasilErrorsHandler)
 	.group('', (app) => app.use(getMetadataHandler))
 	.group('/authserver', (app) =>
 		app

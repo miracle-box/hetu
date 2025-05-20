@@ -7,11 +7,12 @@ import { TexturesRoutes } from '~backend/textures/textures.routes';
 import { UsersRoutes } from '~backend/users/users.routes';
 import { YggdrasilRoutes } from '~backend/yggdrasil/yggdrasil.routes';
 
-export const app = new Elysia()
-	// Putting yggdrasil routes here avoids the error being handled twice
-	//  [TODO] I'm Looking for solutions better than this.
-	.use(YggdrasilRoutes)
+export const app = new Elysia({
+	name: 'App',
+})
 	.use(middlewares)
+	// Error handlers are required to be placed here.
+	.use(YggdrasilRoutes)
 	.use(AuthRoutes)
 	.use(FilesRoutes)
 	.use(UsersRoutes)

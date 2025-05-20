@@ -1,5 +1,5 @@
 import { Elysia, t } from 'elysia';
-import { ForbiddenOperationException } from '~backend/yggdrasil/utils/errors';
+import { ForbiddenOperationException } from '~backend/shared/middlewares/errors/yggdrasil-error';
 import { validateTokenMiddleware } from '~backend/yggdrasil/validate-token.middleware';
 import { YggdrasilRepository } from '~backend/yggdrasil/yggdrasil.repository';
 
