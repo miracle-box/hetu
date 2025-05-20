@@ -1,6 +1,7 @@
 {
   "name": "@repo/backend",
   "version": "0.1.0",
+  "private": true,
   "scripts": {
     "dev": "bun run --watch src/index.ts start --config config.development.yaml",
     "build": "bun scripts/build.ts",
@@ -12,27 +13,27 @@
     "migration:run": "bun run src/index.ts migrate --config config.development.yaml"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.717.0",
-    "@elysiajs/server-timing": "^1.2.0",
-    "@elysiajs/swagger": "^1.2.0",
-    "@paralleldrive/cuid2": "^2.2.2",
+    "@aws-sdk/client-s3": "^3.812.0",
+    "@elysiajs/server-timing": "^1.3.0",
+    "@elysiajs/swagger": "^1.3.0",
     "@repo/miniclap": "*",
     "@repo/pino-pretty-transport": "*",
-    "@sinclair/typebox": "^0.34.27",
-    "bun-plugin-pino": "^1.3.0",
-    "drizzle-orm": "^0.38.3",
-    "elysia": "^1.2.25",
-    "nodemailer": "^6.9.16",
-    "pino": "^9.6.0",
+    "@paralleldrive/cuid2": "^2.2.2",
+    "@sinclair/typebox": "^0.34.33",
+    "bun-plugin-pino": "^1.4.0",
+    "drizzle-orm": "^0.43.1",
+    "elysia": "^1.3.1",
+    "nodemailer": "^7.0.3",
+    "pino": "^9.7.0",
     "postgres": "^3.4.5",
-    "sharp": "^0.33.5",
-    "yaml": "^2.7.0"
+    "sharp": "^0.34.2",
+    "yaml": "^2.8.0"
   },
   "devDependencies": {
     "@repo/typescript-config": "*",
     "@types/nodemailer": "^6.4.17",
-    "bun-types": "latest",
-    "drizzle-kit": "^0.30.1"
+    "bun-types": "^1.2.13",
+    "drizzle-kit": "^0.31.1"
   },
   "module": "src/index.js",
   "exports": {
