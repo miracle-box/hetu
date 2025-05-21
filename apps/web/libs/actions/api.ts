@@ -81,7 +81,7 @@ export async function getUserTextures() {
 export async function uploadFile(body: { file: File; type: 'texture_skin' | 'texture_cape' }) {
 	const session = await readSession();
 
-	return api.files.index
+	return api.files
 		.post(
 			{
 				type: body.type,
@@ -117,7 +117,7 @@ export async function createTexture(body: {
 }) {
 	const session = await readSession();
 
-	return api.textures.index
+	return api.textures
 		.post(body, {
 			headers: { Authorization: `Bearer ${session.authToken}` },
 		})
@@ -141,7 +141,7 @@ export async function createTexture(body: {
 export async function createProfile(body: { name: string }) {
 	const session = await readSession();
 
-	return api.profiles.index
+	return api.profiles
 		.post(body, {
 			headers: { Authorization: `Bearer ${session.authToken}` },
 		})

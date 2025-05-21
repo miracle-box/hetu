@@ -11,7 +11,6 @@ export const app = new Elysia({
 	name: 'App',
 })
 	.use(middlewares)
-	// Error handlers are required to be placed here.
 	.use(YggdrasilRoutes)
 	.use(AuthRoutes)
 	.use(FilesRoutes)
