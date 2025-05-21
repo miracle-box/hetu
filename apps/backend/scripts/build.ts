@@ -84,11 +84,12 @@ function bunPluginEmbedSharpNative(): BunPlugin {
 				injected = true;
 
 				const replacedLines = [
-					"import path from 'node:path';",
-					`const bundleDir = path.dirname(Bun.resolveSync(\`./sharp_natives/sharp/sharp-${platform}/sharp-${platform}.js\`, import.meta.dir));`,
-					`const relativeFilePath = require(path.join(bundleDir, "sharp-${platform}.js")).default`,
+					// Avoids naming conflict.
+					"import reaplacedPath from 'node:path';",
+					`const bundleDir = reaplacedPath.dirname(Bun.resolveSync(\`./sharp_natives/sharp/sharp-${platform}/sharp-${platform}.js\`, import.meta.dir));`,
+					`const relativeFilePath = require(reaplacedPath.join(bundleDir, "sharp-${platform}.js")).default`,
 					'const paths = [',
-					'path.join(bundleDir, relativeFilePath),',
+					'reaplacedPath.join(bundleDir, relativeFilePath),',
 				];
 				const contents = (await Bun.file(args.path).text()).replace(
 					'const paths = [',
