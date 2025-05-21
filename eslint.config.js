@@ -67,8 +67,7 @@ export default [
 
 	// Import
 	...configs.importLint({
-		// Using a single TSConfig with references resolves import resolution problems.
-		tsconfig: 'tsconfig.lint.json',
+		tsconfigs: ['packages/*/tsconfig.json', 'apps/*/tsconfig.json'],
 	}),
 	// Turborepo
 	...configs.turbo({}),

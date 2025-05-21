@@ -7,12 +7,11 @@ import importPlugin from 'eslint-plugin-import-x';
  * Import related config
  * @param {{
  *		ignores?: string[]
- *		tsconfig?: string | string[]
- *		confirmMultipleTsconfig?: boolean
+ *		tsconfigs?: string[]
  * }} options Import options
  */
 export function importLint(options) {
-	const { ignores = [], tsconfig, confirmMultipleTsconfig = false } = options;
+	const { ignores = [], tsconfigs = [] } = options;
 
 	/** @type {import("eslint").Linter.Config[]} */
 	const config = [
@@ -26,10 +25,7 @@ export function importLint(options) {
 				'import-x/resolver-next': [
 					createTypeScriptImportResolver({
 						alwaysTryTypes: true,
-						// [FIXME] Still have inconsistent behavior between 'bun: true + bun eslint' and 'bun --bun eslint'.
-						bun: true,
-						project: tsconfig,
-						noWarnOnMultipleProjects: confirmMultipleTsconfig,
+						project: tsconfigs,
 					}),
 				],
 			},
