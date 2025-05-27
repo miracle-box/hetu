@@ -8,9 +8,9 @@ import { swaggerMiddleware } from './swagger';
 
 export const middlewares = (app: Elysia) =>
 	app
-		.use(swaggerMiddleware)
 		.use(logger)
 		.use(requestId)
 		.use(errorsMiddleware)
 		.use(serverTiming)
+		.use(swaggerMiddleware)
 		.use(gracefulShutdown);
