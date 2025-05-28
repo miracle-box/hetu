@@ -1,0 +1,17 @@
+{
+  "name": "hetu-dev-env",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "app",
+  "workspaceFolder": "/workspace",
+  "forwardPorts": [3000, 3001, 5432, 8025, 9000, 9001],
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "esbenp.prettier-vscode",
+        "dbaeumer.vscode-eslint"
+      ]
+    }
+  },
+  "features": {},
+  "overrideCommand": false
+}
