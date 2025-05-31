@@ -1,0 +1,116 @@
+# For development purposes only, do not use in production.
+
+app:
+  listenTo: '3001'
+  baseUrl: 'http://localhost:3001'
+  session:
+    ttlMs: 86400000
+    inactiveAfterMs: 604800000
+    maxLifespanMs: 2592000000
+  yggdrasil:
+    serverName: 'Hetu'
+    links:
+      homepage: 'http://localhost:3000'
+      register: 'http://localhost:3000/auth/signup'
+    skinDomains:
+      - 'localhost'
+    profileKeypair:
+      private: |
+        -----BEGIN RSA PRIVATE KEY-----
+        MIIEpAIBAAKCAQEAl+fAfbBFkOqAjLC6Cw1hQZ+nWbX7x61KPBZcaRD5nQpIP1Xp
+        SC2CWYiji2EjNtVriI/xIZv8oikGbB1L5B3aMZuh7HQBi4UJVk0a20nr2Tm/Nju6
+        0apzdfXq/70E84odbnrimagMzn5CcTf6ywPTRwJTJ0DMPFr6EuGNxgSSMPzgN9k7
+        rxwCgXNsGK/vKwu2E1XGuAFhgSS4p3VPucsSoypo4s/JoZ9J9gobZZni7x2MFjc1
+        SBLu7WoM1Ppm/RGZy6fQZF7W7jAMuEdPt1QSPADtOrmxk3T9BDGumLbRETVlz7es
+        61QmKHF+wiq1whB0tNmJLHej2J8ufDtK4lKq6wIDAQABAoIBADq4daqgl2O7otHA
+        B0r6cxwhEVoWhSvdCxNLOZHL5BIWxXLmTPV/0iG2NjJM7IXn3le9/OKXIAO3hCoK
+        8SlPeOcwWFnFRkues8tOpxEZ9DfWoNngIQmnsFZrJ9qQQPe77kCk9C+dzMWN/TUz
+        BJmx8txCQ86qt8ilCoJ9+oYPgku4/Inwd2XD/WwPUjrgR1S3eL+Gt5Kl6AZx4j91
+        UYMzR5ngMvyScSzAEJGbAda6SYj26pRbmnPjfJA+z8OCd7Af0Qy5wShtBQHVQpnE
+        5D3RmnAxjj4fKV8CJH7fLX2s2DA2SzF4AHy+MbkCAgpPsmlUd7MUB4hbHRK4DvO3
+        g37N8CECgYEAzMeKewviiZ7I6FXylLjRhw02+Qp6lhQx4DQAIu8EMMyLYYDVQfMB
+        DoBsDGzF+Nnyng1BI4q8ku0lwcgpcT2RNOsvSh0Id5bxPFfI8E7n19K6QVW6YCmt
+        vKWtvgceP8t3nu1Vk1RspBobOnKI7OhE6lfMCCG/JvX3IBU5ZCs4WaMCgYEAveaQ
+        /MKOYfJSQTUK0O1mKoHKamR+LamuOb+iMWo5ycGviBzTZ/C7kFhBryi5ZW6NS+XG
+        FSPX0e3XcSmxqavxejFiLGcqlUXNKzXgOrg2oPBHZQV16lcrelI7I8CFKtE5z8dz
+        j9Sjk9lPBWTlQik2I0bil5J2890BpoZ4PRwZDhkCgYBTSLxbeuPxkLCpPXthXSFq
+        SceX1dkxfJkkVEHR81/C8Q2m5BzXq5s8aKKJExwZL5rrCPz7FYvIPcbjXyLruVx7
+        J0OeYtx0tuD558IDajQEpOG3fMRGI+1TEhbteDunOns2GdR6DRX6T9vPE5H4uCZ/
+        IKIMlJ0HnXWaiMdEpAdQ/QKBgQC1mtO5BQ5JGQYUmfc4CnAT4n+C84u/e2/EhkFD
+        5IRTL8j/8CE0W4Hj7qMSMW3rVKgHlzuxZ8+zUTMhY3AmBOsvoh5yvE565n/o/OLt
+        BNIpYt/D+k7jxm0r04v/CtPPOLuCuwkG2aF9eOobDHw6o1LEtbtonIbpe8diS2Kd
+        fktvsQKBgQDDw8bVcE/duxlO3zwHNHTAIH57ul3NosA3C2LqCI+TmkRESUC0L8xN
+        NKO2ZdlanvITX/UL+0Sj4+oOxmTdYZe/uug9bbS7YL6SlLqmi3bJE0S6QmLfF6+C
+        JCmKPbuIKTHS1M7QIfWa4U7cnbdhrn7Q9XUD69xYEMpWfzLMVA5pSQ==
+        -----END RSA PRIVATE KEY-----
+      public: |
+        -----BEGIN PUBLIC KEY-----
+        MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAl+fAfbBFkOqAjLC6Cw1h
+        QZ+nWbX7x61KPBZcaRD5nQpIP1XpSC2CWYiji2EjNtVriI/xIZv8oikGbB1L5B3a
+        MZuh7HQBi4UJVk0a20nr2Tm/Nju60apzdfXq/70E84odbnrimagMzn5CcTf6ywPT
+        RwJTJ0DMPFr6EuGNxgSSMPzgN9k7rxwCgXNsGK/vKwu2E1XGuAFhgSS4p3VPucsS
+        oypo4s/JoZ9J9gobZZni7x2MFjc1SBLu7WoM1Ppm/RGZy6fQZF7W7jAMuEdPt1QS
+        PADtOrmxk3T9BDGumLbRETVlz7es61QmKHF+wiq1whB0tNmJLHej2J8ufDtK4lKq
+        6wIDAQAB
+        -----END PUBLIC KEY-----
+
+  oauth2:
+    providers:
+      microsoft:
+        protocol: 'oauth2'
+        clientId: '<Fill in your client ID>'
+        clientSecret: '<Fill in your client secret>'
+        pkce: 'S256'
+        endpoints:
+          authorization: 'https://login.microsoftonline.com/consumers/oauth2/v2.0/authorize'
+          token: 'https://login.microsoftonline.com/consumers/oauth2/v2.0/token'
+          userinfo: 'https://graph.microsoft.com/oidc/userinfo'
+        profileScopes: ['openid', 'email', 'profile']
+        profileMap:
+          id: '/sub'
+          email: '/email'
+          username: '/email'
+          avatarUrl: false
+          nickname: false
+
+debug:
+  enableServerTiming: true
+
+database:
+  url: 'postgres://hetudevelop:hetudevelop@db:5432/hetudevelop'
+  migrationUrl: 'postgres://hetudevelop:hetudevelop@db:5432/hetudevelop'
+
+storage:
+  s3:
+    endpoint: 'http://s3:9000'
+    publicRoot: 'http://localhost:9000/textures'
+    forcePathStyle: true
+    bucket: 'textures'
+    # Ends in '/' if provided
+    prefix: ''
+    accessKey:
+      id: 'hetudevelop'
+      secret: 'hetudevelop'
+
+mailing:
+  smtp:
+    host: 'mail'
+    port: 1025
+    secure: false
+    user: 'accounts@hetu.dev'
+    password: 'hetudevelop'
+    sender: 'Hetu Development Server <accounts@hetu.dev>'
+
+logging:
+  level: trace
+  logDatabaseQueries: true
+  logRequests: true
+  logRequestDetails: true
+  transports:
+    prettyPrint:
+      enabled: true
+      destination: STDOUT
+    file:
+      enabled: true
+      destination: logs/latest.log
+      append: true

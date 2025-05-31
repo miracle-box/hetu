@@ -1,0 +1,49 @@
+services:
+    app:
+        build:
+            context: ..
+            dockerfile: .devcontainer/Dockerfile
+        volumes:
+            - ..:/workspace:cached
+        working_dir: /workspace
+        command: sleep infinity
+        networks:
+            - devnet
+        depends_on:
+            - db
+            - s3
+            - mail
+
+    db:
+        image: postgres:15
+        environment:
+            POSTGRES_USER: hetudevelop
+            POSTGRES_PASSWORD: hetudevelop
+            POSTGRES_DB: hetudevelop
+        networks:
+            - devnet
+        volumes:
+            - pg_data:/var/lib/postgresql/data
+
+    s3:
+        image: minio/minio
+        command: server /data --console-address ":9001"
+        environment:
+            MINIO_ROOT_USER: hetudevelop
+            MINIO_ROOT_PASSWORD: hetudevelop
+        volumes:
+            - minio_data:/data
+        networks:
+            - devnet
+
+    mail:
+        image: mailhog/mailhog
+        networks:
+            - devnet
+
+networks:
+    devnet:
+
+volumes:
+    pg_data:
+    minio_data:
