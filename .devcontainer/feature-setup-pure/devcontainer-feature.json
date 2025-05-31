@@ -1,0 +1,11 @@
+{
+  "id": "setup-pure",
+  "version": "0.0.1",
+  "name": "Setup Pure Prompt",
+  "description": "Setup Pure prompt for Zsh",
+  "dependsOn": {
+    "ghcr.io/devcontainers/features/common-utils": {
+      "installZsh": true
+    }
+  }
+}
