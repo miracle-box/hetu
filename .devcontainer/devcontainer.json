@@ -14,7 +14,7 @@
   ],
   "portsAttributes": {
     "1025": {
-      "label": "SMTP Server"
+      "label": "Service: SMTP"
     },
     "3000": {
       "label": "Dev Frontend"
@@ -23,16 +23,16 @@
       "label": "Dev Backend"
     },
     "5432": {
-      "label": "Database"
+      "label": "Service: Database"
     },
     "8025": {
-      "label": "Mail Dashboard"
+      "label": "Dashboard: Mail"
     },
     "9000": {
-      "label": "S3 API"
+      "label": "Service: S3"
     },
     "9001": {
-      "label": "S3 Dashboard"
+      "label": "Dashboard: S3"
     }
   },
   "customizations": {
@@ -49,6 +49,7 @@
     }
   },
   "features": {
+    "ghcr.io/christophermacgown/devcontainer-features/minio-client:1": {},
     "ghcr.io/devcontainers/features/common-utils:2": {
       "installZsh": true,
       "configureZshAsDefaultShell": true,
@@ -58,5 +59,6 @@
     },
     "./feature-setup-pure": {}
   },
+  "onCreateCommand": "/bin/sh .devcontainer/oncreate.sh",
   "postCreateCommand": "bun install"
 }
