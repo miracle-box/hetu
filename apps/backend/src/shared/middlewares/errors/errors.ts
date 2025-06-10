@@ -15,6 +15,12 @@ export const APP_ERRORS = {
 			'You must be authorized to access this resource. Please check for token validity.',
 		details: t.Void(),
 	},
+	// For known app errors (e.g. DatabaseError), unlike unknown errors caught by middleware.
+	'internal-error': {
+		status: 500,
+		message: () => 'An internal error occurred. Please try again later.',
+		details: t.Void(),
+	},
 	'auth/invalid-credentials': {
 		status: 400,
 		message: () => 'The provided credentials are incorrect. Please check and try again.',
