@@ -3,7 +3,7 @@ import { EitherAsync } from 'purify-ts';
 import { withTransaction } from '~backend/shared/db';
 import { AuthRepository } from '../auth.repository';
 
-type Command = {
+export async function revokeAndCreateVerification(cmd: {
 	userId?: string;
 	type: VerificationType;
 	scenario: VerificationScenario;
@@ -11,9 +11,7 @@ type Command = {
 	secret: string;
 	expiresInMs: number;
 	tries: number;
-};
-
-export async function revokeAndCreateVerification(cmd: Command) {
+}) {
 	return await withTransaction(async () => {
 		return EitherAsync.fromPromise(() =>
 			AuthRepository.revokeVerifications({
