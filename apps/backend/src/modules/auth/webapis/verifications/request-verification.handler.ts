@@ -1,6 +1,5 @@
 import { Elysia } from 'elysia';
 import { VerificationType } from '~backend/auth/auth.entities';
-import { Logger } from '~backend/shared/logger';
 import { AppError } from '~backend/shared/middlewares/errors/app-error';
 import { requestVerificationAction } from '../../actions/verifications/request-verification.action';
 import { requestVerificationDtoSchemas } from '../../dtos';
@@ -16,18 +15,6 @@ export const requestVerificationHandler = new Elysia().post(
 
 		return result
 			.map((data) => {
-				if (data.type === VerificationType.EMAIL) {
-					return {
-						verification: {
-							id: data.verification.id,
-							type: VerificationType.EMAIL,
-							scenario: data.verification.scenario,
-							target: data.verification.target,
-							verified: data.verification.verified,
-						},
-					};
-				}
-
 				if (data.type === VerificationType.OAUTH2) {
 					return {
 						verification: {
@@ -42,9 +29,9 @@ export const requestVerificationHandler = new Elysia().post(
 					};
 				}
 
-				// For type safety, should never happen.
-				Logger.error('Invalid verification data, can not be mapped to response.', data);
-				throw new AppError('auth/invalid-verification-type');
+				return {
+					verification: data.verification,
+				};
 			})
 			.mapLeft((error) => {
 				switch (error.name) {

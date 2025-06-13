@@ -36,3 +36,52 @@ export class InvalidOauth2ProviderError extends BaseError {
 		super(`Invalid OAuth2 provider: ${provider}`);
 	}
 }
+
+export class VerificationNotExistsError extends BaseError {
+	override readonly name = 'VerificationNotExistsError' as const;
+
+	constructor() {
+		super(`Verification not exists.`);
+	}
+}
+
+export class VerificationExpiredError extends BaseError {
+	override readonly name = 'VerificationExpiredError' as const;
+
+	constructor(id: string) {
+		super(`Verification expired: ${id}`);
+	}
+}
+
+export class VerificationAlreadyVerifiedError extends BaseError {
+	override readonly name = 'VerificationAlreadyVerifiedError' as const;
+
+	constructor(id: string) {
+		super(`Verification already verified: ${id}`);
+	}
+}
+
+export class InvalidVerificationCodeError extends BaseError {
+	override readonly name = 'InvalidVerificationCodeError' as const;
+
+	constructor(id: string) {
+		super(`Invalid verification code for verification: ${id}`);
+	}
+}
+
+export class InvalidOauth2GrantError extends BaseError {
+	override readonly name = 'InvalidOauth2GrantError' as const;
+
+	constructor(error: string, cause?: unknown) {
+		super(`Failed to obtain access token or the token is invalid: ${error}`);
+		if (cause) this.cause = cause;
+	}
+}
+
+export class Oauth2MisconfiguredError extends BaseError {
+	override readonly name = 'Oauth2MisconfiguredError' as const;
+
+	constructor() {
+		super('OAuth2 provider is misconfigured or returned invalid response');
+	}
+}

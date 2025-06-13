@@ -1,5 +1,9 @@
 import { t, type Static } from 'elysia';
-import { verificationScenarioSchema, VerificationType } from '../auth.entities';
+import {
+	verificationScenarioSchema,
+	VerificationType,
+	verificationTypeSchema,
+} from '../auth.entities';
 
 export const baseVerificationDigestSchema = t.Object({
 	id: t.String(),
@@ -16,15 +20,15 @@ const oauth2VerificationDtoSchema = t.Intersect([
 	}),
 ]);
 
-const emailVerificationDtoSchema = t.Intersect([
+const genericVerificationDtoSchema = t.Intersect([
 	baseVerificationDigestSchema,
 	t.Object({
-		type: t.Literal(VerificationType.EMAIL),
+		type: t.Exclude(verificationTypeSchema, t.Literal(VerificationType.OAUTH2)),
 	}),
 ]);
 
 export const verificationDtoSchema = t.Union(
-	[oauth2VerificationDtoSchema, emailVerificationDtoSchema],
+	[oauth2VerificationDtoSchema, genericVerificationDtoSchema],
 	{
 		discriminator: 'type',
 	},

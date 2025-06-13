@@ -14,4 +14,11 @@ export const requestVerificationDtoSchemas = createDtoSchemas({
 			verification: verificationDtoSchema,
 		}),
 	},
+	errors: [
+		'auth/user-exists',
+		'auth/invalid-verification-scenario',
+		'auth/invalid-oauth2-provider',
+		'auth/invalid-verification-type',
+		'internal-error',
+	],
 });

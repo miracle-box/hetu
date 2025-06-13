@@ -25,4 +25,31 @@ export type IAuthRepository = {
 	revokeVerifications: (
 		params: Pick<Verification, 'scenario' | 'target'>,
 	) => Promise<Either<DatabaseError, void>>;
+
+	/**
+	 * Find a verification record by ID.
+	 *
+	 * @param id The verification ID
+	 * @returns Either error or verification (null if not found)
+	 */
+	findVerificationById: (id: string) => Promise<Either<DatabaseError, Verification | null>>;
+
+	/**
+	 * Update a verification record by ID.
+	 *
+	 * @param id The verification ID
+	 * @param params The parameters to update
+	 * @returns Either error or verification
+	 */
+	updateVerificationById: (
+		id: string,
+		params: Partial<Pick<Verification, 'verified' | 'triesLeft' | 'secret' | 'expiresAt'>>,
+	) => Promise<Either<DatabaseError, Verification>>;
+
+	/**
+	 * Revoke a verification record by ID.
+	 *
+	 * @param id The verification ID
+	 */
+	revokeVerificationById: (id: string) => Promise<Either<DatabaseError, void>>;
 };

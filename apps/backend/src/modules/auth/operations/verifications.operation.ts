@@ -20,18 +20,16 @@ export async function revokeAndCreateVerification(cmd: {
 			}),
 		)
 			.chain(() =>
-				EitherAsync.fromPromise(() =>
-					AuthRepository.createVerification({
-						userId: cmd.userId,
-						type: cmd.type,
-						scenario: cmd.scenario,
-						expiresAt: new Date(Date.now() + cmd.expiresInMs),
-						target: cmd.target,
-						secret: cmd.secret,
-						verified: false,
-						triesLeft: cmd.tries,
-					}),
-				),
+				AuthRepository.createVerification({
+					userId: cmd.userId,
+					type: cmd.type,
+					scenario: cmd.scenario,
+					expiresAt: new Date(Date.now() + cmd.expiresInMs),
+					target: cmd.target,
+					secret: cmd.secret,
+					verified: false,
+					triesLeft: cmd.tries,
+				}),
 			)
 			.run();
 	});

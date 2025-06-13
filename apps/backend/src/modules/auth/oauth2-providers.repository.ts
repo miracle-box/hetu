@@ -41,7 +41,7 @@ export class OAuth2ProvidersRepository {
 	/**
 	 * Find OAuth2 provider configuration by name
 	 * @param providerName The provider name to search for
-	 * @returns OAuth2 provider configuration, or null if not found
+	 * @returns OAuth2 provider configuration wrapped in Maybe, or Nothing if not found
 	 */
 	static findByName(providerName: string): Maybe<OAuth2ProviderConfig> {
 		const provider = Object.entries(Config.app.oauth2.providers).find(

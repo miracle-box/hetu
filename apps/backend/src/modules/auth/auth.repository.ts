@@ -58,4 +58,57 @@ export const AuthRepository: IAuthRepository = {
 			return Left(new DatabaseError('Failed to revoke verifications.', e));
 		}
 	},
+
+	async findVerificationById(id) {
+		try {
+			const db = useDatabase();
+
+			// Checks are done in the application, so we don't need to filter here.
+			const verification = await db.query.verificationsTable.findFirst({
+				where: and(eq(verificationsTable.id, id)),
+			});
+
+			return Right(verification ?? null);
+		} catch (e) {
+			return Left(new DatabaseError('Failed to find verification by ID.', e));
+		}
+	},
+
+	async updateVerificationById(id, params) {
+		try {
+			const db = useDatabase();
+
+			const [updatedVerification] = await db
+				.update(verificationsTable)
+				.set(params)
+				.where(eq(verificationsTable.id, id))
+				.returning();
+
+			if (!updatedVerification) {
+				throw new DatabaseError(
+					'Failed to update verification by ID.',
+					'No verification record returned.',
+				);
+			}
+
+			return Right(updatedVerification);
+		} catch (e) {
+			return Left(new DatabaseError('Failed to update verification by ID.', e));
+		}
+	},
+
+	async revokeVerificationById(id) {
+		try {
+			const db = useDatabase();
+
+			await db
+				.update(verificationsTable)
+				.set({ expiresAt: now() })
+				.where(eq(verificationsTable.id, id));
+
+			return Right(undefined);
+		} catch (e) {
+			return Left(new DatabaseError('Failed to revoke verification by ID.', e));
+		}
+	},
 };
