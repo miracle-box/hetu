@@ -85,3 +85,19 @@ export class Oauth2MisconfiguredError extends BaseError {
 		super('OAuth2 provider is misconfigured or returned invalid response');
 	}
 }
+
+export class Oauth2AlreadyBoundError extends BaseError {
+	override readonly name = 'Oauth2AlreadyBoundError' as const;
+
+	constructor() {
+		super('OAuth2 account is already bound to another user');
+	}
+}
+
+export class Oauth2NotBoundError extends BaseError {
+	override readonly name = 'Oauth2NotBoundError' as const;
+
+	constructor() {
+		super('OAuth2 account is not bound to any user');
+	}
+}

@@ -35,6 +35,18 @@ export type IAuthRepository = {
 	findVerificationById: (id: string) => Promise<Either<DatabaseError, Verification | null>>;
 
 	/**
+	 * Find a verified verification record by ID and scenario.
+	 *
+	 * @param id The verification ID
+	 * @param scenario The verification scenario
+	 * @returns Either error or verification (null if not found)
+	 */
+	findVerifiedVerification: (
+		id: string,
+		scenario: Verification['scenario'],
+	) => Promise<Either<DatabaseError, Verification | null>>;
+
+	/**
 	 * Update a verification record by ID.
 	 *
 	 * @param id The verification ID
@@ -52,4 +64,37 @@ export type IAuthRepository = {
 	 * @param id The verification ID
 	 */
 	revokeVerificationById: (id: string) => Promise<Either<DatabaseError, void>>;
+
+	/**
+	 * Find OAuth2 binding by provider and profile ID.
+	 *
+	 * @param provider The OAuth2 provider name
+	 * @param profileId The OAuth2 profile ID
+	 * @returns Either error or OAuth2 binding (null if not found)
+	 */
+	findOAuth2Binding: (
+		provider: string,
+		profileId: string,
+	) => Promise<
+		Either<
+			DatabaseError,
+			{
+				userId: string;
+				provider: string | null;
+				profileId: string;
+			} | null
+		>
+	>;
+
+	/**
+	 * Upsert OAuth2 binding.
+	 *
+	 * @param params The OAuth2 binding parameters
+	 */
+	upsertOAuth2: (params: {
+		userId: string;
+		provider: string;
+		oauth2ProfileId: string;
+		metadata: { accessToken: string };
+	}) => Promise<Either<DatabaseError, void>>;
 };
