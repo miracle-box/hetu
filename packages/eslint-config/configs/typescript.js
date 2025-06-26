@@ -35,6 +35,7 @@ export function typescript(options) {
 		)?.rules ?? {}),
 
 		'@typescript-eslint/no-unused-vars': 'off',
+		'require-await': 'off',
 		'no-redeclare': 'off',
 		'no-undef': 'off',
 	};
@@ -45,6 +46,8 @@ export function typescript(options) {
 		...(tsPlugin.configs.recommendedTypeCheckedOnly.find(
 			(block) => block.name === 'typescript-eslint/recommended-type-checked-only',
 		)?.rules ?? {}),
+
+		'@typescript-eslint/require-await': 'off',
 	};
 
 	/** @type {import('@typescript-eslint/utils').TSESLint.FlatConfig.ConfigArray} */
