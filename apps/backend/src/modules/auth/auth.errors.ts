@@ -45,6 +45,14 @@ export class VerificationNotExistsError extends BaseError {
 	}
 }
 
+export class InvalidVerificationError extends BaseError {
+	override readonly name = 'InvalidVerificationError' as const;
+
+	constructor() {
+		super(`Invalid verification.`);
+	}
+}
+
 export class VerificationExpiredError extends BaseError {
 	override readonly name = 'VerificationExpiredError' as const;
 
@@ -99,5 +107,13 @@ export class Oauth2NotBoundError extends BaseError {
 
 	constructor() {
 		super('OAuth2 account is not bound to any user');
+	}
+}
+
+export class InvalidCredentialsError extends BaseError {
+	override readonly name = 'InvalidCredentialsError' as const;
+
+	constructor() {
+		super('Invalid credentials provided');
 	}
 }

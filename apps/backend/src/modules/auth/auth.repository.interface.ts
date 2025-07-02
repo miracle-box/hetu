@@ -4,6 +4,24 @@ import { Either } from 'purify-ts';
 
 export type IAuthRepository = {
 	/**
+	 * Get password hash for a user.
+	 *
+	 * @param userId The user ID
+	 * @returns Either error or password hash (null if not found)
+	 */
+	getPassword: (userId: string) => Promise<Either<DatabaseError, string | null>>;
+
+	/**
+	 * Upsert password for a user.
+	 *
+	 * @param params The password parameters
+	 */
+	upsertPassword: (params: {
+		userId: string;
+		passwordHash: string;
+	}) => Promise<Either<DatabaseError, void>>;
+
+	/**
 	 * Create a verification record.
 	 *
 	 * @param params

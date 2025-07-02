@@ -9,6 +9,51 @@ import { now } from '~backend/shared/db/sql';
 import { UserAuthType } from './auth.entities';
 
 export const AuthRepository: IAuthRepository = {
+	async getPassword(userId) {
+		try {
+			const db = useDatabase();
+
+			const passwordRecord = await db.query.userAuthTable.findFirst({
+				columns: {
+					credential: true,
+				},
+				where: and(
+					eq(userAuthTable.userId, userId),
+					eq(userAuthTable.type, UserAuthType.PASSWORD),
+				),
+			});
+
+			return Right(passwordRecord?.credential ?? null);
+		} catch (e) {
+			return Left(new DatabaseError('Failed to get password.', e));
+		}
+	},
+
+	async upsertPassword(params) {
+		try {
+			const db = useDatabase();
+
+			await db
+				.insert(userAuthTable)
+				.values({
+					userId: params.userId,
+					type: UserAuthType.PASSWORD,
+					credential: params.passwordHash,
+				})
+				.onConflictDoUpdate({
+					target: userAuthTable.userId,
+					targetWhere: eq(userAuthTable.type, UserAuthType.PASSWORD),
+					set: {
+						credential: params.passwordHash,
+					},
+				});
+
+			return Right(undefined);
+		} catch (e) {
+			return Left(new DatabaseError('Failed to upsert password.', e));
+		}
+	},
+
 	async createVerification(params) {
 		try {
 			const db = useDatabase();
