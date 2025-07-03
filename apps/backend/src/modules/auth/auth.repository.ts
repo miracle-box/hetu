@@ -3,6 +3,7 @@ import { and, eq, gt } from 'drizzle-orm';
 import { Left, Right } from 'purify-ts';
 import { DatabaseError } from '~backend/common/errors/base.error';
 import { useDatabase } from '~backend/shared/db';
+import { sessionsTable } from '~backend/shared/db/schema/sessions';
 import { userAuthTable } from '~backend/shared/db/schema/user-auth';
 import { verificationsTable } from '~backend/shared/db/schema/verifications';
 import { now } from '~backend/shared/db/sql';
@@ -233,6 +234,102 @@ export const AuthRepository: IAuthRepository = {
 			return Right(undefined);
 		} catch (e) {
 			return Left(new DatabaseError('Failed to upsert OAuth2 binding.', e));
+		}
+	},
+
+	async findSessionById(sessionId) {
+		try {
+			const db = useDatabase();
+
+			const session = await db.query.sessionsTable.findFirst({
+				where: and(eq(sessionsTable.id, sessionId)),
+			});
+
+			return Right(session ?? null);
+		} catch (e) {
+			return Left(new DatabaseError('Failed to find session by ID.', e));
+		}
+	},
+
+	async findSessionsByUser(userId) {
+		try {
+			const db = useDatabase();
+
+			const sessions = await db.query.sessionsTable.findMany({
+				where: and(eq(sessionsTable.userId, userId)),
+			});
+
+			return Right(sessions);
+		} catch (e) {
+			return Left(new DatabaseError('Failed to find sessions by user.', e));
+		}
+	},
+
+	async revokeSessionById(sessionId) {
+		try {
+			const db = useDatabase();
+
+			await db.delete(sessionsTable).where(eq(sessionsTable.id, sessionId));
+
+			return Right(undefined);
+		} catch (e) {
+			return Left(new DatabaseError('Failed to revoke session by ID.', e));
+		}
+	},
+
+	async revokeSessionsByUser(userId) {
+		try {
+			const db = useDatabase();
+
+			await db.delete(sessionsTable).where(eq(sessionsTable.userId, userId));
+
+			return Right(undefined);
+		} catch (e) {
+			return Left(new DatabaseError('Failed to revoke sessions by user.', e));
+		}
+	},
+
+	async createSession(params) {
+		try {
+			const db = useDatabase();
+
+			const [createdSession] = await db
+				.insert(sessionsTable)
+				.values({
+					userId: params.userId,
+					metadata: params.metadata,
+				})
+				.returning();
+
+			if (!createdSession) {
+				throw new DatabaseError('Failed to create session.', 'No session record returned.');
+			}
+
+			return Right(createdSession);
+		} catch (e) {
+			return Left(new DatabaseError('Failed to create session.', e));
+		}
+	},
+
+	async updateSession(sessionId, params) {
+		try {
+			const db = useDatabase();
+
+			const [updatedSession] = await db
+				.update(sessionsTable)
+				.set({
+					updatedAt: params.updatedAt,
+				})
+				.where(and(eq(sessionsTable.id, sessionId)))
+				.returning();
+
+			if (!updatedSession) {
+				throw new DatabaseError('Failed to update session.', 'No session record returned.');
+			}
+
+			return Right(updatedSession);
+		} catch (e) {
+			return Left(new DatabaseError('Failed to update session.', e));
 		}
 	},
 };

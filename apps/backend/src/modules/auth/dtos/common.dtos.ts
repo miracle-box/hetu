@@ -1,9 +1,14 @@
 import { t, type Static } from 'elysia';
 import {
+	sessionSchema,
 	verificationScenarioSchema,
 	VerificationType,
 	verificationTypeSchema,
 } from '../auth.entities';
+
+export const sessionDigestSchema = t.Omit(sessionSchema, ['token']);
+
+export type SessionDigest = Static<typeof sessionDigestSchema>;
 
 export const baseVerificationDigestSchema = t.Object({
 	id: t.String(),

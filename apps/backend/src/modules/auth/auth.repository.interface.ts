@@ -1,4 +1,4 @@
-import type { Verification } from './auth.entities';
+import type { Verification, Session, SessionMetadata } from './auth.entities';
 import type { DatabaseError } from '~backend/common/errors/base.error';
 import { Either } from 'purify-ts';
 
@@ -115,4 +115,57 @@ export type IAuthRepository = {
 		oauth2ProfileId: string;
 		metadata: { accessToken: string };
 	}) => Promise<Either<DatabaseError, void>>;
+
+	/**
+	 * Find a session by ID.
+	 *
+	 * @param sessionId The session ID
+	 * @returns Either error or session (null if not found)
+	 */
+	findSessionById: (sessionId: string) => Promise<Either<DatabaseError, Session | null>>;
+
+	/**
+	 * Find all sessions for a user.
+	 *
+	 * @param userId The user ID
+	 * @returns Either error or sessions array
+	 */
+	findSessionsByUser: (userId: string) => Promise<Either<DatabaseError, Session[]>>;
+
+	/**
+	 * Revoke a session by ID.
+	 *
+	 * @param sessionId The session ID
+	 */
+	revokeSessionById: (sessionId: string) => Promise<Either<DatabaseError, void>>;
+
+	/**
+	 * Revoke all sessions for a user.
+	 *
+	 * @param userId The user ID
+	 */
+	revokeSessionsByUser: (userId: string) => Promise<Either<DatabaseError, void>>;
+
+	/**
+	 * Create a new session.
+	 *
+	 * @param params The session parameters
+	 */
+	createSession: (params: {
+		userId: string;
+		metadata: SessionMetadata;
+	}) => Promise<Either<DatabaseError, Session>>;
+
+	/**
+	 * Update a session by ID.
+	 *
+	 * @param sessionId The session ID
+	 * @param params The parameters to update
+	 */
+	updateSession: (
+		sessionId: string,
+		params: {
+			updatedAt: Date;
+		},
+	) => Promise<Either<DatabaseError, Session>>;
 };

@@ -117,3 +117,11 @@ export class InvalidCredentialsError extends BaseError {
 		super('Invalid credentials provided');
 	}
 }
+
+export class InvalidSessionError extends BaseError {
+	override readonly name = 'InvalidSessionError' as const;
+
+	constructor() {
+		super('Invalid session');
+	}
+}
