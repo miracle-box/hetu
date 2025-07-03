@@ -1,6 +1,6 @@
 import Bun from 'bun';
 
-export abstract class HasherService {
+export abstract class PasswordHashService {
 	static async hash(password: string): Promise<string> {
 		// From OWASP Cheatsheet recommendations
 		return await Bun.password.hash(password, {
