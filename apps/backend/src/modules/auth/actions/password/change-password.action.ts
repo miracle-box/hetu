@@ -2,7 +2,7 @@ import { EitherAsync, Left, Right } from 'purify-ts';
 import { SessionService } from '~backend/services/auth/session';
 import { UsersRepository } from '~backend/users/users.repository';
 import { SessionScope } from '../../auth.entities';
-import { changePasswordUsecase } from '../../usecases/change-password.usecase';
+import { changePasswordUsecase } from '../../usecases/password/change-password.usecase';
 import { UserNotFoundError } from '../../user.errors';
 
 type Command = {

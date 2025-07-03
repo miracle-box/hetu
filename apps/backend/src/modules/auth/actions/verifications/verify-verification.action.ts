@@ -11,8 +11,8 @@ import {
 } from '../../auth.errors';
 import { AuthRepository } from '../../auth.repository';
 import { VerificationValidatorService } from '../../services/verification-validator.service';
-import { verifyEmailVerificationUsecase } from '../../usecases/verify-email-verification.usecase';
-import { verifyOauth2VerificationUsecase } from '../../usecases/verify-oauth2-verification';
+import { verifyEmailVerificationUsecase } from '../../usecases/verifications/verify-email-verification.usecase';
+import { verifyOauth2VerificationUsecase } from '../../usecases/verifications/verify-oauth2-verification';
 
 type Command = {
 	id: string;

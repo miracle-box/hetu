@@ -1,10 +1,10 @@
 import { EitherAsync, Left } from 'purify-ts';
-import { VERIFICATION_OAUTH2_EXPIRES_IN_MS, VERIFICATION_OAUTH2_TRIES } from '../auth.constants';
-import { VerificationType, VerificationScenario } from '../auth.entities';
-import { InvalidOauth2ProviderError } from '../auth.errors';
-import { OAuth2ProvidersRepository } from '../oauth2-providers.repository';
-import { PKCEService } from '../services/pkce.service';
-import { VerificationOperationService } from '../services/verification-operation.service';
+import { VERIFICATION_OAUTH2_EXPIRES_IN_MS, VERIFICATION_OAUTH2_TRIES } from '../../auth.constants';
+import { VerificationType, VerificationScenario } from '../../auth.entities';
+import { InvalidOauth2ProviderError } from '../../auth.errors';
+import { OAuth2ProvidersRepository } from '../../oauth2-providers.repository';
+import { PKCEService } from '../../services/pkce.service';
+import { VerificationOperationService } from '../../services/verification-operation.service';
 
 type Command = {
 	scenario: Extract<

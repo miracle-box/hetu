@@ -1,7 +1,7 @@
 import { EitherAsync, Left, Right } from 'purify-ts';
 import { PasswordService } from '~backend/services/auth/password';
-import { InvalidCredentialsError } from '../auth.errors';
-import { AuthRepository } from '../auth.repository';
+import { InvalidCredentialsError } from '../../auth.errors';
+import { AuthRepository } from '../../auth.repository';
 
 type Command = {
 	userId: string;

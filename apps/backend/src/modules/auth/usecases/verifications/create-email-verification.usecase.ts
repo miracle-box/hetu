@@ -5,11 +5,11 @@ import {
 	VERIFATION_EMAIL_EXPIRES_IN_MS,
 	VERIFATION_EMAIL_TRIES,
 	VERIFICATION_CODE_LENGTH,
-} from '../auth.constants';
-import { VerificationScenario, VerificationType } from '../auth.entities';
-import { UserExistsError } from '../auth.errors';
-import { VerificationCodeService } from '../services/verification-code.service';
-import { VerificationOperationService } from '../services/verification-operation.service';
+} from '../../auth.constants';
+import { VerificationScenario, VerificationType } from '../../auth.entities';
+import { UserExistsError } from '../../auth.errors';
+import { VerificationCodeService } from '../../services/verification-code.service';
+import { VerificationOperationService } from '../../services/verification-operation.service';
 
 type Command = {
 	scenario: Extract<

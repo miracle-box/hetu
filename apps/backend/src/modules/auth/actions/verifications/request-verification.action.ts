@@ -1,8 +1,8 @@
 import { Left } from 'purify-ts';
 import { VerificationScenario, VerificationType } from '../../auth.entities';
 import { InvalidVerificationScenarioError, InvalidVerificationTypeError } from '../../auth.errors';
-import { createEmailVerificationUsecase } from '../../usecases/create-email-verification.usecase';
-import { createOauth2VerificationUsecase } from '../../usecases/create-oauth2-verification.usecase';
+import { createEmailVerificationUsecase } from '../../usecases/verifications/create-email-verification.usecase';
+import { createOauth2VerificationUsecase } from '../../usecases/verifications/create-oauth2-verification.usecase';
 
 type Command = {
 	type: VerificationType;

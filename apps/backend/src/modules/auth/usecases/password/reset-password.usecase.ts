@@ -1,9 +1,9 @@
-import type { Session } from '../auth.entities';
+import type { Session } from '../../auth.entities';
 import { EitherAsync, Right } from 'purify-ts';
 import { PasswordService } from '~backend/services/auth/password';
 import { SessionService } from '~backend/services/auth/session';
-import { SessionScope } from '../auth.entities';
-import { AuthRepository } from '../auth.repository';
+import { SessionScope } from '../../auth.entities';
+import { AuthRepository } from '../../auth.repository';
 
 type Command = {
 	userId: string;

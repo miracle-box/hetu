@@ -3,7 +3,7 @@ import { UsersRepository } from '~backend/users/users.repository';
 import { VerificationScenario } from '../../auth.entities';
 import { InvalidVerificationError } from '../../auth.errors';
 import { AuthRepository } from '../../auth.repository';
-import { resetPasswordUsecase } from '../../usecases/reset-password.usecase';
+import { resetPasswordUsecase } from '../../usecases/password/reset-password.usecase';
 import { UserNotFoundError } from '../../user.errors';
 
 type Command = {
