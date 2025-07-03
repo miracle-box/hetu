@@ -8,8 +8,8 @@ import {
 } from '../auth.constants';
 import { VerificationScenario, VerificationType } from '../auth.entities';
 import { UserExistsError } from '../auth.errors';
-import { revokeAndCreateVerification } from '../operations/verifications.operation';
 import { VerificationCodeService } from '../services/verification-code.service';
+import { VerificationOperationService } from '../services/verification-operation.service';
 
 type Command = {
 	scenario: Extract<
@@ -35,7 +35,7 @@ export async function createEmailVerificationUsecase(cmd: Command) {
 
 	return EitherAsync.fromPromise(
 		async () =>
-			await revokeAndCreateVerification({
+			await VerificationOperationService.revokeAndCreateVerification({
 				type: VerificationType.EMAIL,
 				scenario: cmd.scenario,
 				target: cmd.email,

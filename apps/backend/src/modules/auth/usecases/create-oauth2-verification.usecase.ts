@@ -3,8 +3,8 @@ import { VERIFICATION_OAUTH2_EXPIRES_IN_MS, VERIFICATION_OAUTH2_TRIES } from '..
 import { VerificationType, VerificationScenario } from '../auth.entities';
 import { InvalidOauth2ProviderError } from '../auth.errors';
 import { OAuth2ProvidersRepository } from '../oauth2-providers.repository';
-import { revokeAndCreateVerification } from '../operations/verifications.operation';
 import { PKCEService } from '../services/pkce.service';
+import { VerificationOperationService } from '../services/verification-operation.service';
 
 type Command = {
 	scenario: Extract<
@@ -26,7 +26,7 @@ export async function createOauth2VerificationUsecase(cmd: Command) {
 	// Create verification record
 	return EitherAsync.fromPromise(
 		async () =>
-			await revokeAndCreateVerification({
+			await VerificationOperationService.revokeAndCreateVerification({
 				type: VerificationType.OAUTH2,
 				scenario: cmd.scenario,
 				target: cmd.provider,
