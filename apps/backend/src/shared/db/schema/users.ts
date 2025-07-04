@@ -5,6 +5,8 @@ export const usersTable = pgTable('users', {
 	id: varchar('id', { length: 24 }).primaryKey().$defaultFn(createId),
 	name: varchar('name').unique().notNull(),
 	email: varchar('email').unique().notNull(),
-	createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
-	updatedAt: timestamp('updated_at', { withTimezone: true }).$onUpdate(() => new Date()),
+	createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+	updatedAt: timestamp('updated_at', { withTimezone: true })
+		.notNull()
+		.$onUpdate(() => new Date()),
 });
