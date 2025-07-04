@@ -17,3 +17,10 @@ export class DatabaseError extends BaseError {
 		this.cause = cause;
 	}
 }
+
+export class ForbiddenError extends BaseError {
+	override readonly name = 'ForbiddenError' as const;
+	constructor() {
+		super('Forbidden');
+	}
+}

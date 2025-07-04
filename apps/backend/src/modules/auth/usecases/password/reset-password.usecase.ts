@@ -1,4 +1,3 @@
-import type { Session } from '../../auth.entities';
 import { EitherAsync, Right } from 'purify-ts';
 import { PasswordService } from '~backend/services/auth/password';
 import { SessionService } from '~backend/services/auth/session';
@@ -22,9 +21,12 @@ export async function resetPasswordUsecase(cmd: Command) {
 		})
 		.chain(async (userId) => {
 			await SessionService.revokeAll(userId);
-			const session = (await SessionService.create(userId, {
-				scope: SessionScope.DEFAULT,
-			})) as Session;
+			const session = await AuthRepository.createSession({
+				userId,
+				metadata: {
+					scope: SessionScope.DEFAULT,
+				},
+			});
 
 			return Right({ session });
 		})

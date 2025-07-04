@@ -1,7 +1,7 @@
 import { Elysia, NotFoundError, t } from 'elysia';
-import { SessionScope } from '~backend/modules/auth/auth.entities';
 import { FileType } from '~backend/files/files.entities';
 import { uploadTexture as uploadTextureUsecase } from '~backend/files/usecases/upload-texture';
+import { SessionScope } from '~backend/modules/auth/auth.entities';
 import { ProfilesRepository } from '~backend/profiles/profiles.repository';
 import { authMiddleware } from '~backend/shared/auth/middleware';
 import { TextureType } from '~backend/textures/texture.entities';

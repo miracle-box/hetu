@@ -5,6 +5,7 @@ import { DatabaseError } from '~backend/common/errors/base.error';
 import { useDatabase } from '~backend/shared/db';
 import { sessionsTable } from '~backend/shared/db/schema/sessions';
 import { userAuthTable } from '~backend/shared/db/schema/user-auth';
+import { usersTable } from '~backend/shared/db/schema/users';
 import { verificationsTable } from '~backend/shared/db/schema/verifications';
 import { now } from '~backend/shared/db/sql';
 import { UserAuthType } from './auth.entities';
@@ -330,6 +331,46 @@ export const AuthRepository: IAuthRepository = {
 			return Right(updatedSession);
 		} catch (e) {
 			return Left(new DatabaseError('Failed to update session.', e));
+		}
+	},
+
+	async findUserWithPassword(email) {
+		try {
+			const db = useDatabase();
+
+			const userWithAuthMethod = await db.query.usersTable.findFirst({
+				columns: {
+					id: true,
+					email: true,
+					name: true,
+					createdAt: true,
+					updatedAt: true,
+				},
+				where: eq(usersTable.email, email),
+				with: {
+					authMethods: {
+						columns: {
+							credential: true,
+						},
+						where: eq(userAuthTable.type, UserAuthType.PASSWORD),
+					},
+				},
+			});
+
+			if (!userWithAuthMethod || !userWithAuthMethod.authMethods[0]) {
+				return Right(null);
+			}
+
+			return Right({
+				id: userWithAuthMethod.id,
+				email: userWithAuthMethod.email,
+				name: userWithAuthMethod.name,
+				createdAt: userWithAuthMethod.createdAt,
+				updatedAt: userWithAuthMethod.updatedAt,
+				passwordHash: userWithAuthMethod.authMethods[0].credential,
+			});
+		} catch (e) {
+			return Left(new DatabaseError('Failed to find user with password.', e));
 		}
 	},
 };

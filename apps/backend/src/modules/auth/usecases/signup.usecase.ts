@@ -1,7 +1,5 @@
-import { Left } from 'purify-ts';
-import { DatabaseError } from '~backend/common/errors/base.error';
-import { withTransaction } from '~backend/shared/db';
-import { UsersRepository } from '~backend/users/users.repository';
+import { EitherAsync, Left, Right } from 'purify-ts';
+import { UsersRepository } from '../../users/users.repository';
 import { SessionScope, VerificationScenario } from '../auth.entities';
 import { InvalidVerificationError, UserExistsError } from '../auth.errors';
 import { AuthRepository } from '../auth.repository';
@@ -14,63 +12,54 @@ type Command = {
 	verificationId: string;
 };
 
-export async function signupUsecase(command: Command) {
-	const { name, email, password, verificationId } = command;
-
-	if (await UsersRepository.emailOrNameExists(email, name)) {
-		return Left(new UserExistsError(email));
-	}
-
-	// Verify verification
-	const verif = await AuthRepository.findVerifiedVerification(
-		verificationId,
-		VerificationScenario.SIGNUP,
-	);
-	if (!verif) {
-		return Left(new InvalidVerificationError());
-	}
-
-	await AuthRepository.revokeVerificationById(verificationId);
-
-	// Create user and password
-	// [FIXME] Waiting for password service to be implemented
-	const passwordHash = await PasswordHashService.hash(password);
-
-	const user = await withTransaction(async ({ transaction }) => {
-		const insertedUser = await UsersRepository.insertUser({
-			name,
-			email,
-		});
-
-		if (!insertedUser) {
-			transaction.rollback();
-			return;
-		}
-
-		await AuthRepository.upsertPassword({
-			userId: insertedUser.id,
-			passwordHash,
-		});
-
-		return insertedUser;
-	});
-
-	if (!user) {
-		return Left(
-			new DatabaseError(
-				'Can not create user and password.',
-				'Can not create user and password.',
-			),
-		);
-	}
-
-	// Create session
-	return (
-		await AuthRepository.createSession({
-			userId: user.id,
-			metadata: {
-				scope: SessionScope.DEFAULT,
-			},
+export async function signupUsecase(cmd: Command) {
+	return EitherAsync.fromPromise(() => UsersRepository.emailOrNameExists(cmd.email, cmd.name))
+		.chain(async (exists) => {
+			if (exists) {
+				return Left(new UserExistsError(cmd.email));
+			}
+			return Right(undefined);
 		})
-	).map((session) => ({ session }));
+		.chain(async () => {
+			// Verify verification
+			const verifResult = await AuthRepository.findVerifiedVerification(
+				cmd.verificationId,
+				VerificationScenario.SIGNUP,
+			);
+			const verif = verifResult.extract();
+			if (!verif) {
+				return Left(new InvalidVerificationError());
+			}
+
+			await AuthRepository.revokeVerificationById(cmd.verificationId);
+
+			return Right(undefined);
+		})
+		.chain(async () => {
+			return await UsersRepository.createUser({
+				name: cmd.name,
+				email: cmd.email,
+			});
+		})
+		.chain(async (user) => {
+			// Create user and password
+			const passwordHash = await PasswordHashService.hash(cmd.password);
+
+			await AuthRepository.upsertPassword({
+				userId: user.id,
+				passwordHash,
+			});
+
+			return Right(user);
+		})
+		.chain(async (user) => {
+			return await AuthRepository.createSession({
+				userId: user.id,
+				metadata: {
+					scope: SessionScope.DEFAULT,
+				},
+			});
+		})
+		.map((session) => ({ session }))
+		.run();
 }

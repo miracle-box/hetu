@@ -1,5 +1,4 @@
 import { EitherAsync, Left, Right } from 'purify-ts';
-import { SessionService } from '~backend/services/auth/session';
 import { SessionScope, type Verification } from '../../auth.entities';
 import { Oauth2NotBoundError } from '../../auth.errors';
 import { AuthRepository } from '../../auth.repository';
@@ -34,9 +33,11 @@ export async function oauth2SigninUsecase(cmd: Command) {
 			await AuthRepository.revokeVerificationById(cmd.verification.id);
 
 			// Create session
-			// [FIXME] Waiting for new session service and repository.
-			const session = await SessionService.create(binding.userId, {
-				scope: SessionScope.DEFAULT,
+			const session = await AuthRepository.createSession({
+				userId: binding.userId,
+				metadata: {
+					scope: SessionScope.DEFAULT,
+				},
 			});
 
 			return Right({ session });

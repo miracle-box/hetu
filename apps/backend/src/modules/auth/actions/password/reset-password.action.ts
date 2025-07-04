@@ -1,10 +1,10 @@
 import { EitherAsync, Left, Right } from 'purify-ts';
-import { UsersRepository } from '~backend/users/users.repository';
+import { UserNotFoundError } from '../../../users/users.errors';
+import { UsersRepository } from '../../../users/users.repository';
 import { VerificationScenario } from '../../auth.entities';
 import { InvalidVerificationError } from '../../auth.errors';
 import { AuthRepository } from '../../auth.repository';
 import { resetPasswordUsecase } from '../../usecases/password/reset-password.usecase';
-import { UserNotFoundError } from '../../user.errors';
 
 type Command = {
 	verificationId: string;
@@ -28,12 +28,15 @@ export async function resetPasswordAction(cmd: Command) {
 			return Right(userId);
 		})
 		.chain(async (userId) => {
-			const user = await UsersRepository.findById(userId);
-			if (!user) {
-				return Left(new UserNotFoundError(userId));
-			}
-
-			return Right(user);
+			const userResult = await UsersRepository.findUserById(userId);
+			return userResult
+				.mapLeft(() => new UserNotFoundError(userId))
+				.map((user) => {
+					if (!user) {
+						throw new UserNotFoundError(userId);
+					}
+					return user;
+				});
 		})
 		.chain(async (user) => {
 			return await resetPasswordUsecase({

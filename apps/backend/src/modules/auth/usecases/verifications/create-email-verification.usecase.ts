@@ -1,6 +1,6 @@
 import { EitherAsync, Left } from 'purify-ts';
 import { MailingService } from '~backend/services/mailing';
-import { UsersRepository } from '~backend/users/users.repository';
+import { UsersRepository } from '../../../users/users.repository';
 import {
 	VERIFATION_EMAIL_EXPIRES_IN_MS,
 	VERIFATION_EMAIL_TRIES,
@@ -20,18 +20,18 @@ type Command = {
 };
 
 export async function createEmailVerificationUsecase(cmd: Command) {
-	// [TODO] Waiting for users module to be implemented
-	const user = await UsersRepository.findByEmail(cmd.email);
+	const user = await UsersRepository.findUserByEmail(cmd.email);
+	const userExists = user.isRight() && !!user.extract()?.id;
 
 	// Differentiate between scenarios
 	const requiresNoUser = cmd.scenario === VerificationScenario.SIGNUP;
 	const requiresUser = cmd.scenario === VerificationScenario.PASSWORD_RESET;
 
-	if (requiresNoUser && user) return Left(new UserExistsError(cmd.email));
+	if (requiresNoUser && userExists) return Left(new UserExistsError(cmd.email));
 
 	const { code, hash } = VerificationCodeService.generate(VERIFICATION_CODE_LENGTH);
 
-	const userId = requiresUser ? user?.id : undefined;
+	const userId = requiresUser ? (userExists ? user.extract()!.id : undefined) : undefined;
 
 	return EitherAsync.fromPromise(
 		async () =>
@@ -46,7 +46,7 @@ export async function createEmailVerificationUsecase(cmd: Command) {
 			}),
 	)
 		.ifRight(async (createdVerification) => {
-			if (requiresNoUser || (requiresUser && user)) {
+			if (requiresNoUser || (requiresUser && userExists)) {
 				// [TODO] Waiting for new mailing module to be implemented
 				await MailingService.sendVerification(cmd.email, code, createdVerification);
 			}

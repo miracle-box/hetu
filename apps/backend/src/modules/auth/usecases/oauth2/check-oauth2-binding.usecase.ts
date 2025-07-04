@@ -1,5 +1,5 @@
+import type { User } from '../../../users/users.entities';
 import type { Verification } from '../../auth.entities';
-import type { User } from '~backend/users/user.entities';
 import { EitherAsync, Left, Right } from 'purify-ts';
 import { Oauth2AlreadyBoundError } from '../../auth.errors';
 import { AuthRepository } from '../../auth.repository';

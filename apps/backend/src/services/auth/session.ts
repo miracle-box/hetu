@@ -1,4 +1,4 @@
-import type { User } from '~backend/users/user.entities';
+import type { User } from '~backend/modules/users/users.entities';
 import {
 	SessionLifecycle,
 	type Session,

@@ -1,4 +1,5 @@
 import type { Verification, Session, SessionMetadata } from './auth.entities';
+import type { User } from '../users/users.entities';
 import type { DatabaseError } from '~backend/common/errors/base.error';
 import { Either } from 'purify-ts';
 
@@ -168,4 +169,20 @@ export type IAuthRepository = {
 			updatedAt: Date;
 		},
 	) => Promise<Either<DatabaseError, Session>>;
+
+	/**
+	 * Find user and password hash by email.
+	 *
+	 * @param email Email
+	 * @returns Either error or user with password hash (null if not found)
+	 */
+	findUserWithPassword: (email: string) => Promise<
+		Either<
+			DatabaseError,
+			| (User & {
+					passwordHash: string;
+			  })
+			| null
+		>
+	>;
 };

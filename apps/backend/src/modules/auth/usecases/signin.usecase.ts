@@ -1,5 +1,4 @@
 import { EitherAsync, Left, Right } from 'purify-ts';
-import { UsersRepository } from '~backend/users/users.repository';
 import { SessionScope } from '../auth.entities';
 import { InvalidCredentialsError } from '../auth.errors';
 import { AuthRepository } from '../auth.repository';
@@ -11,10 +10,7 @@ type Command = {
 };
 
 export async function signinUsecase(command: Command) {
-	// [FIXME] Waiting for users repository to be implemented
-	const userWithPassword = await UsersRepository.findUserWithPassword(command.email);
-
-	return EitherAsync.liftEither(Right(userWithPassword))
+	return EitherAsync.fromPromise(() => AuthRepository.findUserWithPassword(command.email))
 		.chain(async (user) => {
 			if (!user) {
 				return Left(new InvalidCredentialsError());

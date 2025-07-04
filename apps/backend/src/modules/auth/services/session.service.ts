@@ -1,10 +1,10 @@
 import { EitherAsync, Left, Right } from 'purify-ts';
 import { SessionScope, SessionLifecycle } from '~backend/modules/auth/auth.entities';
 import { getLifecycle, isSessionOfScope } from '~backend/shared/auth/utils';
-import { UsersRepository } from '~backend/users/users.repository';
+import { UserNotFoundError } from '../../users/users.errors';
+import { UsersRepository } from '../../users/users.repository';
 import { InvalidSessionError } from '../auth.errors';
 import { findSessionUsecase } from '../usecases/sessions/find-session.usecase';
-import { UserNotFoundError } from '../user.errors';
 
 export abstract class SessionService {
 	/**
@@ -35,10 +35,10 @@ export abstract class SessionService {
 				return Right({ session });
 			})
 			.chain(async ({ session }) => {
-				const user = await UsersRepository.findById(session.userId);
-				if (!user) return Left(new UserNotFoundError(session.userId));
-
-				return Right({ user, session });
+				const user = await UsersRepository.findUserById(session.userId);
+				return user
+					.mapLeft(() => new UserNotFoundError(session.userId))
+					.map((user) => ({ user, session }));
 			})
 			.run();
 	}

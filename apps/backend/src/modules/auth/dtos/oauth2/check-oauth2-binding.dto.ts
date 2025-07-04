@@ -1,6 +1,6 @@
 import { t } from 'elysia';
 import { createDtoSchemas } from '~backend/shared/middlewares/dto/schemas';
-import { userSchema } from '~backend/users/user.entities';
+import { userSchema } from '../../../users/users.entities';
 import { oauth2ProfileSchema } from '../../auth.entities';
 
 export const checkOauth2BindingDtoSchemas = createDtoSchemas({

@@ -1,9 +1,9 @@
 import { EitherAsync, Left, Right } from 'purify-ts';
-import { SessionService } from '~backend/services/auth/session';
-import { UsersRepository } from '~backend/users/users.repository';
+import { UserNotFoundError } from '../../../users/users.errors';
+import { UsersRepository } from '../../../users/users.repository';
 import { SessionScope } from '../../auth.entities';
+import { AuthRepository } from '../../auth.repository';
 import { changePasswordUsecase } from '../../usecases/password/change-password.usecase';
-import { UserNotFoundError } from '../../user.errors';
 
 type Command = {
 	userId: string;
@@ -12,26 +12,30 @@ type Command = {
 };
 
 export async function changePasswordAction(cmd: Command) {
-	// [FIXME] Waiting for new user service and repository.
-	const user = await UsersRepository.findById(cmd.userId);
-	if (!user) {
-		return Left(new UserNotFoundError(cmd.userId));
-	}
-
-	return EitherAsync.fromPromise(() =>
-		changePasswordUsecase({
-			userId: cmd.userId,
-			oldPassword: cmd.oldPassword,
-			newPassword: cmd.newPassword,
-		}),
-	)
+	return EitherAsync.fromPromise(() => UsersRepository.findUserById(cmd.userId))
+		.mapLeft(() => new UserNotFoundError(cmd.userId))
+		.chain(async (user) => {
+			if (!user) {
+				return Left(new UserNotFoundError(cmd.userId));
+			}
+			return Right(user);
+		})
+		.chain(async (user) => {
+			return changePasswordUsecase({
+				userId: user.id,
+				oldPassword: cmd.oldPassword,
+				newPassword: cmd.newPassword,
+			});
+		})
 		.chain(async () => {
-			// [FIXME] Waiting for new session service and repository.
-			await SessionService.revokeAll(cmd.userId);
+			await AuthRepository.revokeSessionsByUser(cmd.userId);
 
 			// Create session
-			const session = await SessionService.create(cmd.userId, {
-				scope: SessionScope.DEFAULT,
+			const session = await AuthRepository.createSession({
+				userId: cmd.userId,
+				metadata: {
+					scope: SessionScope.DEFAULT,
+				},
 			});
 
 			return Right({ session });
