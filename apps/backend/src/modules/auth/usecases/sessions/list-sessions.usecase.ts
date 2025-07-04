@@ -1,5 +1,5 @@
 import { EitherAsync, Right } from 'purify-ts';
-import { SessionLifecycle } from '~backend/auth/auth.entities';
+import { SessionLifecycle } from '~backend/modules/auth/auth.entities';
 import { getLifecycle } from '~backend/shared/auth/utils';
 import { AuthRepository } from '../../auth.repository';
 

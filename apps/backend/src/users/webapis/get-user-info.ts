@@ -1,5 +1,5 @@
 import { Elysia, t } from 'elysia';
-import { SessionScope } from '~backend/auth/auth.entities';
+import { SessionScope } from '~backend/modules/auth/auth.entities';
 import { authMiddleware } from '~backend/shared/auth/middleware';
 import { AppError } from '~backend/shared/middlewares/errors/app-error';
 import { createErrorResps } from '~backend/shared/middlewares/errors/docs';

@@ -1,7 +1,7 @@
 import { Elysia, t } from 'elysia';
-import { SessionScope } from '~backend/auth/auth.entities';
 import { fileInfoSchema, FileType } from '~backend/files/files.entities';
 import { uploadTexture } from '~backend/files/usecases/upload-texture';
+import { SessionScope } from '~backend/modules/auth/auth.entities';
 import { authMiddleware } from '~backend/shared/auth/middleware';
 import { Logger } from '~backend/shared/logger';
 import { AppError } from '~backend/shared/middlewares/errors/app-error';

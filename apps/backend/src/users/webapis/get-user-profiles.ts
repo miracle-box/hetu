@@ -1,5 +1,5 @@
 import { Elysia, t } from 'elysia';
-import { SessionScope } from '~backend/auth/auth.entities';
+import { SessionScope } from '~backend/modules/auth/auth.entities';
 import { profileSchema } from '~backend/profiles/profile.entities';
 import { ProfilesRepository } from '~backend/profiles/profiles.repository';
 import { authMiddleware } from '~backend/shared/auth/middleware';

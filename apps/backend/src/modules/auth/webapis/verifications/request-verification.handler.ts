@@ -1,5 +1,5 @@
 import { Elysia } from 'elysia';
-import { VerificationType } from '~backend/auth/auth.entities';
+import { VerificationType } from '~backend/modules/auth/auth.entities';
 import { AppError } from '~backend/shared/middlewares/errors/app-error';
 import { requestVerificationAction } from '../../actions/verifications/request-verification.action';
 import { requestVerificationDtoSchemas } from '../../dtos';

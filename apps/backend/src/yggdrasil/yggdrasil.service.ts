@@ -1,4 +1,4 @@
-import type { Session } from '~backend/auth/auth.entities';
+import type { Session } from '~backend/modules/auth/auth.entities';
 import type { Profile } from '~backend/profiles/profile.entities';
 import type { Texture } from '~backend/textures/texture.entities';
 import type {

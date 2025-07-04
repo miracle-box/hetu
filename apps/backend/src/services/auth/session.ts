@@ -1,33 +1,36 @@
 import type { User } from '~backend/users/user.entities';
-import { SessionLifecycle, type Session, type SessionMetadata } from '~backend/auth/auth.entities';
-import { SessionScope } from '~backend/auth/auth.entities';
-import { AuthRepository } from '~backend/auth/auth.repository';
+import {
+	SessionLifecycle,
+	type Session,
+	type SessionMetadata,
+} from '~backend/modules/auth/auth.entities';
+import { SessionScope } from '~backend/modules/auth/auth.entities';
+import { AuthRepository } from '~backend/modules/auth/auth.repository';
 import { getLifecycle, isSessionOfScope } from '~backend/shared/auth/utils';
-import { withTransaction } from '~backend/shared/db';
 import { UsersRepository } from '~backend/users/users.repository';
 
 /**
  * Session handling related utilities.
  */
 export abstract class SessionService {
-	static async findUserSessions(userId: string): Promise<Session[]> {
-		return (await AuthRepository.findSessionsByUser(userId)).filter(
-			(session) => getLifecycle(session) !== SessionLifecycle.Expired,
-		);
-	}
-
-	static async findById(sessionId: string): Promise<Session | null> {
-		const session = await AuthRepository.findSessionById(sessionId);
-		if (getLifecycle(session) === SessionLifecycle.Expired) return null;
-		return session;
-	}
-
 	static async revoke(sessionId: string): Promise<void> {
-		await AuthRepository.revokeSessionById(sessionId);
+		const result = await AuthRepository.revokeSessionById(sessionId);
+		result.caseOf({
+			Left: (error) => {
+				throw new Error(`Failed to revoke session: ${error.message}`);
+			},
+			Right: () => {},
+		});
 	}
 
 	static async revokeAll(userId: string): Promise<void> {
-		await AuthRepository.revokeSessionsByUser(userId);
+		const result = await AuthRepository.revokeSessionsByUser(userId);
+		result.caseOf({
+			Left: (error) => {
+				throw new Error(`Failed to revoke all sessions: ${error.message}`);
+			},
+			Right: () => {},
+		});
 	}
 
 	static async validate<TScope extends SessionScope>(
@@ -35,8 +38,15 @@ export abstract class SessionService {
 		token: string,
 		scope: TScope,
 		allowedLifecycle: SessionLifecycle[],
-	): Promise<{ user: User; session: Session<TScope> } | null> {
-		const session = await AuthRepository.findSessionById(sessionId);
+	): Promise<{ user: User; session: Session } | null> {
+		const sessionResult = await AuthRepository.findSessionById(sessionId);
+		const session = sessionResult.caseOf({
+			Left: (error) => {
+				throw new Error(`Failed to find session: ${error.message}`);
+			},
+			Right: (session) => session,
+		});
+
 		if (
 			!session ||
 			session.token !== token ||
@@ -54,26 +64,15 @@ export abstract class SessionService {
 	}
 
 	static async create(userId: string, metadata: SessionMetadata): Promise<Session> {
-		return AuthRepository.createSession({
+		const result = await AuthRepository.createSession({
 			userId,
 			metadata,
 		});
-	}
-
-	static async renew(id: string): Promise<Session> {
-		return await withTransaction(async () => {
-			const session = await AuthRepository.findSessionById(id);
-			const lifecycle = getLifecycle(session);
-			if (
-				lifecycle === SessionLifecycle.RefreshOnly ||
-				lifecycle === SessionLifecycle.Expired
-			) {
-				throw new Error('Session is not active and can not be renewed.');
-			}
-
-			return await AuthRepository.updateSession(id, {
-				updatedAt: new Date(),
-			});
+		return result.caseOf({
+			Left: (error) => {
+				throw new Error(`Failed to create session: ${error.message}`);
+			},
+			Right: (session) => session,
 		});
 	}
 }

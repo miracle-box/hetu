@@ -1,6 +1,6 @@
 import { Elysia } from 'elysia';
-import { AuthRoutes } from '~backend/auth/auth.routes';
 import { FilesRoutes } from '~backend/files/files.routes';
+import { AuthRoutes } from '~backend/modules/auth/auth.routes';
 import { ProfilesRoutes } from '~backend/profiles/profiles.routes';
 import { middlewares } from '~backend/shared/middlewares';
 import { TexturesRoutes } from '~backend/textures/textures.routes';

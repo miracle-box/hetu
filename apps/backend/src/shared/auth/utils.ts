@@ -1,5 +1,5 @@
-import { SessionLifecycle, type Session } from '~backend/auth/auth.entities';
-import { SessionScope } from '~backend/auth/auth.entities';
+import { SessionLifecycle, type Session } from '~backend/modules/auth/auth.entities';
+import { SessionScope } from '~backend/modules/auth/auth.entities';
 import { Config } from '../config';
 
 /**

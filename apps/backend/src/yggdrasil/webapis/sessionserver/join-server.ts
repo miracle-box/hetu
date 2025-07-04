@@ -7,7 +7,10 @@ export const joinServerHandler = new Elysia().use(validateTokenMiddleware(false)
 	'/session/minecraft/join',
 	async ({ body, set, session }) => {
 		{
-			if (session.metadata.selectedProfile !== body.selectedProfile)
+			if (
+				session.metadata.scope !== 'yggdrasil' ||
+				session.metadata.selectedProfile !== body.selectedProfile
+			)
 				throw new ForbiddenOperationException('Invalid profile selected.');
 
 			// [TODO] Make this configurable (30s for now)

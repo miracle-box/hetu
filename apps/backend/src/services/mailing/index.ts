@@ -1,4 +1,4 @@
-import type { Verification } from '~backend/auth/auth.entities';
+import type { Verification } from '~backend/modules/auth/auth.entities';
 import { Config } from '~backend/shared/config';
 import { mailer } from '~backend/shared/mailing/mailing';
 

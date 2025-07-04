@@ -1,5 +1,5 @@
 import { Elysia, t } from 'elysia';
-import { SessionScope } from '~backend/auth/auth.entities';
+import { SessionScope } from '~backend/modules/auth/auth.entities';
 import { PasswordService } from '~backend/services/auth/password';
 import { SessionService } from '~backend/services/auth/session';
 import { ForbiddenOperationException } from '~backend/shared/middlewares/errors/yggdrasil-error';

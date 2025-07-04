@@ -1,5 +1,5 @@
-import type { Verification } from '~backend/auth/auth.entities';
 import type { DatabaseError } from '~backend/common/errors/base.error';
+import type { Verification } from '~backend/modules/auth/auth.entities';
 import { Either, EitherAsync, Left } from 'purify-ts';
 import { VerificationType } from '../../auth.entities';
 import {

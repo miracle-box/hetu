@@ -1,6 +1,6 @@
 import type { User } from '~backend/users/user.entities';
 import { eq, or } from 'drizzle-orm';
-import { UserAuthType } from '~backend/auth/auth.entities';
+import { UserAuthType } from '~backend/modules/auth/auth.entities';
 import { useDatabase } from '~backend/shared/db';
 import { userAuthTable } from '~backend/shared/db/schema/user-auth';
 import { usersTable } from '~backend/shared/db/schema/users';

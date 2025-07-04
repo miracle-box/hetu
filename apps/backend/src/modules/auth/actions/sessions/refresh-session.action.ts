@@ -1,5 +1,5 @@
-import type { Session } from '~backend/auth/auth.entities';
 import type { DatabaseError } from '~backend/common/errors/base.error';
+import type { Session } from '~backend/modules/auth/auth.entities';
 import { Either, EitherAsync, Left, Right } from 'purify-ts';
 import { InvalidSessionError } from '../../auth.errors';
 import { findSessionUsecase } from '../../usecases/sessions/find-session.usecase';

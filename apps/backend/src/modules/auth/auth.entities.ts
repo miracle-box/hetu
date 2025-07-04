@@ -25,10 +25,18 @@ export const SessionScope = {
 	YGGDRASIL: 'yggdrasil',
 } as const;
 
+export const SessionLifecycle = {
+	Active: 1,
+	Renewable: 2,
+	RefreshOnly: 3,
+	Expired: 4,
+} as const;
+
 export type UserAuthType = EnumLikeValues<typeof UserAuthType>;
 export type VerificationType = EnumLikeValues<typeof VerificationType>;
 export type VerificationScenario = EnumLikeValues<typeof VerificationScenario>;
 export type SessionScope = EnumLikeValues<typeof SessionScope>;
+export type SessionLifecycle = EnumLikeValues<typeof SessionLifecycle>;
 
 // Enum Schemas
 export const userAuthTypeSchema = createEnumLikeValuesSchema(UserAuthType);

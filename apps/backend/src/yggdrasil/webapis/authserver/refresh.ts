@@ -1,5 +1,5 @@
 import { Elysia, t } from 'elysia';
-import { SessionLifecycle, SessionScope } from '~backend/auth/auth.entities';
+import { SessionLifecycle, SessionScope } from '~backend/modules/auth/auth.entities';
 import { SessionService } from '~backend/services/auth/session';
 import {
 	ForbiddenOperationException,
@@ -28,7 +28,10 @@ export const refreshHandler = new Elysia()
 		'/refresh',
 		async ({ body, session }) => {
 			// Use profile form request body if provided, otherwise use the one from the session.
-			const sessionProfileId = session.metadata.selectedProfile;
+			const sessionProfileId =
+				session.metadata.scope === SessionScope.YGGDRASIL
+					? session.metadata.selectedProfile
+					: null;
 
 			// Must NOT have a profile selected when selecting profiles.
 			if (sessionProfileId !== null && body.selectedProfile?.id === sessionProfileId)

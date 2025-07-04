@@ -1,5 +1,5 @@
 import { EitherAsync, Left, Right } from 'purify-ts';
-import { SessionScope, SessionLifecycle } from '~backend/auth/auth.entities';
+import { SessionScope, SessionLifecycle } from '~backend/modules/auth/auth.entities';
 import { getLifecycle, isSessionOfScope } from '~backend/shared/auth/utils';
 import { UsersRepository } from '~backend/users/users.repository';
 import { InvalidSessionError } from '../auth.errors';

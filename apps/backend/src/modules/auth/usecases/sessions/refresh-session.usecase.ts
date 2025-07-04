@@ -1,9 +1,8 @@
 import type { Session } from '../../auth.entities';
 import { Left } from 'purify-ts';
-import { SessionLifecycle } from '~backend/auth/auth.entities';
+import { SessionLifecycle, SessionScope } from '~backend/modules/auth/auth.entities';
 import { getLifecycle } from '~backend/shared/auth/utils';
 import { withTransaction } from '~backend/shared/db';
-import { SessionScope } from '../../auth.entities';
 import { InvalidSessionError } from '../../auth.errors';
 import { AuthRepository } from '../../auth.repository';
 
