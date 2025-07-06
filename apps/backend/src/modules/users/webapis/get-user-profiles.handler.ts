@@ -18,7 +18,7 @@ export const getUserProfilesHandler = new Elysia().use(authMiddleware(SessionSco
 			.mapLeft((error) => {
 				switch (error.name) {
 					case 'ForbiddenError':
-						throw new AppError('users/forbidden');
+						throw new AppError('forbidden');
 					case 'DatabaseError':
 						throw new AppError('internal-error');
 				}

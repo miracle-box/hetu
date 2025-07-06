@@ -11,5 +11,5 @@ export const getUserProfilesDtoSchemas = createDtoSchemas({
 			profiles: t.Array(userProfileResponseSchema),
 		}),
 	},
-	errors: ['users/forbidden', 'internal-error'],
+	errors: ['forbidden', 'internal-error'],
 });

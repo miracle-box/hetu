@@ -11,5 +11,5 @@ export const getUserTexturesDtoSchemas = createDtoSchemas({
 			textures: t.Array(userTextureResponseSchema),
 		}),
 	},
-	errors: ['users/forbidden', 'internal-error'],
+	errors: ['forbidden', 'internal-error'],
 });

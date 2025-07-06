@@ -7,11 +7,11 @@ type Command = {
 	requestingUserId: string;
 };
 
-export async function getUserTexturesAction(command: Command) {
+export async function getUserTexturesAction(cmd: Command) {
 	// Check if user is requesting their own textures
-	if (command.requestingUserId !== command.userId) {
+	if (cmd.requestingUserId !== cmd.userId) {
 		return Left(new ForbiddenError());
 	}
 
-	return await UsersRepository.findTexturesByUser(command.userId);
+	return await UsersRepository.findTexturesByUser(cmd.userId);
 }

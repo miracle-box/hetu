@@ -11,5 +11,5 @@ export const getUserInfoDtoSchemas = createDtoSchemas({
 			user: userResponseSchema,
 		}),
 	},
-	errors: ['users/not-found', 'users/forbidden', 'internal-error'],
+	errors: ['users/not-found', 'forbidden', 'internal-error'],
 });

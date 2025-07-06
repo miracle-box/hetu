@@ -1,10 +1,10 @@
 import { Elysia } from 'elysia';
-import { FilesRoutes } from '~backend/files/files.routes';
 import { AuthRoutes } from '~backend/modules/auth/auth.routes';
+import { FilesRoutes } from '~backend/modules/files/files.routes';
+import { ProfilesRoutes } from '~backend/modules/profiles/profiles.routes';
+import { TexturesRoutes } from '~backend/modules/textures/textures.routes';
 import { UsersRoutes } from '~backend/modules/users/users.routes';
-import { ProfilesRoutes } from '~backend/profiles/profiles.routes';
 import { middlewares } from '~backend/shared/middlewares';
-import { TexturesRoutes } from '~backend/textures/textures.routes';
 import { YggdrasilRoutes } from '~backend/yggdrasil/yggdrasil.routes';
 
 export const app = new Elysia({

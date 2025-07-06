@@ -20,7 +20,7 @@ export const getUserInfoHandler = new Elysia().use(authMiddleware(SessionScope.D
 					case 'UserNotFoundError':
 						throw new AppError('users/not-found');
 					case 'ForbiddenError':
-						throw new AppError('users/forbidden');
+						throw new AppError('forbidden');
 					case 'DatabaseError':
 						throw new AppError('internal-error');
 				}
