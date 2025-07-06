@@ -21,14 +21,13 @@ export async function resetPasswordUsecase(cmd: Command) {
 		})
 		.chain(async (userId) => {
 			await SessionService.revokeAll(userId);
-			const session = await AuthRepository.createSession({
+			return await AuthRepository.createSession({
 				userId,
 				metadata: {
 					scope: SessionScope.DEFAULT,
 				},
 			});
-
-			return Right({ session });
 		})
+		.map((session) => ({ session }))
 		.run();
 }

@@ -31,6 +31,8 @@ export const checkOauth2BindingHandler = new Elysia()
 							throw new AppError('auth/oauth2-misconfigured');
 						case 'Oauth2AlreadyBoundError':
 							throw new AppError('auth/oauth2-already-bound');
+						case 'UserNotFoundError':
+							throw new AppError('users/not-found');
 						case 'DatabaseError':
 							throw new AppError('internal-error');
 					}

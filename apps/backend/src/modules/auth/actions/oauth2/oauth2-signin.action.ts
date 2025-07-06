@@ -23,8 +23,5 @@ export async function oauth2SigninAction(cmd: Command) {
 				provider,
 			});
 		})
-		.map((result) => ({
-			session: result.session,
-		}))
 		.run();
 }

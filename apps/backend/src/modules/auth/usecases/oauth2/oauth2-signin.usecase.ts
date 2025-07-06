@@ -33,14 +33,15 @@ export async function oauth2SigninUsecase(cmd: Command) {
 			await AuthRepository.revokeVerificationById(cmd.verification.id);
 
 			// Create session
-			const session = await AuthRepository.createSession({
+			return await AuthRepository.createSession({
 				userId: binding.userId,
 				metadata: {
 					scope: SessionScope.DEFAULT,
 				},
 			});
-
-			return Right({ session });
 		})
+		.map((session) => ({
+			session,
+		}))
 		.run();
 }

@@ -31,15 +31,13 @@ export async function changePasswordAction(cmd: Command) {
 			await AuthRepository.revokeSessionsByUser(cmd.userId);
 
 			// Create session
-			const session = await AuthRepository.createSession({
+			return await AuthRepository.createSession({
 				userId: cmd.userId,
 				metadata: {
 					scope: SessionScope.DEFAULT,
 				},
 			});
-
-			return Right({ session });
 		})
-		.map((result) => ({ session: result.session }))
+		.map((session) => ({ session }))
 		.run();
 }
