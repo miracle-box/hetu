@@ -1,7 +1,7 @@
 import { EitherAsync, Left, Right } from 'purify-ts';
-import { PasswordService } from '~backend/services/auth/password';
 import { InvalidCredentialsError } from '../../auth.errors';
 import { AuthRepository } from '../../auth.repository';
+import { PasswordHashService } from '../../services/password-hash.service';
 
 type Command = {
 	userId: string;
@@ -14,7 +14,7 @@ export async function changePasswordUsecase(cmd: Command) {
 		.chain(async (oldPasswordHash) => {
 			// If the user does not have a password, we set a password here.
 			const oldPasswordCorrect = oldPasswordHash
-				? await PasswordService.compare(cmd.oldPassword, oldPasswordHash)
+				? await PasswordHashService.compare(cmd.oldPassword, oldPasswordHash)
 				: true;
 
 			if (!oldPasswordCorrect) {
@@ -24,7 +24,7 @@ export async function changePasswordUsecase(cmd: Command) {
 			return EitherAsync.liftEither(Right(oldPasswordHash));
 		})
 		.chain(async () => {
-			const hashedNewPassword = await PasswordService.hash(cmd.newPassword);
+			const hashedNewPassword = await PasswordHashService.hash(cmd.newPassword);
 			return await AuthRepository.upsertPassword({
 				userId: cmd.userId,
 				passwordHash: hashedNewPassword,

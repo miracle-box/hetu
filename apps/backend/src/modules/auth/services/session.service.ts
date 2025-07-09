@@ -6,7 +6,7 @@ import { UsersRepository } from '../../users/users.repository';
 import { InvalidSessionError } from '../auth.errors';
 import { findSessionUsecase } from '../usecases/sessions/find-session.usecase';
 
-export abstract class SessionService {
+export abstract class SessionValidationService {
 	/**
 	 * Validate session and user.
 	 *

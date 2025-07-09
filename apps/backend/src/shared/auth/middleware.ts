@@ -1,6 +1,6 @@
 import { Elysia } from 'elysia';
 import { SessionLifecycle, SessionScope } from '~backend/modules/auth/auth.entities';
-import { SessionService } from '~backend/services/auth/session';
+import { SessionValidationService } from '~backend/modules/auth/services/session.service';
 import { readBearerToken } from '~backend/shared/auth/utils';
 import { AppError } from '../middlewares/errors/app-error';
 
@@ -28,14 +28,17 @@ export const authMiddleware =
 			const [sessionId, token] = bearer.split(':');
 			if (!sessionId || !token) throw new AppError('unauthorized');
 
-			const sessionInfo = await SessionService.validate(
+			const sessionInfo = await SessionValidationService.validate(
 				sessionId,
 				token,
 				scope,
 				options.allowedLifecycle,
 			);
 
-			if (!sessionInfo) throw new AppError('unauthorized');
-
-			return sessionInfo;
+			return sessionInfo.caseOf({
+				Left: () => {
+					throw new AppError('unauthorized');
+				},
+				Right: (session) => session,
+			});
 		});

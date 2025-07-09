@@ -1,8 +1,7 @@
 import { EitherAsync, Right } from 'purify-ts';
-import { PasswordService } from '~backend/services/auth/password';
-import { SessionService } from '~backend/services/auth/session';
 import { SessionScope } from '../../auth.entities';
 import { AuthRepository } from '../../auth.repository';
+import { PasswordHashService } from '../../services/password-hash.service';
 
 type Command = {
 	userId: string;
@@ -12,7 +11,7 @@ type Command = {
 export async function resetPasswordUsecase(cmd: Command) {
 	return EitherAsync.liftEither(Right(cmd.userId))
 		.chain(async (userId) => {
-			const hashedNewPassword = await PasswordService.hash(cmd.newPassword);
+			const hashedNewPassword = await PasswordHashService.hash(cmd.newPassword);
 			const result = await AuthRepository.upsertPassword({
 				userId: userId,
 				passwordHash: hashedNewPassword,
@@ -20,7 +19,7 @@ export async function resetPasswordUsecase(cmd: Command) {
 			return result.map(() => userId);
 		})
 		.chain(async (userId) => {
-			await SessionService.revokeAll(userId);
+			await AuthRepository.revokeSessionsByUser(userId);
 			return await AuthRepository.createSession({
 				userId,
 				metadata: {

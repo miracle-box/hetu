@@ -1,6 +1,6 @@
 import { EitherAsync, Left, Right } from 'purify-ts';
 import { SessionLifecycle, SessionScope } from '~backend/modules/auth/auth.entities';
-import { SessionService } from '~backend/modules/auth/services/session.service';
+import { SessionValidationService } from '~backend/modules/auth/services/session.service';
 import { YggdrasilService } from '../../services/yggdrasil.service';
 import { YggdrasilAuthenticationError } from '../../yggdrasil.errors';
 
@@ -22,7 +22,7 @@ export async function validateTokenUsecase(cmd: ValidateTokenCommand) {
 	}
 
 	return EitherAsync.fromPromise(() =>
-		SessionService.validate(
+		SessionValidationService.validate(
 			accessToken.sessionId,
 			accessToken.sessionToken,
 			SessionScope.YGGDRASIL,

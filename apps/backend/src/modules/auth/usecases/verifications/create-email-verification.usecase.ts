@@ -1,5 +1,5 @@
 import { EitherAsync, Left } from 'purify-ts';
-import { MailingService } from '~backend/services/mailing';
+import { MailingService } from '~backend/common/services/mailing';
 import { UsersRepository } from '../../../users/users.repository';
 import {
 	VERIFATION_EMAIL_EXPIRES_IN_MS,

@@ -5,7 +5,7 @@ import { mailer } from '~backend/shared/mailing/mailing';
 /**
  * Mailing service to send emails.
  *
- * [TODO] Ignore these magic values please, will refactor later.
+ * [FIXME] Ignore these magic values please, will refactor later.
  */
 export abstract class MailingService {
 	static async sendVerification(email: string, code: string, verif: Verification): Promise<void> {
