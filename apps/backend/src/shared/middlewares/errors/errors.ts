@@ -25,6 +25,7 @@ export const APP_ERRORS = {
 	'internal-error': {
 		status: 500,
 		message: () => 'An internal error occurred. Please try again later.',
+		// [TODO] Add an cause to the error and we can log it
 		details: t.Void(),
 	},
 	'auth/invalid-credentials': {
@@ -173,9 +174,11 @@ export const APP_ERRORS = {
 		message: () => 'The file type is not supported. Please ensure the file type is correct.',
 		details: t.Void(),
 	},
-	'files/upload-failed': {
-		status: 401,
-		message: () => 'Failed to upload the file. Please try again later.',
-		details: t.Void(),
+	'files/malformed-file': {
+		status: 400,
+		message: () => 'The file is malformed. Please ensure the file is correct.',
+		details: t.Object({
+			message: t.String(),
+		}),
 	},
 } as const satisfies Record<string, AppErrorInfo<unknown>>;

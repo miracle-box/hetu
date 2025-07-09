@@ -1,7 +1,7 @@
 import type { User } from './users.entities';
 import type { DatabaseError } from '../../common/errors/base.error';
-import type { Profile } from '../../profiles/profile.entities';
-import type { Texture } from '../../textures/texture.entities';
+import type { Profile } from '../profiles/profiles.entities';
+import type { Texture } from '../textures/textures.entities';
 import { Either } from 'purify-ts';
 
 export type IUsersRepository = {

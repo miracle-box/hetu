@@ -30,46 +30,7 @@ class StorageService implements IStorageService {
 		return `${this.prefix}${hash.substring(0, 2)}/${hash}`;
 	}
 
-	async uploadFile(
-		fileBuffer: Buffer,
-		mimeType: string,
-		hash: Buffer,
-	): Promise<Either<StorageError, { size: number; type: string }>> {
-		try {
-			const uploadedFile = await this.putObject(fileBuffer, mimeType, hash);
-			return Right({ size: uploadedFile.size, type: uploadedFile.type });
-		} catch (error) {
-			return Left(new StorageError('Failed to upload file to storage.'));
-		}
-	}
-
-	async headObject(hash: string): Promise<Either<StorageError, ObjectInfo | null>> {
-		try {
-			const result = await s3
-				.send(
-					new HeadObjectCommand({
-						Bucket: this.bucket,
-						Key: this.getObjectPath(hash),
-					}),
-				)
-				.then((res) => ({
-					hash,
-					// S3 will return type and size
-					type: res.ContentType!,
-					size: res.ContentLength!,
-				}))
-				.catch((e) => {
-					if (e instanceof NotFound) return null;
-					throw e;
-				});
-
-			return Right(result);
-		} catch (error) {
-			return Left(new StorageError('Failed to check object existence in storage.'));
-		}
-	}
-
-	private async putObject(fileBuf: Buffer, mimeType: string, hash: Buffer): Promise<ObjectInfo> {
+	private async putObject(fileBuf: Buffer, mimeType: string, hash: Buffer) {
 		const hashHex = hash.toString('hex');
 		const hashB64 = hash.toString('base64');
 
@@ -112,7 +73,42 @@ class StorageService implements IStorageService {
 		};
 	}
 
-	getPublicUrl(hash: string): Either<StorageError, string> {
+	async uploadFile(fileBuffer: Buffer, mimeType: string, hash: Buffer) {
+		try {
+			const uploadedFile = await this.putObject(fileBuffer, mimeType, hash);
+			return Right({ size: uploadedFile.size, type: uploadedFile.type });
+		} catch (error) {
+			return Left(new StorageError('Failed to upload file to storage.'));
+		}
+	}
+
+	async headObject(hash: string) {
+		try {
+			const result = await s3
+				.send(
+					new HeadObjectCommand({
+						Bucket: this.bucket,
+						Key: this.getObjectPath(hash),
+					}),
+				)
+				.then((res) => ({
+					hash,
+					// S3 will return type and size
+					type: res.ContentType!,
+					size: res.ContentLength!,
+				}))
+				.catch((e) => {
+					if (e instanceof NotFound) return null;
+					throw e;
+				});
+
+			return Right(result);
+		} catch (error) {
+			return Left(new StorageError('Failed to check object existence in storage.'));
+		}
+	}
+
+	getPublicUrl(hash: string) {
 		try {
 			const url = `${Config.storage.s3.publicRoot}/${this.getObjectPath(hash)}`;
 			return Right(url);

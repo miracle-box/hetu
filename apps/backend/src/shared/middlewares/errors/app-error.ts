@@ -45,7 +45,15 @@ export const appErrorHandler = ({
 }: Pick<ElysiaOnErrorContext, 'code' | 'error' | 'path'>) => {
 	if (!(error instanceof Error)) return;
 
-	if (error instanceof AppError)
+	if (error instanceof AppError) {
+		// [TODO] Add an cause to the error and we can log it
+		if (error.code === 'internal-error') {
+			Logger.error(
+				error,
+				`A handled unexpected error happened when handling request on ${path}`,
+			);
+		}
+
 		return {
 			error: {
 				path,
@@ -54,6 +62,7 @@ export const appErrorHandler = ({
 				details: error.details,
 			},
 		};
+	}
 
 	switch (code) {
 		case 'VALIDATION':

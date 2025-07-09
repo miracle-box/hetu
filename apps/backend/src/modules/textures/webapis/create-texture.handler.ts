@@ -22,7 +22,7 @@ export const createTextureHandler = new Elysia().use(authMiddleware(SessionScope
 			})
 			.mapLeft((error) => {
 				switch (error.name) {
-					case 'TextureAlreadyExistsError':
+					case 'TextureFileExistsForUserError':
 						throw new AppError('textures/already-exists');
 					case 'DatabaseError':
 						throw new AppError('internal-error');

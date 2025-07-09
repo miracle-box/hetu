@@ -35,10 +35,13 @@ export abstract class SessionService {
 				return Right({ session });
 			})
 			.chain(async ({ session }) => {
-				const user = await UsersRepository.findUserById(session.userId);
-				return user
-					.mapLeft(() => new UserNotFoundError(session.userId))
-					.map((user) => ({ user, session }));
+				return (await UsersRepository.findUserById(session.userId)).chain((user) => {
+					if (!user) {
+						return Left(new UserNotFoundError(session.userId));
+					}
+
+					return Right({ user, session });
+				});
 			})
 			.run();
 	}

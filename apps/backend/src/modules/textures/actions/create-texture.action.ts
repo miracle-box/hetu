@@ -1,6 +1,6 @@
 import type { TextureType } from '../textures.entities';
 import { EitherAsync, Left, Right } from 'purify-ts';
-import { TextureAlreadyExistsError } from '../textures.errors';
+import { TextureFileExistsForUserError } from '../textures.errors';
 import { TexturesRepository } from '../textures.repository';
 
 type Command = {
@@ -17,7 +17,7 @@ export async function createTextureAction(cmd: Command) {
 	)
 		.chain(async (existingTexture) => {
 			if (existingTexture) {
-				return Left(new TextureAlreadyExistsError(cmd.userId, cmd.type, cmd.hash));
+				return Left(new TextureFileExistsForUserError(cmd.userId, cmd.type, cmd.hash));
 			}
 			return Right(null);
 		})

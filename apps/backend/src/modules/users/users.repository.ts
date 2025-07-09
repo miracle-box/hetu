@@ -1,7 +1,7 @@
 import type { User } from './users.entities';
 import type { IUsersRepository } from './users.repository.interface';
-import type { Profile } from '../../profiles/profile.entities';
-import type { Texture } from '../../textures/texture.entities';
+import type { Profile } from '../profiles/profiles.entities';
+import type { Texture } from '../textures/textures.entities';
 import { eq, or } from 'drizzle-orm';
 import { Either, Left, Right } from 'purify-ts';
 import { DatabaseError } from '../../common/errors/base.error';

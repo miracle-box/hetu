@@ -15,5 +15,5 @@ export const uploadFileDtoSchemas = createDtoSchemas({
 			file: fileInfoSchema,
 		}),
 	},
-	errors: ['files/upload-failed', 'files/invalid-file-type', 'internal-error'],
+	errors: ['files/malformed-file', 'files/invalid-file-type', 'internal-error'],
 });

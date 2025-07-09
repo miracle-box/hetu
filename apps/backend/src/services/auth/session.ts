@@ -11,6 +11,7 @@ import { UsersRepository } from '~backend/users/users.repository';
 
 /**
  * Session handling related utilities.
+ * @deprecated this is the old one
  */
 export abstract class SessionService {
 	static async revoke(sessionId: string): Promise<void> {

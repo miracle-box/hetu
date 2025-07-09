@@ -5,7 +5,7 @@ import { ProfilesRoutes } from '~backend/modules/profiles/profiles.routes';
 import { TexturesRoutes } from '~backend/modules/textures/textures.routes';
 import { UsersRoutes } from '~backend/modules/users/users.routes';
 import { middlewares } from '~backend/shared/middlewares';
-import { YggdrasilRoutes } from '~backend/yggdrasil/yggdrasil.routes';
+import { YggdrasilRoutes } from './modules/yggdrasil/yggdrasil.routes';
 
 export const app = new Elysia({
 	name: 'App',
