@@ -12,8 +12,10 @@ export const profilesTable = pgTable(
 		skinTextureId: varchar('skin_texture_id', { length: 24 }),
 		capeTextureId: varchar('cape_texture_id', { length: 24 }),
 		isPrimary: boolean('is_primary').notNull().default(false),
-		createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
-		updatedAt: timestamp('updated_at', { withTimezone: true }).$onUpdate(() => new Date()),
+		createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+		updatedAt: timestamp('updated_at', { withTimezone: true })
+			.notNull()
+			.$onUpdate(() => new Date()),
 	},
 	(t) => [
 		// Only one primary profile for each user

@@ -1,4 +1,4 @@
-import type { SessionMetadata } from '~backend/auth/auth.entities';
+import type { SessionMetadata } from '~backend/modules/auth/auth.entities';
 import { createId } from '@paralleldrive/cuid2';
 import { jsonb, pgTable, timestamp, varchar } from 'drizzle-orm/pg-core';
 

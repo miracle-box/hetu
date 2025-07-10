@@ -12,7 +12,9 @@ export const filesTable = pgTable(
 		type: fileTypeEnum('type').notNull(),
 		mimeType: varchar('mime_type').notNull(),
 		createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
-		updatedAt: timestamp('updated_at', { withTimezone: true }).$onUpdate(() => new Date()),
+		updatedAt: timestamp('updated_at', { withTimezone: true })
+			.notNull()
+			.$onUpdate(() => new Date()),
 	},
 	(t) => [
 		// Files are unique in its type

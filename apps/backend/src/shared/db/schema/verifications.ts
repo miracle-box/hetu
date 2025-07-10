@@ -19,5 +19,5 @@ export const verificationsTable = pgTable('verifications', {
 	verified: boolean('verified').notNull(),
 	triesLeft: smallint('tries_left').notNull(),
 	expiresAt: timestamp('expires_at', { withTimezone: true }).notNull(),
-	createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
+	createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
 });

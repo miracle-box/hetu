@@ -1,4 +1,4 @@
-import type { AuthMetadata } from '~backend/auth/auth.entities.ts';
+import type { AuthMetadata } from '~backend/modules/auth/auth.entities';
 import { createId } from '@paralleldrive/cuid2';
 import { sql } from 'drizzle-orm';
 import { jsonb, pgEnum, pgTable, timestamp, uniqueIndex, varchar } from 'drizzle-orm/pg-core';
@@ -14,8 +14,10 @@ export const userAuthTable = pgTable(
 		provider: varchar('provider'),
 		credential: varchar('credential').notNull(),
 		metadata: jsonb('metadata').$type<AuthMetadata>(),
-		createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
-		updatedAt: timestamp('updated_at', { withTimezone: true }).$onUpdate(() => new Date()),
+		createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+		updatedAt: timestamp('updated_at', { withTimezone: true })
+			.notNull()
+			.$onUpdate(() => new Date()),
 	},
 	(t) => [
 		// Only one password for each user

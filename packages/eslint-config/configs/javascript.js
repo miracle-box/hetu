@@ -49,6 +49,7 @@ export function javascript(options) {
 			ignores,
 			rules: {
 				...jsPlugin.configs.recommended.rules,
+				'require-await': 'off',
 			},
 		},
 	];

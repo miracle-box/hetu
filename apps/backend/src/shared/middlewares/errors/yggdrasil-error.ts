@@ -11,6 +11,17 @@ class YggdrasilError extends Error {
 	}
 }
 
+export class InternalError extends YggdrasilError {
+	override status = 500;
+	override code = 'INTERNAL_ERROR';
+	override message = 'Internal Error';
+
+	constructor(cause?: unknown) {
+		super('Internal Error');
+		this.cause = cause;
+	}
+}
+
 export class NotFoundError extends YggdrasilError {
 	override status = 404;
 	override code = 'NOT_FOUND';
@@ -71,6 +82,15 @@ export const yggdrasilErrorHandler = ({
 				path,
 				error: 'NOT_FOUND',
 				errorMessage: 'Not Found',
+			};
+		case 'INTERNAL_ERROR':
+			// [TODO] Add an cause to the error and we can log it
+			Logger.error(error, `Internal error happened when handling request on ${path}`);
+
+			return {
+				path,
+				error: 'INTERNAL_ERROR',
+				errorMessage: 'Internal Error',
 			};
 		default:
 			Logger.error(error, `Unhandled error happened when handling request on ${path}`);
