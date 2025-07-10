@@ -36,7 +36,7 @@ export const authenticateUsecase = async (cmd: Command) => {
 					},
 				})
 			).map((session) => ({
-				accessToken: session.token,
+				accessToken: YggdrasilService.createAccessToken(session),
 				clientToken: cmd.clientToken,
 				user: cmd.requestUser ? { id: user.id, properties: [] } : undefined,
 				availableProfiles: profiles,
