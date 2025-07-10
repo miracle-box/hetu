@@ -1,6 +1,6 @@
 import { t } from 'elysia';
 import { createDtoSchemas } from '~backend/shared/middlewares/dto/schemas';
-import { sessionDigestSchema } from '../common.dtos';
+import { sessionDigestSchema } from '../common.dto';
 
 export const listSessionsDtoSchemas = createDtoSchemas({
 	response: {

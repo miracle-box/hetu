@@ -3,7 +3,7 @@ import { SessionScope } from '~backend/modules/auth/auth.entities';
 import { authMiddleware } from '~backend/shared/auth/middleware';
 import { AppError } from '~backend/shared/middlewares/errors/app-error';
 import { getUserInfoAction } from '../actions/get-user-info.action';
-import { getUserInfoDtoSchemas } from '../dtos/get-user-info.dtos';
+import { getUserInfoDtoSchemas } from '../dtos/get-user-info.dto';
 
 export const getUserInfoHandler = new Elysia().use(authMiddleware(SessionScope.DEFAULT)).get(
 	'/:id',

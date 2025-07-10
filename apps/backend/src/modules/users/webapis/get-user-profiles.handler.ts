@@ -3,7 +3,7 @@ import { SessionScope } from '~backend/modules/auth/auth.entities';
 import { authMiddleware } from '~backend/shared/auth/middleware';
 import { AppError } from '~backend/shared/middlewares/errors/app-error';
 import { getUserProfilesAction } from '../actions/get-user-profiles.action';
-import { getUserProfilesDtoSchemas } from '../dtos/get-user-profiles.dtos';
+import { getUserProfilesDtoSchemas } from '../dtos/get-user-profiles.dto';
 
 export const getUserProfilesHandler = new Elysia().use(authMiddleware(SessionScope.DEFAULT)).get(
 	'/:id/profiles',

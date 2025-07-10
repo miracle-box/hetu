@@ -3,7 +3,7 @@ import { SessionScope } from '~backend/modules/auth/auth.entities';
 import { authMiddleware } from '~backend/shared/auth/middleware';
 import { AppError } from '~backend/shared/middlewares/errors/app-error';
 import { getUserTexturesAction } from '../actions/get-user-textures.action';
-import { getUserTexturesDtoSchemas } from '../dtos/get-user-textures.dtos';
+import { getUserTexturesDtoSchemas } from '../dtos/get-user-textures.dto';
 
 export const getUserTexturesHandler = new Elysia().use(authMiddleware(SessionScope.DEFAULT)).get(
 	'/:id/textures',
