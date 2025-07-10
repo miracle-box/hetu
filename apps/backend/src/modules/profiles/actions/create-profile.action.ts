@@ -1,14 +1,10 @@
 import { EitherAsync, Left, Right } from 'purify-ts';
-import {
-	PrimaryProfileAlreadyExistsError,
-	ProfileNameAlreadyExistsError,
-} from '../profiles.errors';
+import { ProfileNameAlreadyExistsError } from '../profiles.errors';
 import { ProfilesRepository } from '../profiles.repository';
 
 type Command = {
 	userId: string;
 	name: string;
-	isPrimary: boolean;
 };
 
 export async function createProfileAction(cmd: Command) {
@@ -20,22 +16,14 @@ export async function createProfileAction(cmd: Command) {
 			return Right(undefined);
 		})
 		.chain(async () => {
-			if (cmd.isPrimary) {
-				return await ProfilesRepository.findPrimaryProfileByUser(cmd.userId);
-			}
-			return Right(undefined);
+			return await ProfilesRepository.findPrimaryProfileByUser(cmd.userId);
 		})
-		.chain(async (profile) => {
-			if (profile) {
-				return Left(new PrimaryProfileAlreadyExistsError(cmd.userId));
-			}
-			return Right(undefined);
-		})
-		.chain(async () => {
+		.chain(async (primaryProfile) => {
+			// First profile is the primary profile.
 			return await ProfilesRepository.createProfile({
 				authorId: cmd.userId,
 				name: cmd.name,
-				isPrimary: cmd.isPrimary,
+				isPrimary: !primaryProfile,
 			});
 		})
 		.run();

@@ -10,7 +10,7 @@ export const createTextureDtoSchemas = createDtoSchemas({
 		hash: t.String(),
 	}),
 	response: {
-		200: t.Object({
+		201: t.Object({
 			texture: textureSchema,
 		}),
 	},

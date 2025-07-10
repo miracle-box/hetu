@@ -5,10 +5,9 @@ import { profileSchema } from '../profiles.entities';
 export const createProfileDtoSchemas = createDtoSchemas({
 	body: t.Object({
 		name: t.String({ minLength: 3, maxLength: 128 }),
-		isPrimary: t.Boolean(),
 	}),
 	response: {
-		200: t.Object({
+		201: t.Object({
 			profile: profileSchema,
 		}),
 	},

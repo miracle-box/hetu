@@ -7,7 +7,7 @@ import { createTextureDtoSchemas } from '../dtos/create-texture.dto';
 
 export const createTextureHandler = new Elysia().use(authMiddleware(SessionScope.DEFAULT)).post(
 	'/',
-	async ({ user, body }) => {
+	async ({ user, body, set }) => {
 		const result = await createTextureAction({
 			userId: user.id,
 			name: body.name,
@@ -18,6 +18,7 @@ export const createTextureHandler = new Elysia().use(authMiddleware(SessionScope
 
 		return result
 			.map((texture) => {
+				set.status = 201;
 				return { texture };
 			})
 			.mapLeft((error) => {

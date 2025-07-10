@@ -7,23 +7,21 @@ import { createProfileDtoSchemas } from '../dtos/create-profile.dto';
 
 export const createProfileHandler = new Elysia().use(authMiddleware(SessionScope.DEFAULT)).post(
 	'/',
-	async ({ user, body }) => {
+	async ({ user, body, set }) => {
 		const result = await createProfileAction({
 			userId: user.id,
 			name: body.name,
-			isPrimary: body.isPrimary,
 		});
 
 		return result
 			.map((profile) => {
+				set.status = 201;
 				return { profile };
 			})
 			.mapLeft((error) => {
 				switch (error.name) {
 					case 'ProfileNameAlreadyExistsError':
 						throw new AppError('profiles/name-exists');
-					case 'PrimaryProfileAlreadyExistsError':
-						throw new AppError('profiles/primary-exists');
 					case 'DatabaseError':
 						throw new AppError('internal-error');
 				}

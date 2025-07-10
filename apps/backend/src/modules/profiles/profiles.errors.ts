@@ -15,11 +15,3 @@ export class ProfileNameAlreadyExistsError extends BaseError {
 		super(`Profile with name "${name}" already exists.`);
 	}
 }
-
-export class PrimaryProfileAlreadyExistsError extends BaseError {
-	override readonly name = 'PrimaryProfileAlreadyExistsError' as const;
-
-	constructor(userId: string) {
-		super(`User ${userId} already has a primary profile.`);
-	}
-}
