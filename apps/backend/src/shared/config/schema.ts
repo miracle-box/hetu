@@ -100,6 +100,7 @@ export const configSchema = Type.Object({
 			publicRoot: Type.String({
 				format: 'uri',
 			}),
+			forcePathStyle: Type.Boolean(),
 			bucket: Type.String(),
 			prefix: Type.String(),
 			accessKey: Type.Object({

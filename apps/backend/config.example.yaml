@@ -57,6 +57,7 @@ storage:
     endpoint: 'https://s3-endpoint.example.org'
     publicRoot: 'https://storage.example.org'
     bucket: 'my-bucket'
+    forcePathStyle: false
     # Ends in '/' if provided
     prefix: 'textures/'
     accessKey:
