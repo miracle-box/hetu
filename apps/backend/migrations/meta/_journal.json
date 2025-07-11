@@ -43,6 +43,13 @@
       "when": 1751642874974,
       "tag": "0005_panoramic_may_parker",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1752237892419,
+      "tag": "0006_jazzy_cassandra_nova",
+      "breakpoints": true
     }
   ]
 }
