@@ -1,0 +1,1 @@
+ALTER TABLE "ygg_server_sessions" ALTER COLUMN "access_token" SET DATA TYPE varchar;

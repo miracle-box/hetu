@@ -41,7 +41,7 @@ export async function validateTokenUsecase(cmd: ValidateTokenCommand) {
 				return Left(new YggdrasilAuthenticationError('Invalid access token.'));
 			}
 
-			if (!cmd.ignoreClientToken) {
+			if (!cmd.ignoreClientToken && cmd.clientToken) {
 				if (cmd.clientToken !== validationResult.session.metadata.clientToken) {
 					return Left(new YggdrasilAuthenticationError('Invalid client token.'));
 				}
