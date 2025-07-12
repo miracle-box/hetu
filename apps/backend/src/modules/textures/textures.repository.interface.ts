@@ -1,5 +1,5 @@
-import type { Texture, TextureType } from './textures.entities';
-import type { DatabaseError } from '../../common/errors/base.error';
+import type { DatabaseError } from '#common/errors/base.error';
+import type { Texture, TextureType } from '#modules/textures/textures.entities';
 import { Either } from 'purify-ts';
 
 export interface ITexturesRepository {

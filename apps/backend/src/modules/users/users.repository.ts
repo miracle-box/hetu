@@ -1,14 +1,14 @@
-import type { User } from './users.entities';
-import type { IUsersRepository } from './users.repository.interface';
-import type { Profile } from '../profiles/profiles.entities';
-import type { Texture } from '../textures/textures.entities';
+import type { Profile } from '#modules/profiles/profiles.entities';
+import type { Texture } from '#modules/textures/textures.entities';
+import type { User } from '#modules/users/users.entities';
+import type { IUsersRepository } from '#modules/users/users.repository.interface';
 import { eq, or } from 'drizzle-orm';
 import { Either, Left, Right } from 'purify-ts';
-import { DatabaseError } from '../../common/errors/base.error';
-import { useDatabase } from '../../shared/db';
-import { profilesTable } from '../../shared/db/schema/profiles';
-import { texturesTable } from '../../shared/db/schema/textures';
-import { usersTable } from '../../shared/db/schema/users';
+import { DatabaseError } from '#common/errors/base.error';
+import { useDatabase } from '#db';
+import { profilesTable } from '#db/schema/profiles';
+import { texturesTable } from '#db/schema/textures';
+import { usersTable } from '#db/schema/users';
 
 export const UsersRepository: IUsersRepository = {
 	async emailOrNameExists(email: string, name: string): Promise<Either<DatabaseError, boolean>> {

@@ -1,9 +1,9 @@
 import { Elysia } from 'elysia';
-import { SessionScope } from '~backend/modules/auth/auth.entities';
-import { authMiddleware } from '~backend/shared/auth/middleware';
-import { AppError } from '~backend/shared/middlewares/errors/app-error';
-import { createTextureAction } from '../actions/create-texture.action';
-import { createTextureDtoSchemas } from '../dtos/create-texture.dto';
+import { SessionScope } from '#modules/auth/auth.entities';
+import { createTextureAction } from '#modules/textures/actions/create-texture.action';
+import { createTextureDtoSchemas } from '#modules/textures/dtos/create-texture.dto';
+import { authMiddleware } from '#shared/auth/middleware';
+import { AppError } from '#shared/middlewares/errors/app-error';
 
 export const createTextureHandler = new Elysia().use(authMiddleware(SessionScope.DEFAULT)).post(
 	'/',

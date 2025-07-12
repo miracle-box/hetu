@@ -1,9 +1,9 @@
 import { Elysia } from 'elysia';
-import { authMiddleware } from '~backend/shared/auth/middleware';
-import { AppError } from '~backend/shared/middlewares/errors/app-error';
-import { listSessionsAction } from '../../actions/sessions/list-sessions.action';
-import { SessionScope } from '../../auth.entities';
-import { listSessionsDtoSchemas } from '../../dtos/sessions/list-sessions.dto';
+import { listSessionsAction } from '#modules/auth/actions/sessions/list-sessions.action';
+import { SessionScope } from '#modules/auth/auth.entities';
+import { listSessionsDtoSchemas } from '#modules/auth/dtos/sessions/list-sessions.dto';
+import { authMiddleware } from '#shared/auth/middleware';
+import { AppError } from '#shared/middlewares/errors/app-error';
 
 export const listSessionsHandler = new Elysia().use(authMiddleware(SessionScope.DEFAULT)).get(
 	'/sessions',

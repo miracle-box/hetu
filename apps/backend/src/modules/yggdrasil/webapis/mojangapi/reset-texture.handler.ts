@@ -1,11 +1,11 @@
 import { Elysia } from 'elysia';
+import { resetTextureAction } from '#modules/yggdrasil/actions/mojangapi/reset-texture.action';
+import { resetTextureDtoSchemas } from '#modules/yggdrasil/dtos/mojangapi/reset-texture.dto';
 import {
 	ForbiddenOperationException,
 	IllegalArgumentException,
 	InternalError,
-} from '~backend/shared/middlewares/errors/yggdrasil-error';
-import { resetTextureAction } from '../../actions/mojangapi/reset-texture.action';
-import { resetTextureDtoSchemas } from '../../dtos/mojangapi/reset-texture.dto';
+} from '#shared/middlewares/errors/yggdrasil-error';
 
 export const resetTextureHandler = new Elysia().delete(
 	'/user/profile/:id/:type',

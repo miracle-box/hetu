@@ -1,10 +1,10 @@
 import { Elysia } from 'elysia';
+import { joinServerAction } from '#modules/yggdrasil/actions/sessionserver/join-server.action';
+import { joinServerDtoSchemas } from '#modules/yggdrasil/dtos/sessionserver/join-server.dto';
 import {
 	ForbiddenOperationException,
 	InternalError,
-} from '~backend/shared/middlewares/errors/yggdrasil-error';
-import { joinServerAction } from '../../actions/sessionserver/join-server.action';
-import { joinServerDtoSchemas } from '../../dtos/sessionserver/join-server.dto';
+} from '#shared/middlewares/errors/yggdrasil-error';
 
 export const joinServerHandler = new Elysia().post(
 	'/session/minecraft/join',

@@ -1,6 +1,6 @@
 import { t } from 'elysia';
-import { createDtoSchemas } from '~backend/shared/middlewares/dto/schemas';
-import { userResponseSchema } from './common.dto';
+import { userResponseSchema } from '#modules/users/dtos/common.dto';
+import { createDtoSchemas } from '#shared/middlewares/dto/schemas';
 
 export const getUserInfoDtoSchemas = createDtoSchemas({
 	params: t.Object({

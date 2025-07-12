@@ -1,11 +1,11 @@
-import type { Profile } from './profiles.entities';
-import type { IProfilesRepository } from './profiles.repository.interface';
+import type { Profile } from '#modules/profiles/profiles.entities';
+import type { IProfilesRepository } from '#modules/profiles/profiles.repository.interface';
 import { and, eq } from 'drizzle-orm';
 import { Either, Left, Right } from 'purify-ts';
-import { useDatabase } from '~backend/shared/db';
-import { profilesTable } from '~backend/shared/db/schema/profiles';
-import { lower } from '~backend/shared/db/sql';
-import { DatabaseError } from '../../common/errors/base.error';
+import { DatabaseError } from '#common/errors/base.error';
+import { useDatabase } from '#db';
+import { profilesTable } from '#db/schema/profiles';
+import { lower } from '#shared/db/sql';
 
 export const ProfilesRepository: IProfilesRepository = {
 	async findProfilesByUser(userId: string): Promise<Either<DatabaseError, Profile[]>> {

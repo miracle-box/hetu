@@ -1,8 +1,8 @@
 import { EitherAsync, Left, Right } from 'purify-ts';
-import { SessionLifecycle, SessionScope } from '~backend/modules/auth/auth.entities';
-import { SessionValidationService } from '~backend/modules/auth/services/session.service';
-import { YggdrasilService } from '../../services/yggdrasil.service';
-import { YggdrasilAuthenticationError } from '../../yggdrasil.errors';
+import { SessionLifecycle, SessionScope } from '#modules/auth/auth.entities';
+import { SessionValidationService } from '#modules/auth/services/session.service';
+import { YggdrasilService } from '#modules/yggdrasil/services/yggdrasil.service';
+import { YggdrasilAuthenticationError } from '#modules/yggdrasil/yggdrasil.errors';
 
 export interface ValidateTokenCommand {
 	accessToken: string;

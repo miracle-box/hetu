@@ -1,6 +1,6 @@
 import { Left } from 'purify-ts';
-import { ForbiddenError } from '../../../common/errors/base.error';
-import { UsersRepository } from '../users.repository';
+import { ForbiddenError } from '#common/errors/base.error';
+import { UsersRepository } from '#modules/users/users.repository';
 
 type Command = {
 	userId: string;

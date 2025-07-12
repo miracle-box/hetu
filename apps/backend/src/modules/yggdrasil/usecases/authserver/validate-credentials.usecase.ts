@@ -1,7 +1,7 @@
 import { EitherAsync, Left, Right } from 'purify-ts';
-import { PasswordHashService } from '~backend/modules/auth/services/password-hash.service';
-import { AuthRepository } from '../../../auth/auth.repository';
-import { YggdrasilInvalidCredentialsError } from '../../yggdrasil.errors';
+import { AuthRepository } from '#modules/auth/auth.repository';
+import { PasswordHashService } from '#modules/auth/services/password-hash.service';
+import { YggdrasilInvalidCredentialsError } from '#modules/yggdrasil/yggdrasil.errors';
 
 export interface ValidateCredentialsCommand {
 	username: string;

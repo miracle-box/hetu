@@ -1,18 +1,18 @@
 import { drizzle } from 'drizzle-orm/postgres-js';
 import postgres from 'postgres';
 
-import { Config } from '~backend/shared/config';
-import { PinoDrizzleLogger } from '~backend/shared/db/logging.ts';
+import { Config } from '#config';
 
-import * as relations from './relations';
-import * as filesSchemas from './schema/files';
-import * as profilesSchemas from './schema/profiles';
-import * as sessionsSchemas from './schema/sessions';
-import * as texturesSchemas from './schema/textures';
-import * as userAuthSchemas from './schema/user-auth';
-import * as usersSchemas from './schema/users';
-import * as verificationsSchemas from './schema/verifications';
-import * as yggServerSessionsSchemas from './schema/ygg-server-sessions';
+import * as filesSchemas from '#db/schema/files';
+import * as profilesSchemas from '#db/schema/profiles';
+import * as sessionsSchemas from '#db/schema/sessions';
+import * as texturesSchemas from '#db/schema/textures';
+import * as userAuthSchemas from '#db/schema/user-auth';
+import * as usersSchemas from '#db/schema/users';
+import * as verificationsSchemas from '#db/schema/verifications';
+import * as yggServerSessionsSchemas from '#db/schema/ygg-server-sessions';
+import { PinoDrizzleLogger } from '#shared/db/logging';
+import * as relations from '#shared/db/relations';
 
 const schema = {
 	...filesSchemas,

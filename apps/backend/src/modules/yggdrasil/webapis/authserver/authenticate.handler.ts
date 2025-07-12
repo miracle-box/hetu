@@ -1,10 +1,10 @@
 import { Elysia } from 'elysia';
+import { authenticateAction } from '#modules/yggdrasil/actions/authserver/authenticate.action';
+import { authenticateDtoSchemas } from '#modules/yggdrasil/dtos/authserver/authenticate.dto';
 import {
 	ForbiddenOperationException,
 	InternalError,
-} from '~backend/shared/middlewares/errors/yggdrasil-error';
-import { authenticateAction } from '../../actions/authserver/authenticate.action';
-import { authenticateDtoSchemas } from '../../dtos/authserver/authenticate.dto';
+} from '#shared/middlewares/errors/yggdrasil-error';
 
 export const authenticateHandler = new Elysia().post(
 	'/authenticate',

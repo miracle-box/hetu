@@ -1,7 +1,7 @@
 import { Elysia } from 'elysia';
-import { AppError } from '~backend/shared/middlewares/errors/app-error';
-import { resetPasswordAction } from '../../actions/password/reset-password.action';
-import { resetPasswordDtoSchemas } from '../../dtos';
+import { resetPasswordAction } from '#modules/auth/actions/password/reset-password.action';
+import { resetPasswordDtoSchemas } from '#modules/auth/dtos';
+import { AppError } from '#shared/middlewares/errors/app-error';
 
 export const resetPasswordHandler = new Elysia().post(
 	'/reset-password',

@@ -1,1 +1,1 @@
-export * from './upload-file.dto';
+export * from '#modules/files/dtos/upload-file.dto';

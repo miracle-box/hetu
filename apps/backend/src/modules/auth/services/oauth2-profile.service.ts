@@ -1,8 +1,8 @@
 import { ValuePointer } from '@sinclair/typebox/value';
 import { Left, Right } from 'purify-ts';
-import { Logger } from '~backend/shared/logger';
-import { Oauth2MisconfiguredError } from '../auth.errors';
-import { type OAuth2ProviderConfig } from '../oauth2-providers.repository';
+import { Logger } from '#logger';
+import { Oauth2MisconfiguredError } from '#modules/auth/auth.errors';
+import { type OAuth2ProviderConfig } from '#modules/auth/oauth2-providers.repository';
 
 export class OAuth2ProfileService {
 	/**

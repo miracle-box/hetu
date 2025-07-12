@@ -1,13 +1,8 @@
 import { Elysia } from 'elysia';
-import { Config } from '~backend/shared/config';
-import { onErrorLogger } from '~backend/shared/middlewares/logger';
-import { AppError, appErrorHandler } from './app-error';
-import {
-	ForbiddenOperationException,
-	IllegalArgumentException,
-	NotFoundError,
-	yggdrasilErrorHandler,
-} from './yggdrasil-error';
+import { Config } from '#config';
+import { AppError, appErrorHandler } from '#shared/middlewares/errors/app-error';
+import { yggdrasilErrorHandler } from '#shared/middlewares/errors/yggdrasil-error';
+import { onErrorLogger } from '#shared/middlewares/logger';
 
 /**
  * Error handling middleware.
@@ -18,9 +13,6 @@ export const errorsMiddleware = (app: Elysia) =>
 	app
 		.error({
 			AppError,
-			NotFoundError,
-			ForbiddenOperationException,
-			IllegalArgumentException,
 		})
 		.onError((ctx) => {
 			let response;

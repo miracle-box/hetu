@@ -1,18 +1,18 @@
-import type { DatabaseError } from '~backend/common/errors/base.error';
-import type { Verification } from '~backend/modules/auth/auth.entities';
+import type { DatabaseError } from '#common/errors/base.error';
+import type { Verification } from '#modules/auth/auth.entities';
 import { Either, EitherAsync, Left } from 'purify-ts';
-import { VerificationType } from '../../auth.entities';
+import { VerificationType } from '#modules/auth/auth.entities';
 import {
 	InvalidOauth2GrantError,
 	InvalidOauth2ProviderError,
 	InvalidVerificationCodeError,
 	InvalidVerificationTypeError,
 	Oauth2MisconfiguredError,
-} from '../../auth.errors';
-import { AuthRepository } from '../../auth.repository';
-import { VerificationValidatorService } from '../../services/verification-validator.service';
-import { verifyEmailVerificationUsecase } from '../../usecases/verifications/verify-email-verification.usecase';
-import { verifyOauth2VerificationUsecase } from '../../usecases/verifications/verify-oauth2-verification';
+} from '#modules/auth/auth.errors';
+import { AuthRepository } from '#modules/auth/auth.repository';
+import { VerificationValidatorService } from '#modules/auth/services/verification-validator.service';
+import { verifyEmailVerificationUsecase } from '#modules/auth/usecases/verifications/verify-email-verification.usecase';
+import { verifyOauth2VerificationUsecase } from '#modules/auth/usecases/verifications/verify-oauth2-verification';
 
 type Command = {
 	id: string;

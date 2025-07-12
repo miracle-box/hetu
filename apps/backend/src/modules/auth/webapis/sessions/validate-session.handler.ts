@@ -1,9 +1,9 @@
 import { Elysia } from 'elysia';
-import { SessionLifecycle, SessionScope } from '~backend/modules/auth/auth.entities';
-import { authMiddleware } from '~backend/shared/auth/middleware';
-import { AppError } from '~backend/shared/middlewares/errors/app-error';
-import { validateSessionAction } from '../../actions/sessions/validate-session.action';
-import { validateSessionDtoSchemas } from '../../dtos/sessions/validate-session.dto';
+import { validateSessionAction } from '#modules/auth/actions/sessions/validate-session.action';
+import { SessionLifecycle, SessionScope } from '#modules/auth/auth.entities';
+import { validateSessionDtoSchemas } from '#modules/auth/dtos/sessions/validate-session.dto';
+import { authMiddleware } from '#shared/auth/middleware';
+import { AppError } from '#shared/middlewares/errors/app-error';
 
 export const validateSessionHandler = new Elysia()
 	.use(

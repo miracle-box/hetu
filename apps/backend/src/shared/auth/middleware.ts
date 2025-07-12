@@ -1,8 +1,8 @@
 import { Elysia } from 'elysia';
-import { SessionLifecycle, SessionScope } from '~backend/modules/auth/auth.entities';
-import { SessionValidationService } from '~backend/modules/auth/services/session.service';
-import { readBearerToken } from '~backend/shared/auth/utils';
-import { AppError } from '../middlewares/errors/app-error';
+import { SessionScope, SessionLifecycle } from '#modules/auth/auth.entities';
+import { SessionValidationService } from '#modules/auth/services/session.service';
+import { readBearerToken } from '#shared/auth/utils';
+import { AppError } from '#shared/middlewares/errors/app-error';
 
 type AuthMiddlewareOptions = {
 	allowedLifecycle: Exclude<SessionLifecycle, (typeof SessionLifecycle)['Expired']>[];

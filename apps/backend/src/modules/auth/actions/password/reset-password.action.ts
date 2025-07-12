@@ -1,10 +1,10 @@
 import { EitherAsync, Left, Right } from 'purify-ts';
-import { UserNotFoundError } from '../../../users/users.errors';
-import { UsersRepository } from '../../../users/users.repository';
-import { VerificationScenario } from '../../auth.entities';
-import { InvalidVerificationError } from '../../auth.errors';
-import { AuthRepository } from '../../auth.repository';
-import { resetPasswordUsecase } from '../../usecases/password/reset-password.usecase';
+import { VerificationScenario } from '#modules/auth/auth.entities';
+import { InvalidVerificationError } from '#modules/auth/auth.errors';
+import { AuthRepository } from '#modules/auth/auth.repository';
+import { resetPasswordUsecase } from '#modules/auth/usecases/password/reset-password.usecase';
+import { UserNotFoundError } from '#modules/users/users.errors';
+import { UsersRepository } from '#modules/users/users.repository';
 
 type Command = {
 	verificationId: string;

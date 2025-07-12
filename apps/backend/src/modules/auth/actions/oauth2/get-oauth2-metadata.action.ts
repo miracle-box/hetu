@@ -1,5 +1,5 @@
 import { Either, Right } from 'purify-ts';
-import { OAuth2ProvidersRepository } from '../../oauth2-providers.repository';
+import { OAuth2ProvidersRepository } from '#modules/auth/oauth2-providers.repository';
 
 type Result = {
 	providers: Record<

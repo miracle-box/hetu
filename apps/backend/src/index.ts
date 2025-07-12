@@ -1,8 +1,5 @@
-import type { app } from './app';
 import { Clap } from '@repo/miniclap';
-import { Config, initConfig } from './shared/config';
-
-export type App = typeof app;
+import { Config, initConfig } from '#config';
 
 const cli = new Clap()
 	.command(

@@ -1,10 +1,10 @@
-import type { User } from '../../../users/users.entities';
-import type { Verification } from '../../auth.entities';
+import type { Verification } from '#modules/auth/auth.entities';
+import type { User } from '#modules/users/users.entities';
 import { EitherAsync, Left, Right } from 'purify-ts';
-import { Oauth2AlreadyBoundError } from '../../auth.errors';
-import { AuthRepository } from '../../auth.repository';
-import { type OAuth2ProviderConfig } from '../../oauth2-providers.repository';
-import { OAuth2ProfileService } from '../../services/oauth2-profile.service';
+import { Oauth2AlreadyBoundError } from '#modules/auth/auth.errors';
+import { AuthRepository } from '#modules/auth/auth.repository';
+import { type OAuth2ProviderConfig } from '#modules/auth/oauth2-providers.repository';
+import { OAuth2ProfileService } from '#modules/auth/services/oauth2-profile.service';
 
 type Command = {
 	verification: Verification;

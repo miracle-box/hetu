@@ -1,9 +1,9 @@
-import type { DatabaseError } from '~backend/common/errors/base.error';
-import type { Session } from '~backend/modules/auth/auth.entities';
+import type { DatabaseError } from '#common/errors/base.error';
+import type { Session } from '#modules/auth/auth.entities';
 import { Either, EitherAsync, Left, Right } from 'purify-ts';
-import { InvalidSessionError } from '../../auth.errors';
-import { findSessionUsecase } from '../../usecases/sessions/find-session.usecase';
-import { refreshSessionUsecase } from '../../usecases/sessions/refresh-session.usecase';
+import { InvalidSessionError } from '#modules/auth/auth.errors';
+import { findSessionUsecase } from '#modules/auth/usecases/sessions/find-session.usecase';
+import { refreshSessionUsecase } from '#modules/auth/usecases/sessions/refresh-session.usecase';
 
 type Command = {
 	sessionId: string;

@@ -1,6 +1,6 @@
 import { Right } from 'purify-ts';
-import { version } from '../../../../package.json';
-import { Config } from '../../../shared/config';
+import { Config } from '#config';
+import { version } from '#package.json';
 
 export const getMetadataAction = async () => {
 	return Right({

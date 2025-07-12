@@ -1,7 +1,7 @@
-import type { VerificationScenario, VerificationType } from '../auth.entities';
+import type { VerificationScenario, VerificationType } from '#modules/auth/auth.entities';
 import { EitherAsync } from 'purify-ts';
-import { withTransaction } from '~backend/shared/db';
-import { AuthRepository } from '../auth.repository';
+import { withTransaction } from '#db';
+import { AuthRepository } from '#modules/auth/auth.repository';
 
 export abstract class VerificationOperationService {
 	static async revokeAndCreateVerification(cmd: {

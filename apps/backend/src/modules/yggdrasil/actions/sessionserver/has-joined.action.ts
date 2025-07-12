@@ -1,12 +1,12 @@
 import { EitherAsync, Left, Right } from 'purify-ts';
-import { SessionLifecycle } from '~backend/modules/auth/auth.entities';
-import { YggdrasilService } from '../../services/yggdrasil.service';
-import { validateTokenUsecase } from '../../usecases/authserver/validate-token.usecase';
+import { SessionLifecycle } from '#modules/auth/auth.entities';
+import { YggdrasilService } from '#modules/yggdrasil/services/yggdrasil.service';
+import { validateTokenUsecase } from '#modules/yggdrasil/usecases/authserver/validate-token.usecase';
 import {
 	YggdrasilProfileNotFoundError,
 	YggdrasilServerSessionNotFoundError,
-} from '../../yggdrasil.errors';
-import { YggdrasilRepository } from '../../yggdrasil.repository';
+} from '#modules/yggdrasil/yggdrasil.errors';
+import { YggdrasilRepository } from '#modules/yggdrasil/yggdrasil.repository';
 
 type Command = {
 	username: string;

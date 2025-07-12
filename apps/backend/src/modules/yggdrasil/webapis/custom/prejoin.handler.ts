@@ -1,6 +1,6 @@
 import { Elysia } from 'elysia';
-import { prejoinAction } from '../../actions/custom/prejoin.action';
-import { prejoinDtoSchemas } from '../../dtos/custom/prejoin.dto';
+import { prejoinAction } from '#modules/yggdrasil/actions/custom/prejoin.action';
+import { prejoinDtoSchemas } from '#modules/yggdrasil/dtos/custom/prejoin.dto';
 
 export const prejoinHandler = new Elysia().post(
 	'/prejoin',

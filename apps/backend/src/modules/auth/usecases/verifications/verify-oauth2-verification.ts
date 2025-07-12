@@ -1,13 +1,13 @@
-import type { Verification } from '../../auth.entities';
+import type { Verification } from '#modules/auth/auth.entities';
 import { Left } from 'purify-ts';
-import { Logger } from '~backend/shared/logger';
+import { Logger } from '#logger';
 import {
 	InvalidOauth2GrantError,
 	InvalidOauth2ProviderError,
 	Oauth2MisconfiguredError,
-} from '../../auth.errors';
-import { AuthRepository } from '../../auth.repository';
-import { OAuth2ProvidersRepository } from '../../oauth2-providers.repository';
+} from '#modules/auth/auth.errors';
+import { AuthRepository } from '#modules/auth/auth.repository';
+import { OAuth2ProvidersRepository } from '#modules/auth/oauth2-providers.repository';
 
 type Command = {
 	id: string;

@@ -1,5 +1,5 @@
-import { AuthRepository } from '../../auth.repository';
-import { VerificationValidatorService } from '../../services/verification-validator.service';
+import { AuthRepository } from '#modules/auth/auth.repository';
+import { VerificationValidatorService } from '#modules/auth/services/verification-validator.service';
 
 type Command = {
 	id: string;

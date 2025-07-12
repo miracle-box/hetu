@@ -1,9 +1,10 @@
 import { Elysia } from 'elysia';
-import { SessionScope } from '~backend/modules/auth/auth.entities';
-import { authMiddleware } from '~backend/shared/auth/middleware';
-import { AppError } from '~backend/shared/middlewares/errors/app-error';
-import { getUserTexturesAction } from '../actions/get-user-textures.action';
-import { getUserTexturesDtoSchemas } from '../dtos/get-user-textures.dto';
+
+import { SessionScope } from '#modules/auth/auth.entities';
+import { getUserTexturesAction } from '#modules/users/actions/get-user-textures.action';
+import { getUserTexturesDtoSchemas } from '#modules/users/dtos/get-user-textures.dto';
+import { authMiddleware } from '#shared/auth/middleware';
+import { AppError } from '#shared/middlewares/errors/app-error';
 
 export const getUserTexturesHandler = new Elysia().use(authMiddleware(SessionScope.DEFAULT)).get(
 	'/:id/textures',

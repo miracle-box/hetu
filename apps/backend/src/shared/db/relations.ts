@@ -1,10 +1,10 @@
 import { relations } from 'drizzle-orm';
-import { profilesTable } from '~backend/shared/db/schema/profiles';
-import { sessionsTable } from '~backend/shared/db/schema/sessions';
-import { texturesTable } from '~backend/shared/db/schema/textures';
-import { userAuthTable } from '~backend/shared/db/schema/user-auth';
-import { usersTable } from '~backend/shared/db/schema/users';
-import { verificationsTable } from '~backend/shared/db/schema/verifications';
+import { profilesTable } from '#db/schema/profiles';
+import { sessionsTable } from '#db/schema/sessions';
+import { texturesTable } from '#db/schema/textures';
+import { userAuthTable } from '#db/schema/user-auth';
+import { usersTable } from '#db/schema/users';
+import { verificationsTable } from '#db/schema/verifications';
 
 export const profilesRelations = relations(profilesTable, ({ one }) => ({
 	author: one(usersTable, {

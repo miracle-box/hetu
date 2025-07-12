@@ -1,6 +1,6 @@
-import type { TextureType } from '../textures.entities';
+import type { TextureType } from '#modules/textures/textures.entities';
 import { Either, Left, Right } from 'purify-ts';
-import { TextureImageError } from '../textures.errors';
+import { TextureImageError } from '#modules/textures/textures.errors';
 
 export enum CapeType {
 	VANILLA = 'vanilla',

@@ -1,4 +1,4 @@
-import type { drizzleClient } from './drizzle';
+import type { drizzleClient } from '#shared/db/drizzle';
 import { AsyncLocalStorage } from 'node:async_hooks';
 
 type DrizzleDatabase = typeof drizzleClient;

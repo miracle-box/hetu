@@ -1,9 +1,9 @@
 import { EitherAsync, Left, Right } from 'purify-ts';
-import { UserNotFoundError } from '~backend/modules/users/users.errors';
-import { UsersRepository } from '../../../users/users.repository';
-import { VerificationScenario } from '../../auth.entities';
-import { OAuth2ValidatorService } from '../../services/oauth2-validator.service';
-import { checkOauth2BindingUsecase } from '../../usecases/oauth2/check-oauth2-binding.usecase';
+import { VerificationScenario } from '#modules/auth/auth.entities';
+import { OAuth2ValidatorService } from '#modules/auth/services/oauth2-validator.service';
+import { checkOauth2BindingUsecase } from '#modules/auth/usecases/oauth2/check-oauth2-binding.usecase';
+import { UserNotFoundError } from '#modules/users/users.errors';
+import { UsersRepository } from '#modules/users/users.repository';
 
 type Command = {
 	verificationId: string;

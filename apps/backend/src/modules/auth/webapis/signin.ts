@@ -1,7 +1,7 @@
 import { Elysia } from 'elysia';
-import { signinAction } from '~backend/modules/auth/actions/signin.action';
-import { AppError } from '~backend/shared/middlewares/errors/app-error';
-import { signinDtoSchemas } from '../dtos/signin.dto';
+import { signinAction } from '#modules/auth/actions/signin.action';
+import { signinDtoSchemas } from '#modules/auth/dtos/signin.dto';
+import { AppError } from '#shared/middlewares/errors/app-error';
 
 export const signinHandler = new Elysia().post(
 	'/signin',

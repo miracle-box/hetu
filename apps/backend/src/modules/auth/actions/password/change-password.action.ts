@@ -1,9 +1,9 @@
 import { EitherAsync, Left, Right } from 'purify-ts';
-import { UserNotFoundError } from '../../../users/users.errors';
-import { UsersRepository } from '../../../users/users.repository';
-import { SessionScope } from '../../auth.entities';
-import { AuthRepository } from '../../auth.repository';
-import { changePasswordUsecase } from '../../usecases/password/change-password.usecase';
+import { SessionScope } from '#modules/auth/auth.entities';
+import { AuthRepository } from '#modules/auth/auth.repository';
+import { changePasswordUsecase } from '#modules/auth/usecases/password/change-password.usecase';
+import { UserNotFoundError } from '#modules/users/users.errors';
+import { UsersRepository } from '#modules/users/users.repository';
 
 type Command = {
 	userId: string;

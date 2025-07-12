@@ -1,6 +1,6 @@
 import { t } from 'elysia';
-import { createDtoSchemas } from '~backend/shared/middlewares/dto/schemas';
-import { sessionSchema } from '../auth.entities';
+import { sessionSchema } from '#modules/auth/auth.entities';
+import { createDtoSchemas } from '#shared/middlewares/dto/schemas';
 
 export const signinDtoSchemas = createDtoSchemas({
 	body: t.Object({

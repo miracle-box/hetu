@@ -1,10 +1,10 @@
-import type { Texture, TextureType } from './textures.entities';
-import type { ITexturesRepository } from './textures.repository.interface';
+import type { Texture, TextureType } from '#modules/textures/textures.entities';
+import type { ITexturesRepository } from '#modules/textures/textures.repository.interface';
 import { and, eq } from 'drizzle-orm';
 import { Either, Left, Right } from 'purify-ts';
-import { useDatabase } from '~backend/shared/db';
-import { texturesTable } from '~backend/shared/db/schema/textures';
-import { DatabaseError } from '../../common/errors/base.error';
+import { DatabaseError } from '#common/errors/base.error';
+import { useDatabase } from '#db';
+import { texturesTable } from '#db/schema/textures';
 
 export const TexturesRepository: ITexturesRepository = {
 	async findTexturesByUser(userId: string): Promise<Either<DatabaseError, Texture[]>> {

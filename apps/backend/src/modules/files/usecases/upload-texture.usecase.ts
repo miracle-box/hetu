@@ -1,7 +1,7 @@
 import { EitherAsync, Right } from 'purify-ts';
-import { FileType } from '../files.entities';
-import { FilesRepository } from '../files.repository';
-import { storageService } from '../services/storage.service';
+import { FileType } from '#modules/files/files.entities';
+import { FilesRepository } from '#modules/files/files.repository';
+import { storageService } from '#modules/files/services/storage.service';
 
 export interface UploadTextureParams {
 	image: Buffer;

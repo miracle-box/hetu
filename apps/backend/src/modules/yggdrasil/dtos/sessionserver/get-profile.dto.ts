@@ -1,6 +1,6 @@
 import { t } from 'elysia';
-import { createDtoSchemas } from '~backend/shared/middlewares/dto/schemas';
-import { yggProfileSchema } from '../../yggdrasil.entities';
+import { yggProfileSchema } from '#modules/yggdrasil/yggdrasil.entities';
+import { createDtoSchemas } from '#shared/middlewares/dto/schemas';
 
 export const getProfileDtoSchemas = createDtoSchemas({
 	params: t.Object({

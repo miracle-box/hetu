@@ -1,7 +1,7 @@
 import type { BunPlugin } from 'bun';
+import Bun from 'bun';
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import Bun from 'bun';
 import { bunPluginPino } from 'bun-plugin-pino';
 
 function bunPluginEmbedSharpNative(): BunPlugin {

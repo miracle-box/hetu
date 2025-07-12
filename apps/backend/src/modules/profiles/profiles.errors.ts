@@ -1,4 +1,4 @@
-import { BaseError } from '../../common/errors/base.error';
+import { BaseError } from '#common/errors/base.error';
 
 export class ProfileNotFoundError extends BaseError {
 	override readonly name = 'ProfileNotFoundError' as const;

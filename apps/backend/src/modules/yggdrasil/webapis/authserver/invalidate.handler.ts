@@ -1,7 +1,7 @@
 import { Elysia } from 'elysia';
-import { InternalError } from '~backend/shared/middlewares/errors/yggdrasil-error';
-import { invalidateAction } from '../../actions/authserver/invalidate.action';
-import { invalidateDtoSchemas } from '../../dtos/authserver/invalidate.dto';
+import { invalidateAction } from '#modules/yggdrasil/actions/authserver/invalidate.action';
+import { invalidateDtoSchemas } from '#modules/yggdrasil/dtos/authserver/invalidate.dto';
+import { InternalError } from '#shared/middlewares/errors/yggdrasil-error';
 
 export const invalidateHandler = new Elysia().post(
 	'/invalidate',

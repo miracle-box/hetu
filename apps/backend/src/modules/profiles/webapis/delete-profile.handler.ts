@@ -1,9 +1,9 @@
 import { Elysia } from 'elysia';
-import { SessionScope } from '~backend/modules/auth/auth.entities';
-import { authMiddleware } from '~backend/shared/auth/middleware';
-import { AppError } from '~backend/shared/middlewares/errors/app-error';
-import { deleteProfileAction } from '../actions/delete-profile.action';
-import { deleteProfileDtoSchemas } from '../dtos/delete-profile.dto';
+import { SessionScope } from '#modules/auth/auth.entities';
+import { deleteProfileAction } from '#modules/profiles/actions/delete-profile.action';
+import { deleteProfileDtoSchemas } from '#modules/profiles/dtos/delete-profile.dto';
+import { authMiddleware } from '#shared/auth/middleware';
+import { AppError } from '#shared/middlewares/errors/app-error';
 
 export const deleteProfileHandler = new Elysia().use(authMiddleware(SessionScope.DEFAULT)).delete(
 	'/:id',

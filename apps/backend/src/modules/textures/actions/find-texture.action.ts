@@ -1,6 +1,6 @@
 import { EitherAsync, Left, Right } from 'purify-ts';
-import { TextureNotFoundError } from '../textures.errors';
-import { TexturesRepository } from '../textures.repository';
+import { TextureNotFoundError } from '#modules/textures/textures.errors';
+import { TexturesRepository } from '#modules/textures/textures.repository';
 
 type Command = {
 	textureId: string;

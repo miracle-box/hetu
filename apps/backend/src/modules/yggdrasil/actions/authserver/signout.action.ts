@@ -1,6 +1,6 @@
 import { EitherAsync } from 'purify-ts';
-import { AuthRepository } from '~backend/modules/auth/auth.repository';
-import { validateCredentialsUsecase } from '../../usecases/authserver/validate-credentials.usecase';
+import { AuthRepository } from '#modules/auth/auth.repository';
+import { validateCredentialsUsecase } from '#modules/yggdrasil/usecases/authserver/validate-credentials.usecase';
 
 type Command = {
 	username: string;

@@ -4,7 +4,7 @@ import {
 	verificationScenarioSchema,
 	VerificationType,
 	verificationTypeSchema,
-} from '../auth.entities';
+} from '#modules/auth/auth.entities';
 
 export const sessionDigestSchema = t.Omit(sessionSchema, ['token']);
 

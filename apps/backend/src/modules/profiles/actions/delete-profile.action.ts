@@ -1,7 +1,7 @@
 import { EitherAsync, Left, Right } from 'purify-ts';
-import { ForbiddenError } from '~backend/common/errors/base.error';
-import { ProfileNotFoundError } from '../profiles.errors';
-import { ProfilesRepository } from '../profiles.repository';
+import { ForbiddenError } from '#common/errors/base.error';
+import { ProfileNotFoundError } from '#modules/profiles/profiles.errors';
+import { ProfilesRepository } from '#modules/profiles/profiles.repository';
 
 type Command = {
 	userId: string;

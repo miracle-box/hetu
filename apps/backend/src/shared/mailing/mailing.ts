@@ -1,5 +1,5 @@
 import nodemailer from 'nodemailer';
-import { Config } from '~backend/shared/config';
+import { Config } from '#config';
 
 export const mailer = nodemailer.createTransport({
 	host: Config.mailing.smtp.host,

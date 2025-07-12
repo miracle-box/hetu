@@ -1,7 +1,7 @@
-import type { ElysiaOnErrorContext } from './types';
+import type { ElysiaOnErrorContext } from '#shared/middlewares/errors/types';
 import type { Static } from 'elysia';
-import { Logger } from '~backend/shared/logger';
-import { APP_ERRORS } from './errors';
+import { Logger } from '#logger';
+import { APP_ERRORS } from '#shared/middlewares/errors/errors';
 
 export class AppError<TErrorCode extends keyof typeof APP_ERRORS> extends Error {
 	code = '';

@@ -1,4 +1,4 @@
-import { AuthRepository } from '../../auth.repository';
+import { AuthRepository } from '#modules/auth/auth.repository';
 
 type Command = {
 	userId: string;

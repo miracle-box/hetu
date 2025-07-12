@@ -1,7 +1,7 @@
 import { EitherAsync, Left, Right } from 'purify-ts';
-import { ForbiddenError } from '~backend/common/errors/base.error';
-import { TextureNotFoundError } from '../textures.errors';
-import { TexturesRepository } from '../textures.repository';
+import { ForbiddenError } from '#common/errors/base.error';
+import { TextureNotFoundError } from '#modules/textures/textures.errors';
+import { TexturesRepository } from '#modules/textures/textures.repository';
 
 type Command = {
 	userId: string;

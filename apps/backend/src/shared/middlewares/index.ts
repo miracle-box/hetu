@@ -1,10 +1,10 @@
 import { Elysia } from 'elysia';
-import { errorsMiddleware } from './errors';
-import { logger } from './logger';
-import { requestId } from './request-id';
-import { serverTiming } from './server-timing';
-import { gracefulShutdown } from './shutdown';
-import { swaggerMiddleware } from './swagger';
+import { errorsMiddleware } from '#shared/middlewares/errors';
+import { logger } from '#shared/middlewares/logger';
+import { requestId } from '#shared/middlewares/request-id';
+import { serverTiming } from '#shared/middlewares/server-timing';
+import { gracefulShutdown } from '#shared/middlewares/shutdown';
+import { swaggerMiddleware } from '#shared/middlewares/swagger';
 
 export const middlewares = (app: Elysia) =>
 	app

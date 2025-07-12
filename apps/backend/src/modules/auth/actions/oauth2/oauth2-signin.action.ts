@@ -1,8 +1,8 @@
 import { EitherAsync } from 'purify-ts';
-import { VerificationScenario } from '../../auth.entities';
-import { AuthRepository } from '../../auth.repository';
-import { OAuth2ValidatorService } from '../../services/oauth2-validator.service';
-import { oauth2SigninUsecase } from '../../usecases/oauth2/oauth2-signin.usecase';
+import { VerificationScenario } from '#modules/auth/auth.entities';
+import { AuthRepository } from '#modules/auth/auth.repository';
+import { OAuth2ValidatorService } from '#modules/auth/services/oauth2-validator.service';
+import { oauth2SigninUsecase } from '#modules/auth/usecases/oauth2/oauth2-signin.usecase';
 
 type Command = {
 	verificationId: string;

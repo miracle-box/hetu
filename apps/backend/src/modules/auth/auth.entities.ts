@@ -1,6 +1,6 @@
-import type { EnumLikeValues } from '~backend/shared/typing/utils';
+import type { EnumLikeValues } from '#shared/typing/utils';
 import { Type, type Static } from '@sinclair/typebox';
-import { createEnumLikeValuesSchema } from '~backend/shared/typing/utils';
+import { createEnumLikeValuesSchema } from '#shared/typing/utils';
 
 // Enums
 export const UserAuthType = {

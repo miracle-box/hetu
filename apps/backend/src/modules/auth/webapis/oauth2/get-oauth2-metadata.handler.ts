@@ -1,6 +1,6 @@
 import { Elysia } from 'elysia';
-import { getOauth2MetadataAction } from '../../actions/oauth2/get-oauth2-metadata.action';
-import { getOauth2MetadataDtoSchemas } from '../../dtos/oauth2/get-oauth2-metadata.dto';
+import { getOauth2MetadataAction } from '#modules/auth/actions/oauth2/get-oauth2-metadata.action';
+import { getOauth2MetadataDtoSchemas } from '#modules/auth/dtos/oauth2/get-oauth2-metadata.dto';
 
 export const getOauth2MetadataHandler = new Elysia().get(
 	'/oauth2/metadata',

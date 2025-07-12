@@ -1,22 +1,17 @@
-// Authserver DTOs
-export { authenticateDtoSchemas } from './authserver/authenticate.dto';
-export { refreshDtoSchemas } from './authserver/refresh.dto';
-export { validateDtoSchemas } from './authserver/validate.dto';
-export { invalidateDtoSchemas } from './authserver/invalidate.dto';
-export { signoutDtoSchemas } from './authserver/signout.dto';
+export * from '#modules/yggdrasil/dtos/authserver/authenticate.dto';
+export * from '#modules/yggdrasil/dtos/authserver/refresh.dto';
+export * from '#modules/yggdrasil/dtos/authserver/validate.dto';
+export * from '#modules/yggdrasil/dtos/authserver/invalidate.dto';
+export * from '#modules/yggdrasil/dtos/authserver/signout.dto';
 
-// Sessionserver DTOs
-export { getProfileDtoSchemas } from './sessionserver/get-profile.dto';
-export { hasJoinedDtoSchemas } from './sessionserver/has-joined.dto';
-export { joinServerDtoSchemas } from './sessionserver/join-server.dto';
+export * from '#modules/yggdrasil/dtos/sessionserver/get-profile.dto';
+export * from '#modules/yggdrasil/dtos/sessionserver/has-joined.dto';
+export * from '#modules/yggdrasil/dtos/sessionserver/join-server.dto';
 
-// Mojang API DTOs
-export { getProfilesDtoSchemas } from './mojangapi/get-profiles.dto';
-export { resetTextureDtoSchemas } from './mojangapi/reset-texture.dto';
-export { uploadTextureDtoSchemas } from './mojangapi/upload-texture.dto';
+export * from '#modules/yggdrasil/dtos/mojangapi/get-profiles.dto';
+export * from '#modules/yggdrasil/dtos/mojangapi/reset-texture.dto';
+export * from '#modules/yggdrasil/dtos/mojangapi/upload-texture.dto';
 
-// Custom DTOs
-export { prejoinDtoSchemas } from './custom/prejoin.dto';
+export * from '#modules/yggdrasil/dtos/custom/prejoin.dto';
 
-// Metadata DTOs
-export { getMetadataDtoSchemas } from './get-metadata.dto';
+export * from '#modules/yggdrasil/dtos/get-metadata.dto';

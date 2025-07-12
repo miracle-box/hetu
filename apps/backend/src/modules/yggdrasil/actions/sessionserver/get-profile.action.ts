@@ -1,7 +1,7 @@
 import { EitherAsync, Left, Right } from 'purify-ts';
-import { YggdrasilService } from '../../services/yggdrasil.service';
-import { YggdrasilProfileNotFoundError } from '../../yggdrasil.errors';
-import { YggdrasilRepository } from '../../yggdrasil.repository';
+import { YggdrasilService } from '#modules/yggdrasil/services/yggdrasil.service';
+import { YggdrasilProfileNotFoundError } from '#modules/yggdrasil/yggdrasil.errors';
+import { YggdrasilRepository } from '#modules/yggdrasil/yggdrasil.repository';
 
 type Command = {
 	profileId: string;

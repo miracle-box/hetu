@@ -1,8 +1,11 @@
 import { EitherAsync, Left, Right } from 'purify-ts';
-import { SessionLifecycle } from '~backend/modules/auth/auth.entities';
-import { ProfilesRepository } from '~backend/modules/profiles/profiles.repository';
-import { validateTokenUsecase } from '../../usecases/authserver/validate-token.usecase';
-import { YggdrasilForbiddenError, YggdrasilProfileNotFoundError } from '../../yggdrasil.errors';
+import { SessionLifecycle } from '#modules/auth/auth.entities';
+import { ProfilesRepository } from '#modules/profiles/profiles.repository';
+import { validateTokenUsecase } from '#modules/yggdrasil/usecases/authserver/validate-token.usecase';
+import {
+	YggdrasilForbiddenError,
+	YggdrasilProfileNotFoundError,
+} from '#modules/yggdrasil/yggdrasil.errors';
 
 type Command = {
 	accessToken: string;

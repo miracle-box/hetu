@@ -1,10 +1,10 @@
 import { EitherAsync, Left, Right } from 'purify-ts';
-import { SessionScope, SessionLifecycle } from '~backend/modules/auth/auth.entities';
-import { getLifecycle, isSessionOfScope } from '~backend/shared/auth/utils';
-import { UserNotFoundError } from '../../users/users.errors';
-import { UsersRepository } from '../../users/users.repository';
-import { InvalidSessionError } from '../auth.errors';
-import { findSessionUsecase } from '../usecases/sessions/find-session.usecase';
+import { SessionScope, SessionLifecycle } from '#modules/auth/auth.entities';
+import { InvalidSessionError } from '#modules/auth/auth.errors';
+import { findSessionUsecase } from '#modules/auth/usecases/sessions/find-session.usecase';
+import { UserNotFoundError } from '#modules/users/users.errors';
+import { UsersRepository } from '#modules/users/users.repository';
+import { getLifecycle, isSessionOfScope } from '#shared/auth/utils';
 
 export abstract class SessionValidationService {
 	/**

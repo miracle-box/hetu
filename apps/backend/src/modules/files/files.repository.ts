@@ -1,10 +1,10 @@
-import type { FileInfo } from './files.entities';
-import type { IFilesRepository } from './files.repository.interface';
+import type { FileInfo } from '#modules/files/files.entities';
+import type { IFilesRepository } from '#modules/files/files.repository.interface';
 import { and, eq } from 'drizzle-orm';
 import { Either, Left, Right } from 'purify-ts';
-import { useDatabase } from '~backend/shared/db';
-import { filesTable } from '~backend/shared/db/schema/files';
-import { DatabaseError } from '../../common/errors/base.error';
+import { DatabaseError } from '#common/errors/base.error';
+import { useDatabase } from '#db';
+import { filesTable } from '#db/schema/files';
 
 export const FilesRepository: IFilesRepository = {
 	async createFile(

@@ -1,10 +1,10 @@
 import { Elysia } from 'elysia';
+import { validateAction } from '#modules/yggdrasil/actions/authserver/validate.action';
+import { validateDtoSchemas } from '#modules/yggdrasil/dtos/authserver/validate.dto';
 import {
 	ForbiddenOperationException,
 	InternalError,
-} from '~backend/shared/middlewares/errors/yggdrasil-error';
-import { validateAction } from '../../actions/authserver/validate.action';
-import { validateDtoSchemas } from '../../dtos/authserver/validate.dto';
+} from '#shared/middlewares/errors/yggdrasil-error';
 
 export const validateHandler = new Elysia().post(
 	'/validate',

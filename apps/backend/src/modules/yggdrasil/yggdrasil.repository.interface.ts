@@ -1,7 +1,7 @@
-import type { YggServerSession } from './yggdrasil.entities';
-import type { DatabaseError } from '../../common/errors/base.error';
-import type { Profile } from '../profiles/profiles.entities';
-import type { Texture } from '../textures/textures.entities';
+import type { DatabaseError } from '#common/errors/base.error';
+import type { Profile } from '#modules/profiles/profiles.entities';
+import type { Texture } from '#modules/textures/textures.entities';
+import type { YggServerSession } from '#modules/yggdrasil/yggdrasil.entities';
 import { Either } from 'purify-ts';
 
 export interface IYggdrasilRepository {

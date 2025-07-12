@@ -1,8 +1,8 @@
 import { Elysia } from 'elysia';
-import { signupAction } from '~backend/modules/auth/actions/signup.action';
-import { InvalidVerificationError, UserExistsError } from '~backend/modules/auth/auth.errors';
-import { AppError } from '~backend/shared/middlewares/errors/app-error';
-import { signupDtoSchemas } from '../dtos/signup.dto';
+import { signupAction } from '#modules/auth/actions/signup.action';
+import { InvalidVerificationError, UserExistsError } from '#modules/auth/auth.errors';
+import { signupDtoSchemas } from '#modules/auth/dtos/signup.dto';
+import { AppError } from '#shared/middlewares/errors/app-error';
 
 export const signupHandler = new Elysia().post(
 	'/signup',

@@ -1,4 +1,4 @@
-import { listSessionsUsecase } from '../../usecases/sessions/list-sessions.usecase';
+import { listSessionsUsecase } from '#modules/auth/usecases/sessions/list-sessions.usecase';
 
 type Command = {
 	userId: string;

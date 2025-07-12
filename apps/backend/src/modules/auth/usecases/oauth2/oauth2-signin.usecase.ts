@@ -1,9 +1,9 @@
 import { EitherAsync, Left, Right } from 'purify-ts';
-import { SessionScope, type Verification } from '../../auth.entities';
-import { Oauth2NotBoundError } from '../../auth.errors';
-import { AuthRepository } from '../../auth.repository';
-import { type OAuth2ProviderConfig } from '../../oauth2-providers.repository';
-import { OAuth2ProfileService } from '../../services/oauth2-profile.service';
+import { SessionScope, type Verification } from '#modules/auth/auth.entities';
+import { Oauth2NotBoundError } from '#modules/auth/auth.errors';
+import { AuthRepository } from '#modules/auth/auth.repository';
+import { type OAuth2ProviderConfig } from '#modules/auth/oauth2-providers.repository';
+import { OAuth2ProfileService } from '#modules/auth/services/oauth2-profile.service';
 
 type Command = {
 	verification: Verification;

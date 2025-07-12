@@ -1,6 +1,6 @@
 import { EitherAsync, Left, Right } from 'purify-ts';
-import { ProfileNameAlreadyExistsError } from '../profiles.errors';
-import { ProfilesRepository } from '../profiles.repository';
+import { ProfileNameAlreadyExistsError } from '#modules/profiles/profiles.errors';
+import { ProfilesRepository } from '#modules/profiles/profiles.repository';
 
 type Command = {
 	userId: string;

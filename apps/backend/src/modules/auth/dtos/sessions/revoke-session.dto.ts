@@ -1,5 +1,5 @@
 import { t } from 'elysia';
-import { createDtoSchemas } from '~backend/shared/middlewares/dto/schemas';
+import { createDtoSchemas } from '#shared/middlewares/dto/schemas';
 
 export const revokeSessionDtoSchemas = createDtoSchemas({
 	params: t.Object({
