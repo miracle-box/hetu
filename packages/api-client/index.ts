@@ -22,6 +22,9 @@ export * as UsersEntities from '@repo/backend/modules/users/users.entities';
 export * as YggdrasilDtos from '@repo/backend/modules/yggdrasil/dtos';
 export * as YggdrasilEntities from '@repo/backend/modules/yggdrasil/yggdrasil.entities';
 
+// Errors
+export { APP_ERRORS as ApiErrors } from '@repo/backend/shared/middlewares/errors/errors';
+
 // Eden
 import { treaty } from '@elysiajs/eden';
 import { app } from '@repo/backend/app';

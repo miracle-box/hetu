@@ -34,7 +34,7 @@ export function RequestVerificationButton({
 			}),
 		onSuccess: (resp) =>
 			respToEither(resp).bimap(
-				(message) => {
+				({ message }) => {
 					onError(message);
 				},
 				({ verification }) => {

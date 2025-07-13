@@ -19,7 +19,7 @@ export default async function Profiles() {
 
 				{profilesResp
 					.bimap(
-						(message) => <span>{message}</span>,
+						({ message }) => <span>{message}</span>,
 
 						({ profiles }) => (
 							<div

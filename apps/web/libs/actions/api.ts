@@ -3,6 +3,7 @@
 import { Left, Right } from 'purify-ts/Either';
 import { readSession } from '~web/libs/actions/auth';
 import { client as api } from '~web/libs/api/eden';
+import { mapApiError, mapFetchError } from '../utils/api-error';
 
 export async function getUserInfo() {
 	const session = await readSession();
@@ -15,22 +16,16 @@ export async function getUserInfo() {
 			headers: { Authorization: `Bearer ${session.authToken}` },
 		})
 		.then(({ data, error }) => {
-			if (error)
-				switch (error.status) {
-					default:
-						return Left(error.value.error.message);
-				}
+			const errResp = mapApiError(error);
+			if (errResp) return Left(errResp);
 
-			return Right(data);
+			return Right(data!);
 		})
-		.catch(() => {
-			return Left('Failed to fetch user info.');
-		});
+		.catch((error) => Left(mapFetchError(error)));
 }
 
 export async function getUserProfiles() {
 	const session = await readSession();
-	if (!session) return Left('Unauthorized');
 
 	return api
 		.users({
@@ -40,22 +35,16 @@ export async function getUserProfiles() {
 			headers: { Authorization: `Bearer ${session.authToken}` },
 		})
 		.then(({ data, error }) => {
-			if (error)
-				switch (error.status) {
-					default:
-						return Left(error.value.error.message);
-				}
+			const errResp = mapApiError(error);
+			if (errResp) return Left(errResp);
 
-			return Right(data);
+			return Right(data!);
 		})
-		.catch(() => {
-			return Left('Failed to fetch profiles.');
-		});
+		.catch((error) => Left(mapFetchError(error)));
 }
 
 export async function getUserTextures() {
 	const session = await readSession();
-	if (!session) return Left('Unauthorized');
 
 	return api
 		.users({
@@ -65,17 +54,12 @@ export async function getUserTextures() {
 			headers: { Authorization: `Bearer ${session.authToken}` },
 		})
 		.then(({ data, error }) => {
-			if (error)
-				switch (error.status) {
-					default:
-						return Left(error.value.error.message);
-				}
+			const errResp = mapApiError(error);
+			if (errResp) return Left(errResp);
 
-			return Right(data);
+			return Right(data!);
 		})
-		.catch(() => {
-			return Left('Failed to fetch textures.');
-		});
+		.catch((error) => Left(mapFetchError(error)));
 }
 
 export async function uploadFile(body: { file: File; type: 'texture_skin' | 'texture_cape' }) {
@@ -92,18 +76,12 @@ export async function uploadFile(body: { file: File; type: 'texture_skin' | 'tex
 			},
 		)
 		.then(({ data, error }) => {
-			if (error) {
-				switch (error.status) {
-					default:
-						return Left(error.value.error.message);
-				}
-			}
+			const errResp = mapApiError(error);
+			if (errResp) return Left(errResp);
 
-			return Right(data);
+			return Right(data!);
 		})
-		.catch(() => {
-			return Left('Failed to upload texture.');
-		});
+		.catch((error) => Left(mapFetchError(error)));
 }
 
 export async function createTexture(body: {
@@ -119,17 +97,12 @@ export async function createTexture(body: {
 			headers: { Authorization: `Bearer ${session.authToken}` },
 		})
 		.then(({ data, error }) => {
-			if (error)
-				switch (error.status) {
-					default:
-						return Left(error.value.error.message);
-				}
+			const errResp = mapApiError(error);
+			if (errResp) return Left(errResp);
 
-			return Right(data);
+			return Right(data!);
 		})
-		.catch(() => {
-			return Left('Failed to create texture.');
-		});
+		.catch((error) => Left(mapFetchError(error)));
 }
 
 export async function createProfile(body: { name: string }) {
@@ -140,17 +113,12 @@ export async function createProfile(body: { name: string }) {
 			headers: { Authorization: `Bearer ${session.authToken}` },
 		})
 		.then(({ data, error }) => {
-			if (error)
-				switch (error.status) {
-					default:
-						return Left(error.value.error.message);
-				}
+			const errResp = mapApiError(error);
+			if (errResp) return Left(errResp);
 
-			return Right(data);
+			return Right(data!);
 		})
-		.catch(() => {
-			return Left('Failed to create profile.');
-		});
+		.catch((error) => Left(mapFetchError(error)));
 }
 
 export async function inspectVerification(id: string) {
@@ -158,17 +126,12 @@ export async function inspectVerification(id: string) {
 		.verification({ id })
 		.get()
 		.then(({ data, error }) => {
-			if (error)
-				switch (error.status) {
-					default:
-						return Left(error.value.error.message);
-				}
+			const errResp = mapApiError(error);
+			if (errResp) return Left(errResp);
 
-			return Right(data);
+			return Right(data!);
 		})
-		.catch(() => {
-			return Left('Failed to fetch verification.');
-		});
+		.catch((error) => Left(mapFetchError(error)));
 }
 
 export async function requestVerification(body: {
@@ -179,68 +142,48 @@ export async function requestVerification(body: {
 	return api.auth.verification.request
 		.post(body)
 		.then(({ data, error }) => {
-			if (error)
-				switch (error.status) {
-					default:
-						return Left(error.value.error.message);
-				}
+			const errResp = mapApiError(error);
+			if (errResp) return Left(errResp);
 
-			return Right(data);
+			return Right(data!);
 		})
-		.catch(() => {
-			return Left('Failed to request verification.');
-		});
+		.catch((error) => Left(mapFetchError(error)));
 }
 
 export async function verifyVerification(body: { id: string; code: string }) {
 	return api.auth.verification.verify
 		.post(body)
 		.then(({ data, error }) => {
-			if (error)
-				switch (error.status) {
-					default:
-						return Left(error.value.error.message);
-				}
+			const errResp = mapApiError(error);
+			if (errResp) return Left(errResp);
 
-			return Right(data);
+			return Right(data!);
 		})
-		.catch(() => {
-			return Left('Failed to verify verification.');
-		});
+		.catch((error) => Left(mapFetchError(error)));
 }
 
 export async function resetPassword(body: { newPassword: string; verificationId: string }) {
 	return api.auth['reset-password']
 		.post(body)
 		.then(({ data, error }) => {
-			if (error)
-				switch (error.status) {
-					default:
-						return Left(error.value.error.message);
-				}
+			const errResp = mapApiError(error);
+			if (errResp) return Left(errResp);
 
-			return Right(data);
+			return Right(data!);
 		})
-		.catch(() => {
-			return Left('Failed to reset password.');
-		});
+		.catch((error) => Left(mapFetchError(error)));
 }
 
 export async function signin(body: { email: string; password: string }) {
 	return api.auth.signin
 		.post(body)
 		.then(({ data, error }) => {
-			if (error)
-				switch (error.status) {
-					default:
-						return Left(error.value.error.message);
-				}
+			const errResp = mapApiError(error);
+			if (errResp) return Left(errResp);
 
-			return Right(data);
+			return Right(data!);
 		})
-		.catch(() => {
-			return Left('Failed to sign in.');
-		});
+		.catch((error) => Left(mapFetchError(error)));
 }
 
 export async function signup(body: {
@@ -252,17 +195,12 @@ export async function signup(body: {
 	return api.auth.signup
 		.post(body)
 		.then(({ data, error }) => {
-			if (error)
-				switch (error.status) {
-					default:
-						return Left(error.value.error.message);
-				}
+			const errResp = mapApiError(error);
+			if (errResp) return Left(errResp);
 
-			return Right(data);
+			return Right(data!);
 		})
-		.catch(() => {
-			return Left('Failed to sign up.');
-		});
+		.catch((error) => Left(mapFetchError(error)));
 }
 
 export async function renewSession(authToken: string) {
@@ -271,17 +209,12 @@ export async function renewSession(authToken: string) {
 			headers: { Authorization: `Bearer ${authToken}` },
 		})
 		.then(({ data, error }) => {
-			if (error)
-				switch (error.status) {
-					default:
-						return Left(error.value.error.message);
-				}
+			const errResp = mapApiError(error);
+			if (errResp) return Left(errResp);
 
-			return Right(data);
+			return Right(data!);
 		})
-		.catch(() => {
-			return Left('Failed to renew session.');
-		});
+		.catch((error) => Left(mapFetchError(error)));
 }
 
 export async function refreshSession(authToken: string) {
@@ -290,15 +223,10 @@ export async function refreshSession(authToken: string) {
 			headers: { Authorization: `Bearer ${authToken}` },
 		})
 		.then(({ data, error }) => {
-			if (error)
-				switch (error.status) {
-					default:
-						return Left(error.value.error.message);
-				}
+			const errResp = mapApiError(error);
+			if (errResp) return Left(errResp);
 
-			return Right(data);
+			return Right(data!);
 		})
-		.catch(() => {
-			return Left('Failed to refresh session.');
-		});
+		.catch((error) => Left(mapFetchError(error)));
 }

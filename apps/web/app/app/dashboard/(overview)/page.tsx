@@ -16,7 +16,7 @@ export default async function Dashboard() {
 					<AlertDescription>
 						{userInfo
 							.map((info) => `${info.user.name} (${info.user.email})`)
-							.mapLeft((message) => message)
+							.mapLeft(({ message }) => message)
 							.extract()}
 					</AlertDescription>
 				</Alert>
