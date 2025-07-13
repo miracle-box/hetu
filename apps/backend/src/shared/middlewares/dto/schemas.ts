@@ -1,32 +1,44 @@
 import type { TObject, TSchema } from '@sinclair/typebox';
 import { createErrorResps } from '#shared/middlewares/errors/docs';
 import { APP_ERRORS } from '#shared/middlewares/errors/errors';
+import { type Prettify } from '#shared/typing/utils';
 
-type ErrorKey = keyof typeof APP_ERRORS;
-
-const toStatusCodes = (keys: readonly ErrorKey[]) =>
-	Array.from(new Set(keys.map((k) => APP_ERRORS[k].status)));
+type SuccessStatus =
+	| 200
+	| 201
+	| 202
+	| 204
+	| 205
+	| 206
+	| 207
+	| 208
+	| 226
+	| 300
+	| 301
+	| 302
+	| 303
+	| 304
+	| 305
+	| 306
+	| 307
+	| 308;
 
 export function createDtoSchemas<
 	const TDtoSchemas extends {
-		response: Record<number, TSchema>;
 		params?: TObject;
 		query?: TObject;
-		body?: TObject;
+		body?: TSchema;
 		cookie?: TObject;
 		headers?: TObject;
-		errors?: readonly ErrorKey[];
 	},
->(schemas: TDtoSchemas) {
-	const { errors = [], response, ...rest } = schemas;
-
-	const mergedResponse = {
-		...response,
-		...createErrorResps(...toStatusCodes(errors)),
-	};
-
+	TResponses extends Partial<Record<SuccessStatus, TSchema>>,
+	TCodes extends keyof typeof APP_ERRORS,
+>(request: TDtoSchemas, response: TResponses, errors: TCodes[]) {
 	return {
-		...rest,
-		response: mergedResponse,
+		...request,
+		response: {
+			...createErrorResps(...errors),
+			...response,
+		} as Prettify<TResponses & ReturnType<typeof createErrorResps<TCodes>>>,
 	};
 }

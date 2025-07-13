@@ -9,6 +9,18 @@ export type AppErrorInfo<TMessageParams> = {
 };
 
 export const APP_ERRORS = {
+	// Handled in the middleware, only for typing purposes.
+	'unknown-error': {
+		status: 500,
+		message: () => '',
+		details: t.Void(),
+	},
+	'invalid-body': {
+		status: 422,
+		message: () => '',
+		details: t.Void(),
+	},
+	// Begin of app errors.
 	unauthorized: {
 		status: 401,
 		message: () =>
