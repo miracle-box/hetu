@@ -1,8 +1,9 @@
 import { t } from 'elysia';
 import { createDtoSchemas } from '#shared/middlewares/dto/schemas';
 
-export const getOauth2MetadataDtoSchemas = createDtoSchemas({
-	response: {
+export const getOauth2MetadataDtoSchemas = createDtoSchemas(
+	{},
+	{
 		200: t.Object({
 			providers: t.Record(
 				t.String(),
@@ -15,4 +16,5 @@ export const getOauth2MetadataDtoSchemas = createDtoSchemas({
 			),
 		}),
 	},
-});
+	[],
+);

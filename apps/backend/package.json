@@ -58,6 +58,7 @@
   "exports": {
     ".": "./src/index.ts",
     "./app": "./src/app.ts",
+    "./shared/middlewares/errors/errors": "./src/shared/middlewares/errors/errors.ts",
     "./modules/auth/dtos": "./src/modules/auth/dtos/index.ts",
     "./modules/auth/auth.entities": "./src/modules/auth/auth.entities.ts",
     "./modules/files/dtos": "./src/modules/files/dtos/index.ts",

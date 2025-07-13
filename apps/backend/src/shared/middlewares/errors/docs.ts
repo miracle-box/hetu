@@ -1,47 +1,68 @@
-import { t } from 'elysia';
+import { t, type TSchema } from 'elysia';
+import { APP_ERRORS } from '#shared/middlewares/errors/errors';
 
-export const errorResponseSchema = t.Object({
-	error: t.Object(
-		{
-			path: t.String({ description: 'Path of the requesst.' }),
-			code: t.String({ description: 'Error code (machine readable).' }),
-			message: t.String({ description: 'Error message (human readable).' }),
-			details: t.Optional(
-				t.Unknown({ description: 'Details of the error, varies depending on the error.' }),
-			),
-		},
-		{
-			description: 'Error response.',
-		},
-	),
-});
+export const errorResponseSchema = <TCode extends keyof typeof APP_ERRORS>(code: TCode) =>
+	t.Object({
+		error: t.Object(
+			{
+				path: t.String({ description: 'Path of the requesst.' }),
+				code: t.Literal(code, { description: 'Error code (machine readable).' }),
+				message: t.String({ description: 'Error message (human readable).' }),
+				details: APP_ERRORS[code].details,
+			},
+			{
+				description: 'Error response.',
+				default: {
+					path: '(Request path)',
+					code: code,
+					message: '(Error message)',
+					details: null,
+				},
+			},
+		),
+	});
 
 /**
  * Create document for error responses of a endpoint
  *
- * `500 Internal Server Error` is included by default.
+ * `500 Internal Server Error` and `422 Unprocessable Entity` are included by default.
  *
- * `422 Unprocessable Entity` is included by default.
- * ? It is a workaround for Elysia infers VALIDATION error type wrongly,
- * ? but I think this error code should be documented as well.
- *
- * @param codes - Error codes (except 500)
+ * @param codes - Error codes
  * @returns error responses object for Elysia
- *
- * @example
- * Create error response docs for a endpoint
- * ```ts
- * {
- *   responses: {
- *     200: successResp,
- *     ...createErrorResps(400, 401, 403)
- *   }
- * }
- * ```
  */
-export const createErrorResps = <TCodes extends number[]>(...codes: TCodes) => {
-	const completeCodes = codes.concat([422, 500]);
-	return Object.fromEntries(completeCodes.map((code) => [code, errorResponseSchema])) as {
-		[K in TCodes[number] | 500 | 422]: typeof errorResponseSchema;
+export const createErrorResps = <TCodes extends keyof typeof APP_ERRORS>(...codes: TCodes[]) => {
+	type TStatus = (typeof APP_ERRORS)[TCodes]['status'] | 500 | 422;
+	type TErrorSchema =
+		| ReturnType<typeof errorResponseSchema<TCodes>>
+		| ReturnType<typeof errorResponseSchema<'unknown-error'>>
+		| ReturnType<typeof errorResponseSchema<'invalid-body'>>;
+
+	const rawErrorsSchemas: Map<TStatus, Set<TErrorSchema>> = new Map([
+		[500, new Set([errorResponseSchema('unknown-error') as TErrorSchema])],
+		[422, new Set([errorResponseSchema('invalid-body') as TErrorSchema])],
+	]);
+
+	for (const code of codes) {
+		if (!rawErrorsSchemas.has(APP_ERRORS[code].status)) {
+			rawErrorsSchemas.set(APP_ERRORS[code].status, new Set());
+		}
+
+		rawErrorsSchemas.get(APP_ERRORS[code].status)?.add(errorResponseSchema(code));
+	}
+
+	const errorsSchemas = Array.from(rawErrorsSchemas).reduce(
+		(acc, [status, schemas]) => {
+			acc[status] =
+				schemas.size > 1
+					? t.Union([...schemas])
+					: (schemas.values().next().value ?? t.Void());
+			return acc;
+		},
+		{} as Record<TStatus, TSchema>,
+	);
+
+	// It's hard to infer the exact error codes.
+	return { ...errorsSchemas } as unknown as {
+		[K in TStatus]: TErrorSchema;
 	};
 };

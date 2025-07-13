@@ -1,9 +1,10 @@
 import { t } from 'elysia';
 import { createDtoSchemas } from '#shared/middlewares/dto/schemas';
 
-export const revokeAllSessionsDtoSchemas = createDtoSchemas({
-	response: {
+export const revokeAllSessionsDtoSchemas = createDtoSchemas(
+	{},
+	{
 		204: t.Void(),
 	},
-	errors: ['internal-error'],
-});
+	['internal-error'],
+);

@@ -19,7 +19,7 @@ export default async function Textures() {
 
 				{texturesResp
 					.bimap(
-						(message) => <span>{message}</span>,
+						({ message }) => <span>{message}</span>,
 
 						({ textures }) => (
 							<div

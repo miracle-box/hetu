@@ -2,6 +2,11 @@
   "extends": "@repo/typescript-config/base.json",
   "include": ["drizzle.config.ts", "scripts/**/*", "src/**/*"],
   "compilerOptions": {
+    "paths": {
+      "#shared/*": ["./src/shared/*"],
+      "#common/*": ["./src/common/*"],
+      "#modules/*": ["./src/modules/*"]
+    },
     "types": ["bun-types"],
     "tsBuildInfoFile": ".tsbuildinfo"
   }
