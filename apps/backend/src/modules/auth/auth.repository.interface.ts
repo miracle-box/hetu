@@ -1,6 +1,6 @@
-import type { Verification, Session, SessionMetadata } from './auth.entities';
-import type { User } from '../users/users.entities';
-import type { DatabaseError } from '~backend/common/errors/base.error';
+import type { DatabaseError } from '#common/errors/base.error';
+import type { Verification, Session, SessionMetadata } from '#modules/auth/auth.entities';
+import type { User } from '#modules/users/users.entities';
 import { Either } from 'purify-ts';
 
 export type IAuthRepository = {

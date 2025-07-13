@@ -1,5 +1,5 @@
-import type { FileInfo } from './files.entities';
-import type { DatabaseError } from '../../common/errors/base.error';
+import type { DatabaseError } from '#common/errors/base.error';
+import type { FileInfo } from '#modules/files/files.entities';
 import { Either } from 'purify-ts';
 
 export interface IFilesRepository {

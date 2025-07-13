@@ -1,9 +1,9 @@
 import { Elysia } from 'elysia';
-import { SessionScope } from '~backend/modules/auth/auth.entities';
-import { authMiddleware } from '~backend/shared/auth/middleware';
-import { AppError } from '~backend/shared/middlewares/errors/app-error';
-import { uploadFileAction } from '../actions/upload-file.action';
-import { uploadFileDtoSchemas } from '../dtos/upload-file.dto';
+import { SessionScope } from '#modules/auth/auth.entities';
+import { uploadFileAction } from '#modules/files/actions/upload-file.action';
+import { uploadFileDtoSchemas } from '#modules/files/dtos/upload-file.dto';
+import { authMiddleware } from '#shared/auth/middleware';
+import { AppError } from '#shared/middlewares/errors/app-error';
 
 export const uploadFileHandler = new Elysia().use(authMiddleware(SessionScope.DEFAULT)).post(
 	'/',

@@ -1,9 +1,9 @@
 import { Elysia } from 'elysia';
-import { SessionScope } from '~backend/modules/auth/auth.entities';
-import { authMiddleware } from '~backend/shared/auth/middleware';
-import { AppError } from '~backend/shared/middlewares/errors/app-error';
-import { getTextureImageAction } from '../actions/get-texture-image.action';
-import { getTextureImageDtoSchemas } from '../dtos/get-texture-image.dto';
+import { SessionScope } from '#modules/auth/auth.entities';
+import { getTextureImageAction } from '#modules/textures/actions/get-texture-image.action';
+import { getTextureImageDtoSchemas } from '#modules/textures/dtos/get-texture-image.dto';
+import { authMiddleware } from '#shared/auth/middleware';
+import { AppError } from '#shared/middlewares/errors/app-error';
 
 export const getTextureImageHandler = new Elysia().use(authMiddleware(SessionScope.DEFAULT)).get(
 	'/:id/image',

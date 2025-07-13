@@ -1,6 +1,6 @@
 import { t } from 'elysia';
-import { createDtoSchemas } from '~backend/shared/middlewares/dto/schemas';
-import { fileInfoSchema } from '../files.entities';
+import { fileInfoSchema } from '#modules/files/files.entities';
+import { createDtoSchemas } from '#shared/middlewares/dto/schemas';
 
 export const uploadFileDtoSchemas = createDtoSchemas({
 	body: t.Object({

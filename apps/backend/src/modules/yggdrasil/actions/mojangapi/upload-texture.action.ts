@@ -1,14 +1,17 @@
 import { EitherAsync, Left, Right } from 'purify-ts';
-import { SessionLifecycle } from '~backend/modules/auth/auth.entities';
-import { FileType } from '~backend/modules/files/files.entities';
-import { FileHashingService } from '~backend/modules/files/services/file-hashing.service';
-import { uploadTextureUseCase } from '~backend/modules/files/usecases/upload-texture.usecase';
-import { ProfilesRepository } from '~backend/modules/profiles/profiles.repository';
-import { TextureImageService } from '~backend/modules/textures/services/texture-image.service';
-import { TextureType } from '~backend/modules/textures/textures.entities';
-import { TexturesRepository } from '~backend/modules/textures/textures.repository';
-import { validateTokenUsecase } from '../../usecases/authserver/validate-token.usecase';
-import { YggdrasilForbiddenError, YggdrasilProfileNotFoundError } from '../../yggdrasil.errors';
+import { SessionLifecycle } from '#modules/auth/auth.entities';
+import { FileType } from '#modules/files/files.entities';
+import { FileHashingService } from '#modules/files/services/file-hashing.service';
+import { uploadTextureUseCase } from '#modules/files/usecases/upload-texture.usecase';
+import { ProfilesRepository } from '#modules/profiles/profiles.repository';
+import { TextureImageService } from '#modules/textures/services/texture-image.service';
+import { TextureType } from '#modules/textures/textures.entities';
+import { TexturesRepository } from '#modules/textures/textures.repository';
+import { validateTokenUsecase } from '#modules/yggdrasil/usecases/authserver/validate-token.usecase';
+import {
+	YggdrasilForbiddenError,
+	YggdrasilProfileNotFoundError,
+} from '#modules/yggdrasil/yggdrasil.errors';
 
 type Command = {
 	accessToken: string;

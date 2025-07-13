@@ -1,9 +1,9 @@
 import { Elysia } from 'elysia';
-import { authMiddleware } from '~backend/shared/auth/middleware';
-import { AppError } from '~backend/shared/middlewares/errors/app-error';
-import { confirmOauth2BindingAction } from '../../actions/oauth2/confirm-oauth2-binding.action';
-import { SessionScope } from '../../auth.entities';
-import { confirmOauth2BindingDtoSchemas } from '../../dtos/oauth2/confirm-oauth2-binding.dto';
+import { confirmOauth2BindingAction } from '#modules/auth/actions/oauth2/confirm-oauth2-binding.action';
+import { SessionScope } from '#modules/auth/auth.entities';
+import { confirmOauth2BindingDtoSchemas } from '#modules/auth/dtos/oauth2/confirm-oauth2-binding.dto';
+import { authMiddleware } from '#shared/auth/middleware';
+import { AppError } from '#shared/middlewares/errors/app-error';
 
 export const confirmOauth2BindingHandler = new Elysia()
 	.use(authMiddleware(SessionScope.DEFAULT))

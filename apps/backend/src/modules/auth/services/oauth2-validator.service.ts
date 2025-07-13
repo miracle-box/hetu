@@ -1,8 +1,8 @@
 import { EitherAsync, Left, Right } from 'purify-ts';
-import { VerificationScenario } from '../auth.entities';
-import { InvalidOauth2ProviderError, VerificationNotExistsError } from '../auth.errors';
-import { AuthRepository } from '../auth.repository';
-import { OAuth2ProvidersRepository } from '../oauth2-providers.repository';
+import { VerificationScenario } from '#modules/auth/auth.entities';
+import { InvalidOauth2ProviderError, VerificationNotExistsError } from '#modules/auth/auth.errors';
+import { AuthRepository } from '#modules/auth/auth.repository';
+import { OAuth2ProvidersRepository } from '#modules/auth/oauth2-providers.repository';
 
 export class OAuth2ValidatorService {
 	/**

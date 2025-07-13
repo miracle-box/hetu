@@ -1,0 +1,17 @@
+{
+  "name": "@repo/api-client",
+  "version": "0.0.0",
+  "devDependencies": {
+    "@repo/backend": "*",
+    "@repo/typescript-config": "*",
+    "@elysiajs/eden": "^1.3.2",
+    "typescript": "^5.8.3"
+  },
+  "exports": {
+    ".": "./index.ts"
+  },
+  "private": true,
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  }
+}

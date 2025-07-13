@@ -1,5 +1,5 @@
+import type { EnumLikeValues } from '#shared/typing/utils';
 import type { Static } from 'elysia';
-import type { EnumLikeValues } from '~backend/shared/typing/utils';
 import { t } from 'elysia';
 
 export const TextureType = {

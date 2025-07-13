@@ -1,8 +1,8 @@
 import { Elysia } from 'elysia';
-import { AppError } from '~backend/shared/middlewares/errors/app-error';
-import { verifyVerificationAction } from '../../actions/verifications/verify-verification.action';
-import { VerificationType } from '../../auth.entities';
-import { verifyVerificationDtoSchemas } from '../../dtos';
+import { verifyVerificationAction } from '#modules/auth/actions/verifications/verify-verification.action';
+import { VerificationType } from '#modules/auth/auth.entities';
+import { verifyVerificationDtoSchemas } from '#modules/auth/dtos';
+import { AppError } from '#shared/middlewares/errors/app-error';
 
 export const verifyVerificationHandler = new Elysia().post(
 	'/verification/verify',

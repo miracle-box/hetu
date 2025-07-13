@@ -36,7 +36,39 @@
     "drizzle-kit": "^0.31.1"
   },
   "module": "src/index.js",
+  "imports": {
+    "#shared/*": [
+      "./src/shared/*.ts",
+      "./src/shared/*/index.ts"
+    ],
+    "#common/*": [
+      "./src/common/*.ts",
+      "./src/common/*/index.ts"
+    ],
+    "#modules/*": [
+      "./src/modules/*.ts",
+      "./src/modules/*/index.ts"
+    ],
+    "#db": "./src/shared/db/index.ts",
+    "#db/schema/*": "./src/shared/db/schema/*.ts",
+    "#config": "./src/shared/config/index.ts",
+    "#logger": "./src/shared/logger/index.ts",
+    "#package.json": "./package.json"
+  },
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/index.ts",
+    "./app": "./src/app.ts",
+    "./modules/auth/dtos": "./src/modules/auth/dtos/index.ts",
+    "./modules/auth/auth.entities": "./src/modules/auth/auth.entities.ts",
+    "./modules/files/dtos": "./src/modules/files/dtos/index.ts",
+    "./modules/files/files.entities": "./src/modules/files/files.entities.ts",
+    "./modules/profiles/dtos": "./src/modules/profiles/dtos/index.ts",
+    "./modules/profiles/profiles.entities": "./src/modules/profiles/profiles.entities.ts",
+    "./modules/textures/dtos": "./src/modules/textures/dtos/index.ts",
+    "./modules/textures/textures.entities": "./src/modules/textures/textures.entities.ts",
+    "./modules/users/dtos": "./src/modules/users/dtos/index.ts",
+    "./modules/users/users.entities": "./src/modules/users/users.entities.ts",
+    "./modules/yggdrasil/dtos": "./src/modules/yggdrasil/dtos/index.ts",
+    "./modules/yggdrasil/yggdrasil.entities": "./src/modules/yggdrasil/yggdrasil.entities.ts"
   }
 }

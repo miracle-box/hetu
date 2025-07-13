@@ -1,7 +1,7 @@
 import { t } from 'elysia';
-import { createDtoSchemas } from '~backend/shared/middlewares/dto/schemas';
-import { verificationScenarioSchema, verificationTypeSchema } from '../../auth.entities';
-import { verificationDtoSchema } from '../common.dto';
+import { verificationScenarioSchema, verificationTypeSchema } from '#modules/auth/auth.entities';
+import { verificationDtoSchema } from '#modules/auth/dtos/common.dto';
+import { createDtoSchemas } from '#shared/middlewares/dto/schemas';
 
 export const requestVerificationDtoSchemas = createDtoSchemas({
 	body: t.Object({

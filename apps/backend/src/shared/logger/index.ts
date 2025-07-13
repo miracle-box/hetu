@@ -1,6 +1,6 @@
 import pino from 'pino';
-import { Config } from '~backend/shared/config';
-import { requestIdStore } from '~backend/shared/middlewares/request-id';
+import { Config } from '#config';
+import { requestIdStore } from '#shared/middlewares/request-id';
 
 function getDesti(desti: string) {
 	return desti.toUpperCase() === 'STDOUT' ? 1 : desti.toUpperCase() === 'STDERR' ? 2 : desti;

@@ -1,7 +1,7 @@
 import { Elysia } from 'elysia';
-import { InternalError } from '~backend/shared/middlewares/errors/yggdrasil-error';
-import { hasJoinedAction } from '../../actions/sessionserver/has-joined.action';
-import { hasJoinedDtoSchemas } from '../../dtos/sessionserver/has-joined.dto';
+import { hasJoinedAction } from '#modules/yggdrasil/actions/sessionserver/has-joined.action';
+import { hasJoinedDtoSchemas } from '#modules/yggdrasil/dtos/sessionserver/has-joined.dto';
+import { InternalError } from '#shared/middlewares/errors/yggdrasil-error';
 
 export const hasJoinedHandler = new Elysia().get(
 	'/session/minecraft/hasJoined',

@@ -1,9 +1,9 @@
 import { EitherAsync, Left, Right } from 'purify-ts';
-import { UsersRepository } from '../../users/users.repository';
-import { SessionScope, VerificationScenario } from '../auth.entities';
-import { InvalidVerificationError, UserExistsError } from '../auth.errors';
-import { AuthRepository } from '../auth.repository';
-import { PasswordHashService } from '../services/password-hash.service';
+import { SessionScope, VerificationScenario } from '#modules/auth/auth.entities';
+import { InvalidVerificationError, UserExistsError } from '#modules/auth/auth.errors';
+import { AuthRepository } from '#modules/auth/auth.repository';
+import { PasswordHashService } from '#modules/auth/services/password-hash.service';
+import { UsersRepository } from '#modules/users/users.repository';
 
 type Command = {
 	name: string;

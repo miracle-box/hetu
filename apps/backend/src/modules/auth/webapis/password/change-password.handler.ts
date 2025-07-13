@@ -1,9 +1,9 @@
 import { Elysia } from 'elysia';
-import { authMiddleware } from '~backend/shared/auth/middleware';
-import { AppError } from '~backend/shared/middlewares/errors/app-error';
-import { changePasswordAction } from '../../actions/password/change-password.action';
-import { SessionScope } from '../../auth.entities';
-import { changePasswordDtoSchemas } from '../../dtos';
+import { changePasswordAction } from '#modules/auth/actions/password/change-password.action';
+import { SessionScope } from '#modules/auth/auth.entities';
+import { changePasswordDtoSchemas } from '#modules/auth/dtos';
+import { authMiddleware } from '#shared/auth/middleware';
+import { AppError } from '#shared/middlewares/errors/app-error';
 
 export const changePasswordHandler = new Elysia().use(authMiddleware(SessionScope.DEFAULT)).post(
 	'/change-password',

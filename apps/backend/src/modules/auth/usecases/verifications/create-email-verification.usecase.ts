@@ -1,15 +1,15 @@
 import { EitherAsync, Left } from 'purify-ts';
-import { MailingService } from '~backend/common/services/mailing';
-import { UsersRepository } from '../../../users/users.repository';
+import { MailingService } from '#common/services/mailing';
 import {
 	VERIFATION_EMAIL_EXPIRES_IN_MS,
 	VERIFATION_EMAIL_TRIES,
 	VERIFICATION_CODE_LENGTH,
-} from '../../auth.constants';
-import { VerificationScenario, VerificationType } from '../../auth.entities';
-import { UserExistsError } from '../../auth.errors';
-import { VerificationCodeService } from '../../services/verification-code.service';
-import { VerificationOperationService } from '../../services/verification-operation.service';
+} from '#modules/auth/auth.constants';
+import { VerificationScenario, VerificationType } from '#modules/auth/auth.entities';
+import { UserExistsError } from '#modules/auth/auth.errors';
+import { VerificationCodeService } from '#modules/auth/services/verification-code.service';
+import { VerificationOperationService } from '#modules/auth/services/verification-operation.service';
+import { UsersRepository } from '#modules/users/users.repository';
 
 type Command = {
 	scenario: Extract<

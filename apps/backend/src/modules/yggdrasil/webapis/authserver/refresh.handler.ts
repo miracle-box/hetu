@@ -1,8 +1,8 @@
 import { Elysia } from 'elysia';
-import { AppError } from '~backend/shared/middlewares/errors/app-error';
-import { ForbiddenOperationException } from '~backend/shared/middlewares/errors/yggdrasil-error';
-import { refreshAction } from '../../actions/authserver/refresh.action';
-import { refreshDtoSchemas } from '../../dtos/authserver/refresh.dto';
+import { refreshAction } from '#modules/yggdrasil/actions/authserver/refresh.action';
+import { refreshDtoSchemas } from '#modules/yggdrasil/dtos/authserver/refresh.dto';
+import { AppError } from '#shared/middlewares/errors/app-error';
+import { ForbiddenOperationException } from '#shared/middlewares/errors/yggdrasil-error';
 
 export const refreshHandler = new Elysia().post(
 	'/refresh',

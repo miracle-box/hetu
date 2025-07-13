@@ -1,5 +1,5 @@
 import { t } from 'elysia';
-import { yggProfileDigestSchema } from '../../yggdrasil.entities';
+import { yggProfileDigestSchema } from '#modules/yggdrasil/yggdrasil.entities';
 
 export const getProfilesDtoSchemas = {
 	body: t.Array(t.String()),

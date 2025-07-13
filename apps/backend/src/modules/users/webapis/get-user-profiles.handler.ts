@@ -1,9 +1,10 @@
 import { Elysia } from 'elysia';
-import { SessionScope } from '~backend/modules/auth/auth.entities';
-import { authMiddleware } from '~backend/shared/auth/middleware';
-import { AppError } from '~backend/shared/middlewares/errors/app-error';
-import { getUserProfilesAction } from '../actions/get-user-profiles.action';
-import { getUserProfilesDtoSchemas } from '../dtos/get-user-profiles.dto';
+
+import { SessionScope } from '#modules/auth/auth.entities';
+import { getUserProfilesAction } from '#modules/users/actions/get-user-profiles.action';
+import { getUserProfilesDtoSchemas } from '#modules/users/dtos/get-user-profiles.dto';
+import { authMiddleware } from '#shared/auth/middleware';
+import { AppError } from '#shared/middlewares/errors/app-error';
 
 export const getUserProfilesHandler = new Elysia().use(authMiddleware(SessionScope.DEFAULT)).get(
 	'/:id/profiles',

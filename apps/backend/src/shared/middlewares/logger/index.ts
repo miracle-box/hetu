@@ -1,10 +1,10 @@
-import type { ElysiaOnErrorContext } from '~backend/shared/middlewares/errors/types';
+import type { ElysiaOnErrorContext } from '#shared/middlewares/errors/types';
 import process from 'node:process';
 import { Elysia } from 'elysia';
 import { version as elysiaVersion } from 'elysia/package.json';
-import { version as hetuVersion } from '~backend/../package.json';
-import { Config } from '~backend/shared/config';
-import { Logger } from '~backend/shared/logger';
+import { Config } from '#config';
+import { Logger } from '#logger';
+import { version as hetuVersion } from '#package.json';
 
 const REQUEST_START_TIME_KEY = Symbol('REQUEST_START_TIME_KEY');
 

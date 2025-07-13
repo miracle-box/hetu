@@ -1,9 +1,9 @@
 import { Elysia } from 'elysia';
-import { SessionScope } from '~backend/modules/auth/auth.entities';
-import { authMiddleware } from '~backend/shared/auth/middleware';
-import { AppError } from '~backend/shared/middlewares/errors/app-error';
-import { updateTextureAction } from '../actions/update-texture.action';
-import { updateTextureDtoSchemas } from '../dtos/update-texture.dto';
+import { SessionScope } from '#modules/auth/auth.entities';
+import { updateTextureAction } from '#modules/textures/actions/update-texture.action';
+import { updateTextureDtoSchemas } from '#modules/textures/dtos/update-texture.dto';
+import { authMiddleware } from '#shared/auth/middleware';
+import { AppError } from '#shared/middlewares/errors/app-error';
 
 export const updateTextureHandler = new Elysia().use(authMiddleware(SessionScope.DEFAULT)).put(
 	'/:id',

@@ -1,7 +1,7 @@
-import type { TextureType } from '../textures.entities';
+import type { TextureType } from '#modules/textures/textures.entities';
 import { EitherAsync, Left, Right } from 'purify-ts';
-import { TextureFileExistsForUserError } from '../textures.errors';
-import { TexturesRepository } from '../textures.repository';
+import { TextureFileExistsForUserError } from '#modules/textures/textures.errors';
+import { TexturesRepository } from '#modules/textures/textures.repository';
 
 type Command = {
 	userId: string;

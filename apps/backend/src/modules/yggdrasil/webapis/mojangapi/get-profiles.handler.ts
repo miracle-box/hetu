@@ -1,7 +1,7 @@
 import { Elysia } from 'elysia';
-import { InternalError } from '~backend/shared/middlewares/errors/yggdrasil-error';
-import { getProfilesAction } from '../../actions/mojangapi/get-profiles.action';
-import { getProfilesDtoSchemas } from '../../dtos/mojangapi/get-profiles.dto';
+import { getProfilesAction } from '#modules/yggdrasil/actions/mojangapi/get-profiles.action';
+import { getProfilesDtoSchemas } from '#modules/yggdrasil/dtos/mojangapi/get-profiles.dto';
+import { InternalError } from '#shared/middlewares/errors/yggdrasil-error';
 
 export const getProfilesHandler = new Elysia().post(
 	'/profiles/minecraft',

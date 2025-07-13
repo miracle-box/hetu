@@ -1,6 +1,6 @@
 import { EitherAsync } from 'purify-ts';
-import { YggdrasilService } from '../../services/yggdrasil.service';
-import { YggdrasilRepository } from '../../yggdrasil.repository';
+import { YggdrasilService } from '#modules/yggdrasil/services/yggdrasil.service';
+import { YggdrasilRepository } from '#modules/yggdrasil/yggdrasil.repository';
 
 type Command = {
 	usernames: string[];

@@ -1,8 +1,8 @@
 import { EitherAsync, Left, Right } from 'purify-ts';
-import { SessionLifecycle } from '~backend/modules/auth/auth.entities';
-import { getLifecycle } from '~backend/shared/auth/utils';
-import { InvalidSessionError } from '../../auth.errors';
-import { AuthRepository } from '../../auth.repository';
+import { SessionLifecycle } from '#modules/auth/auth.entities';
+import { InvalidSessionError } from '#modules/auth/auth.errors';
+import { AuthRepository } from '#modules/auth/auth.repository';
+import { getLifecycle } from '#shared/auth/utils';
 
 type Command = {
 	sessionId: string;

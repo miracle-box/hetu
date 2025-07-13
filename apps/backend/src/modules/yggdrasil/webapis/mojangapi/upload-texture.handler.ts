@@ -1,11 +1,11 @@
 import { Elysia } from 'elysia';
+import { uploadTextureAction } from '#modules/yggdrasil/actions/mojangapi/upload-texture.action';
+import { uploadTextureDtoSchemas } from '#modules/yggdrasil/dtos/mojangapi/upload-texture.dto';
 import {
 	ForbiddenOperationException,
 	IllegalArgumentException,
 	InternalError,
-} from '~backend/shared/middlewares/errors/yggdrasil-error';
-import { uploadTextureAction } from '../../actions/mojangapi/upload-texture.action';
-import { uploadTextureDtoSchemas } from '../../dtos/mojangapi/upload-texture.dto';
+} from '#shared/middlewares/errors/yggdrasil-error';
 
 export const uploadTextureHandler = new Elysia().put(
 	'/user/profile/:id/:type',

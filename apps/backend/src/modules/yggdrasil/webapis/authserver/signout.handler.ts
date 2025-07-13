@@ -1,10 +1,10 @@
 import { Elysia } from 'elysia';
+import { signoutAction } from '#modules/yggdrasil/actions/authserver/signout.action';
+import { signoutDtoSchemas } from '#modules/yggdrasil/dtos/authserver/signout.dto';
 import {
 	ForbiddenOperationException,
 	InternalError,
-} from '~backend/shared/middlewares/errors/yggdrasil-error';
-import { signoutAction } from '../../actions/authserver/signout.action';
-import { signoutDtoSchemas } from '../../dtos/authserver/signout.dto';
+} from '#shared/middlewares/errors/yggdrasil-error';
 
 export const signoutHandler = new Elysia().post(
 	'/signout',

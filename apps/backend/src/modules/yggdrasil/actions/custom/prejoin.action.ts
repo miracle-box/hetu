@@ -1,5 +1,5 @@
 import { EitherAsync } from 'purify-ts';
-import { prejoinUsecase } from '../../usecases/custom/prejoin.usecase';
+import { prejoinUsecase } from '#modules/yggdrasil/usecases/custom/prejoin.usecase';
 
 type Command = {
 	_: undefined;

@@ -1,13 +1,13 @@
-import type { YggServerSession } from './yggdrasil.entities';
-import type { IYggdrasilRepository } from './yggdrasil.repository.interface';
-import type { Profile } from '../profiles/profiles.entities';
-import type { Texture } from '../textures/textures.entities';
+import type { Profile } from '#modules/profiles/profiles.entities';
+import type { Texture } from '#modules/textures/textures.entities';
+import type { YggServerSession } from '#modules/yggdrasil/yggdrasil.entities';
+import type { IYggdrasilRepository } from '#modules/yggdrasil/yggdrasil.repository.interface';
 import { and, eq, gt, inArray } from 'drizzle-orm';
 import { Either, Left, Right } from 'purify-ts';
-import { useDatabase } from '~backend/shared/db';
-import { profilesTable } from '~backend/shared/db/schema/profiles';
-import { yggServerSessionsTable } from '~backend/shared/db/schema/ygg-server-sessions';
-import { DatabaseError } from '../../common/errors/base.error';
+import { DatabaseError } from '#common/errors/base.error';
+import { useDatabase } from '#db';
+import { profilesTable } from '#db/schema/profiles';
+import { yggServerSessionsTable } from '#db/schema/ygg-server-sessions';
 
 export const YggdrasilRepository: IYggdrasilRepository = {
 	async getProfilesDigestByNames(

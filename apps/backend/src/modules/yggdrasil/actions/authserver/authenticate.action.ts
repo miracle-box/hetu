@@ -1,6 +1,6 @@
 import { EitherAsync } from 'purify-ts';
-import { authenticateUsecase } from '../../usecases/authserver/authenticate.usecase';
-import { validateCredentialsUsecase } from '../../usecases/authserver/validate-credentials.usecase';
+import { authenticateUsecase } from '#modules/yggdrasil/usecases/authserver/authenticate.usecase';
+import { validateCredentialsUsecase } from '#modules/yggdrasil/usecases/authserver/validate-credentials.usecase';
 
 type Command = {
 	username: string;

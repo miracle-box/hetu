@@ -1,6 +1,6 @@
 import { t } from 'elysia';
-import { createDtoSchemas } from '~backend/shared/middlewares/dto/schemas';
-import { profileSchema } from '../profiles.entities';
+import { profileSchema } from '#modules/profiles/profiles.entities';
+import { createDtoSchemas } from '#shared/middlewares/dto/schemas';
 
 export const createProfileDtoSchemas = createDtoSchemas({
 	body: t.Object({

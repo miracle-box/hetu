@@ -1,7 +1,7 @@
 import { swagger } from '@elysiajs/swagger';
 import { Elysia } from 'elysia';
-import { version } from '~backend/../package.json';
-import { Config } from '~backend/shared/config';
+import { Config } from '#config';
+import { version } from '#package.json';
 
 export const swaggerMiddleware = (app: Elysia) =>
 	app.use(

@@ -1,5 +1,5 @@
 import type { Logger as DrizzleLogger } from 'drizzle-orm/logger';
-import { Logger } from '~backend/shared/logger';
+import { Logger } from '#logger';
 
 export class PinoDrizzleLogger implements DrizzleLogger {
 	logQuery(query: string, params: unknown[]): void {

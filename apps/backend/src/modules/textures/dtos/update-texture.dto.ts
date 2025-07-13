@@ -1,6 +1,6 @@
 import { t } from 'elysia';
-import { createDtoSchemas } from '~backend/shared/middlewares/dto/schemas';
-import { textureSchema } from '../textures.entities';
+import { textureSchema } from '#modules/textures/textures.entities';
+import { createDtoSchemas } from '#shared/middlewares/dto/schemas';
 
 export const updateTextureDtoSchemas = createDtoSchemas({
 	params: t.Object({

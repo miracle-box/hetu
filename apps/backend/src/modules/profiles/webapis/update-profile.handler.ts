@@ -1,9 +1,9 @@
 import { Elysia } from 'elysia';
-import { SessionScope } from '~backend/modules/auth/auth.entities';
-import { authMiddleware } from '~backend/shared/auth/middleware';
-import { AppError } from '~backend/shared/middlewares/errors/app-error';
-import { updateProfileAction } from '../actions/update-profile.action';
-import { updateProfileDtoSchemas } from '../dtos/update-profile.dto';
+import { SessionScope } from '#modules/auth/auth.entities';
+import { updateProfileAction } from '#modules/profiles/actions/update-profile.action';
+import { updateProfileDtoSchemas } from '#modules/profiles/dtos/update-profile.dto';
+import { authMiddleware } from '#shared/auth/middleware';
+import { AppError } from '#shared/middlewares/errors/app-error';
 
 export const updateProfileHandler = new Elysia().use(authMiddleware(SessionScope.DEFAULT)).put(
 	'/:id',

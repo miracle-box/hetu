@@ -1,10 +1,10 @@
-import type { TextureType } from '../../textures/textures.entities';
+import type { TextureType } from '#modules/textures/textures.entities';
 import { EitherAsync, Left, Right } from 'purify-ts';
-import { TextureImageService } from '~backend/modules/textures/services/texture-image.service';
-import { FileType } from '../files.entities';
-import { InvalidFileTypeError } from '../files.errors';
-import { FileHashingService } from '../services/file-hashing.service';
-import { uploadTextureUseCase } from '../usecases/upload-texture.usecase';
+import { FileType } from '#modules/files/files.entities';
+import { InvalidFileTypeError } from '#modules/files/files.errors';
+import { FileHashingService } from '#modules/files/services/file-hashing.service';
+import { uploadTextureUseCase } from '#modules/files/usecases/upload-texture.usecase';
+import { TextureImageService } from '#modules/textures/services/texture-image.service';
 
 type Command = {
 	file: File;

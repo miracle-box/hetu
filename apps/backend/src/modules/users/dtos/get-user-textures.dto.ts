@@ -1,6 +1,6 @@
 import { t } from 'elysia';
-import { createDtoSchemas } from '~backend/shared/middlewares/dto/schemas';
-import { userTextureResponseSchema } from './common.dto';
+import { userTextureResponseSchema } from '#modules/users/dtos/common.dto';
+import { createDtoSchemas } from '#shared/middlewares/dto/schemas';
 
 export const getUserTexturesDtoSchemas = createDtoSchemas({
 	params: t.Object({

@@ -1,6 +1,6 @@
 import { sql } from 'drizzle-orm';
 import { boolean, pgTable, timestamp, uniqueIndex, uuid, varchar } from 'drizzle-orm/pg-core';
-import { lower } from '../sql';
+import { lower } from '#shared/db/sql';
 
 export const profilesTable = pgTable(
 	'profiles',

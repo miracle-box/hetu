@@ -1,10 +1,10 @@
-import type { Verification } from '../auth.entities';
+import type { Verification } from '#modules/auth/auth.entities';
 import { Left, Right } from 'purify-ts';
 import {
 	VerificationAlreadyVerifiedError,
 	VerificationExpiredError,
 	VerificationNotExistsError,
-} from '../auth.errors';
+} from '#modules/auth/auth.errors';
 
 export class VerificationValidatorService {
 	static validateExists(verif: Verification | null) {

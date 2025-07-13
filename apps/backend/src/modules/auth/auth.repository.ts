@@ -1,14 +1,14 @@
-import type { IAuthRepository } from './auth.repository.interface';
+import type { IAuthRepository } from '#modules/auth/auth.repository.interface';
 import { and, eq, gt } from 'drizzle-orm';
 import { Left, Right } from 'purify-ts';
-import { DatabaseError } from '~backend/common/errors/base.error';
-import { useDatabase } from '~backend/shared/db';
-import { sessionsTable } from '~backend/shared/db/schema/sessions';
-import { userAuthTable } from '~backend/shared/db/schema/user-auth';
-import { usersTable } from '~backend/shared/db/schema/users';
-import { verificationsTable } from '~backend/shared/db/schema/verifications';
-import { now } from '~backend/shared/db/sql';
-import { UserAuthType } from './auth.entities';
+import { DatabaseError } from '#common/errors/base.error';
+import { useDatabase } from '#db';
+import { sessionsTable } from '#db/schema/sessions';
+import { userAuthTable } from '#db/schema/user-auth';
+import { usersTable } from '#db/schema/users';
+import { verificationsTable } from '#db/schema/verifications';
+import { UserAuthType } from '#modules/auth/auth.entities';
+import { now } from '#shared/db/sql';
 
 export const AuthRepository: IAuthRepository = {
 	async getPassword(userId) {

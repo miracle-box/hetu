@@ -1,5 +1,5 @@
 import { Elysia } from 'elysia';
-import { uploadFileHandler } from './webapis/upload-file.handler';
+import { uploadFileHandler } from '#modules/files/webapis/upload-file.handler';
 
 export const FilesRoutes = new Elysia({
 	name: 'Routes.Files',

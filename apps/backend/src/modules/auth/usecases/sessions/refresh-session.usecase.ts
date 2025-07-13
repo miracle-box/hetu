@@ -1,10 +1,10 @@
-import type { Session } from '../../auth.entities';
+import type { Session } from '#modules/auth/auth.entities';
 import { Left } from 'purify-ts';
-import { SessionLifecycle, SessionScope } from '~backend/modules/auth/auth.entities';
-import { getLifecycle } from '~backend/shared/auth/utils';
-import { withTransaction } from '~backend/shared/db';
-import { InvalidSessionError } from '../../auth.errors';
-import { AuthRepository } from '../../auth.repository';
+import { withTransaction } from '#db';
+import { SessionLifecycle, SessionScope } from '#modules/auth/auth.entities';
+import { InvalidSessionError } from '#modules/auth/auth.errors';
+import { AuthRepository } from '#modules/auth/auth.repository';
+import { getLifecycle } from '#shared/auth/utils';
 
 type Command = {
 	session: Session;

@@ -1,15 +1,16 @@
-import type { Session } from '../../auth/auth.entities';
-import type { Profile } from '../../profiles/profiles.entities';
-import type { Texture } from '../../textures/textures.entities';
-import type {
-	YggProfile,
-	YggProfileDigest,
-	YggProfileTextures,
-	YggTexture,
-} from '../yggdrasil.entities';
+import type { Session } from '#modules/auth/auth.entities';
+import type { Profile } from '#modules/profiles/profiles.entities';
+import type { Texture } from '#modules/textures/textures.entities';
+
 import crypto from 'node:crypto';
-import { Config } from '~backend/shared/config';
-import { storageService } from '../../files/services/storage.service';
+import { Config } from '#config';
+import { storageService } from '#modules/files/services/storage.service';
+import {
+	type YggTexture,
+	type YggProfileDigest,
+	type YggProfile,
+	type YggProfileTextures,
+} from '#modules/yggdrasil/yggdrasil.entities';
 
 export abstract class YggdrasilService {
 	static getUnsignedUUID(uuid: string): string {

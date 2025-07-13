@@ -1,6 +1,6 @@
-import { SessionLifecycle, type Session } from '~backend/modules/auth/auth.entities';
-import { SessionScope } from '~backend/modules/auth/auth.entities';
-import { Config } from '../config';
+import { Config } from '#config';
+import { SessionLifecycle, type Session } from '#modules/auth/auth.entities';
+import { SessionScope } from '#modules/auth/auth.entities';
 
 /**
  * Reads the Bearer token from the authorization header.

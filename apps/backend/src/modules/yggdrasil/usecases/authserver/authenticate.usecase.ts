@@ -1,9 +1,9 @@
-import type { User } from '~backend/modules/users/users.entities';
+import type { User } from '#modules/users/users.entities';
 import { Right, EitherAsync } from 'purify-ts';
-import { AuthRepository } from '~backend/modules/auth/auth.repository';
-import { SessionScope } from '../../../auth/auth.entities';
-import { YggdrasilService } from '../../services/yggdrasil.service';
-import { YggdrasilRepository } from '../../yggdrasil.repository';
+import { SessionScope } from '#modules/auth/auth.entities';
+import { AuthRepository } from '#modules/auth/auth.repository';
+import { YggdrasilService } from '#modules/yggdrasil/services/yggdrasil.service';
+import { YggdrasilRepository } from '#modules/yggdrasil/yggdrasil.repository';
 
 type Command = {
 	user: User;

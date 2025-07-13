@@ -1,7 +1,7 @@
 import { EitherAsync } from 'purify-ts';
-import { SessionLifecycle } from '~backend/modules/auth/auth.entities';
-import { validateTokenUsecase } from '../../usecases/authserver/validate-token.usecase';
-import { YggdrasilRepository } from '../../yggdrasil.repository';
+import { SessionLifecycle } from '#modules/auth/auth.entities';
+import { validateTokenUsecase } from '#modules/yggdrasil/usecases/authserver/validate-token.usecase';
+import { YggdrasilRepository } from '#modules/yggdrasil/yggdrasil.repository';
 
 type Command = {
 	accessToken: string;

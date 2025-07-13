@@ -1,7 +1,7 @@
 import { EitherAsync, Left, Right } from 'purify-ts';
-import { InvalidCredentialsError } from '../../auth.errors';
-import { AuthRepository } from '../../auth.repository';
-import { PasswordHashService } from '../../services/password-hash.service';
+import { InvalidCredentialsError } from '#modules/auth/auth.errors';
+import { AuthRepository } from '#modules/auth/auth.repository';
+import { PasswordHashService } from '#modules/auth/services/password-hash.service';
 
 type Command = {
 	userId: string;

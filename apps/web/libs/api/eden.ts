@@ -1,5 +1,4 @@
 import 'server-only';
-import type { App } from '~backend/index';
-import { treaty } from '@elysiajs/eden';
+import { createClient } from '@repo/api-client';
 
-export const client = treaty<App>(process.env.API_ROOT);
+export const client = createClient(process.env.API_ROOT);

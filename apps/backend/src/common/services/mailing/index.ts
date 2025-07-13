@@ -1,6 +1,6 @@
-import type { Verification } from '~backend/modules/auth/auth.entities';
-import { Config } from '~backend/shared/config';
-import { mailer } from '~backend/shared/mailing/mailing';
+import type { Verification } from '#modules/auth/auth.entities';
+import { Config } from '#config';
+import { mailer } from '#shared/mailing/mailing';
 
 /**
  * Mailing service to send emails.

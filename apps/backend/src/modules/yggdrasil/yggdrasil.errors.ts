@@ -1,4 +1,4 @@
-import { BaseError } from '../../common/errors/base.error';
+import { BaseError } from '#common/errors/base.error';
 
 export class YggdrasilAuthenticationError extends BaseError {
 	override readonly name = 'YggdrasilAuthenticationError' as const;

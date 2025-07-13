@@ -1,7 +1,7 @@
 import { EitherAsync, Left, Right } from 'purify-ts';
-import { InvalidSessionError } from '../../auth.errors';
-import { AuthRepository } from '../../auth.repository';
-import { findSessionUsecase } from '../../usecases/sessions/find-session.usecase';
+import { InvalidSessionError } from '#modules/auth/auth.errors';
+import { AuthRepository } from '#modules/auth/auth.repository';
+import { findSessionUsecase } from '#modules/auth/usecases/sessions/find-session.usecase';
 
 type Command = {
 	sessionId: string;

@@ -1,8 +1,8 @@
 import { EitherAsync, Left, Right } from 'purify-ts';
-import { ForbiddenError } from '~backend/common/errors/base.error';
-import { storageService } from '~backend/modules/files/services/storage.service';
-import { TextureNotFoundError } from '../textures.errors';
-import { TexturesRepository } from '../textures.repository';
+import { ForbiddenError } from '#common/errors/base.error';
+import { storageService } from '#modules/files/services/storage.service';
+import { TextureNotFoundError } from '#modules/textures/textures.errors';
+import { TexturesRepository } from '#modules/textures/textures.repository';
 
 export interface GetTextureImageCommand {
 	userId: string;

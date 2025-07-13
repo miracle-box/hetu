@@ -1,4 +1,4 @@
-import type { AuthMetadata } from '~backend/modules/auth/auth.entities';
+import type { AuthMetadata } from '#modules/auth/auth.entities';
 import { createId } from '@paralleldrive/cuid2';
 import { sql } from 'drizzle-orm';
 import { jsonb, pgEnum, pgTable, timestamp, uniqueIndex, varchar } from 'drizzle-orm/pg-core';

@@ -1,4 +1,4 @@
-import { createTransactionHelper } from '~backend/shared/db/transactions.ts';
-import { drizzleClient } from './drizzle';
+import { drizzleClient } from '#shared/db/drizzle';
+import { createTransactionHelper } from '#shared/db/transactions';
 
 export const { withTransaction, useDatabase } = createTransactionHelper(drizzleClient);

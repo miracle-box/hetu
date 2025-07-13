@@ -1,9 +1,9 @@
 import { Elysia } from 'elysia';
-import { SessionLifecycle, SessionScope } from '~backend/modules/auth/auth.entities';
-import { authMiddleware } from '~backend/shared/auth/middleware';
-import { AppError } from '~backend/shared/middlewares/errors/app-error';
-import { refreshSessionAction } from '../../actions/sessions/refresh-session.action';
-import { refreshSessionDtoSchemas } from '../../dtos/sessions/refresh-session.dto';
+import { refreshSessionAction } from '#modules/auth/actions/sessions/refresh-session.action';
+import { SessionLifecycle, SessionScope } from '#modules/auth/auth.entities';
+import { refreshSessionDtoSchemas } from '#modules/auth/dtos/sessions/refresh-session.dto';
+import { authMiddleware } from '#shared/auth/middleware';
+import { AppError } from '#shared/middlewares/errors/app-error';
 
 export const refreshSessionHandler = new Elysia()
 	.use(

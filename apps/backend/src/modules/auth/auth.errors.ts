@@ -1,4 +1,4 @@
-import { BaseError } from '../../common/errors/base.error';
+import { BaseError } from '#common/errors/base.error';
 
 export class UserExistsError extends BaseError {
 	override readonly name = 'UserExistsError' as const;

@@ -1,9 +1,9 @@
 import { Elysia } from 'elysia';
-import { authMiddleware } from '~backend/shared/auth/middleware';
-import { AppError } from '~backend/shared/middlewares/errors/app-error';
-import { revokeSessionAction } from '../../actions/sessions/revoke-session.action';
-import { SessionScope } from '../../auth.entities';
-import { revokeSessionDtoSchemas } from '../../dtos/sessions/revoke-session.dto';
+import { revokeSessionAction } from '#modules/auth/actions/sessions/revoke-session.action';
+import { SessionScope } from '#modules/auth/auth.entities';
+import { revokeSessionDtoSchemas } from '#modules/auth/dtos/sessions/revoke-session.dto';
+import { authMiddleware } from '#shared/auth/middleware';
+import { AppError } from '#shared/middlewares/errors/app-error';
 
 export const revokeSessionHandler = new Elysia().use(authMiddleware(SessionScope.DEFAULT)).delete(
 	'/sessions/:id',

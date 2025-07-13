@@ -1,6 +1,6 @@
 import { t } from 'elysia';
-import { createDtoSchemas } from '~backend/shared/middlewares/dto/schemas';
-import { yggCredentialsSchema } from '../../yggdrasil.entities';
+import { yggCredentialsSchema } from '#modules/yggdrasil/yggdrasil.entities';
+import { createDtoSchemas } from '#shared/middlewares/dto/schemas';
 
 export const signoutDtoSchemas = createDtoSchemas({
 	body: yggCredentialsSchema,

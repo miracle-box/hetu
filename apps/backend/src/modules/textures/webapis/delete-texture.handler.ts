@@ -1,9 +1,9 @@
 import { Elysia } from 'elysia';
-import { SessionScope } from '~backend/modules/auth/auth.entities';
-import { authMiddleware } from '~backend/shared/auth/middleware';
-import { AppError } from '~backend/shared/middlewares/errors/app-error';
-import { deleteTextureAction } from '../actions/delete-texture.action';
-import { deleteTextureDtoSchemas } from '../dtos/delete-texture.dto';
+import { SessionScope } from '#modules/auth/auth.entities';
+import { deleteTextureAction } from '#modules/textures/actions/delete-texture.action';
+import { deleteTextureDtoSchemas } from '#modules/textures/dtos/delete-texture.dto';
+import { authMiddleware } from '#shared/auth/middleware';
+import { AppError } from '#shared/middlewares/errors/app-error';
 
 export const deleteTextureHandler = new Elysia().use(authMiddleware(SessionScope.DEFAULT)).delete(
 	'/:id',

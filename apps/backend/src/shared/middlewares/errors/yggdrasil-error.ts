@@ -1,5 +1,5 @@
-import type { ElysiaOnErrorContext } from './types';
-import { Logger } from '~backend/shared/logger';
+import type { ElysiaOnErrorContext } from '#shared/middlewares/errors/types';
+import { Logger } from '#logger';
 
 class YggdrasilError extends Error {
 	status = 500;

@@ -1,5 +1,5 @@
-import type { Profile } from './profiles.entities';
-import type { DatabaseError } from '../../common/errors/base.error';
+import type { DatabaseError } from '#common/errors/base.error';
+import type { Profile } from '#modules/profiles/profiles.entities';
 import { Either } from 'purify-ts';
 
 export interface IProfilesRepository {

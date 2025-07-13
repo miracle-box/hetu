@@ -1,4 +1,4 @@
-import { signupUsecase } from '../usecases/signup.usecase';
+import { signupUsecase } from '#modules/auth/usecases/signup.usecase';
 
 type Command = {
 	name: string;

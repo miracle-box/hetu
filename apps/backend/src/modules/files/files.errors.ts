@@ -1,4 +1,4 @@
-import { BaseError } from '../../common/errors/base.error';
+import { BaseError } from '#common/errors/base.error';
 
 export class FileNotFoundError extends BaseError {
 	override readonly name = 'FileNotFoundError' as const;

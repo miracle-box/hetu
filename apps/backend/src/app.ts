@@ -1,11 +1,11 @@
 import { Elysia } from 'elysia';
-import { AuthRoutes } from '~backend/modules/auth/auth.routes';
-import { FilesRoutes } from '~backend/modules/files/files.routes';
-import { ProfilesRoutes } from '~backend/modules/profiles/profiles.routes';
-import { TexturesRoutes } from '~backend/modules/textures/textures.routes';
-import { UsersRoutes } from '~backend/modules/users/users.routes';
-import { middlewares } from '~backend/shared/middlewares';
-import { YggdrasilRoutes } from './modules/yggdrasil/yggdrasil.routes';
+import { AuthRoutes } from '#modules/auth/auth.routes';
+import { FilesRoutes } from '#modules/files/files.routes';
+import { ProfilesRoutes } from '#modules/profiles/profiles.routes';
+import { TexturesRoutes } from '#modules/textures/textures.routes';
+import { UsersRoutes } from '#modules/users/users.routes';
+import { YggdrasilRoutes } from '#modules/yggdrasil/yggdrasil.routes';
+import { middlewares } from '#shared/middlewares';
 
 export const app = new Elysia({
 	name: 'App',
@@ -29,3 +29,5 @@ export const startApp = (listenTo: string) => {
 
 	app.listen(listenTo);
 };
+
+export type App = typeof app;

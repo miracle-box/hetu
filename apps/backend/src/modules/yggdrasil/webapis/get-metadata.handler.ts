@@ -1,6 +1,6 @@
 import { Elysia } from 'elysia';
-import { getMetadataAction } from '../actions/get-metadata.action';
-import { getMetadataDtoSchemas } from '../dtos/get-metadata.dto';
+import { getMetadataAction } from '#modules/yggdrasil/actions/get-metadata.action';
+import { getMetadataDtoSchemas } from '#modules/yggdrasil/dtos/get-metadata.dto';
 
 export const getMetadataHandler = new Elysia().get(
 	'/',

@@ -1,7 +1,7 @@
 import { EitherAsync, Right } from 'purify-ts';
-import { SessionScope } from '../../auth.entities';
-import { AuthRepository } from '../../auth.repository';
-import { PasswordHashService } from '../../services/password-hash.service';
+import { SessionScope } from '#modules/auth/auth.entities';
+import { AuthRepository } from '#modules/auth/auth.repository';
+import { PasswordHashService } from '#modules/auth/services/password-hash.service';
 
 type Command = {
 	userId: string;

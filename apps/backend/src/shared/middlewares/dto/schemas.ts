@@ -1,6 +1,6 @@
 import type { TObject, TSchema } from '@sinclair/typebox';
-import { createErrorResps } from '../errors/docs';
-import { APP_ERRORS } from '../errors/errors';
+import { createErrorResps } from '#shared/middlewares/errors/docs';
+import { APP_ERRORS } from '#shared/middlewares/errors/errors';
 
 type ErrorKey = keyof typeof APP_ERRORS;
 
@@ -17,19 +17,7 @@ export function createDtoSchemas<
 		headers?: TObject;
 		errors?: readonly ErrorKey[];
 	},
->(
-	schemas: TDtoSchemas,
-): Omit<TDtoSchemas, 'errors' | 'response'> & {
-	response: TDtoSchemas['response'] &
-		// Pick statuses in schemas.errors from APP_ERRORS
-		ReturnType<
-			typeof createErrorResps<
-				TDtoSchemas['errors'] extends readonly ErrorKey[]
-					? (typeof APP_ERRORS)[TDtoSchemas['errors'][number]]['status'][]
-					: []
-			>
-		>;
-} {
+>(schemas: TDtoSchemas) {
 	const { errors = [], response, ...rest } = schemas;
 
 	const mergedResponse = {

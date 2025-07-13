@@ -1,8 +1,8 @@
 import { HeadObjectCommand, PutObjectCommand, NotFound } from '@aws-sdk/client-s3';
 import { Either, Left, Right } from 'purify-ts';
-import { Config } from '~backend/shared/config';
-import { s3 } from '~backend/shared/s3/client';
-import { StorageError } from '../files.errors';
+import { Config } from '#config';
+import { StorageError } from '#modules/files/files.errors';
+import { s3 } from '#shared/s3/client';
 
 export type ObjectInfo = {
 	hash: string;

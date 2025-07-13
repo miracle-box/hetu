@@ -1,6 +1,10 @@
 import { t } from 'elysia';
-import { createDtoSchemas } from '~backend/shared/middlewares/dto/schemas';
-import { yggTokenSchema, yggProfileDigestSchema, yggUserSchema } from '../../yggdrasil.entities';
+import {
+	yggTokenSchema,
+	yggProfileDigestSchema,
+	yggUserSchema,
+} from '#modules/yggdrasil/yggdrasil.entities';
+import { createDtoSchemas } from '#shared/middlewares/dto/schemas';
 
 export const refreshDtoSchemas = createDtoSchemas({
 	body: t.Composite([

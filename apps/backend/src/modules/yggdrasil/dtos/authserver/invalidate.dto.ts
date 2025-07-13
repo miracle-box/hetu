@@ -1,6 +1,6 @@
 import { t } from 'elysia';
-import { createDtoSchemas } from '~backend/shared/middlewares/dto/schemas';
-import { yggTokenSchema } from '../../yggdrasil.entities';
+import { yggTokenSchema } from '#modules/yggdrasil/yggdrasil.entities';
+import { createDtoSchemas } from '#shared/middlewares/dto/schemas';
 
 export const invalidateDtoSchemas = createDtoSchemas({
 	body: yggTokenSchema,

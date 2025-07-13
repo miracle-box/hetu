@@ -1,5 +1,5 @@
 import { Maybe } from 'purify-ts';
-import { Config } from '~backend/shared/config';
+import { Config } from '#config';
 
 export type PKCEMethod = 'S256' | 'plain' | false;
 

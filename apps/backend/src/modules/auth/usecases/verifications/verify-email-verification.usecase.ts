@@ -1,8 +1,8 @@
-import type { Verification } from '../../auth.entities';
+import type { Verification } from '#modules/auth/auth.entities';
 import { Left } from 'purify-ts';
-import { InvalidVerificationCodeError } from '../../auth.errors';
-import { AuthRepository } from '../../auth.repository';
-import { VerificationCodeService } from '../../services/verification-code.service';
+import { InvalidVerificationCodeError } from '#modules/auth/auth.errors';
+import { AuthRepository } from '#modules/auth/auth.repository';
+import { VerificationCodeService } from '#modules/auth/services/verification-code.service';
 
 type Command = {
 	id: string;

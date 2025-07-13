@@ -1,7 +1,7 @@
 import { Elysia } from 'elysia';
-import { AppError } from '~backend/shared/middlewares/errors/app-error';
-import { oauth2SigninAction } from '../../actions/oauth2/oauth2-signin.action';
-import { oauth2SigninDtoSchemas } from '../../dtos/oauth2/oauth2-signin.dto';
+import { oauth2SigninAction } from '#modules/auth/actions/oauth2/oauth2-signin.action';
+import { oauth2SigninDtoSchemas } from '#modules/auth/dtos/oauth2/oauth2-signin.dto';
+import { AppError } from '#shared/middlewares/errors/app-error';
 
 export const oauth2SigninHandler = new Elysia().post(
 	'/oauth2/signin',

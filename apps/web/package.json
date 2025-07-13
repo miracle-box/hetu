@@ -10,7 +10,7 @@
     "lint": "bun run --cwd ../.. eslint apps/web --max-warnings 0 --cache --cache-location apps/web/.eslintcache"
   },
   "dependencies": {
-    "@elysiajs/eden": "^1.3.2",
+    "@repo/api-client": "*",
     "@repo/ui": "*",
     "@sinclair/typebox": "^0.34.33",
     "@sinclair/typemap": "^0.9.1",
