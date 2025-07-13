@@ -1,12 +1,14 @@
 import { t } from 'elysia';
 import { createDtoSchemas } from '#shared/middlewares/dto/schemas';
 
-export const deleteProfileDtoSchemas = createDtoSchemas({
-	params: t.Object({
-		id: t.String(),
-	}),
-	response: {
+export const deleteProfileDtoSchemas = createDtoSchemas(
+	{
+		params: t.Object({
+			id: t.String(),
+		}),
+	},
+	{
 		204: t.Void(),
 	},
-	errors: ['profiles/not-found', 'internal-error'],
-});
+	['profiles/not-found', 'internal-error'],
+);

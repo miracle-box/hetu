@@ -7,19 +7,21 @@ import {
 } from '#modules/yggdrasil/yggdrasil.entities';
 import { createDtoSchemas } from '#shared/middlewares/dto/schemas';
 
-export const authenticateDtoSchemas = createDtoSchemas({
-	body: t.Composite([
-		yggCredentialsSchema,
-		t.Object({
-			clientToken: t.Optional(t.String()),
-			requestUser: t.Optional(t.Boolean({ default: false })),
-			agent: t.Object({
-				name: t.String(),
-				version: t.Number(),
+export const authenticateDtoSchemas = createDtoSchemas(
+	{
+		body: t.Composite([
+			yggCredentialsSchema,
+			t.Object({
+				clientToken: t.Optional(t.String()),
+				requestUser: t.Optional(t.Boolean({ default: false })),
+				agent: t.Object({
+					name: t.String(),
+					version: t.Number(),
+				}),
 			}),
-		}),
-	]),
-	response: {
+		]),
+	},
+	{
 		200: t.Composite([
 			yggTokenSchema,
 			t.Object({
@@ -29,4 +31,5 @@ export const authenticateDtoSchemas = createDtoSchemas({
 			}),
 		]),
 	},
-});
+	[],
+);

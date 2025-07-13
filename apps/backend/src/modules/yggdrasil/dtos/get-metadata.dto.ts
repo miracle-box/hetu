@@ -1,7 +1,9 @@
+import { createDtoSchemas } from '#shared/middlewares/dto/schemas';
 import { t } from 'elysia';
 
-export const getMetadataDtoSchemas = {
-	response: {
+export const getMetadataDtoSchemas = createDtoSchemas(
+	{},
+	{
 		200: t.Object({
 			meta: t.Object({
 				serverName: t.String(),
@@ -22,4 +24,5 @@ export const getMetadataDtoSchemas = {
 			signaturePublickey: t.String(),
 		}),
 	},
-};
+	[],
+);

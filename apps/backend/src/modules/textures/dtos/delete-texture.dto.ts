@@ -1,12 +1,14 @@
 import { t } from 'elysia';
 import { createDtoSchemas } from '#shared/middlewares/dto/schemas';
 
-export const deleteTextureDtoSchemas = createDtoSchemas({
-	params: t.Object({
-		id: t.String(),
-	}),
-	response: {
+export const deleteTextureDtoSchemas = createDtoSchemas(
+	{
+		params: t.Object({
+			id: t.String(),
+		}),
+	},
+	{
 		204: t.Void(),
 	},
-	errors: ['textures/not-found', 'internal-error'],
-});
+	['textures/not-found', 'internal-error'],
+);
