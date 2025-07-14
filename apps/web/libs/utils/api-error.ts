@@ -1,6 +1,6 @@
 import { ApiErrors } from '@repo/api-client';
 
-export type ApiError = {
+export type EdenError = {
 	status: number;
 	value:
 		| {
@@ -32,13 +32,16 @@ type SuccessStatus =
 	| 307
 	| 308;
 
-export function mapApiError<TErrorResponse extends ApiError>(
+export function mapApiError<TErrorResponse extends EdenError>(
 	error: TErrorResponse | null,
 ): {
-	error: Extract<
-		Exclude<TErrorResponse, { status: SuccessStatus }>,
-		{ value: { error: object } }
-	>['value']['error'];
+	error:
+		| Extract<
+				Exclude<TErrorResponse, { status: SuccessStatus }>,
+				{ value: { error: object } }
+		  >['value']['error']
+		// Workaround for adding fetch-error causing typing errors.
+		| { path: string; code: 'fetch-error'; message: string; details: unknown };
 	message: string;
 } | null {
 	if (!error) return null;
@@ -75,14 +78,39 @@ export function mapApiError<TErrorResponse extends ApiError>(
 export function mapFetchError(error: unknown) {
 	const result = {
 		error: {
+			path: '',
 			code: 'fetch-error',
 			message: 'Failed to fetch data.',
 			details: error,
 		},
 		message: 'Failed to fetch data.',
-	};
+	} as const;
 
 	console.log('Failed to fetch data:', result);
 
 	return result;
+}
+
+// For use with TanStack Query
+type ErrorResponse = {
+	message: string;
+	error: {
+		path: string;
+		code: string;
+		message: string;
+		details: unknown;
+	};
+};
+
+export class ApiError extends Error {
+	override cause: ErrorResponse;
+	override message: string;
+	code: string;
+
+	constructor(cause: ErrorResponse) {
+		super(cause.message);
+		this.cause = cause;
+		this.message = cause.message;
+		this.code = cause.error.code;
+	}
 }
