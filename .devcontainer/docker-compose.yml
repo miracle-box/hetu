@@ -37,9 +37,15 @@ services:
             - devnet
 
     mail:
-        image: mailhog/mailhog
+        image: axllent/mailpit
+        volumes:
+            - mailpit_data:/data
         networks:
             - devnet
+        environment:
+            MP_DATABASE: /data/mailpit.db
+            MP_SMTP_AUTH_ACCEPT_ANY: 1
+            MP_SMTP_AUTH_ALLOW_INSECURE: 1
 
 networks:
     devnet:
@@ -47,3 +53,4 @@ networks:
 volumes:
     pg_data:
     minio_data:
+    mailpit_data:
