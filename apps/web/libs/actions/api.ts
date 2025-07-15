@@ -1,5 +1,7 @@
 'use server';
 
+import type { Static } from '@sinclair/typebox';
+import { ProfilesDtos } from '@repo/api-client';
 import { Left, Right } from 'purify-ts/Either';
 import { readSession } from '~web/libs/actions/auth';
 import { client as api } from '~web/libs/api/eden';
@@ -221,6 +223,27 @@ export async function refreshSession(authToken: string) {
 	return api.auth.sessions.refresh
 		.post(null, {
 			headers: { Authorization: `Bearer ${authToken}` },
+		})
+		.then(({ data, error }) => {
+			const errResp = mapApiError(error);
+			if (errResp) return Left(errResp);
+
+			return Right(data!);
+		})
+		.catch((error) => Left(mapFetchError(error)));
+}
+
+export async function updateProfile(
+	id: string,
+	body: Static<(typeof ProfilesDtos.updateProfileDtoSchemas)['body']>,
+) {
+	const session = await readSession();
+	return api
+		.profiles({
+			id,
+		})
+		.put(body, {
+			headers: { Authorization: `Bearer ${session.authToken}` },
 		})
 		.then(({ data, error }) => {
 			const errResp = mapApiError(error);
