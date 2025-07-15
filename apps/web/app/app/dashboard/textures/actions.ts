@@ -1,8 +1,10 @@
 'use server';
 
+import type { Static } from '@sinclair/typebox';
 import type { CreateTextureFormValues } from '~web/libs/modules/textures/forms/CreateTextureForm';
+import { ProfilesDtos } from '@repo/api-client';
 import { EitherAsync } from 'purify-ts/EitherAsync';
-import { createTexture, uploadFile } from '~web/libs/actions/api';
+import { createTexture, getUserProfiles, updateProfile, uploadFile } from '~web/libs/actions/api';
 import { formError } from '~web/libs/utils/form';
 import { eitherToResp } from '~web/libs/utils/resp';
 
@@ -29,3 +31,9 @@ export async function handleCreateTexture(form: CreateTextureFormValues) {
 
 	return eitherToResp(await requests.run());
 }
+
+export const handleGetUserProfiles = async () => eitherToResp(await getUserProfiles());
+export const handleUpdateUserProfile = async (
+	id: string,
+	body: Static<(typeof ProfilesDtos.updateProfileDtoSchemas)['body']>,
+) => eitherToResp(await updateProfile(id, body));

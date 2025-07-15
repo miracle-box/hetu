@@ -12,9 +12,10 @@ export type Props = {
 		hash: string;
 		authorId: string;
 	};
+	children?: React.ReactNode;
 };
 
-export function TextureCard({ texture }: Props) {
+export function TextureCard({ texture, children }: Props) {
 	return (
 		<Card>
 			<CardHeader>
@@ -50,7 +51,7 @@ export function TextureCard({ texture }: Props) {
 				</DataList>
 			</CardContent>
 
-			<CardFooter>
+			<CardFooter className="flex flex-col gap-8">
 				<div className="relative h-48">
 					<Image
 						alt="Texture image"
@@ -66,6 +67,8 @@ export function TextureCard({ texture }: Props) {
 						unoptimized
 					/>
 				</div>
+
+				<div>{children}</div>
 			</CardFooter>
 		</Card>
 	);

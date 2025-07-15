@@ -1,5 +1,5 @@
-import { createDtoSchemas } from '#shared/middlewares/dto/schemas';
 import { t } from 'elysia';
+import { createDtoSchemas } from '#shared/middlewares/dto/schemas';
 
 export const getMetadataDtoSchemas = createDtoSchemas(
 	{},
