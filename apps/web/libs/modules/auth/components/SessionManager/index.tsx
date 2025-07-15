@@ -7,6 +7,7 @@ export function SessionManager() {
 	useQuery({
 		queryKey: ['session-info'],
 		queryFn: validateSession,
+		gcTime: Infinity,
 		staleTime: Infinity,
 		refetchOnWindowFocus: false,
 		retry: false,
