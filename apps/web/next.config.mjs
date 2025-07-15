@@ -1,3 +1,7 @@
+import { randomUUID } from 'crypto';
+
+const BUILD_ID = process.env.NEXT_PUBLIC_BUILD_ID ?? randomUUID();
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
 	reactStrictMode: true,
@@ -18,6 +22,13 @@ const nextConfig = {
 		},
 	},
 	output: 'standalone',
+	// Embed random build id in public env
+	env: {
+		NEXT_PUBLIC_BUILD_ID: BUILD_ID,
+	},
+	async generateBuildId() {
+		return BUILD_ID;
+	},
 
 	// Type checking and linting should be in individual tasks.
 	eslint: {

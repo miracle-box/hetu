@@ -3,6 +3,7 @@ import { Card, CardContent, CardFooter, CardHeader } from '@repo/ui/card';
 import { DataList, DataListItem, DataListLabel, DataListValue } from '@repo/ui/data-list';
 import { InlineCode, Large } from '@repo/ui/typography';
 import Image from 'next/image';
+import { useClientAppConfig } from '~web/libs/hooks/use-config';
 export type Props = {
 	texture: {
 		type: 'cape' | 'skin' | 'skin_slim';
@@ -16,6 +17,8 @@ export type Props = {
 };
 
 export function TextureCard({ texture, children }: Props) {
+	const clientAppConfig = useClientAppConfig();
+
 	return (
 		<Card>
 			<CardHeader>
@@ -57,7 +60,7 @@ export function TextureCard({ texture, children }: Props) {
 						alt="Texture image"
 						width={64}
 						height={texture.type === 'cape' ? 32 : 64}
-						src={`${process.env.TEXTURE_STORE_ROOT}/${texture.hash.slice(0, 2)}/${texture.hash}`}
+						src={`${clientAppConfig.textureRoot}/${texture.hash.slice(0, 2)}/${texture.hash}`}
 						className=""
 						style={{
 							imageRendering: 'pixelated',
