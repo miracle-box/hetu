@@ -1,9 +1,10 @@
 import type { Metadata } from 'next';
 import { cn } from '@repo/ui';
 import React from 'react';
-import { Providers } from './providers';
-import { fontClasses } from '../libs/styling/fonts';
 import './globals.css';
+import ClientConfigProvider from './client-config-provider';
+import { ClientProviders } from './client-providers';
+import { fontClasses } from '../libs/styling/fonts';
 
 export const metadata: Metadata = {
 	title: 'Hetu',
@@ -23,7 +24,9 @@ export default function RootLayout({
 					className="bg-background relative flex min-h-screen flex-col"
 					data-vaul-drawer-wrapper
 				>
-					<Providers>{children}</Providers>
+					<ClientProviders>
+						<ClientConfigProvider>{children}</ClientConfigProvider>
+					</ClientProviders>
 				</div>
 			</body>
 		</html>

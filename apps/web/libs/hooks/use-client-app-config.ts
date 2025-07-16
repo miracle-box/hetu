@@ -1,10 +1,6 @@
-import { useQuery } from '@tanstack/react-query';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import { getClientAppConfigAction } from '../actions/get-client-site-config';
-import {
-	defaultClientAppConfig,
-	getClientAppConfig,
-	type ClientAppConfig,
-} from '../utils/app-config';
+import { getClientAppConfig, type ClientAppConfig } from '../utils/app-config/client';
 
 export function useClientAppConfig(): ClientAppConfig {
 	// Called on server side
@@ -13,8 +9,11 @@ export function useClientAppConfig(): ClientAppConfig {
 	}
 
 	// Client side
+	// Will be pre-fetched on server side using prefetchQuery and passed to the client,
+	// see: app/layout.tsx (the root layout)
+
 	// eslint-disable-next-line react-hooks/rules-of-hooks
-	const query = useQuery({
+	const query = useSuspenseQuery({
 		queryFn: getClientAppConfigAction,
 		queryKey: ['clientAppConfig', process.env.NEXT_PUBLIC_BUILD_ID],
 		gcTime: Infinity,
@@ -23,7 +22,7 @@ export function useClientAppConfig(): ClientAppConfig {
 
 	// [TODO] Show error screen if not cached, otherwise use the cached data and fail silently.
 	if (!query.data) {
-		return defaultClientAppConfig;
+		throw new Error('Client app config not correctly populated.');
 	}
 
 	return query.data;

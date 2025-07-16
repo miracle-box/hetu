@@ -7,7 +7,7 @@ import { ThemeProvider } from 'next-themes';
 import { getQueryClient } from '~web/libs/api/query';
 import { SessionManager } from '~web/libs/modules/auth/components/SessionManager';
 
-export function Providers({ children }: { children: React.ReactNode }) {
+export function ClientProviders({ children }: { children: React.ReactNode }) {
 	const queryClient = getQueryClient();
 
 	return (
@@ -20,7 +20,6 @@ export function Providers({ children }: { children: React.ReactNode }) {
 			<QueryClientProvider client={queryClient}>
 				{children}
 				<ReactQueryDevtools />
-
 				<SessionManager />
 			</QueryClientProvider>
 		</ThemeProvider>
