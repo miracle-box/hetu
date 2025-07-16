@@ -9,7 +9,7 @@ export type ServerAppConfig = {
 	apiRoot: string;
 };
 
-export function getServerAppConfig(): ServerAppConfig {
+function getServerAppConfig(): ServerAppConfig {
 	return {
 		client: getClientAppConfig(),
 
@@ -17,3 +17,5 @@ export function getServerAppConfig(): ServerAppConfig {
 		apiRoot: process.env.API_ROOT,
 	};
 }
+
+export const ServerAppConfig = getServerAppConfig();

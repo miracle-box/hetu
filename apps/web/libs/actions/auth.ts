@@ -8,6 +8,7 @@ import { redirect } from 'next/navigation';
 import { EitherAsync } from 'purify-ts/EitherAsync';
 import { cache } from 'react';
 import { refreshSession, renewSession } from './api';
+import { ServerAppConfig } from '../utils/app-config/server';
 
 // [TODO] Use type from backend instead.
 type Session = {
@@ -27,7 +28,7 @@ type SessionCookie = {
 };
 
 export async function signSessionJwt(session: SessionCookie): Promise<string> {
-	const secret = new TextEncoder().encode(process.env.JWT_SECRET);
+	const secret = new TextEncoder().encode(ServerAppConfig.jwtSecret);
 
 	const jwt = await new SignJWT({
 		id: session.id,
@@ -45,7 +46,7 @@ export async function signSessionJwt(session: SessionCookie): Promise<string> {
 }
 
 export async function readSessionJwt(jwt: string): Promise<SessionCookie> {
-	const secret = new TextEncoder().encode(process.env.JWT_SECRET);
+	const secret = new TextEncoder().encode(ServerAppConfig.jwtSecret);
 	const result = await jwtVerify(jwt, secret);
 
 	return {
