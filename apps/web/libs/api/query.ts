@@ -1,5 +1,12 @@
 import { QueryClient, defaultShouldDehydrateQuery, isServer } from '@tanstack/react-query';
 
+/**
+ * TanStack Query SSR helper.
+ * Creates query client for both server and client.
+ *
+ * @see https://tanstack.com/query/v5/docs/framework/react/guides/advanced-ssr
+ * @returns the query client
+ */
 function makeQueryClient() {
 	return new QueryClient({
 		defaultOptions: {
