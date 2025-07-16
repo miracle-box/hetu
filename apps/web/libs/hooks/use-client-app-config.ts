@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import { getClientAppConfigAction } from '../actions/get-client-site-config';
 import { getClientAppConfig, type ClientAppConfig } from '../utils/app-config/client';
 
@@ -13,7 +13,7 @@ export function useClientAppConfig(): ClientAppConfig {
 	// see: app/layout.tsx (the root layout)
 
 	// eslint-disable-next-line react-hooks/rules-of-hooks
-	const query = useQuery({
+	const query = useSuspenseQuery({
 		queryFn: getClientAppConfigAction,
 		queryKey: ['clientAppConfig', process.env.NEXT_PUBLIC_BUILD_ID],
 		gcTime: Infinity,
