@@ -1,9 +1,9 @@
 import { t } from 'elysia';
 import {
-	yggTokenSchema,
 	yggUserSchema,
 	yggProfileDigestSchema,
 	yggCredentialsSchema,
+	yggResponseTokenSchema,
 } from '#modules/yggdrasil/yggdrasil.entities';
 import { createDtoSchemas } from '#shared/middlewares/dto/schemas';
 
@@ -23,7 +23,7 @@ export const authenticateDtoSchemas = createDtoSchemas(
 	},
 	{
 		200: t.Composite([
-			yggTokenSchema,
+			yggResponseTokenSchema,
 			t.Object({
 				availableProfiles: t.Array(yggProfileDigestSchema),
 				selectedProfile: t.Optional(yggProfileDigestSchema),
