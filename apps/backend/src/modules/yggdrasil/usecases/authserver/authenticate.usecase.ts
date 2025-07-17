@@ -1,6 +1,6 @@
 import type { User } from '#modules/users/users.entities';
 import { Right, EitherAsync } from 'purify-ts';
-import { SessionScope } from '#modules/auth/auth.entities';
+import { SessionScope, type SessionMetadata } from '#modules/auth/auth.entities';
 import { AuthRepository } from '#modules/auth/auth.repository';
 import { YggdrasilService } from '#modules/yggdrasil/services/yggdrasil.service';
 import { YggdrasilRepository } from '#modules/yggdrasil/yggdrasil.repository';
@@ -37,7 +37,9 @@ export const authenticateUsecase = async (cmd: Command) => {
 				})
 			).map((session) => ({
 				accessToken: YggdrasilService.createAccessToken(session),
-				clientToken: cmd.clientToken,
+				// [FIXME] We should provide a better way to deal with sessions with different scopes.
+				clientToken: (session.metadata as Extract<SessionMetadata, { scope: 'yggdrasil' }>)
+					.clientToken,
 				user: cmd.requestUser ? { id: user.id, properties: [] } : undefined,
 				availableProfiles: profiles,
 				selectedProfile: undefined,

@@ -1,15 +1,16 @@
 import { t } from 'elysia';
 import {
-	yggTokenSchema,
+	yggRequestTokenSchema,
 	yggProfileDigestSchema,
 	yggUserSchema,
+	yggResponseTokenSchema,
 } from '#modules/yggdrasil/yggdrasil.entities';
 import { createDtoSchemas } from '#shared/middlewares/dto/schemas';
 
 export const refreshDtoSchemas = createDtoSchemas(
 	{
 		body: t.Composite([
-			yggTokenSchema,
+			yggRequestTokenSchema,
 			t.Object({
 				requestUser: t.Boolean({ default: false }),
 				selectedProfile: t.Optional(yggProfileDigestSchema),
@@ -18,7 +19,7 @@ export const refreshDtoSchemas = createDtoSchemas(
 	},
 	{
 		200: t.Composite([
-			yggTokenSchema,
+			yggResponseTokenSchema,
 			t.Object({
 				selectedProfile: t.Optional(yggProfileDigestSchema),
 				user: t.Optional(yggUserSchema),
