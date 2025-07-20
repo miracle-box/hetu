@@ -9,6 +9,7 @@ export * from '#modules/yggdrasil/dtos/sessionserver/has-joined.dto';
 export * from '#modules/yggdrasil/dtos/sessionserver/join-server.dto';
 
 export * from '#modules/yggdrasil/dtos/mojangapi/get-profiles.dto';
+export * from '#modules/yggdrasil/dtos/mojangapi/get-player-uuid.dto';
 export * from '#modules/yggdrasil/dtos/mojangapi/reset-texture.dto';
 export * from '#modules/yggdrasil/dtos/mojangapi/upload-texture.dto';
 

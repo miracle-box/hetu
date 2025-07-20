@@ -27,8 +27,8 @@ export class YggdrasilForbiddenError extends BaseError {
 export class YggdrasilProfileNotFoundError extends BaseError {
 	override readonly name = 'YggdrasilProfileNotFoundError' as const;
 
-	constructor(profileId: string) {
-		super(`Profile with ID ${profileId} not found.`);
+	constructor(idOrName: string) {
+		super(`Profile with ID or name ${idOrName} not found.`);
 	}
 }
 

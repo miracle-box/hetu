@@ -70,6 +70,16 @@ export interface IYggdrasilRepository {
 	>;
 
 	/**
+	 * Get profile digest by name (case insensitive).
+	 *
+	 * @param name Profile name
+	 * @returns Either error or profile digest (null if not found)
+	 */
+	getProfileDigestByName(
+		name: string,
+	): Promise<Either<DatabaseError, Pick<Profile, 'id' | 'name'> | null>>;
+
+	/**
 	 * Find join record by server ID.
 	 *
 	 * @param serverId Server ID

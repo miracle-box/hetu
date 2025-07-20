@@ -6,6 +6,7 @@ import { signoutHandler } from '#modules/yggdrasil/webapis/authserver/signout.ha
 import { validateHandler } from '#modules/yggdrasil/webapis/authserver/validate.handler';
 import { prejoinHandler } from '#modules/yggdrasil/webapis/custom/prejoin.handler';
 import { getMetadataHandler } from '#modules/yggdrasil/webapis/get-metadata.handler';
+import { getPlayerUuidHandler } from '#modules/yggdrasil/webapis/mojangapi/get-player-uuid.handler';
 import { getProfilesHandler } from '#modules/yggdrasil/webapis/mojangapi/get-profiles.handler';
 import { resetTextureHandler } from '#modules/yggdrasil/webapis/mojangapi/reset-texture.handler';
 import { uploadTextureHandler } from '#modules/yggdrasil/webapis/mojangapi/upload-texture.handler';
@@ -32,4 +33,5 @@ export const YggdrasilRoutes = new Elysia({
 	.group('/api', (app) =>
 		app.use(getProfilesHandler).use(uploadTextureHandler).use(resetTextureHandler),
 	)
+	.group('', (app) => app.use(getPlayerUuidHandler))
 	.group('/custom', (app) => app.use(prejoinHandler));

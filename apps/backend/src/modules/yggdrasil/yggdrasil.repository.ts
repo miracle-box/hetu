@@ -8,6 +8,7 @@ import { DatabaseError } from '#common/errors/base.error';
 import { useDatabase } from '#db';
 import { profilesTable } from '#db/schema/profiles';
 import { yggServerSessionsTable } from '#db/schema/ygg-server-sessions';
+import { lower } from '#shared/db/sql';
 
 export const YggdrasilRepository: IYggdrasilRepository = {
 	async getProfilesDigestByNames(
@@ -143,7 +144,7 @@ export const YggdrasilRepository: IYggdrasilRepository = {
 						},
 					},
 				},
-				where: eq(profilesTable.name, name),
+				where: eq(lower(profilesTable.name), name.toLowerCase()),
 			});
 
 			return Right(profile ?? null);
@@ -151,6 +152,26 @@ export const YggdrasilRepository: IYggdrasilRepository = {
 			return Left(
 				new DatabaseError('Failed to get profile digest with skins by name', error),
 			);
+		}
+	},
+
+	async getProfileDigestByName(
+		name: string,
+	): Promise<Either<DatabaseError, Pick<Profile, 'id' | 'name'> | null>> {
+		try {
+			const db = useDatabase();
+
+			const profile = await db.query.profilesTable.findFirst({
+				columns: {
+					id: true,
+					name: true,
+				},
+				where: eq(lower(profilesTable.name), name.toLowerCase()),
+			});
+
+			return Right(profile ?? null);
+		} catch (error) {
+			return Left(new DatabaseError('Failed to get profile digest by name', error));
 		}
 	},
 
