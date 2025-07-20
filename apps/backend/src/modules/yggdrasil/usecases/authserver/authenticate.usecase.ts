@@ -42,7 +42,8 @@ export const authenticateUsecase = async (cmd: Command) => {
 					.clientToken,
 				user: cmd.requestUser ? { id: user.id, properties: [] } : undefined,
 				availableProfiles: profiles,
-				selectedProfile: undefined,
+				// Auto-select profile if there is only one.
+				selectedProfile: profiles.length === 1 ? profiles[0] : undefined,
 			}));
 		})
 		.run();
