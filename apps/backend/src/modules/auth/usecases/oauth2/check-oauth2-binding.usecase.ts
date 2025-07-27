@@ -33,6 +33,7 @@ export async function checkOauth2BindingUsecase(cmd: Command) {
 		})
 		.map(({ profile, maybeBinding }) => ({
 			user: cmd.user,
+			provider: cmd.verification.target,
 			oauth2Profile: profile,
 			alreadyBound: !!maybeBinding,
 		}))

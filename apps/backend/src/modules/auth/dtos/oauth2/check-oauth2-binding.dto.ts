@@ -12,6 +12,7 @@ export const checkOauth2BindingDtoSchemas = createDtoSchemas(
 	{
 		200: t.Object({
 			user: userSchema,
+			provider: t.String(),
 			oauth2Profile: oauth2ProfileSchema,
 			alreadyBound: t.Boolean(),
 		}),

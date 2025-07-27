@@ -37,6 +37,7 @@ export async function checkOauth2BindingAction(cmd: Command) {
 		})
 		.map((binding) => ({
 			user: binding.user,
+			provider: binding.provider,
 			oauth2Profile: binding.oauth2Profile,
 			alreadyBound: binding.alreadyBound,
 		}))
