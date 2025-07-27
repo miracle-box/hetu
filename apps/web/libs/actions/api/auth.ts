@@ -29,3 +29,29 @@ export async function requestVerification(
 		})
 		.catch((error) => Left(mapFetchError(error)));
 }
+
+export async function verifyVerification(
+	body: Static<(typeof AuthDtos.verifyVerificationDtoSchemas)['body']>,
+) {
+	return api.auth.verification.verify
+		.post(body)
+		.then(({ data, error }) => {
+			const errResp = mapApiError(error);
+			if (errResp) return Left(errResp);
+
+			return Right(data!);
+		})
+		.catch((error) => Left(mapFetchError(error)));
+}
+
+export async function oauth2Signin(body: Static<(typeof AuthDtos.oauth2SigninDtoSchemas)['body']>) {
+	return api.auth.oauth2.signin
+		.post(body)
+		.then(({ data, error }) => {
+			const errResp = mapApiError(error);
+			if (errResp) return Left(errResp);
+
+			return Right(data!);
+		})
+		.catch((error) => Left(mapFetchError(error)));
+}
