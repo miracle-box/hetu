@@ -3,7 +3,7 @@
   "extends": ["//"],
   "tasks": {
     "dev": {
-      "env": ["NODE_ENV", "API_ROOT", "TEXTURE_STORE_ROOT", "JWT_SECRET"],
+      "env": ["NODE_ENV", "PUBLIC_URL", "API_ROOT", "TEXTURE_STORE_ROOT", "JWT_SECRET"],
       "inputs": [
         "$TURBO_DEFAULT$",
         ".env.development.local",

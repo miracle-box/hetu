@@ -26,7 +26,7 @@ export function H5({ children }: React.ComponentProps<'p'>) {
 	return <p className="leading-7 [&:not(:first-child)]:mt-6">{children}</p>;
 }
 
-export function Blockuote({ children }: React.ComponentProps<'blockquote'>) {
+export function Blockquote({ children }: React.ComponentProps<'blockquote'>) {
 	return <blockquote className="mt-6 border-l-2 pl-6 italic">{children}</blockquote>;
 }
 
@@ -54,10 +54,10 @@ export function Muted({ children }: React.ComponentProps<'p'>) {
 	return <p className="text-muted-foreground text-sm">{children}</p>;
 }
 
-export function UnorderdList({ children }: React.ComponentProps<'ul'>) {
+export function UnorderedList({ children }: React.ComponentProps<'ul'>) {
 	return <ul className="my-6 ml-6 list-disc [&>li]:mt-2">{children}</ul>;
 }
 
-export function OrderdList({ children }: React.ComponentProps<'ol'>) {
+export function OrderedList({ children }: React.ComponentProps<'ol'>) {
 	return <ol className="my-6 ml-6 list-decimal [&>li]:mt-2">{children}</ol>;
 }

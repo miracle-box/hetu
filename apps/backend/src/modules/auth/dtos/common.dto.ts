@@ -29,6 +29,7 @@ const genericVerificationDtoSchema = t.Intersect([
 	baseVerificationDigestSchema,
 	t.Object({
 		type: t.Exclude(verificationTypeSchema, t.Literal(VerificationType.OAUTH2)),
+		challenge: t.Optional(t.Undefined()),
 	}),
 ]);
 

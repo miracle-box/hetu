@@ -18,6 +18,7 @@ export const checkOauth2BindingHandler = new Elysia()
 			return result
 				.map((data) => ({
 					user: data.user,
+					provider: data.provider,
 					oauth2Profile: data.oauth2Profile,
 					alreadyBound: data.alreadyBound,
 				}))
