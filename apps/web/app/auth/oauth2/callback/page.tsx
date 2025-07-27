@@ -2,7 +2,8 @@ import { Large } from '@repo/ui/typography';
 import { redirect } from 'next/navigation';
 import { getClientAppConfig } from '~web/libs/utils/app-config/client';
 import { respToEither } from '~web/libs/utils/resp';
-import { handleOAuth2Signin, handleVerifyVerification } from './actions';
+import { handleVerifyVerification } from './actions';
+import { ClientSignin } from './ClientSignin';
 
 export type Props = {
 	searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
@@ -67,26 +68,17 @@ export default async function OAuthCallback({ searchParams }: Props) {
 		verifyResponse.isRight() &&
 		verifyResponse.extract().verification.scenario === 'oauth2_signin'
 	) {
-		const signinResponse = await handleOAuth2Signin({
-			verificationId,
-		}).then(respToEither);
+		return (
+			<main className="container mx-auto">
+				<div className="flex flex-col gap-2">
+					<Large>OAuth2 Callback</Large>
 
-		if (signinResponse.isLeft()) {
-			return (
-				<main className="container mx-auto">
-					<div className="flex flex-col gap-2">
-						<Large>OAuth2 Callback</Large>
-
-						<div className="flex gap-2">
-							<div>Signin failed: </div>
-							<div>{signinResponse.extract().message}</div>
-						</div>
+					<div className="flex gap-2">
+						<ClientSignin verificationId={verificationId} />
 					</div>
-				</main>
-			);
-		}
-
-		redirect('/app');
+				</div>
+			</main>
+		);
 	}
 
 	// Handle binding

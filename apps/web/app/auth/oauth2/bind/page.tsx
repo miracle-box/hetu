@@ -1,4 +1,3 @@
-import { Button } from '@repo/ui/button';
 import { InlineCode } from '@repo/ui/typography';
 import { inspectOauth2Binding } from '~web/libs/actions/api/auth';
 import { ConfirmOauth2Binding } from './ConfirmOauth2Binding';
