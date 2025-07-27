@@ -62,24 +62,38 @@ export default async function OAuthCallback({ searchParams }: Props) {
 		);
 	}
 
-	const signinResponse = await handleOAuth2Signin({
-		verificationId,
-	}).then(respToEither);
+	// Handle signin
+	if (
+		verifyResponse.isRight() &&
+		verifyResponse.extract().verification.scenario === 'oauth2_signin'
+	) {
+		const signinResponse = await handleOAuth2Signin({
+			verificationId,
+		}).then(respToEither);
 
-	if (signinResponse.isLeft()) {
-		return (
-			<main className="container mx-auto">
-				<div className="flex flex-col gap-2">
-					<Large>OAuth2 Callback</Large>
+		if (signinResponse.isLeft()) {
+			return (
+				<main className="container mx-auto">
+					<div className="flex flex-col gap-2">
+						<Large>OAuth2 Callback</Large>
 
-					<div className="flex gap-2">
-						<div>Signin failed: </div>
-						<div>{signinResponse.extract().message}</div>
+						<div className="flex gap-2">
+							<div>Signin failed: </div>
+							<div>{signinResponse.extract().message}</div>
+						</div>
 					</div>
-				</div>
-			</main>
-		);
+				</main>
+			);
+		}
+
+		redirect('/app');
 	}
 
-	redirect('/app');
+	// Handle binding
+	if (
+		verifyResponse.isRight() &&
+		verifyResponse.extract().verification.scenario === 'oauth2_bind'
+	) {
+		redirect(`/auth/oauth2/bind?verificationId=${verificationId}`);
+	}
 }

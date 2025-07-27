@@ -9,12 +9,14 @@ export type EdenError = {
 					message: string;
 				};
 		  }
-		| object;
+		| object
+		| void;
 };
 
 type SuccessStatus =
 	| 200
 	| 201
+	| 203
 	| 202
 	| 204
 	| 205
@@ -46,7 +48,7 @@ export function mapApiError<TErrorResponse extends EdenError>(
 } | null {
 	if (!error) return null;
 	if (error.status < 400 || error.status > 599) return null;
-	if (!('error' in error.value)) return null;
+	if (!error.value || !('error' in error.value)) return null;
 
 	let message: string;
 	switch (error.value.error.code) {
