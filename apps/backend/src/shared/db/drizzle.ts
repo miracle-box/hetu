@@ -4,6 +4,7 @@ import postgres from 'postgres';
 import { Config } from '#config';
 
 import * as filesSchemas from '#db/schema/files';
+import * as mcClaimsSchemas from '#db/schema/mc-claims';
 import * as profilesSchemas from '#db/schema/profiles';
 import * as sessionsSchemas from '#db/schema/sessions';
 import * as texturesSchemas from '#db/schema/textures';
@@ -16,6 +17,7 @@ import * as relations from '#shared/db/relations';
 
 const schema = {
 	...filesSchemas,
+	...mcClaimsSchemas,
 	...profilesSchemas,
 	...sessionsSchemas,
 	...texturesSchemas,

@@ -50,6 +50,13 @@
       "when": 1752237892419,
       "tag": "0006_jazzy_cassandra_nova",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1753882175957,
+      "tag": "0007_dazzling_calypso",
+      "breakpoints": true
     }
   ]
 }
