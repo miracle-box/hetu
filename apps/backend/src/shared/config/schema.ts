@@ -77,6 +77,11 @@ export const configSchema = Type.Object({
 				public: Type.String(),
 			}),
 		}),
+
+		mcClaimVerification: Type.Object({
+			clientId: Type.String(),
+			clientSecret: Type.String(),
+		}),
 	}),
 
 	debug: Type.Object({
