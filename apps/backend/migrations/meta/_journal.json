@@ -57,6 +57,13 @@
       "when": 1753882175957,
       "tag": "0007_dazzling_calypso",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1753889855445,
+      "tag": "0008_jazzy_shape",
+      "breakpoints": true
     }
   ]
 }

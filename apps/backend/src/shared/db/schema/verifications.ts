@@ -1,12 +1,17 @@
 import { createId } from '@paralleldrive/cuid2';
 import { boolean, smallint, pgEnum, pgTable, timestamp, varchar } from 'drizzle-orm/pg-core';
 
-export const verificationTypeEnum = pgEnum('verification_type', ['email', 'oauth2']);
+export const verificationTypeEnum = pgEnum('verification_type', [
+	'email',
+	'oauth2',
+	'mc_claim_verification_msa',
+]);
 export const verificationScenarioEnum = pgEnum('verification_scenario', [
 	'signup',
 	'password_reset',
 	'oauth2_bind',
 	'oauth2_signin',
+	'mc_claim_verification',
 ]);
 
 export const verificationsTable = pgTable('verifications', {

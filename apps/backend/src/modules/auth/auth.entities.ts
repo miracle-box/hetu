@@ -11,6 +11,7 @@ export const UserAuthType = {
 export const VerificationType = {
 	EMAIL: 'email',
 	OAUTH2: 'oauth2',
+	MC_CLAIM_VERIFICATION_MSA: 'mc_claim_verification_msa',
 } as const;
 
 export const VerificationScenario = {
@@ -18,6 +19,7 @@ export const VerificationScenario = {
 	PASSWORD_RESET: 'password_reset',
 	OAUTH2_BIND: 'oauth2_bind',
 	OAUTH2_SIGNIN: 'oauth2_signin',
+	MC_CLAIM_VERIFICATION: 'mc_claim_verification',
 } as const;
 
 export const SessionScope = {

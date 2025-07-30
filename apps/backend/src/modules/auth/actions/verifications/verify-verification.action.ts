@@ -12,6 +12,7 @@ import {
 import { AuthRepository } from '#modules/auth/auth.repository';
 import { VerificationValidatorService } from '#modules/auth/services/verification-validator.service';
 import { verifyEmailVerificationUsecase } from '#modules/auth/usecases/verifications/verify-email-verification.usecase';
+import { verifyMcClaimMsaVerificationUsecase } from '#modules/auth/usecases/verifications/verify-mc-claim-msa-verification';
 import { verifyOauth2VerificationUsecase } from '#modules/auth/usecases/verifications/verify-oauth2-verification';
 
 type Command = {
@@ -51,6 +52,15 @@ export async function verifyVerificationAction(cmd: Command) {
 
 				if (verification.type === VerificationType.OAUTH2) {
 					return await verifyOauth2VerificationUsecase({
+						id: verification.id,
+						code: cmd.code,
+						verification,
+						redirectUri: cmd.redirectUri,
+					});
+				}
+
+				if (verification.type === VerificationType.MC_CLAIM_VERIFICATION_MSA) {
+					return await verifyMcClaimMsaVerificationUsecase({
 						id: verification.id,
 						code: cmd.code,
 						verification,

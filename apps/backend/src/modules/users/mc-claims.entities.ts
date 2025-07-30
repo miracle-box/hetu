@@ -1,24 +1,23 @@
-import type { EnumLikeValues } from '#shared/typing/utils';
-import type { Static } from 'elysia';
-import { t } from 'elysia';
+import { Type, type Static } from '@sinclair/typebox';
+import { createEnumLikeValuesSchema, type EnumLikeValues } from '#shared/typing/utils';
 
 export const SkinTextureVariant = {
 	CLASSIC: 'classic',
 	SLIM: 'slim',
 } as const;
 
-export const minecraftClaimSchema = t.Object({
-	id: t.String(),
-	userId: t.String(),
-	mcUuid: t.String(),
-	mcUsername: t.String(),
-	skinTextureUrl: t.Nullable(t.String()),
-	skinTextureVariant: t.Nullable(t.Enum(SkinTextureVariant)),
-	capeTextureUrl: t.Nullable(t.String()),
-	capeTextureAlias: t.Nullable(t.String()),
-	boundProfileId: t.Nullable(t.String()),
-	createdAt: t.Date(),
-	updatedAt: t.Date(),
+export const minecraftClaimSchema = Type.Object({
+	id: Type.String(),
+	userId: Type.String(),
+	mcUuid: Type.String(),
+	mcUsername: Type.String(),
+	skinTextureUrl: Type.Union([Type.String(), Type.Null()]),
+	skinTextureVariant: Type.Union([createEnumLikeValuesSchema(SkinTextureVariant), Type.Null()]),
+	capeTextureUrl: Type.Union([Type.String(), Type.Null()]),
+	capeTextureAlias: Type.Union([Type.String(), Type.Null()]),
+	boundProfileId: Type.Union([Type.String(), Type.Null()]),
+	createdAt: Type.Date(),
+	updatedAt: Type.Date(),
 });
 
 export type SkinTextureVariant = EnumLikeValues<typeof SkinTextureVariant>;
