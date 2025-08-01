@@ -11,5 +11,5 @@ export const removeMcClaimDtoSchemas = createDtoSchemas(
 	{
 		204: t.Void(),
 	},
-	[],
+	['users/not-found', 'users/mc-claim-not-found', 'forbidden', 'internal-error'],
 );

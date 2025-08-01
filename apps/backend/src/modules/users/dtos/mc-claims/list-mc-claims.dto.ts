@@ -13,5 +13,5 @@ export const listMcClaimsDtoSchemas = createDtoSchemas(
 			mcClaims: t.Array(mcClaimResponseSchema),
 		}),
 	},
-	[],
+	['users/not-found', 'forbidden', 'internal-error'],
 );

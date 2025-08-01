@@ -17,5 +17,11 @@ export const modifyMcClaimDtoSchemas = createDtoSchemas(
 			mcClaim: mcClaimResponseSchema,
 		}),
 	},
-	[],
+	[
+		'users/not-found',
+		'profiles/not-found',
+		'users/mc-claim-not-found',
+		'forbidden',
+		'internal-error',
+	],
 );

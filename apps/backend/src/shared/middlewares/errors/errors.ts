@@ -133,6 +133,12 @@ export const APP_ERRORS = {
 		message: () => 'The requested user could not be found. Please check and try again.',
 		details: t.Void(),
 	},
+	'users/mc-claim-not-found': {
+		status: 404,
+		message: () =>
+			'The requested Minecraft claim could not be found. Please check and try again.',
+		details: t.Void(),
+	},
 	'profiles/name-exists': {
 		status: 409,
 		message: () => 'The player name has already been taken. Please choose a different name.',
