@@ -139,6 +139,24 @@ export const APP_ERRORS = {
 			'The requested Minecraft claim could not be found. Please check and try again.',
 		details: t.Void(),
 	},
+	'users/mc-claims-auth-error': {
+		status: 401,
+		message: () =>
+			'Failed to authenticate with Minecraft API. Please check your credentials and try again.',
+		details: t.Void(),
+	},
+	'users/mc-claim-already-bound': {
+		status: 409,
+		message: () =>
+			'The Minecraft claim is already bound to another user. Please use that one instead.',
+		details: t.Void(),
+	},
+	'users/no-valid-mc-entitlement': {
+		status: 403,
+		message: () =>
+			'The user does not have valid Minecraft entitlements. Please check and try again.',
+		details: t.Void(),
+	},
 	'profiles/name-exists': {
 		status: 409,
 		message: () => 'The player name has already been taken. Please choose a different name.',

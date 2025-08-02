@@ -7,12 +7,12 @@ import { authMiddleware } from '#shared/auth/middleware';
 import { AppError } from '#shared/middlewares/errors/app-error';
 
 export const removeMcClaimHandler = new Elysia().use(authMiddleware(SessionScope.DEFAULT)).delete(
-	'/:userId/mc-claims/:id',
+	'/:id/mc-claims/:mcClaimId',
 	async ({ params, user, set }) => {
 		const result = await removeMcClaimAction({
-			userId: params.userId,
+			userId: params.id,
 			requestingUserId: user.id,
-			mcClaimId: params.id,
+			mcClaimId: params.mcClaimId,
 		});
 
 		return result

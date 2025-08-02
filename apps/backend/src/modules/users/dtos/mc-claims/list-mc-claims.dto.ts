@@ -5,7 +5,7 @@ import { mcClaimResponseSchema } from '../common.dto';
 export const listMcClaimsDtoSchemas = createDtoSchemas(
 	{
 		params: t.Object({
-			userId: t.String(),
+			id: t.String(),
 		}),
 	},
 	{

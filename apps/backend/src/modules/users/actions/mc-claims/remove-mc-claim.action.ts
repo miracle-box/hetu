@@ -10,32 +10,32 @@ type Command = {
 	mcClaimId: string;
 };
 
-export async function removeMcClaimAction(command: Command) {
+export async function removeMcClaimAction(cmd: Command) {
 	// Check if user is deleting their own claim
-	if (command.requestingUserId !== command.userId) {
+	if (cmd.requestingUserId !== cmd.userId) {
 		return Left(new ForbiddenError());
 	}
 
-	return EitherAsync.fromPromise(() => UsersRepository.findUserById(command.userId))
+	return EitherAsync.fromPromise(() => UsersRepository.findUserById(cmd.userId))
 		.chain(async (user) => {
 			if (!user) {
-				return Left(new UserNotFoundError(command.userId));
+				return Left(new UserNotFoundError(cmd.userId));
 			}
 
 			return Right(user);
 		})
 		.chain(async (user) => {
-			return (await McClaimsRepository.findMcClaimById(command.mcClaimId))
+			return (await McClaimsRepository.findMcClaimById(cmd.mcClaimId))
 				.chain((mcClaim) => {
 					if (!mcClaim) {
-						return Left(new McClaimNotFoundError(command.mcClaimId));
+						return Left(new McClaimNotFoundError(cmd.mcClaimId));
 					}
 
 					return Right({ user, mcClaim });
 				})
 				.chain(({ mcClaim }) => {
 					// Validate ownership
-					if (mcClaim.userId !== command.userId) {
+					if (mcClaim.userId !== cmd.userId) {
 						return Left(new ForbiddenError());
 					}
 

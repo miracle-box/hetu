@@ -9,17 +9,17 @@ type Command = {
 	requestingUserId: string;
 };
 
-export async function listMcClaimsAction(command: Command) {
+export async function listMcClaimsAction(cmd: Command) {
 	// Check if user is requesting their own MC claims
-	if (command.requestingUserId !== command.userId) {
+	if (cmd.requestingUserId !== cmd.userId) {
 		return Left(new ForbiddenError());
 	}
 
 	// Verify user exists
-	return EitherAsync.fromPromise(() => UsersRepository.findUserById(command.userId))
+	return EitherAsync.fromPromise(() => UsersRepository.findUserById(cmd.userId))
 		.chain(async (user) => {
 			if (!user) {
-				return Left(new UserNotFoundError(command.userId));
+				return Left(new UserNotFoundError(cmd.userId));
 			}
 
 			return Right(user);

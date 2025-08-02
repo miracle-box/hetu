@@ -5,7 +5,7 @@ import { mcClaimResponseSchema } from '../common.dto';
 export const verifyMcClaimDtoSchemas = createDtoSchemas(
 	{
 		params: t.Object({
-			userId: t.String(),
+			id: t.String(),
 		}),
 		body: t.Object({
 			verificationId: t.String(),
@@ -19,5 +19,13 @@ export const verifyMcClaimDtoSchemas = createDtoSchemas(
 			mcClaim: mcClaimResponseSchema,
 		}),
 	},
-	[],
+	[
+		'auth/invalid-verification',
+		'users/no-valid-mc-entitlement',
+		'users/mc-claims-auth-error',
+		'users/not-found',
+		'users/mc-claim-already-bound',
+		'forbidden',
+		'internal-error',
+	],
 );

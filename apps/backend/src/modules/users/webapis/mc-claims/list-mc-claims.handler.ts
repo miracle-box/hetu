@@ -7,10 +7,10 @@ import { AppError } from '#shared/middlewares/errors/app-error';
 import { listMcClaimsDtoSchemas } from '../../dtos';
 
 export const listMcClaimsHandler = new Elysia().use(authMiddleware(SessionScope.DEFAULT)).get(
-	'/:userId/mc-claims',
+	'/:id/mc-claims',
 	async ({ params, user }) => {
 		const result = await listMcClaimsAction({
-			userId: params.userId,
+			userId: params.id,
 			requestingUserId: user.id,
 		});
 

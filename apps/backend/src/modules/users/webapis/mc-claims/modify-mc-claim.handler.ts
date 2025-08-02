@@ -7,12 +7,12 @@ import { authMiddleware } from '#shared/auth/middleware';
 import { AppError } from '#shared/middlewares/errors/app-error';
 
 export const modifyMcClaimHandler = new Elysia().use(authMiddleware(SessionScope.DEFAULT)).patch(
-	'/:userId/mc-claims/:id',
+	'/:id/mc-claims/:mcClaimId',
 	async ({ params, body, user }) => {
 		const result = await modifyMcClaimAction({
-			userId: params.userId,
+			userId: params.id,
 			requestingUserId: user.id,
-			mcClaimId: params.id,
+			mcClaimId: params.mcClaimId,
 			boundProfileId: body.boundProfileId,
 		});
 

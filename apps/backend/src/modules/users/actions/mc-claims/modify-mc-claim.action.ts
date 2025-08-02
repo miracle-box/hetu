@@ -14,40 +14,38 @@ type Command = {
 	boundProfileId?: string | null;
 };
 
-export async function modifyMcClaimAction(command: Command) {
+export async function modifyMcClaimAction(cmd: Command) {
 	// Check if user is updating their own claim
-	if (command.requestingUserId !== command.userId) {
+	if (cmd.requestingUserId !== cmd.userId) {
 		return Left(new ForbiddenError());
 	}
 
-	return EitherAsync.fromPromise(() => UsersRepository.findUserById(command.userId))
+	return EitherAsync.fromPromise(() => UsersRepository.findUserById(cmd.userId))
 		.chain(async (user) => {
 			if (!user) {
-				return Left(new UserNotFoundError(command.userId));
+				return Left(new UserNotFoundError(cmd.userId));
 			}
 
 			return Right(user);
 		})
 		.chain(async (user) => {
-			return (await McClaimsRepository.findMcClaimById(command.mcClaimId)).chain(
-				(mcClaim) => {
-					if (!mcClaim) {
-						return Left(new McClaimNotFoundError(command.mcClaimId));
-					}
+			return (await McClaimsRepository.findMcClaimById(cmd.mcClaimId)).chain((mcClaim) => {
+				if (!mcClaim) {
+					return Left(new McClaimNotFoundError(cmd.mcClaimId));
+				}
 
-					return Right({ user, mcClaim });
-				},
-			);
+				return Right({ user, mcClaim });
+			});
 		})
 		.chain(async ({ user, mcClaim }) => {
-			if (!command.boundProfileId) {
+			if (!cmd.boundProfileId) {
 				return Right({ user, mcClaim, profile: null as Profile | null });
 			}
 
-			return (await ProfilesRepository.findProfileById(command.boundProfileId)).chain(
+			return (await ProfilesRepository.findProfileById(cmd.boundProfileId)).chain(
 				(profile) => {
 					if (!profile) {
-						return Left(new ProfileNotFoundError(command.boundProfileId!));
+						return Left(new ProfileNotFoundError(cmd.boundProfileId!));
 					}
 
 					return Right({ user, mcClaim, profile });

@@ -4,8 +4,8 @@ import { createDtoSchemas } from '#shared/middlewares/dto/schemas';
 export const removeMcClaimDtoSchemas = createDtoSchemas(
 	{
 		params: t.Object({
-			userId: t.String(),
 			id: t.String(),
+			mcClaimId: t.String(),
 		}),
 	},
 	{
