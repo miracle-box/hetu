@@ -5,6 +5,7 @@ import {
 	InvalidVerificationTypeError,
 } from '#modules/auth/auth.errors';
 import { createEmailVerificationUsecase } from '#modules/auth/usecases/verifications/create-email-verification.usecase';
+import { createMcClaimMsaVerificationUsecase } from '#modules/auth/usecases/verifications/create-mc-claim-msa-verification.usecase';
 import { createOauth2VerificationUsecase } from '#modules/auth/usecases/verifications/create-oauth2-verification.usecase';
 
 type Command = {
@@ -61,6 +62,23 @@ export async function requestVerificationAction(cmd: Command) {
 			})
 		).map((data) => ({
 			type: VerificationType.OAUTH2,
+			verification: data.verification,
+			challenge: data.challenge,
+		}));
+	}
+
+	if (cmd.type === VerificationType.MC_CLAIM_VERIFICATION_MSA) {
+		// Only accepts mc_claim_verification scenario
+		if (cmd.scenario !== VerificationScenario.MC_CLAIM_VERIFICATION) {
+			return Left(
+				new InvalidVerificationScenarioError(cmd.scenario, [
+					VerificationScenario.MC_CLAIM_VERIFICATION,
+				] as const),
+			);
+		}
+
+		return (await createMcClaimMsaVerificationUsecase()).map((data) => ({
+			type: VerificationType.MC_CLAIM_VERIFICATION_MSA,
 			verification: data.verification,
 			challenge: data.challenge,
 		}));

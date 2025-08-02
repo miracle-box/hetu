@@ -25,6 +25,9 @@ app:
         -----BEGIN PUBLIC KEY-----
         <Your public key here>
         -----END PUBLIC KEY-----
+  mcClaimVerification:
+    clientId: 'your-client-id'
+    clientSecret: 'your-client-secret'
 
   oauth2:
     providers:

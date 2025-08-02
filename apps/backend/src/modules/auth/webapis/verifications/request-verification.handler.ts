@@ -15,11 +15,14 @@ export const requestVerificationHandler = new Elysia().post(
 
 		return result
 			.map((data) => {
-				if (data.type === VerificationType.OAUTH2) {
+				if (
+					data.type === VerificationType.OAUTH2 ||
+					data.type === VerificationType.MC_CLAIM_VERIFICATION_MSA
+				) {
 					return {
 						verification: {
 							id: data.verification.id,
-							type: VerificationType.OAUTH2,
+							type: data.type,
 							scenario: data.verification.scenario,
 							target: data.verification.target,
 							// This is a OAuth2 specific field.
