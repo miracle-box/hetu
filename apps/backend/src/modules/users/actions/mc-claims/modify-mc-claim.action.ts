@@ -53,13 +53,13 @@ export async function modifyMcClaimAction(cmd: Command) {
 			);
 		})
 		.chain(async ({ mcClaim, profile }) => {
-			if (!profile) {
+			if (!profile && cmd.boundProfileId === undefined) {
 				return Right(mcClaim);
 			}
 
 			// Only `boundProfileId` is allowed to be updated for now.
 			return await McClaimsRepository.updateMcClaim(mcClaim.id, {
-				boundProfileId: profile.id,
+				boundProfileId: profile?.id ?? null,
 			});
 		})
 		.run();

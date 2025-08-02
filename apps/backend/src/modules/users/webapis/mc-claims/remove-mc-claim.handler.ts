@@ -39,7 +39,7 @@ export const removeMcClaimHandler = new Elysia().use(authMiddleware(SessionScope
 		detail: {
 			summary: 'Delete MC Claim',
 			description: 'Delete a Minecraft claim.',
-			tags: ['Users', 'MC Claims'],
+			tags: ['Users'],
 			security: [{ session: [] }],
 		},
 	},

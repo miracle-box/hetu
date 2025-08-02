@@ -1,5 +1,5 @@
 {
-  "id": "e008fea4-0567-4668-b92b-d22079e819f5",
+  "id": "93fa09cc-6801-43bc-ac1f-37c310b07b21",
   "prevId": "924e7770-2bfe-4cc4-ba74-489927e7c666",
   "version": "7",
   "dialect": "postgresql",
@@ -138,7 +138,7 @@
         },
         "bound_profile_id": {
           "name": "bound_profile_id",
-          "type": "varchar(24)",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": false
         },
@@ -708,12 +708,18 @@
     "public.verification_scenario": {
       "name": "verification_scenario",
       "schema": "public",
-      "values": ["signup", "password_reset", "oauth2_bind", "oauth2_signin"]
+      "values": [
+        "signup",
+        "password_reset",
+        "oauth2_bind",
+        "oauth2_signin",
+        "mc_claim_verification"
+      ]
     },
     "public.verification_type": {
       "name": "verification_type",
       "schema": "public",
-      "values": ["email", "oauth2"]
+      "values": ["email", "oauth2", "mc_claim_verification_msa"]
     }
   },
   "schemas": {},

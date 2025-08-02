@@ -9,7 +9,7 @@ export const modifyMcClaimDtoSchemas = createDtoSchemas(
 			mcClaimId: t.String(),
 		}),
 		body: t.Object({
-			boundProfileId: t.Optional(t.Union([t.String(), t.Null()])),
+			boundProfileId: t.Optional(t.Union([t.String({ format: 'uuid' }), t.Null()])),
 		}),
 	},
 	{

@@ -64,6 +64,7 @@ export type MinecraftProfile = {
 export class MinecraftApiService {
 	static async authXBL(msaToken: string) {
 		const resp = await fetch('https://user.auth.xboxlive.com/user/authenticate', {
+			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
 			},
@@ -97,6 +98,7 @@ export class MinecraftApiService {
 
 	static async authXSTS(xblToken: string) {
 		const resp = await fetch('https://xsts.auth.xboxlive.com/xsts/authorize', {
+			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
 			},
@@ -131,6 +133,7 @@ export class MinecraftApiService {
 		const resp = await fetch(
 			'https://api.minecraftservices.com/authentication/login_with_xbox',
 			{
+				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
 				},

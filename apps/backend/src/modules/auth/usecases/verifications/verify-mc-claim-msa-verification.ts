@@ -26,7 +26,7 @@ export async function verifyMcClaimMsaVerificationUsecase(cmd: Command) {
 		`grant_type=authorization_code&code=${cmd.code}&client_id=${Config.app.mcClaimVerification.clientId}&client_secret=${Config.app.mcClaimVerification.clientSecret}` +
 		`&scope=${VERIFICATION_MC_CLAIM_MSA_SCOPE}${
 			cmd.redirectUri ? `&redirect_uri=${encodeURIComponent(cmd.redirectUri)}` : ''
-		}&code_verifier=${cmd.verification.secret}}`;
+		}&code_verifier=${cmd.verification.secret}`;
 
 	try {
 		// [TODO] Move this to a separate service (centralized HTTP client)

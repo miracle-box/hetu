@@ -39,7 +39,7 @@ export const modifyMcClaimHandler = new Elysia().use(authMiddleware(SessionScope
 		detail: {
 			summary: 'Update MC Claim',
 			description: 'Update Minecraft claim information (partial update).',
-			tags: ['Users', 'MC Claims'],
+			tags: ['Users'],
 			security: [{ session: [] }],
 		},
 	},

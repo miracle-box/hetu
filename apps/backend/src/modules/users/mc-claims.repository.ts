@@ -167,7 +167,6 @@ export const McClaimsRepository: IMcClaimsRepository = {
 				.update(mcClaimsTable)
 				.set({
 					...params,
-					updatedAt: new Date(),
 				})
 				.where(eq(mcClaimsTable.id, id))
 				.returning();

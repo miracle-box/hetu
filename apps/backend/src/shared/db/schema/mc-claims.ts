@@ -14,7 +14,7 @@ export const mcClaimsTable = pgTable(
 		skinTextureVariant: skinTextureVariantEnum('skin_texture_variant'),
 		capeTextureUrl: varchar('cape_texture_url'),
 		capeTextureAlias: varchar('cape_texture_alias'),
-		boundProfileId: varchar('bound_profile_id', { length: 24 }),
+		boundProfileId: uuid('bound_profile_id'),
 		createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
 		updatedAt: timestamp('updated_at', { withTimezone: true })
 			.notNull()
