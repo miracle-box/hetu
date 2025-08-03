@@ -11,7 +11,8 @@ export const resetTextureHandler = new Elysia().delete(
 	'/user/profile/:id/:type',
 	async ({ params, headers, set }) => {
 		const result = await resetTextureAction({
-			accessToken: headers['authorization'],
+			// Try to remove 'Bearer '
+			accessToken: headers['authorization'].slice(7),
 			profileId: params.id,
 			textureType: params.type,
 		});
