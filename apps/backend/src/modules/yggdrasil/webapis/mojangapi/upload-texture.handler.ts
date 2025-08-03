@@ -11,7 +11,8 @@ export const uploadTextureHandler = new Elysia().put(
 	'/user/profile/:id/:type',
 	async ({ params, body, headers, set }) => {
 		const result = await uploadTextureAction({
-			accessToken: headers['authorization'],
+			// Try to remove 'Bearer '
+			accessToken: headers['authorization'].slice(7),
 			profileId: params.id,
 			textureType: params.type,
 			model: body.model,

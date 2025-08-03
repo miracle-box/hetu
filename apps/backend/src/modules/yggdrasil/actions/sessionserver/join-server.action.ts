@@ -17,6 +17,7 @@ export const joinServerAction = async (cmd: Command) => {
 		}),
 	)
 		.chain(async () => {
+			console.log('JOIN');
 			return YggdrasilRepository.createJoinRecord({
 				serverId: cmd.serverId,
 				accessToken: cmd.accessToken,

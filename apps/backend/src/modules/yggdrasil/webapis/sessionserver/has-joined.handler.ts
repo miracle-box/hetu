@@ -19,7 +19,7 @@ export const hasJoinedHandler = new Elysia().get(
 				switch (error.name) {
 					case 'UserNotFoundError':
 					case 'YggdrasilAuthenticationError':
-					case 'YggdrasilServerSessionNotFoundError':
+					case 'YggdrasilJoinServerAuthError':
 					case 'YggdrasilProfileNotFoundError':
 						set.status = 204;
 						return undefined;

@@ -13,8 +13,15 @@ import {
 } from '#modules/yggdrasil/yggdrasil.entities';
 
 export abstract class YggdrasilService {
+	// [TODO] Check before replacing?
 	static getUnsignedUUID(uuid: string): string {
 		return uuid.replaceAll('-', '');
+	}
+
+	static getSignedUUID(unsignedUuid: string): string | null {
+		if (!/^[0-9a-f]{32}$/i.test(unsignedUuid)) return null;
+		const parts = [8, 12, 16, 20].map((i) => unsignedUuid.slice(i - 4, i));
+		return `${unsignedUuid.slice(0, 8)}-${parts.join('-')}-${unsignedUuid.slice(20)}`;
 	}
 
 	static createAccessToken(session: Session): string {

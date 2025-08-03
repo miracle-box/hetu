@@ -32,11 +32,11 @@ export class YggdrasilProfileNotFoundError extends BaseError {
 	}
 }
 
-export class YggdrasilServerSessionNotFoundError extends BaseError {
-	override readonly name = 'YggdrasilServerSessionNotFoundError' as const;
+export class YggdrasilJoinServerAuthError extends BaseError {
+	override readonly name = 'YggdrasilJoinServerAuthError' as const;
 
 	constructor(serverId: string) {
-		super(`Server session with ID ${serverId} not found.`);
+		super(`Server session with ID ${serverId} auth failed.`);
 	}
 }
 
