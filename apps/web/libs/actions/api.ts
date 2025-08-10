@@ -253,3 +253,37 @@ export async function updateProfile(
 		})
 		.catch((error) => Left(mapFetchError(error)));
 }
+
+export async function getUserMcClaims() {
+	const session = await readSession();
+
+	return api
+		.users({ id: session.userId })
+		['mc-claims'].get({
+			headers: { Authorization: `Bearer ${session.authToken}` },
+		})
+		.then(({ data, error }) => {
+			const errResp = mapApiError(error);
+			if (errResp) return Left(errResp);
+
+			return Right(data!);
+		})
+		.catch((error) => Left(mapFetchError(error)));
+}
+
+export async function verifyUserMcClaim(body: { verificationId: string }) {
+	const session = await readSession();
+
+	return api
+		.users({ id: session.userId })
+		['mc-claims'].post(body, {
+			headers: { Authorization: `Bearer ${session.authToken}` },
+		})
+		.then(({ data, error }) => {
+			const errResp = mapApiError(error);
+			if (errResp) return Left(errResp);
+
+			return Right(data!);
+		})
+		.catch((error) => Left(mapFetchError(error)));
+}

@@ -88,4 +88,12 @@ export default async function OAuthCallback({ searchParams }: Props) {
 	) {
 		redirect(`/auth/oauth2/bind?verificationId=${verificationId}`);
 	}
+
+	// Handle Minecraft claim verification (MSA)
+	if (
+		verifyResponse.isRight() &&
+		verifyResponse.extract().verification.scenario === 'mc_claim_verification'
+	) {
+		redirect(`/auth/mc-claim/bind?verificationId=${verificationId}`);
+	}
 }
