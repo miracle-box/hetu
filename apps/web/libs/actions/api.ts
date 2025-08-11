@@ -287,3 +287,42 @@ export async function verifyUserMcClaim(body: { verificationId: string }) {
 		})
 		.catch((error) => Left(mapFetchError(error)));
 }
+
+export async function deleteMcClaim(mcClaimId: string) {
+	const session = await readSession();
+
+	return api
+		.users({ id: session.userId })
+		['mc-claims']({ mcClaimId })
+		.delete(
+			{},
+			{
+				headers: { Authorization: `Bearer ${session.authToken}` },
+			},
+		)
+		.then(({ data, error }) => {
+			const errResp = mapApiError(error);
+			if (errResp) return Left(errResp);
+
+			return Right(data!);
+		})
+		.catch((error) => Left(mapFetchError(error)));
+}
+
+export async function updateMcClaim(mcClaimId: string, body: { boundProfileId?: string | null }) {
+	const session = await readSession();
+
+	return api
+		.users({ id: session.userId })
+		['mc-claims']({ mcClaimId })
+		.patch(body, {
+			headers: { Authorization: `Bearer ${session.authToken}` },
+		})
+		.then(({ data, error }) => {
+			const errResp = mapApiError(error);
+			if (errResp) return Left(errResp);
+
+			return Right(data!);
+		})
+		.catch((error) => Left(mapFetchError(error)));
+}
