@@ -46,6 +46,8 @@ export const requestVerificationHandler = new Elysia().post(
 						throw new AppError('auth/invalid-oauth2-provider');
 					case 'InvalidVerificationTypeError':
 						throw new AppError('auth/invalid-verification-type');
+					case 'InvalidVerificationTargetError':
+						throw new AppError('auth/invalid-verification-target');
 					case 'DatabaseError':
 						throw new AppError('internal-error');
 				}

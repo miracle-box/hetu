@@ -73,6 +73,12 @@ export const APP_ERRORS = {
 		message: () => 'The verification type is invalid. Please use a known verification type.',
 		details: t.Void(),
 	},
+	'auth/invalid-verification-target': {
+		status: 400,
+		message: () =>
+			'The target is invalid. Please provide a valid email address or provider name.',
+		details: t.Void(),
+	},
 	'auth/verification-email-error': {
 		status: 503,
 		message: () =>

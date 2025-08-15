@@ -21,6 +21,8 @@ export const requestVerificationDtoSchemas = createDtoSchemas(
 		'auth/invalid-verification-scenario',
 		'auth/invalid-oauth2-provider',
 		'auth/invalid-verification-type',
+		'auth/invalid-verification-target',
+		'auth/verification-email-error',
 		'internal-error',
 	],
 );

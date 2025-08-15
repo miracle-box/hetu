@@ -1,7 +1,9 @@
 import { Left } from 'purify-ts';
+import { isValidEmail, isNonEmptyString } from '#common/utils/validation';
 import { VerificationScenario, VerificationType } from '#modules/auth/auth.entities';
 import {
 	InvalidVerificationScenarioError,
+	InvalidVerificationTargetError,
 	InvalidVerificationTypeError,
 } from '#modules/auth/auth.errors';
 import { createEmailVerificationUsecase } from '#modules/auth/usecases/verifications/create-email-verification.usecase';
@@ -23,6 +25,11 @@ const oauth2AcceptableScenarios = [
 
 export async function requestVerificationAction(cmd: Command) {
 	if (cmd.type === VerificationType.EMAIL) {
+		// Validate email target
+		if (!isValidEmail(cmd.target)) {
+			return Left(new InvalidVerificationTargetError(cmd.target, VerificationType.EMAIL));
+		}
+
 		if (
 			!emailAcceptableScenarios.includes(
 				cmd.scenario as (typeof emailAcceptableScenarios)[number],
@@ -45,6 +52,11 @@ export async function requestVerificationAction(cmd: Command) {
 	}
 
 	if (cmd.type === VerificationType.OAUTH2) {
+		// Validate OAuth2 provider target
+		if (!isNonEmptyString(cmd.target)) {
+			return Left(new InvalidVerificationTargetError(cmd.target, VerificationType.OAUTH2));
+		}
+
 		if (
 			!oauth2AcceptableScenarios.includes(
 				cmd.scenario as (typeof oauth2AcceptableScenarios)[number],
