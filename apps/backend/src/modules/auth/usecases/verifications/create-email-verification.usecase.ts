@@ -10,6 +10,7 @@ import { UserExistsError } from '#modules/auth/auth.errors';
 import { VerificationCodeService } from '#modules/auth/services/verification-code.service';
 import { VerificationOperationService } from '#modules/auth/services/verification-operation.service';
 import { UsersRepository } from '#modules/users/users.repository';
+import { Logger } from '#shared/logger/index';
 
 type Command = {
 	scenario: Extract<
@@ -47,8 +48,19 @@ export async function createEmailVerificationUsecase(cmd: Command) {
 	)
 		.ifRight(async (createdVerification) => {
 			if (requiresNoUser || (requiresUser && userExists)) {
-				// [TODO] Waiting for new mailing module to be implemented
-				await MailingService.sendVerification(cmd.email, code, createdVerification);
+				try {
+					// [TODO] Waiting for new mailing module to be implemented
+					await MailingService.sendVerification(cmd.email, code, createdVerification);
+				} catch (error) {
+					// Error is caught here because the mailer is not using Either right now.
+					// Log the error but don't fail the verification creation
+					Logger.error('Email sending failed, but verification was created:', {
+						verificationId: createdVerification.id,
+						email: cmd.email,
+						error,
+					});
+					// Note: We continue without throwing, so the verification is still created
+				}
 			}
 		})
 		.map((createdVerification) => ({

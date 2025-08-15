@@ -1,3 +1,4 @@
+import type { VerificationType } from './auth.entities';
 import { BaseError } from '#common/errors/base.error';
 
 export class UserExistsError extends BaseError {
@@ -123,5 +124,13 @@ export class InvalidSessionError extends BaseError {
 
 	constructor() {
 		super('Invalid session');
+	}
+}
+
+export class InvalidVerificationTargetError extends BaseError {
+	override readonly name = 'InvalidVerificationTargetError' as const;
+
+	constructor(target: string, type: VerificationType) {
+		super(`Invalid verification target for ${type}: ${target}`);
 	}
 }
