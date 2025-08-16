@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "typecheck": "tsc --noEmit",
+    "typecheck:tsgo": "tsgo --noEmit",
     "lint": "bun run --cwd ../.. eslint packages/pino-pretty-transport --max-warnings 0 --cache --cache-location packages/pino-pretty-transport/.eslintcache"
   },
   "exports": {

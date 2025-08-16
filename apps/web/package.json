@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "bun --env-file .env.development.local next start",
     "typecheck": "tsc --noEmit",
+    "typecheck:tsgo": "tsgo --noEmit",
     "lint": "bun run --cwd ../.. eslint apps/web --max-warnings 0 --cache --cache-location apps/web/.eslintcache"
   },
   "dependencies": {

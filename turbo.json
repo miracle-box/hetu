@@ -21,6 +21,11 @@
       "outputs": [".tsbuildinfo"]
     },
 
+    "typecheck:tsgo": {
+      "dependsOn": ["^typecheck:tsgo"],
+      "outputs": [".tsbuildinfo"]
+    },
+
     "lint": {
       "dependsOn": ["^lint"],
       "outputs": [".eslintcache"]
