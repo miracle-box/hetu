@@ -5,6 +5,7 @@
   "scripts": {
     "gen:component": "turbo gen react-component",
     "typecheck": "tsc --noEmit",
+    "typecheck:tsgo": "tsgo --noEmit",
     "lint": "bun run --cwd ../.. eslint packages/ui --max-warnings 0 --cache --cache-location packages/ui/.eslintcache"
   },
   "dependencies": {

@@ -7,12 +7,14 @@
     "dev": "turbo dev",
     "start": "turbo start",
     "typecheck": "turbo typecheck --continue",
+    "typecheck:tsgo": "turbo typecheck:tsgo --continue",
     "lint": "turbo lint --continue",
     "format": "prettier --check \"**/*.{ts,tsx,js,jsx,mjs,cjs,json,yaml,md}\"",
     "format:fix": "prettier --write \"**/*.{ts,tsx,js,jsx,mjs,cjs,json,yaml,md}\""
   },
   "devDependencies": {
     "@repo/eslint-config": "*",
+    "@typescript/native-preview": "^7.0.0-dev.20250815.1",
     "prettier": "^3.5.3",
     "prettier-plugin-tailwindcss": "^0.6.11",
     "turbo": "^2.5.3",

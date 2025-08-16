@@ -10,6 +10,7 @@
   "private": true,
   "scripts": {
     "typecheck": "tsc --noEmit",
+    "typecheck:tsgo": "tsgo --noEmit",
     "lint": "bun run --cwd ../.. eslint packages/miniclap --max-warnings 0 --cache --cache-location packages/miniclap/.eslintcache"
   }
 }
