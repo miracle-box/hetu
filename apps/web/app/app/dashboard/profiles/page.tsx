@@ -3,10 +3,11 @@ import { Button } from '@repo/ui/button';
 import { Large } from '@repo/ui/typography';
 import { getUserProfiles } from '~web/libs/actions/api';
 import { ProfileCard } from '~web/libs/basicui/ProfileCard';
+import { respToEither } from '~web/libs/utils/resp';
 import { CreateProfileModal } from './CreateProfileModal';
 
 export default async function Profiles() {
-	const profilesResp = await getUserProfiles();
+	const profilesResp = respToEither(await getUserProfiles());
 
 	return (
 		<main className="container mx-auto">

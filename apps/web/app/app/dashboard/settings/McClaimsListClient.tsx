@@ -1,9 +1,9 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
+import { getUserMcClaims } from '~web/libs/actions/api';
 import { respToEither } from '~web/libs/utils/resp';
 import { McClaimActions } from './McClaimActions';
-import { getMcClaimsAction } from './actions';
 
 interface Profile {
 	id: string;
@@ -12,7 +12,7 @@ interface Profile {
 }
 
 interface McClaimsListClientProps {
-	initialData: { _: 'L'; _l: any } | { _: 'R'; _r: any };
+	initialData: Awaited<ReturnType<typeof getUserMcClaims>>;
 	profiles: Profile[];
 }
 
@@ -24,11 +24,7 @@ export function McClaimsListClient({ initialData, profiles }: McClaimsListClient
 		error,
 	} = useQuery({
 		queryKey: ['user-mc-claims'],
-		queryFn: async () => {
-			// 使用序列化安全的 action
-			const serializedResult = await getMcClaimsAction();
-			return respToEither(serializedResult);
-		},
+		queryFn: async () => respToEither(await getUserMcClaims()),
 		initialData: respToEither(initialData),
 	});
 
@@ -36,7 +32,7 @@ export function McClaimsListClient({ initialData, profiles }: McClaimsListClient
 		return <div>加载中...</div>;
 	}
 
-	if (error || !listResult || listResult.isLeft()) {
+	if (error || !listResult || listResult.isLeft() || !listResult.isRight()) {
 		return (
 			<div>加载失败：{listResult?.isLeft() ? listResult.extract().message : '未知错误'}</div>
 		);
@@ -50,7 +46,7 @@ export function McClaimsListClient({ initialData, profiles }: McClaimsListClient
 
 	return (
 		<div className="flex flex-col gap-2">
-			{mcClaims.map((c: any) => (
+			{mcClaims.map((c) => (
 				<div key={c.id} className="rounded border p-3">
 					<div className="font-medium">
 						{c.mcUsername} ({c.mcUuid})

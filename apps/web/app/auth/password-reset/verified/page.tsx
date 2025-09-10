@@ -2,6 +2,7 @@ import { Button } from '@repo/ui/button';
 import { Large } from '@repo/ui/typography';
 import Link from 'next/link';
 import { inspectVerification, verifyVerification } from '~web/libs/actions/api';
+import { respToEither } from '~web/libs/utils/resp';
 import { NewPassword } from './NewPassword';
 
 type SearchParams = Promise<{ id?: string; secret?: string }>;
@@ -13,16 +14,18 @@ export default async function Verified({ searchParams }: { searchParams: SearchP
 		return <ThisPageLayout>Invalid verification link</ThisPageLayout>;
 	}
 
-	const verif = await inspectVerification(id);
-	if (verif.isLeft()) {
+	const verif = respToEither(await inspectVerification(id));
+	if (verif.isLeft() || !verif.isRight()) {
 		return <ThisPageLayout>Verification link expired</ThisPageLayout>;
 	}
 
 	if (!verif.extract().verification.verified) {
-		const verifyResponse = await verifyVerification({
-			id,
-			code: secret,
-		});
+		const verifyResponse = respToEither(
+			await verifyVerification({
+				id,
+				code: secret,
+			}),
+		);
 
 		if (verifyResponse.isLeft()) {
 			return <ThisPageLayout>Failed to verify your request</ThisPageLayout>;

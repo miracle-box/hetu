@@ -8,22 +8,30 @@ import { useMutation } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React from 'react';
+import { requestVerification } from '~web/libs/actions/api/auth';
 import {
 	usePasswordResetForm,
 	type PasswordResetFormValues,
 } from '~web/libs/modules/auth/forms/PasswordResetForm';
+import { formError } from '~web/libs/utils/form';
 import { respToEither } from '~web/libs/utils/resp';
-import { handleRequestReset } from './actions';
 
 export default function PasswordReset() {
 	const router = useRouter();
 
 	const requestResetMutation = useMutation({
-		mutationFn: (values: PasswordResetFormValues) => handleRequestReset(values),
+		mutationFn: async (values: PasswordResetFormValues) =>
+			respToEither(
+				await requestVerification({
+					type: 'email',
+					scenario: 'password_reset',
+					target: values.email,
+				}),
+			).mapLeft((message) => formError(message)),
 		onSuccess: (resp) => {
-			respToEither(resp)
-				.mapLeft((state) => mergeForm<PasswordResetFormValues>(form, state))
-				.ifRight(() => router.push('/auth/password-reset/email-sent'));
+			resp.mapLeft((state) => mergeForm<PasswordResetFormValues>(form, state)).ifRight(() =>
+				router.push('/auth/password-reset/email-sent'),
+			);
 		},
 	});
 

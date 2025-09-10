@@ -1,5 +1,5 @@
-import { Suspense } from 'react';
 import { Large } from '@repo/ui/typography';
+import { Suspense } from 'react';
 import { McClaimBindClient } from './McClaimBindClient';
 
 export default function McClaimBind() {

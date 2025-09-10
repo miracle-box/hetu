@@ -1,5 +1,6 @@
 import { InlineCode } from '@repo/ui/typography';
 import { inspectOauth2Binding } from '~web/libs/actions/api/auth';
+import { respToEither } from '~web/libs/utils/resp';
 import { ConfirmOauth2Binding } from './ConfirmOauth2Binding';
 
 export type Props = {
@@ -12,13 +13,15 @@ export default async function OAuthBind({ searchParams }: Props) {
 		return <div>Invalid verification ID</div>;
 	}
 	const verificationId = search['verificationId'];
-	const inspectResponse = await inspectOauth2Binding({
-		verificationId,
-	});
+	const inspectResponse = respToEither(
+		await inspectOauth2Binding({
+			verificationId,
+		}),
+	);
 
 	if (inspectResponse.isLeft()) {
 		return <div>Failed to inspect binding: {inspectResponse.extract().message}</div>;
-	} else {
+	} else if (inspectResponse.isRight()) {
 		const { user, provider, oauth2Profile, alreadyBound } = inspectResponse.extract();
 		return (
 			<div>

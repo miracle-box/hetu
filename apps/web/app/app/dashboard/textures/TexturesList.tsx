@@ -5,8 +5,8 @@ import { ProfilesDtos, TexturesEntities } from '@repo/api-client';
 import { cn } from '@repo/ui';
 import { Button } from '@repo/ui/button';
 import { useMutation } from '@tanstack/react-query';
+import { updateProfile } from '~web/libs/actions/api';
 import { TextureCard } from '~web/libs/basicui/TextureCard';
-import { handleUpdateUserProfile } from './actions';
 import { SelectProfileModal } from './SelectProfileModal';
 
 export type Props = {
@@ -21,7 +21,7 @@ export function TexturesList({ textures }: Props) {
 		}: {
 			id: string;
 			body: Static<(typeof ProfilesDtos.updateProfileDtoSchemas)['body']>;
-		}) => handleUpdateUserProfile(id, body),
+		}) => updateProfile(id, body),
 	});
 
 	return (

@@ -4,9 +4,9 @@ import { Large, InlineCode } from '@repo/ui/typography';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
+import { verifyUserMcClaim, getUserMcClaims } from '~web/libs/actions/api';
 import { ApiError } from '~web/libs/utils/api-error';
 import { respToEither } from '~web/libs/utils/resp';
-import { handleVerifyUserMcClaim, handleGetUserMcClaims } from './actions';
 
 export function McClaimBindClient() {
 	const router = useRouter();
@@ -26,7 +26,7 @@ export function McClaimBindClient() {
 
 	const verifyMutation = useMutation({
 		mutationFn: async (verificationId: string) => {
-			const bindResp = await handleVerifyUserMcClaim({ verificationId });
+			const bindResp = await verifyUserMcClaim({ verificationId });
 			const bindResult = respToEither(bindResp);
 
 			if (bindResult.isLeft()) {
@@ -35,7 +35,7 @@ export function McClaimBindClient() {
 				const mcClaim = bindResult.extract().mcClaim;
 
 				// 获取更新后的列表
-				const listResp = await handleGetUserMcClaims();
+				const listResp = await getUserMcClaims();
 				const listResult = respToEither(listResp);
 				const mcClaims = listResult.isRight() ? listResult.extract().mcClaims : undefined;
 
