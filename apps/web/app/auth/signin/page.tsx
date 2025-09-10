@@ -7,12 +7,14 @@ import { mergeForm } from '@tanstack/react-form';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { requestVerification } from '~web/libs/actions/api';
+import { getOauth2Metadata } from '~web/libs/actions/api/auth';
 import { useClientAppConfig } from '~web/libs/hooks/use-client-app-config';
 import { useSigninForm, type SigninFormValues } from '~web/libs/modules/auth/forms/SigninForm';
 import { ApiError } from '~web/libs/utils/api-error';
 import { buildOAuth2AuthCodeUrl } from '~web/libs/utils/oauth2';
 import { respToEither } from '~web/libs/utils/resp';
-import { handleGetOauth2Metadata, handleRequestVerification, handleSignin } from './actions';
+import { handleSignin } from './actions';
 
 export default function Signin() {
 	const router = useRouter();
@@ -21,7 +23,7 @@ export default function Signin() {
 	const oauth2Metadata = useQuery({
 		queryKey: ['auth', 'oauth2-metadata'],
 		queryFn: () =>
-			handleGetOauth2Metadata().then((resp) =>
+			getOauth2Metadata().then((resp) =>
 				respToEither(resp)
 					.mapLeft((error) => Promise.reject(new ApiError(error)))
 					.extract(),
@@ -30,7 +32,7 @@ export default function Signin() {
 
 	const createOauth2VerificationMutaion = useMutation({
 		mutationFn: (target: string) =>
-			handleRequestVerification({
+			requestVerification({
 				type: 'oauth2',
 				scenario: 'oauth2_signin',
 				target: target,

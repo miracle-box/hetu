@@ -1,8 +1,8 @@
 import { Large } from '@repo/ui/typography';
 import { redirect } from 'next/navigation';
+import { verifyVerification } from '~web/libs/actions/api/auth';
 import { getClientAppConfig } from '~web/libs/utils/app-config/client';
 import { respToEither } from '~web/libs/utils/resp';
-import { handleVerifyVerification } from './actions';
 import { ClientSignin } from './ClientSignin';
 
 export type Props = {
@@ -42,7 +42,7 @@ export default async function OAuthCallback({ searchParams }: Props) {
 	const verificationId = search['state'];
 	const code = search['code'];
 
-	const verifyResponse = await handleVerifyVerification({
+	const verifyResponse = await verifyVerification({
 		id: verificationId,
 		code,
 		redirectUri: `${config.publicUrl}/auth/oauth2/callback`,

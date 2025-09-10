@@ -9,6 +9,7 @@ import { EitherAsync } from 'purify-ts/EitherAsync';
 import { cache } from 'react';
 import { refreshSession, renewSession } from './api';
 import { ServerAppConfig } from '../utils/app-config/server';
+import { respToEither } from '../utils/resp';
 
 // [TODO] Use type from backend instead.
 type Session = {
@@ -130,7 +131,7 @@ export async function validateSession() {
 	// [TODO] Make these time spans configurable
 	// Renew session every hour.
 	if (now - session.updatedAt > 3600 * 1000) {
-		const renewRequest = EitherAsync.fromPromise(() => renewSession(authToken))
+		const renewRequest = EitherAsync.liftEither(respToEither(await renewSession(authToken)))
 			.map(({ session }) => sessionToCookie(session))
 			.map((session) => writeSessionCookie(session))
 			.mapLeft(() => clearSessionCookie());
@@ -141,7 +142,7 @@ export async function validateSession() {
 
 	// Refresh session every day
 	if (now - session.createdAt > 24 * 3600 * 1000) {
-		const refreshRequest = EitherAsync.fromPromise(() => refreshSession(authToken))
+		const refreshRequest = EitherAsync.liftEither(respToEither(await refreshSession(authToken)))
 			.map(({ session }) => sessionToCookie(session))
 			.map((session) => writeSessionCookie(session))
 			.mapLeft(() => clearSessionCookie());

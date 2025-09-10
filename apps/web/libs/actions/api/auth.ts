@@ -1,8 +1,11 @@
+'use server';
+
 import type { AuthDtos } from '@repo/api-client';
 import type { Static } from 'elysia';
 import { Left, Right } from 'purify-ts';
 import { client as api } from '~web/libs/api/eden';
 import { mapApiError, mapFetchError } from '~web/libs/utils/api-error';
+import { eitherToResp } from '~web/libs/utils/resp';
 import { readSession } from '../auth';
 
 export async function getOauth2Metadata() {
@@ -14,7 +17,8 @@ export async function getOauth2Metadata() {
 
 			return Right(data!);
 		})
-		.catch((error) => Left(mapFetchError(error)));
+		.catch((error) => Left(mapFetchError(error)))
+		.then((data) => eitherToResp(data));
 }
 
 export async function requestVerification(
@@ -28,7 +32,8 @@ export async function requestVerification(
 
 			return Right(data!);
 		})
-		.catch((error) => Left(mapFetchError(error)));
+		.catch((error) => Left(mapFetchError(error)))
+		.then((data) => eitherToResp(data));
 }
 
 export async function verifyVerification(
@@ -42,7 +47,8 @@ export async function verifyVerification(
 
 			return Right(data!);
 		})
-		.catch((error) => Left(mapFetchError(error)));
+		.catch((error) => Left(mapFetchError(error)))
+		.then((data) => eitherToResp(data));
 }
 
 export async function oauth2Signin(body: Static<(typeof AuthDtos.oauth2SigninDtoSchemas)['body']>) {
@@ -54,7 +60,8 @@ export async function oauth2Signin(body: Static<(typeof AuthDtos.oauth2SigninDto
 
 			return Right(data!);
 		})
-		.catch((error) => Left(mapFetchError(error)));
+		.catch((error) => Left(mapFetchError(error)))
+		.then((data) => eitherToResp(data));
 }
 
 export async function inspectOauth2Binding(
@@ -76,7 +83,8 @@ export async function inspectOauth2Binding(
 
 			return Right(data!);
 		})
-		.catch((error) => Left(mapFetchError(error)));
+		.catch((error) => Left(mapFetchError(error)))
+		.then((data) => eitherToResp(data));
 }
 
 export async function confirmOauth2Binding(
@@ -98,5 +106,6 @@ export async function confirmOauth2Binding(
 
 			return Right(data!);
 		})
-		.catch((error) => Left(mapFetchError(error)));
+		.catch((error) => Left(mapFetchError(error)))
+		.then((data) => eitherToResp(data));
 }

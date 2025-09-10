@@ -1,14 +1,15 @@
 import { Large } from '@repo/ui/typography';
 import { getOauth2Metadata } from '~web/libs/actions/api/auth';
-import { BindOauth2Button } from './BindOauth2Button';
+import { respToEither } from '~web/libs/utils/resp';
 import { BindMcMsaButton } from './BindMcMsaButton';
+import { BindOauth2Button } from './BindOauth2Button';
 import McClaimsList from './McClaimsList';
 
 // We fetch data on server side, and wants to opt-out pre-rendering.
 export const dynamic = 'force-dynamic';
 
 export default async function Settings() {
-	const providersResult = await getOauth2Metadata();
+	const providersResult = respToEither(await getOauth2Metadata());
 	if (providersResult.isLeft()) {
 		return (
 			<main className="container mx-auto">
@@ -31,7 +32,7 @@ export default async function Settings() {
 				</div>
 			</main>
 		);
-	} else {
+	} else if (providersResult.isRight()) {
 		const providers = providersResult.extract().providers;
 
 		return (

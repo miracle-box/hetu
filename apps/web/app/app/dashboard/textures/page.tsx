@@ -1,11 +1,12 @@
 import { Button } from '@repo/ui/button';
 import { Large } from '@repo/ui/typography';
 import { getUserTextures } from '~web/libs/actions/api';
+import { respToEither } from '~web/libs/utils/resp';
 import { CreateTextureModal } from './CreateTextureModal';
 import { TexturesList } from './TexturesList';
 
 export default async function Textures() {
-	const texturesResp = await getUserTextures();
+	const texturesResp = respToEither(await getUserTextures());
 
 	return (
 		<main className="container mx-auto">

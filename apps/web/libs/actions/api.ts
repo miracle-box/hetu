@@ -1,10 +1,11 @@
 'use server';
 
 import type { Static } from '@sinclair/typebox';
-import { ProfilesDtos } from '@repo/api-client';
+import { ProfilesDtos, AuthDtos } from '@repo/api-client';
 import { Left, Right } from 'purify-ts/Either';
 import { readSession } from '~web/libs/actions/auth';
 import { client as api } from '~web/libs/api/eden';
+import { eitherToResp } from '~web/libs/utils/resp';
 import { mapApiError, mapFetchError } from '../utils/api-error';
 
 export async function getUserInfo() {
@@ -23,7 +24,8 @@ export async function getUserInfo() {
 
 			return Right(data!);
 		})
-		.catch((error) => Left(mapFetchError(error)));
+		.catch((error) => Left(mapFetchError(error)))
+		.then((data) => eitherToResp(data));
 }
 
 export async function getUserProfiles() {
@@ -42,7 +44,8 @@ export async function getUserProfiles() {
 
 			return Right(data!);
 		})
-		.catch((error) => Left(mapFetchError(error)));
+		.catch((error) => Left(mapFetchError(error)))
+		.then((data) => eitherToResp(data));
 }
 
 export async function getUserTextures() {
@@ -61,7 +64,8 @@ export async function getUserTextures() {
 
 			return Right(data!);
 		})
-		.catch((error) => Left(mapFetchError(error)));
+		.catch((error) => Left(mapFetchError(error)))
+		.then((data) => eitherToResp(data));
 }
 
 export async function uploadFile(body: { file: File; type: 'texture_skin' | 'texture_cape' }) {
@@ -83,7 +87,8 @@ export async function uploadFile(body: { file: File; type: 'texture_skin' | 'tex
 
 			return Right(data!);
 		})
-		.catch((error) => Left(mapFetchError(error)));
+		.catch((error) => Left(mapFetchError(error)))
+		.then((data) => eitherToResp(data));
 }
 
 export async function createTexture(body: {
@@ -104,7 +109,8 @@ export async function createTexture(body: {
 
 			return Right(data!);
 		})
-		.catch((error) => Left(mapFetchError(error)));
+		.catch((error) => Left(mapFetchError(error)))
+		.then((data) => eitherToResp(data));
 }
 
 export async function createProfile(body: { name: string }) {
@@ -120,7 +126,8 @@ export async function createProfile(body: { name: string }) {
 
 			return Right(data!);
 		})
-		.catch((error) => Left(mapFetchError(error)));
+		.catch((error) => Left(mapFetchError(error)))
+		.then((data) => eitherToResp(data));
 }
 
 export async function inspectVerification(id: string) {
@@ -133,14 +140,13 @@ export async function inspectVerification(id: string) {
 
 			return Right(data!);
 		})
-		.catch((error) => Left(mapFetchError(error)));
+		.catch((error) => Left(mapFetchError(error)))
+		.then((data) => eitherToResp(data));
 }
 
-export async function requestVerification(body: {
-	type: 'email';
-	scenario: 'signup' | 'password_reset';
-	target: string;
-}) {
+export async function requestVerification(
+	body: Static<(typeof AuthDtos.requestVerificationDtoSchemas)['body']>,
+) {
 	return api.auth.verification.request
 		.post(body)
 		.then(({ data, error }) => {
@@ -149,7 +155,8 @@ export async function requestVerification(body: {
 
 			return Right(data!);
 		})
-		.catch((error) => Left(mapFetchError(error)));
+		.catch((error) => Left(mapFetchError(error)))
+		.then((data) => eitherToResp(data));
 }
 
 export async function verifyVerification(body: { id: string; code: string }) {
@@ -161,7 +168,8 @@ export async function verifyVerification(body: { id: string; code: string }) {
 
 			return Right(data!);
 		})
-		.catch((error) => Left(mapFetchError(error)));
+		.catch((error) => Left(mapFetchError(error)))
+		.then((data) => eitherToResp(data));
 }
 
 export async function resetPassword(body: { newPassword: string; verificationId: string }) {
@@ -173,7 +181,8 @@ export async function resetPassword(body: { newPassword: string; verificationId:
 
 			return Right(data!);
 		})
-		.catch((error) => Left(mapFetchError(error)));
+		.catch((error) => Left(mapFetchError(error)))
+		.then((data) => eitherToResp(data));
 }
 
 export async function signin(body: { email: string; password: string }) {
@@ -185,7 +194,8 @@ export async function signin(body: { email: string; password: string }) {
 
 			return Right(data!);
 		})
-		.catch((error) => Left(mapFetchError(error)));
+		.catch((error) => Left(mapFetchError(error)))
+		.then((data) => eitherToResp(data));
 }
 
 export async function signup(body: {
@@ -202,7 +212,8 @@ export async function signup(body: {
 
 			return Right(data!);
 		})
-		.catch((error) => Left(mapFetchError(error)));
+		.catch((error) => Left(mapFetchError(error)))
+		.then((data) => eitherToResp(data));
 }
 
 export async function renewSession(authToken: string) {
@@ -216,7 +227,8 @@ export async function renewSession(authToken: string) {
 
 			return Right(data!);
 		})
-		.catch((error) => Left(mapFetchError(error)));
+		.catch((error) => Left(mapFetchError(error)))
+		.then((data) => eitherToResp(data));
 }
 
 export async function refreshSession(authToken: string) {
@@ -230,7 +242,8 @@ export async function refreshSession(authToken: string) {
 
 			return Right(data!);
 		})
-		.catch((error) => Left(mapFetchError(error)));
+		.catch((error) => Left(mapFetchError(error)))
+		.then((data) => eitherToResp(data));
 }
 
 export async function updateProfile(
@@ -251,7 +264,8 @@ export async function updateProfile(
 
 			return Right(data!);
 		})
-		.catch((error) => Left(mapFetchError(error)));
+		.catch((error) => Left(mapFetchError(error)))
+		.then((data) => eitherToResp(data));
 }
 
 export async function getUserMcClaims() {
@@ -268,7 +282,8 @@ export async function getUserMcClaims() {
 
 			return Right(data!);
 		})
-		.catch((error) => Left(mapFetchError(error)));
+		.catch((error) => Left(mapFetchError(error)))
+		.then((data) => eitherToResp(data));
 }
 
 export async function verifyUserMcClaim(body: { verificationId: string }) {
@@ -285,7 +300,8 @@ export async function verifyUserMcClaim(body: { verificationId: string }) {
 
 			return Right(data!);
 		})
-		.catch((error) => Left(mapFetchError(error)));
+		.catch((error) => Left(mapFetchError(error)))
+		.then((data) => eitherToResp(data));
 }
 
 export async function deleteMcClaim(mcClaimId: string) {
@@ -306,7 +322,8 @@ export async function deleteMcClaim(mcClaimId: string) {
 
 			return Right(data!);
 		})
-		.catch((error) => Left(mapFetchError(error)));
+		.catch((error) => Left(mapFetchError(error)))
+		.then((data) => eitherToResp(data));
 }
 
 export async function updateMcClaim(mcClaimId: string, body: { boundProfileId?: string | null }) {
@@ -324,5 +341,6 @@ export async function updateMcClaim(mcClaimId: string, body: { boundProfileId?: 
 
 			return Right(data!);
 		})
-		.catch((error) => Left(mapFetchError(error)));
+		.catch((error) => Left(mapFetchError(error)))
+		.then((data) => eitherToResp(data));
 }

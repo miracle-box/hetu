@@ -3,8 +3,8 @@
 import { Button } from '@repo/ui/button';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
+import { deleteMcClaim, updateMcClaim } from '~web/libs/actions/api';
 import { respToEither } from '~web/libs/utils/resp';
-import { deleteClaimAction, updateClaimAction } from './actions';
 
 interface Profile {
 	id: string;
@@ -33,7 +33,7 @@ export function McClaimActions({
 	// 删除 McClaim
 	const deleteMutation = useMutation({
 		mutationFn: async (): Promise<void> => {
-			const serializedResult = await deleteClaimAction(mcClaimId);
+			const serializedResult = await deleteMcClaim(mcClaimId);
 			const result = respToEither(serializedResult);
 			if (result.isLeft()) {
 				const error = result.extract();
@@ -56,16 +56,16 @@ export function McClaimActions({
 		},
 		onSuccess: () => {
 			// 刷新 McClaims 列表
-			queryClient.invalidateQueries({ queryKey: ['user-mc-claims'] });
+			void queryClient.invalidateQueries({ queryKey: ['user-mc-claims'] });
 			// 强制重新获取数据
-			queryClient.refetchQueries({ queryKey: ['user-mc-claims'] });
+			void queryClient.refetchQueries({ queryKey: ['user-mc-claims'] });
 		},
 	});
 
 	// 更新 McClaim 绑定档案
 	const updateMutation = useMutation({
 		mutationFn: async (profileId: string | null): Promise<void> => {
-			const serializedResult = await updateClaimAction(mcClaimId, {
+			const serializedResult = await updateMcClaim(mcClaimId, {
 				boundProfileId: profileId,
 			});
 			const result = respToEither(serializedResult);
@@ -85,9 +85,9 @@ export function McClaimActions({
 		},
 		onSuccess: () => {
 			// 刷新 McClaims 列表
-			queryClient.invalidateQueries({ queryKey: ['user-mc-claims'] });
+			void queryClient.invalidateQueries({ queryKey: ['user-mc-claims'] });
 			// 强制重新获取数据
-			queryClient.refetchQueries({ queryKey: ['user-mc-claims'] });
+			void queryClient.refetchQueries({ queryKey: ['user-mc-claims'] });
 		},
 	});
 

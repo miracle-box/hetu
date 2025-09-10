@@ -4,13 +4,14 @@ import { mergeForm, useStore } from '@tanstack/react-form';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import React from 'react';
+import { createProfile } from '~web/libs/actions/api';
 import { CreateProfileModalView } from '~web/libs/modules/profiles/components/CreateProfileModalView';
 import {
 	useCreateProfileForm,
 	type CreateProfileFormValues,
 } from '~web/libs/modules/profiles/forms/CreateProfileForm';
+import { formError } from '~web/libs/utils/form';
 import { respToEither } from '~web/libs/utils/resp';
-import { handleCreateProfile } from './actions';
 
 export type Props = {
 	children: React.ReactNode;
@@ -20,9 +21,10 @@ export function CreateProfileModal({ children }: Props) {
 	const router = useRouter();
 
 	const request = useMutation({
-		mutationFn: (values: CreateProfileFormValues) => handleCreateProfile(values),
+		mutationFn: async (values: CreateProfileFormValues) =>
+			respToEither(await createProfile(values)).mapLeft((error) => formError(error)),
 		onSuccess: (resp) =>
-			respToEither(resp)
+			resp
 				.map(({ profile }) => {
 					router.push(`/app/dashboard/profiles/${profile.id}`);
 				})

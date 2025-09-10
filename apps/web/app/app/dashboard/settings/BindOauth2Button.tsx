@@ -2,7 +2,7 @@
 
 import { Button } from '@repo/ui/button';
 import { useMutation } from '@tanstack/react-query';
-import { handleRequestVerification } from '~web/app/auth/signin/actions';
+import { requestVerification } from '~web/libs/actions/api';
 import { useClientAppConfig } from '~web/libs/hooks/use-client-app-config';
 import { ApiError } from '~web/libs/utils/api-error';
 import { buildOAuth2AuthCodeUrl } from '~web/libs/utils/oauth2';
@@ -23,7 +23,7 @@ export function BindOauth2Button({ provider, metadata }: Props) {
 
 	const createOauth2VerificationMutaion = useMutation({
 		mutationFn: (target: string) =>
-			handleRequestVerification({
+			requestVerification({
 				type: 'oauth2',
 				scenario: 'oauth2_bind',
 				target: target,

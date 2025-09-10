@@ -50,6 +50,8 @@ export function javascript(options) {
 			rules: {
 				...jsPlugin.configs.recommended.rules,
 				'require-await': 'off',
+				// We have Prettier configured.
+				'no-unexpected-multiline': 'off',
 			},
 		},
 	];
