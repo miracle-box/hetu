@@ -64,6 +64,12 @@ export default [
 		files: ['packages/ui/**/*'],
 		typeAwareFiles: ['packages/ui/src/**/*.?([cm])ts', 'packages/ui/src/**/*.?([cm])tsx'],
 	}),
+	{
+		files: ['packages/ui/**/*'],
+		rules: {
+			'react-refresh/only-export-components': 'off',
+		},
+	},
 
 	// Import
 	...configs.importLint({

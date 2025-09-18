@@ -53,11 +53,11 @@ export default function Signup() {
 					</form.Submit>
 				</form.AppForm>
 
-				<Button variant="secondary" asChild>
+				<Button variant="link" asChild>
 					<Link href="/auth/signin">I already have an account</Link>
 				</Button>
 
-				<Button variant="secondary" asChild>
+				<Button variant="link" asChild>
 					<Link href="/">Go back to landing page</Link>
 				</Button>
 			</div>

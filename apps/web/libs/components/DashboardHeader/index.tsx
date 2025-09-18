@@ -1,8 +1,9 @@
 'use client';
 
-import { cn, navigationMenuTriggerStyle } from '@repo/ui';
+import { cn } from '@repo/ui';
 import { useBreakpoint } from '@repo/ui/hooks/use-breakpoint';
 import {
+	navigationMenuTriggerStyle,
 	NavigationMenu,
 	NavigationMenuItem,
 	NavigationMenuLink,

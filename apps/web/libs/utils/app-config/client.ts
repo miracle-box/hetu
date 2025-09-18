@@ -4,7 +4,7 @@ export type ClientAppConfig = {
 	textureRoot: string;
 };
 
-export function getClientAppConfig(): ClientAppConfig {
+export function buildClientAppConfig(): ClientAppConfig {
 	if (typeof window !== 'undefined') {
 		throw new Error(
 			'getClientAppConfig should not be called on client side, use useClientAppConfig instead.',

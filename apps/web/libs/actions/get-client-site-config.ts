@@ -1,7 +1,7 @@
 'use server';
 
-import { getClientAppConfig } from '../utils/app-config/client';
+import { buildClientAppConfig } from '../utils/app-config/client';
 
 export async function getClientAppConfigAction() {
-	return getClientAppConfig();
+	return buildClientAppConfig();
 }
