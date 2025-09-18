@@ -1,7 +1,7 @@
 import { Large } from '@repo/ui/typography';
 import { redirect } from 'next/navigation';
 import { verifyVerification } from '~web/libs/actions/api/auth';
-import { getClientAppConfig } from '~web/libs/utils/app-config/client';
+import { buildClientAppConfig } from '~web/libs/utils/app-config/client';
 import { respToEither } from '~web/libs/utils/resp';
 import { ClientSignin } from './ClientSignin';
 
@@ -38,7 +38,7 @@ export default async function OAuthCallback({ searchParams }: Props) {
 		);
 	}
 
-	const config = getClientAppConfig();
+	const config = buildClientAppConfig();
 	const verificationId = search['state'];
 	const code = search['code'];
 

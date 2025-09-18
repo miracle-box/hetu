@@ -88,7 +88,6 @@ export function react(options) {
 			plugins: {
 				'react-x': reactSubPlugins['@eslint-react'],
 				'react-dom': reactSubPlugins['@eslint-react/dom'],
-				// @ts-expect-error Have some issues with typing for this plugin.
 				'react-hooks': reactHooksPlugin,
 				'react-hooks-extra': reactSubPlugins['@eslint-react/hooks-extra'],
 				'react-naming-convention': reactSubPlugins['@eslint-react/naming-convention'],

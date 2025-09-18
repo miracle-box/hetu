@@ -17,11 +17,15 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<html suppressHydrationWarning lang="en" className={cn(fontClasses)}>
-			<body>
+		<html
+			suppressHydrationWarning
+			lang="en"
+			className={cn(fontClasses, 'h-full min-h-[100dvh]')}
+		>
+			<body className="h-full min-h-[100dvh]">
 				{/* Vaul drawer background wrapper */}
 				<div
-					className="bg-background relative flex min-h-screen flex-col"
+					className="bg-background relative h-full min-h-full w-full"
 					data-vaul-drawer-wrapper
 				>
 					<ClientProviders>

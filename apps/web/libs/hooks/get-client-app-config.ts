@@ -1,11 +1,11 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { getClientAppConfigAction } from '../actions/get-client-site-config';
-import { getClientAppConfig, type ClientAppConfig } from '../utils/app-config/client';
+import { buildClientAppConfig, type ClientAppConfig } from '../utils/app-config/client';
 
-export function useClientAppConfig(): ClientAppConfig {
+export function getClientAppConfig(): ClientAppConfig {
 	// Called on server side
 	if (typeof window === 'undefined') {
-		return getClientAppConfig();
+		return buildClientAppConfig();
 	}
 
 	// Client side

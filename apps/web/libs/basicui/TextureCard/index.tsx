@@ -3,7 +3,7 @@ import { Card, CardContent, CardFooter, CardHeader } from '@repo/ui/card';
 import { DataList, DataListItem, DataListLabel, DataListValue } from '@repo/ui/data-list';
 import { InlineCode, Large } from '@repo/ui/typography';
 import Image from 'next/image';
-import { useClientAppConfig } from '~web/libs/hooks/use-client-app-config';
+import { getClientAppConfig } from '~web/libs/hooks/get-client-app-config';
 export type Props = {
 	texture: {
 		type: 'cape' | 'skin' | 'skin_slim';
@@ -17,7 +17,7 @@ export type Props = {
 };
 
 export function TextureCard({ texture, children }: Props) {
-	const clientAppConfig = useClientAppConfig();
+	const clientAppConfig = getClientAppConfig();
 
 	return (
 		<Card>
