@@ -35,6 +35,27 @@ services:
             - minio_data:/data
         networks:
             - devnet
+        healthcheck:
+            test: 'mc ready local'
+            interval: 2s
+            timeout: 10s
+            retries: 5
+
+    s3_init:
+        image: minio/minio
+        depends_on:
+            - s3
+        networks:
+            - devnet
+        restart: on-failure
+        entrypoint: >
+            /bin/sh -c "
+            sleep 5;
+            /usr/bin/mc alias set hetu http://s3:9000 hetudevelop hetudevelop;
+            /usr/bin/mc mb hetu/textures --ignore-existing;
+            /usr/bin/mc anonymous set download hetu/textures;
+            exit 0;
+            "
 
     mail:
         image: axllent/mailpit

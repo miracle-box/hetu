@@ -54,11 +54,14 @@ export async function createEmailVerificationUsecase(cmd: Command) {
 				} catch (error) {
 					// Error is caught here because the mailer is not using Either right now.
 					// Log the error but don't fail the verification creation
-					Logger.error('Email sending failed, but verification was created:', {
-						verificationId: createdVerification.id,
-						email: cmd.email,
-						error,
-					});
+					Logger.error(
+						{
+							verificationId: createdVerification.id,
+							email: cmd.email,
+							error,
+						},
+						'Email sending failed, but verification was created:',
+					);
 					// Note: We continue without throwing, so the verification is still created
 				}
 			}

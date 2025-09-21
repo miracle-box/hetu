@@ -31,7 +31,7 @@ export const errorsMiddleware = (app: Elysia) =>
 			}
 
 			if (Config.logging.logRequests) {
-				onErrorLogger({ ...ctx, response: response ?? ctx.response });
+				onErrorLogger({ ...ctx, response: response });
 			}
 
 			return response;

@@ -37,7 +37,7 @@ export const logger = () => {
 			};
 		})
 		.onAfterResponse((ctx) => {
-			if (ctx.error instanceof Error || ctx.response instanceof Error) {
+			if (ctx.responseValue instanceof Error) {
 				return;
 			}
 

@@ -51,20 +51,26 @@ export function createAppFormHook<
 	TOnBlurAsync extends undefined | FormAsyncValidateOrFn<TFormData>,
 	TOnSubmit extends undefined | FormValidateOrFn<TFormData>,
 	TOnSubmitAsync extends undefined | FormAsyncValidateOrFn<TFormData>,
+	TOnDynamic extends undefined | FormValidateOrFn<TFormData>,
+	TOnDynamicAsync extends undefined | FormAsyncValidateOrFn<TFormData>,
 	TOnServer extends undefined | FormAsyncValidateOrFn<TFormData>,
 	TSubmitMeta,
 >(
-	predefinedFormOptions: FormOptions<
-		TFormData,
-		TOnMount,
-		TOnChange,
-		TOnChangeAsync,
-		TOnBlur,
-		TOnBlurAsync,
-		TOnSubmit,
-		TOnSubmitAsync,
-		TOnServer,
-		TSubmitMeta
+	predefinedFormOptions: Partial<
+		FormOptions<
+			TFormData,
+			TOnMount,
+			TOnChange,
+			TOnChangeAsync,
+			TOnBlur,
+			TOnBlurAsync,
+			TOnSubmit,
+			TOnSubmitAsync,
+			TOnDynamic,
+			TOnDynamicAsync,
+			TOnServer,
+			TSubmitMeta
+		>
 	>,
 	FormView: TFormView,
 ) {
@@ -78,6 +84,8 @@ export function createAppFormHook<
 			TOnBlurAsync,
 			TOnSubmit,
 			TOnSubmitAsync,
+			TOnDynamic,
+			TOnDynamicAsync,
 			TOnServer,
 			TSubmitMeta
 		>,

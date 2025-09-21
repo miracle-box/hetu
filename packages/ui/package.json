@@ -10,18 +10,18 @@
   },
   "dependencies": {
     "@radix-ui/react-avatar": "^1.1.10",
-    "@radix-ui/react-dialog": "^1.1.14",
+    "@radix-ui/react-dialog": "^1.1.15",
     "@radix-ui/react-label": "^2.1.7",
-    "@radix-ui/react-navigation-menu": "^1.2.13",
+    "@radix-ui/react-navigation-menu": "^1.2.14",
     "@radix-ui/react-separator": "^1.1.7",
     "@radix-ui/react-slot": "^1.2.3",
-    "@radix-ui/react-toggle-group": "^1.1.10",
-    "@tailwindcss/cli": "^4.1.7",
+    "@radix-ui/react-toggle-group": "^1.1.11",
+    "@tailwindcss/cli": "^4.1.13",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "lucide-react": "^0.511.0",
-    "tailwind-merge": "^3.3.0",
-    "tw-animate-css": "^1.3.0",
+    "lucide-react": "^0.544.0",
+    "tailwind-merge": "^3.3.1",
+    "tw-animate-css": "^1.3.8",
     "vaul": "^1.1.2"
   },
   "peerDependencies": {
@@ -32,14 +32,14 @@
     "@types/react-dom": "^19.1.5"
   },
   "devDependencies": {
-    "@repo/typescript-config": "*",
-    "@tanstack/react-form": "^1.11.2",
-    "@turbo/gen": "^2.5.3",
-    "@types/react": "^19.1.4",
-    "@types/react-dom": "^19.1.5",
-    "bun-types": "^1.2.13",
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0"
+    "@repo/typescript-config": "workspace:*",
+    "@tanstack/react-form": "^1.23.0",
+    "@turbo/gen": "^2.5.6",
+    "@types/react": "^19.1.13",
+    "@types/react-dom": "^19.1.9",
+    "bun-types": "^1.2.22",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1"
   },
   "imports": {
     "#*": [

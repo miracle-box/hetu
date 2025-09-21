@@ -3,6 +3,11 @@
   "dockerComposeFile": "docker-compose.yml",
   "service": "app",
   "workspaceFolder": "/workspace",
+  "containerEnv": {
+    "http_proxy": "http://host.orb.internal:7897",
+    "https_proxy": "http://host.orb.internal:7897",
+    "all_proxy": "http://host.orb.internal:7897"
+  },
   "forwardPorts": [
     "app:3000",
     "app:3001",
@@ -50,7 +55,6 @@
     }
   },
   "features": {
-    "ghcr.io/christophermacgown/devcontainer-features/minio-client:1": {},
     "ghcr.io/devcontainers/features/common-utils:2": {
       "installZsh": true,
       "configureZshAsDefaultShell": true,
@@ -60,6 +64,5 @@
     },
     "./feature-setup-pure": {}
   },
-  "onCreateCommand": "/bin/sh .devcontainer/oncreate.sh",
   "postCreateCommand": "bun install"
 }
