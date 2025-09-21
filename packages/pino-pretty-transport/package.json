@@ -11,9 +11,9 @@
     ".": "./src/index.ts"
   },
   "dependencies": {
-    "pino-pretty": "^13.0.0"
+    "pino-pretty": "^13.1.1"
   },
   "devDependencies": {
-    "@repo/typescript-config": "*"
+    "@repo/typescript-config": "workspace:*"
   }
 }

@@ -3,9 +3,9 @@
 import { Button } from '@repo/ui/button';
 import { useMutation } from '@tanstack/react-query';
 import { requestVerification } from '~web/libs/actions/api';
+import { getClientAppConfig } from '~web/libs/hooks/get-client-app-config';
 import { buildOAuth2AuthCodeUrl } from '~web/libs/utils/oauth2';
 import { respToEither } from '~web/libs/utils/resp';
-import { getClientAppConfig } from '~web/libs/hooks/get-client-app-config';
 
 // Microsoft Consumer tenant authorize endpoint
 const MSA_AUTHORIZE_ENDPOINT = 'https://login.microsoftonline.com/consumers/oauth2/v2.0/authorize';

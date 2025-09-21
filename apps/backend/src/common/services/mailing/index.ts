@@ -32,11 +32,14 @@ export abstract class MailingService {
 				text: `Your verification code for [${verif.scenario}] is: ${code}\nVerification ID: ${verif.id}`,
 			});
 		} catch (error) {
-			Logger.error('Failed to send verification email:', {
-				email,
-				verificationId: verif.id,
-				error,
-			});
+			Logger.error(
+				{
+					email,
+					verificationId: verif.id,
+					error,
+				},
+				'Failed to send verification email:',
+			);
 
 			// Throw a more specific error
 			throw new MailingError(`Failed to send verification email to ${email}`, error);

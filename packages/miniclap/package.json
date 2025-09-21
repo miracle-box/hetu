@@ -2,7 +2,7 @@
   "name": "@repo/miniclap",
   "version": "0.0.0",
   "devDependencies": {
-    "@repo/typescript-config": "*"
+    "@repo/typescript-config": "workspace:*"
   },
   "exports": {
     ".": "./src/index.ts"
