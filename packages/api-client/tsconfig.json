@@ -3,6 +3,7 @@
   "include": ["./**/*"],
   "compilerOptions": {
     "types": ["bun-types"],
-    "tsBuildInfoFile": ".tsbuildinfo"
+    "tsBuildInfoFile": ".tsbuildinfo",
+    "verbatimModuleSyntax": false
   }
 }
