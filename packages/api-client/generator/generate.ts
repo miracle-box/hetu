@@ -314,8 +314,8 @@ const generateCommonDtoContent = (source: SourceFile, moduleName: string): strin
 	for (const exportedText of sortedExportedVars) {
 		const isEarly = Array.from(exportedUsedByPrivate).some(
 			(name) =>
-			exportedText.includes(`${StringPatterns.ExportConstPrefix}${name}`) ||
-			exportedText.includes(`${StringPatterns.ExportConstPrefix}${name} =`),
+				exportedText.includes(`${StringPatterns.ExportConstPrefix}${name}`) ||
+				exportedText.includes(`${StringPatterns.ExportConstPrefix}${name} =`),
 		);
 		if (isEarly) {
 			earlyExports.push(exportedText);

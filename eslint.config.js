@@ -6,7 +6,12 @@ import * as configs from '@repo/eslint-config/configs';
 export default [
 	// Global ignores
 	{
-		ignores: ['apps/backend/dist/**/*', 'apps/web/.next/**/*', 'apps/web/next-env.d.ts'],
+		ignores: [
+			'apps/backend/dist/**/*',
+			'apps/web/.next/**/*',
+			'apps/web/next-env.d.ts',
+			'packages/api-client/generated/**/*',
+		],
 	},
 
 	// All JavaScript
