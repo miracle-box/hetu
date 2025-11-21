@@ -1,3 +1,6 @@
+// API types and schemas
+export * from './types';
+
 // Errors
 export { ApiErrors } from './generated/shared/errors';
 

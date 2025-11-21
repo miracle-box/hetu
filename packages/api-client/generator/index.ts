@@ -21,6 +21,7 @@ import {
 	generateMainIndex,
 } from './generate';
 import { logger } from './logger';
+import { fixVerbatimModuleSyntax } from './fix-verbatim';
 
 /** Initialize ts-morph project */
 const initializeProject = (): Project => {
@@ -56,7 +57,8 @@ const processSharedFiles = (project: Project, rootDir: string): void => {
 		return;
 	}
 
-	const content = generateSharedFile(sharedSource);
+	let content = generateSharedFile(sharedSource);
+	content = fixVerbatimModuleSyntax(content);
 	project.createSourceFile(OutputPaths.SharedUtils, content, {
 		overwrite: true,
 	});
@@ -64,9 +66,10 @@ const processSharedFiles = (project: Project, rootDir: string): void => {
 
 /** Process shared errors file */
 const processSharedErrors = (project: Project, rootDir: string): void => {
-	const content = generateSharedErrorsFile(project, rootDir);
+	let content = generateSharedErrorsFile(project, rootDir);
 
 	if (content) {
+		content = fixVerbatimModuleSyntax(content);
 		project.createSourceFile(OutputPaths.SharedErrors, content, {
 			overwrite: true,
 		});
@@ -115,7 +118,8 @@ const processModuleDtos = (
 
 		// Generate file if it has createDtoSchemas calls or is common.dto
 		if (calls || isCommon) {
-			const content = generateDtoFile(dtoSource, moduleName, actionName, errorMapping);
+			let content = generateDtoFile(dtoSource, moduleName, actionName, errorMapping);
+			content = fixVerbatimModuleSyntax(content);
 			project.createSourceFile(outputPath, content, {
 				overwrite: true,
 			});
@@ -142,7 +146,8 @@ const processModuleEntities = (
 	if (entitiesSources.length > 0) {
 		const pascalModule = toModuleName(moduleName);
 		const outputPath = OutputPaths.EntitiesModule(pascalModule);
-		const content = generateEntitiesFile(entitiesSources, moduleName);
+		let content = generateEntitiesFile(entitiesSources, moduleName);
+		content = fixVerbatimModuleSyntax(content);
 		project.createSourceFile(outputPath, content, {
 			overwrite: true,
 		});
@@ -192,7 +197,8 @@ const processModule = (
 
 	if (actions.size > 0) {
 		const pascalModule = toModuleName(moduleName);
-		const content = generateModuleIndex(actions);
+		let content = generateModuleIndex(actions);
+		content = fixVerbatimModuleSyntax(content);
 		const outputPath = OutputPaths.ModuleIndex(pascalModule);
 		project.createSourceFile(outputPath, content, {
 			overwrite: true,
@@ -262,7 +268,8 @@ export const main = (): void => {
 			}
 		}
 
-		const content = generateMainIndex(moduleActions);
+		let content = generateMainIndex(moduleActions);
+		content = fixVerbatimModuleSyntax(content);
 		project.createSourceFile(OutputPaths.Index, content, {
 			overwrite: true,
 		});

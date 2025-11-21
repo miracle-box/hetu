@@ -4,7 +4,6 @@
   "compilerOptions": {
     "types": ["bun-types"],
     "tsBuildInfoFile": ".tsbuildinfo",
-    "verbatimModuleSyntax": false,
     "paths": {
       "#generated/*": ["./generated/*"]
     }

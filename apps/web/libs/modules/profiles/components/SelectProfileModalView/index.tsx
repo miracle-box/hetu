@@ -1,6 +1,6 @@
 'use client';
 
-import type { ProfilesEntities } from '@repo/api-client';
+import type { API } from '@repo/api-client';
 import { Button } from '@repo/ui/button';
 import {
 	Dialog,
@@ -28,8 +28,8 @@ function ProfilesList({
 	profiles,
 	onSelect,
 }: {
-	profiles: ProfilesEntities.Profile[];
-	onSelect: (profile: ProfilesEntities.Profile) => void;
+	profiles: API.Profiles.Entities.Profile[];
+	onSelect: (profile: API.Profiles.Entities.Profile) => void;
 }) {
 	return (
 		<div>
@@ -44,8 +44,8 @@ function ProfilesList({
 
 export type Props = {
 	Trigger: React.ReactNode;
-	profiles: ProfilesEntities.Profile[];
-	onSelect: (profile: ProfilesEntities.Profile) => void;
+	profiles: API.Profiles.Entities.Profile[];
+	onSelect: (profile: API.Profiles.Entities.Profile) => void;
 	open: boolean;
 	onOpenChange: (open: boolean) => void;
 };
