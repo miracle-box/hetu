@@ -15,6 +15,7 @@ import {
 	ImportNames,
 	PackageNames,
 	StringPatterns,
+	ImportTransforms,
 } from './constants';
 import {
 	scanAndTransformImports,
@@ -26,6 +27,7 @@ import {
 	extractErrorCodes,
 	extractSharedExports,
 	extractSharedImports,
+	separateTypeAndValueImports,
 } from './transform';
 import { toModuleName, isCommonDto } from './utils';
 
@@ -546,6 +548,184 @@ export const generateSharedFile = (source: SourceFile): string => {
 	return content.join('\n');
 };
 
+/** Generate Shared errors file content */
+export const generateSharedErrorsFile = (project: Project, rootDir: string): string | null => {
+	const errorsPath = `${rootDir}/${FilePatterns.ErrorsMappingPath}`;
+
+	let errorsSource = project.getSourceFile(errorsPath);
+
+	if (!errorsSource) {
+		try {
+			errorsSource = project.addSourceFileAtPath(errorsPath);
+		} catch {
+			const allFiles = project.getSourceFiles();
+			errorsSource = allFiles.find((file) => {
+				const path = file.getFilePath();
+				return path === errorsPath || path.endsWith(FilePatterns.ErrorsMappingPath);
+			});
+		}
+	}
+
+	if (!errorsSource) {
+		console.warn(`Cannot find errors.ts file at ${errorsPath}`);
+		return null;
+	}
+
+	const variableStatements = errorsSource.getVariableStatements();
+	const appErrorsVar = variableStatements.find((vs) => {
+		const decls = vs.getDeclarationList().getDeclarations();
+		return decls.some(
+			(decl) => decl.getNameNode()?.getText() === ErrorConstants.AppErrorsVariableName,
+		);
+	});
+
+	if (!appErrorsVar) {
+		console.warn(
+			`Cannot find ${ErrorConstants.AppErrorsVariableName} constant in ${errorsSource.getFilePath()}`,
+		);
+		return null;
+	}
+
+	const decl = appErrorsVar
+		.getDeclarationList()
+		.getDeclarations()
+		.find((d) => d.getNameNode()?.getText() === ErrorConstants.AppErrorsVariableName);
+
+	if (!decl) {
+		return null;
+	}
+
+	const initializer = decl.getInitializer();
+
+	if (!initializer) {
+		console.warn(`${ErrorConstants.AppErrorsVariableName} has no initializer`);
+		return null;
+	}
+
+	// Get the full text of the variable statement, then replace APP_ERRORS with ApiErrors
+	let varText = appErrorsVar.getText();
+
+	// Extract type definitions that might be needed (like AppErrorInfo)
+	const typeAliases = errorsSource.getTypeAliases();
+	const exportedTypes: string[] = [];
+	for (const typeAlias of typeAliases) {
+		if (typeAlias.isExported()) {
+			const typeText = typeAlias.getText();
+			// Check if this type is used in APP_ERRORS
+			if (varText.includes(typeAlias.getName())) {
+				exportedTypes.push(typeText);
+			}
+		}
+	}
+
+	// Extract imports needed for the errors file
+	const imports: string[] = [];
+	const importDeclarations = errorsSource.getImportDeclarations();
+
+	// Collect all text that might reference imports
+	const allText = [varText, ...exportedTypes].join('\n');
+
+	for (const imp of importDeclarations) {
+		const specifier = imp.getModuleSpecifierValue();
+		const namedImports = imp.getNamedImports();
+		const defaultImport = imp.getDefaultImport();
+		const namespaceImport = imp.getNamespaceImport();
+
+		// Only include imports that are actually used
+		let isUsed = false;
+
+		if (defaultImport) {
+			const importName = defaultImport.getText();
+			if (allText.includes(importName)) {
+				isUsed = true;
+			}
+		}
+
+		if (namespaceImport) {
+			const importName = namespaceImport.getText();
+			if (allText.includes(importName)) {
+				isUsed = true;
+			}
+		}
+
+		for (const namedImport of namedImports) {
+			const importName = namedImport.getText().replace(/^type\s+/, '');
+			if (allText.includes(importName)) {
+				isUsed = true;
+				break;
+			}
+		}
+
+		if (isUsed) {
+			// Transform the import path
+			if (specifier.startsWith(ImportTransforms.SharedPrefix)) {
+				const newPath = specifier.replace(
+					ImportTransforms.SharedPrefix,
+					ImportTransforms.SharedReplacement,
+				);
+				if (defaultImport) {
+					imports.push(`import ${defaultImport.getText()} from '${newPath}';`);
+				} else if (namespaceImport) {
+					imports.push(`import * as ${namespaceImport.getText()} from '${newPath}';`);
+				} else if (namedImports.length > 0) {
+					const { typeImports, valueImports } = separateTypeAndValueImports(
+						namedImports,
+						imp,
+					);
+					if (typeImports.length > 0) {
+						imports.push(
+							`import type { ${typeImports.join(', ')} } from '${newPath}';`,
+						);
+					}
+					if (valueImports.length > 0) {
+						imports.push(`import { ${valueImports.join(', ')} } from '${newPath}';`);
+					}
+				}
+			} else if (specifier === PackageNames.Elysia || specifier === PackageNames.Typebox) {
+				// Keep elysia and typebox imports as-is
+				if (namedImports.length > 0) {
+					const { typeImports, valueImports } = separateTypeAndValueImports(
+						namedImports,
+						imp,
+					);
+					if (typeImports.length > 0) {
+						imports.push(
+							`import type { ${typeImports.join(', ')} } from '${specifier}';`,
+						);
+					}
+					if (valueImports.length > 0) {
+						imports.push(`import { ${valueImports.join(', ')} } from '${specifier}';`);
+					}
+				}
+			}
+		}
+	}
+
+	// Replace APP_ERRORS with ApiErrors
+	varText = varText.replace(
+		new RegExp(`\\b${ErrorConstants.AppErrorsVariableName}\\b`, 'g'),
+		'ApiErrors',
+	);
+
+	const content: string[] = [];
+
+	if (imports.length > 0) {
+		content.push(...imports);
+		content.push('');
+	}
+
+	// Add type definitions first
+	if (exportedTypes.length > 0) {
+		content.push(...exportedTypes);
+		content.push('');
+	}
+
+	// Add the variable declaration
+	content.push(varText);
+
+	return content.join('\n');
+};
+
 /** Generate module index file */
 export const generateModuleIndex = (actions: Set<string>): string => {
 	const content: string[] = [];
@@ -561,6 +741,7 @@ export const generateMainIndex = (moduleActions: Map<string, Set<string>>): stri
 	content.push('// Auto-generated API exports');
 	content.push('');
 	content.push("export * from './shared/utils';");
+	content.push("export * from './shared/errors';");
 	content.push('');
 
 	for (const [moduleName, actions] of moduleActions) {

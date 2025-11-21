@@ -117,7 +117,7 @@ const transformModuleImport = (
 };
 
 /** Separate type and value imports */
-const separateTypeAndValueImports = (
+export const separateTypeAndValueImports = (
 	namedImports: Array<{ getText: () => string }>,
 	importDeclaration: ImportDeclaration,
 ): { typeImports: string[]; valueImports: string[] } => {

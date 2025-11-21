@@ -81,6 +81,7 @@ export const ImportNames = {
 /** Generated file paths */
 export const OutputPaths = {
 	SharedUtils: './generated/shared/utils.ts',
+	SharedErrors: './generated/shared/errors.ts',
 	Index: './generated/index.ts',
 	ModuleIndex: (moduleName: string) => `./generated/${moduleName}/index.ts`,
 	DtoModule: (moduleName: string, actionName: string) =>

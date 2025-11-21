@@ -15,6 +15,7 @@ import {
 	generateDtoFile,
 	generateEntitiesFile,
 	generateSharedFile,
+	generateSharedErrorsFile,
 	generateModuleIndex,
 	generateMainIndex,
 } from './generate';
@@ -58,6 +59,18 @@ const processSharedFiles = (project: Project, rootDir: string): void => {
 	project.createSourceFile(OutputPaths.SharedUtils, content, {
 		overwrite: true,
 	});
+};
+
+/** Process shared errors file */
+const processSharedErrors = (project: Project, rootDir: string): void => {
+	const content = generateSharedErrorsFile(project, rootDir);
+
+	if (content) {
+		project.createSourceFile(OutputPaths.SharedErrors, content, {
+			overwrite: true,
+		});
+		logger.incrementFiles(1); // shared/errors.ts
+	}
 };
 
 /** Process DTO files for a module */
@@ -235,6 +248,8 @@ export const main = (): void => {
 
 		processSharedFiles(project, rootDir);
 		logger.incrementFiles(1); // shared/utils.ts
+
+		processSharedErrors(project, rootDir);
 
 		const moduleActions = new Map<string, Set<string>>();
 		for (const [moduleName, sources] of modules) {
