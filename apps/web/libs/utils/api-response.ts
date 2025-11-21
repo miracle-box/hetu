@@ -1,4 +1,6 @@
 import type { API } from '@repo/api-client';
+import { Left, Right } from 'purify-ts';
+import { eitherToResp } from './resp';
 
 export type EdenError = {
 	status: number;
@@ -115,4 +117,34 @@ export class ApiError extends Error {
 		this.message = cause.message;
 		this.code = cause.error.code;
 	}
+}
+
+/**
+ * Wrapper function for API calls that handles error mapping and converts to Either format.
+ */
+export function handleResponse<
+	TResponse extends { data: unknown; error: null } | { data: null; error: EdenError | null },
+>(
+	edenReturn: Promise<TResponse>,
+): Promise<
+	ReturnType<
+		typeof eitherToResp<
+			| NonNullable<ReturnType<typeof mapApiError<NonNullable<TResponse['error']>>>>
+			| ReturnType<typeof mapFetchError>,
+			NonNullable<TResponse['data']>
+		>
+	>
+> {
+	return (
+		edenReturn
+			.then(({ data, error }) => {
+				const errResp = mapApiError(error);
+				if (errResp) return Left(errResp);
+
+				return Right(data!);
+			})
+			.catch((error) => Left(mapFetchError(error)))
+			// for serialization
+			.then((data) => eitherToResp(data))
+	);
 }

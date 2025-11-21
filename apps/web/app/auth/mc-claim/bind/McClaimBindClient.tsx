@@ -5,7 +5,7 @@ import { useMutation } from '@tanstack/react-query';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { verifyUserMcClaim, getUserMcClaims } from '~web/libs/actions/api';
-import { ApiError } from '~web/libs/utils/api-error';
+import { ApiError } from '~web/libs/utils/api-response';
 import { respToEither } from '~web/libs/utils/resp';
 
 export function McClaimBindClient() {

@@ -1,6 +1,5 @@
 'use client';
 
-import type { Static } from '@sinclair/typebox';
 import { API } from '@repo/api-client';
 import { cn } from '@repo/ui';
 import { Button } from '@repo/ui/button';
@@ -15,13 +14,8 @@ export type Props = {
 
 export function TexturesList({ textures }: Props) {
 	const updateProfilesMut = useMutation({
-		mutationFn: ({
-			id,
-			body,
-		}: {
-			id: string;
-			body: Static<typeof API.Profiles.UpdateProfile.bodySchema>;
-		}) => updateProfile(id, body),
+		mutationFn: ({ id, body }: { id: string; body: API.Profiles.UpdateProfile.Body }) =>
+			updateProfile(id, body),
 	});
 
 	return (

@@ -4,7 +4,7 @@ import { Icon } from '@repo/ui/icon';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef } from 'react';
-import { ApiError } from '~web/libs/utils/api-error';
+import { ApiError } from '~web/libs/utils/api-response';
 import { respToEither } from '~web/libs/utils/resp';
 import { handleOAuth2Signin } from './actions';
 

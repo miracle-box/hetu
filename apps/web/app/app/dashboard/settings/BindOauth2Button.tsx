@@ -4,7 +4,7 @@ import { Button } from '@repo/ui/button';
 import { useMutation } from '@tanstack/react-query';
 import { requestVerification } from '~web/libs/actions/api';
 import { getClientAppConfig } from '~web/libs/hooks/get-client-app-config';
-import { ApiError } from '~web/libs/utils/api-error';
+import { ApiError } from '~web/libs/utils/api-response';
 import { buildOAuth2AuthCodeUrl } from '~web/libs/utils/oauth2';
 import { respToEither } from '~web/libs/utils/resp';
 
