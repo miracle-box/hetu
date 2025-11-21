@@ -1,7 +1,7 @@
 'use client';
 
 import type { Static } from '@sinclair/typebox';
-import { ProfilesDtos, TexturesEntities } from '@repo/api-client';
+import { API } from '@repo/api-client';
 import { cn } from '@repo/ui';
 import { Button } from '@repo/ui/button';
 import { useMutation } from '@tanstack/react-query';
@@ -10,7 +10,7 @@ import { TextureCard } from '~web/libs/basicui/TextureCard';
 import { SelectProfileModal } from './SelectProfileModal';
 
 export type Props = {
-	textures: TexturesEntities.Texture[];
+	textures: API.Textures.Entities.Texture[];
 };
 
 export function TexturesList({ textures }: Props) {
@@ -20,7 +20,7 @@ export function TexturesList({ textures }: Props) {
 			body,
 		}: {
 			id: string;
-			body: Static<(typeof ProfilesDtos.updateProfileDtoSchemas)['body']>;
+			body: Static<typeof API.Profiles.UpdateProfile.bodySchema>;
 		}) => updateProfile(id, body),
 	});
 
@@ -37,7 +37,7 @@ export function TexturesList({ textures }: Props) {
 					<TextureCard key={texture.id} texture={texture}>
 						<SelectProfileModal
 							onSelect={(profile) => {
-								if (texture.type === TexturesEntities.TextureType.CAPE) {
+								if (texture.type === API.Textures.Entities.TextureType.CAPE) {
 									updateProfilesMut.mutate({
 										id: profile.id,
 										body: {

@@ -1,11 +1,11 @@
-import { ApiErrors } from '@repo/api-client';
+import type { API } from '@repo/api-client';
 
 export type EdenError = {
 	status: number;
 	value:
 		| {
 				error: {
-					code: keyof typeof ApiErrors;
+					code: keyof typeof API.ApiErrors;
 					message: string;
 				};
 		  }

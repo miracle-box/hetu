@@ -1,6 +1,6 @@
 'use client';
 
-import type { ProfilesEntities } from '@repo/api-client';
+import type { API } from '@repo/api-client';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { getUserProfiles } from '~web/libs/actions/api';
@@ -10,7 +10,7 @@ import { respToEither } from '~web/libs/utils/resp';
 
 export type Props = {
 	children: React.ReactNode;
-	onSelect: (profile: ProfilesEntities.Profile) => void;
+	onSelect: (profile: API.Profiles.Entities.Profile) => void;
 };
 
 export function SelectProfileModal({ children, onSelect }: Props) {

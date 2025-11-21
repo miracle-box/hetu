@@ -1,7 +1,6 @@
 'use server';
 
-import type { Static } from '@sinclair/typebox';
-import { ProfilesDtos, AuthDtos } from '@repo/api-client';
+import { API } from '@repo/api-client';
 import { Left, Right } from 'purify-ts/Either';
 import { readSession } from '~web/libs/actions/auth';
 import { client as api } from '~web/libs/api/eden';
@@ -144,9 +143,7 @@ export async function inspectVerification(id: string) {
 		.then((data) => eitherToResp(data));
 }
 
-export async function requestVerification(
-	body: Static<(typeof AuthDtos.requestVerificationDtoSchemas)['body']>,
-) {
+export async function requestVerification(body: API.Auth.RequestVerification.Body) {
 	return api.auth.verification.request
 		.post(body)
 		.then(({ data, error }) => {
@@ -246,10 +243,7 @@ export async function refreshSession(authToken: string) {
 		.then((data) => eitherToResp(data));
 }
 
-export async function updateProfile(
-	id: string,
-	body: Static<(typeof ProfilesDtos.updateProfileDtoSchemas)['body']>,
-) {
+export async function updateProfile(id: string, body: API.Profiles.UpdateProfile.Body) {
 	const session = await readSession();
 	return api
 		.profiles({

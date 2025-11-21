@@ -1,6 +1,6 @@
 'use server';
 
-import type { AuthDtos } from '@repo/api-client';
+import type { API } from '@repo/api-client';
 import type { Static } from 'elysia';
 import { Left, Right } from 'purify-ts';
 import { client as api } from '~web/libs/api/eden';
@@ -22,7 +22,7 @@ export async function getOauth2Metadata() {
 }
 
 export async function requestVerification(
-	body: Static<(typeof AuthDtos.requestVerificationDtoSchemas)['body']>,
+	body: Static<typeof API.Auth.RequestVerification.bodySchema>,
 ) {
 	return api.auth.verification.request
 		.post(body)
@@ -37,7 +37,7 @@ export async function requestVerification(
 }
 
 export async function verifyVerification(
-	body: Static<(typeof AuthDtos.verifyVerificationDtoSchemas)['body']>,
+	body: Static<typeof API.Auth.VerifyVerification.bodySchema>,
 ) {
 	return api.auth.verification.verify
 		.post(body)
@@ -51,7 +51,7 @@ export async function verifyVerification(
 		.then((data) => eitherToResp(data));
 }
 
-export async function oauth2Signin(body: Static<(typeof AuthDtos.oauth2SigninDtoSchemas)['body']>) {
+export async function oauth2Signin(body: Static<typeof API.Auth.Oauth2Signin.bodySchema>) {
 	return api.auth.oauth2.signin
 		.post(body)
 		.then(({ data, error }) => {
@@ -65,7 +65,7 @@ export async function oauth2Signin(body: Static<(typeof AuthDtos.oauth2SigninDto
 }
 
 export async function inspectOauth2Binding(
-	params: Static<(typeof AuthDtos.checkOauth2BindingDtoSchemas)['params']>,
+	params: Static<typeof API.Auth.CheckOauth2Binding.paramSchema>,
 ) {
 	const session = await readSession();
 
@@ -88,7 +88,7 @@ export async function inspectOauth2Binding(
 }
 
 export async function confirmOauth2Binding(
-	params: Static<(typeof AuthDtos.confirmOauth2BindingDtoSchemas)['params']>,
+	params: Static<typeof API.Auth.ConfirmOauth2Binding.paramSchema>,
 ) {
 	const session = await readSession();
 

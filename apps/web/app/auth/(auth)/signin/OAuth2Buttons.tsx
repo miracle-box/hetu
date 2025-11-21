@@ -1,7 +1,7 @@
 'use client';
 
 import type { Static } from '@sinclair/typebox';
-import { AuthDtos } from '@repo/api-client';
+import type { API } from '@repo/api-client';
 import { Button } from '@repo/ui/button';
 import { useMutation } from '@tanstack/react-query';
 import { requestVerification } from '~web/libs/actions/api/auth';
@@ -10,7 +10,7 @@ import { buildOAuth2AuthCodeUrl } from '~web/libs/utils/oauth2';
 import { respToEither } from '~web/libs/utils/resp';
 
 export type Props = {
-	oauth2Metadata: Static<(typeof AuthDtos.getOauth2MetadataDtoSchemas.response)['200']>;
+	oauth2Metadata: Static<typeof API.Auth.GetOauth2Metadata.response200Schema>;
 	config: {
 		publicUrl: string;
 	};
