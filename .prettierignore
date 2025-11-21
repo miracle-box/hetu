@@ -1,0 +1,13 @@
+# Generated files
+packages/api-client/generated/**/*
+
+# Build outputs
+apps/backend/dist/**/*
+apps/web/.next/**/*
+
+# Dependencies
+node_modules
+
+# Misc
+*.tsbuildinfo
+*.eslintcache

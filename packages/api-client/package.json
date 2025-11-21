@@ -10,8 +10,19 @@
   "exports": {
     ".": "./index.ts"
   },
+  "imports": {
+    "#generated/*": "./generated/*.ts"
+  },
+  "files": [
+    "generated",
+    "index.ts",
+    "types.ts"
+  ],
   "private": true,
   "scripts": {
+    "generate": "bun generator/index.ts",
+    "generate:watch": "bun generator/watch.ts",
+    "dev": "bun generator/watch.ts",
     "typecheck": "tsc --noEmit",
     "typecheck:tsgo": "tsgo --noEmit"
   }
