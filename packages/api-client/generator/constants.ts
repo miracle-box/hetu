@@ -1,3 +1,6 @@
+/** Backend TypeScript config path */
+export const TSConfigPath = '../../apps/backend/tsconfig.json';
+
 /** Whitelist: functions and types to copy from backend */
 export const WhitelistedIdentifiers = [
 	'createEnumLikeValuesSchema',

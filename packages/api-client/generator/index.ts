@@ -8,6 +8,7 @@ import {
 	OutputPaths,
 	FunctionNames,
 	ImportPatterns,
+	TSConfigPath,
 } from './constants';
 import { extractModuleAndAction, toModuleName, toActionName, isCommonDto } from './utils';
 import {
@@ -24,7 +25,7 @@ import { logger } from './logger';
 /** Initialize ts-morph project */
 const initializeProject = (): Project => {
 	const project = new Project({
-		tsConfigFilePath: '../../apps/backend/tsconfig.json',
+		tsConfigFilePath: TSConfigPath,
 	});
 
 	return project;
