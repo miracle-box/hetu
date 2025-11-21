@@ -1,4 +1,11 @@
-import { Project, SyntaxKind, Node, VariableDeclaration, ReturnStatement, AsExpression } from 'ts-morph';
+import {
+	Project,
+	SyntaxKind,
+	Node,
+	VariableDeclaration,
+	ReturnStatement,
+	AsExpression,
+} from 'ts-morph';
 
 function isInValuePosition(node: Node): boolean {
 	if (isInTypePositionHelper(node)) {
@@ -16,16 +23,30 @@ function isInValuePosition(node: Node): boolean {
 
 		if (parentKind === SyntaxKind.VariableDeclaration) {
 			const initializer: Node | undefined = (parent as VariableDeclaration).getInitializer();
-			if (initializer && (initializer === current || initializer.getDescendants().some((d: Node) => d === current))) {
+			if (
+				initializer &&
+				(initializer === current ||
+					initializer.getDescendants().some((d: Node) => d === current))
+			) {
 				if (!isInTypePositionHelper(parent)) {
 					return true;
 				}
 			}
-		} else if (parentKind === SyntaxKind.Identifier || parentKind === SyntaxKind.PropertyAccessExpression) {
+		} else if (
+			parentKind === SyntaxKind.Identifier ||
+			parentKind === SyntaxKind.PropertyAccessExpression
+		) {
 			const grandParent = parent.getParent();
 			if (grandParent?.getKind() === SyntaxKind.VariableDeclaration) {
-				const initializer: Node | undefined = (grandParent as VariableDeclaration).getInitializer();
-				if (initializer && (initializer === current || initializer === parent || initializer.getDescendants().some((d: Node) => d === current))) {
+				const initializer: Node | undefined = (
+					grandParent as VariableDeclaration
+				).getInitializer();
+				if (
+					initializer &&
+					(initializer === current ||
+						initializer === parent ||
+						initializer.getDescendants().some((d: Node) => d === current))
+				) {
 					if (!isInTypePositionHelper(grandParent)) {
 						return true;
 					}

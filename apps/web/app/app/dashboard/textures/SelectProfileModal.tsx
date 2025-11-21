@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { getUserProfiles } from '~web/libs/actions/api';
 import { SelectProfileModalView } from '~web/libs/modules/profiles/components/SelectProfileModalView';
-import { ApiError } from '~web/libs/utils/api-error';
+import { ApiError } from '~web/libs/utils/api-response';
 import { respToEither } from '~web/libs/utils/resp';
 
 export type Props = {

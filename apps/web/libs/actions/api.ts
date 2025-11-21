@@ -5,7 +5,7 @@ import { Left, Right } from 'purify-ts/Either';
 import { readSession } from '~web/libs/actions/auth';
 import { client as api } from '~web/libs/api/eden';
 import { eitherToResp } from '~web/libs/utils/resp';
-import { mapApiError, mapFetchError } from '../utils/api-error';
+import { mapApiError, mapFetchError } from '../utils/api-response';
 
 export async function getUserInfo() {
 	const session = await readSession();
