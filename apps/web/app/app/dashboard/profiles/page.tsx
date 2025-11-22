@@ -2,14 +2,14 @@ import { cn } from '@repo/ui';
 import { Button } from '@repo/ui/button';
 import { Large } from '@repo/ui/typography';
 import { getTranslations } from 'next-intl/server';
-import { getUserProfiles } from '~web/libs/actions/api';
+import { getMyProfiles } from '~web/libs/actions/api/me';
 import { ProfileCard } from '~web/libs/basicui/ProfileCard';
 import { respToEither } from '~web/libs/utils/resp';
 import { CreateProfileModal } from './CreateProfileModal';
 
 export default async function Profiles() {
 	const t = await getTranslations();
-	const profilesResp = respToEither(await getUserProfiles());
+	const profilesResp = respToEither(await getMyProfiles());
 
 	return (
 		<main className="container mx-auto">

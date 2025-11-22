@@ -2,7 +2,7 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
-import { getUserMcClaims } from '~web/libs/actions/api';
+import { getMyMcClaims } from '~web/libs/actions/api/me';
 import { respToEither } from '~web/libs/utils/resp';
 import { McClaimActions } from './McClaimActions';
 
@@ -13,7 +13,7 @@ interface Profile {
 }
 
 interface McClaimsListClientProps {
-	initialData: Awaited<ReturnType<typeof getUserMcClaims>>;
+	initialData: Awaited<ReturnType<typeof getMyMcClaims>>;
 	profiles: Profile[];
 }
 
@@ -26,7 +26,7 @@ export function McClaimsListClient({ initialData, profiles }: McClaimsListClient
 		error,
 	} = useQuery({
 		queryKey: ['user-mc-claims'],
-		queryFn: async () => respToEither(await getUserMcClaims()),
+		queryFn: async () => respToEither(await getMyMcClaims()),
 		initialData: respToEither(initialData),
 	});
 

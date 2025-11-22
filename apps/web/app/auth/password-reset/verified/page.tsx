@@ -2,7 +2,7 @@ import { Button } from '@repo/ui/button';
 import { Large } from '@repo/ui/typography';
 import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
-import { inspectVerification, verifyVerification } from '~web/libs/actions/api';
+import { inspectVerification, verifyVerification } from '~web/libs/actions/api/auth';
 import { respToEither } from '~web/libs/utils/resp';
 import { NewPassword } from './NewPassword';
 
@@ -16,7 +16,7 @@ export default async function Verified({ searchParams }: { searchParams: SearchP
 		return <ThisPageLayout>{t('auth.passwordReset.page.verified.invalidLink')}</ThisPageLayout>;
 	}
 
-	const verif = respToEither(await inspectVerification(id));
+	const verif = respToEither(await inspectVerification({ id }));
 	if (verif.isLeft() || !verif.isRight()) {
 		return <ThisPageLayout>{t('auth.passwordReset.page.verified.linkExpired')}</ThisPageLayout>;
 	}

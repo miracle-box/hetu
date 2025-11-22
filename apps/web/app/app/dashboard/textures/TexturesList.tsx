@@ -5,7 +5,7 @@ import { cn } from '@repo/ui';
 import { Button } from '@repo/ui/button';
 import { useMutation } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
-import { updateProfile } from '~web/libs/actions/api';
+import { updateProfile } from '~web/libs/actions/api/profiles';
 import { TextureCard } from '~web/libs/basicui/TextureCard';
 import { SelectProfileModal } from './SelectProfileModal';
 
@@ -17,7 +17,7 @@ export function TexturesList({ textures }: Props) {
 	const t = useTranslations();
 	const updateProfilesMut = useMutation({
 		mutationFn: ({ id, body }: { id: string; body: API.Profiles.UpdateProfile.Body }) =>
-			updateProfile(id, body),
+			updateProfile({ id }, body),
 	});
 
 	return (

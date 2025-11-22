@@ -2,7 +2,7 @@
 
 import type { SignupFormValues } from '~web/libs/modules/auth/forms/SignupForm';
 import { EitherAsync } from 'purify-ts/EitherAsync';
-import { signup, verifyVerification } from '~web/libs/actions/api';
+import { signup, verifyVerification } from '~web/libs/actions/api/auth';
 import { sessionToCookie, writeSessionCookie } from '~web/libs/actions/auth';
 import { formError } from '~web/libs/utils/form';
 import { eitherToResp, respToEither } from '~web/libs/utils/resp';

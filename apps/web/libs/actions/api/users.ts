@@ -5,63 +5,54 @@ import { client as api } from '~web/libs/api/eden';
 import { handleResponse } from '~web/libs/utils/api-response';
 import { readSession } from '../auth';
 
-export async function getUserInfo() {
+export async function getUserInfo(params: API.Users.GetUserInfo.Param) {
 	const session = await readSession();
 
 	return handleResponse(
-		api
-			.users({
-				id: session.userId,
-			})
-			.get({
-				headers: { Authorization: `Bearer ${session.authToken}` },
-			}),
-	);
-}
-
-export async function getUserProfiles() {
-	const session = await readSession();
-
-	return handleResponse(
-		api
-			.users({
-				id: session.userId,
-			})
-			.profiles.get({
-				headers: { Authorization: `Bearer ${session.authToken}` },
-			}),
-	);
-}
-
-export async function getUserTextures() {
-	const session = await readSession();
-
-	return handleResponse(
-		api
-			.users({
-				id: session.userId,
-			})
-			.textures.get({
-				headers: { Authorization: `Bearer ${session.authToken}` },
-			}),
-	);
-}
-
-export async function getUserMcClaims() {
-	const session = await readSession();
-
-	return handleResponse(
-		api.users({ id: session.userId })['mc-claims'].get({
+		api.users(params).get({
 			headers: { Authorization: `Bearer ${session.authToken}` },
 		}),
 	);
 }
 
-export async function verifyUserMcClaim(body: API.Users.VerifyMcClaim.Body) {
+export async function getUserProfiles(params: API.Users.GetUserProfiles.Param) {
 	const session = await readSession();
 
 	return handleResponse(
-		api.users({ id: session.userId })['mc-claims'].post(body, {
+		api.users(params).profiles.get({
+			headers: { Authorization: `Bearer ${session.authToken}` },
+		}),
+	);
+}
+
+export async function getUserTextures(params: API.Users.GetUserTextures.Param) {
+	const session = await readSession();
+
+	return handleResponse(
+		api.users(params).textures.get({
+			headers: { Authorization: `Bearer ${session.authToken}` },
+		}),
+	);
+}
+
+export async function getUserMcClaims(params: API.Users.ListMcClaims.Param) {
+	const session = await readSession();
+
+	return handleResponse(
+		api.users(params)['mc-claims'].get({
+			headers: { Authorization: `Bearer ${session.authToken}` },
+		}),
+	);
+}
+
+export async function verifyUserMcClaim(
+	params: API.Users.VerifyMcClaim.Param,
+	body: API.Users.VerifyMcClaim.Body,
+) {
+	const session = await readSession();
+
+	return handleResponse(
+		api.users(params)['mc-claims'].post(body, {
 			headers: { Authorization: `Bearer ${session.authToken}` },
 		}),
 	);

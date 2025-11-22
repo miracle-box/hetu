@@ -2,7 +2,7 @@
 
 import type { NewPasswordFormValues } from '~web/libs/modules/auth/forms/NewPasswordForm';
 import { EitherAsync } from 'purify-ts/EitherAsync';
-import { resetPassword } from '~web/libs/actions/api';
+import { resetPassword } from '~web/libs/actions/api/auth';
 import { sessionToCookie, writeSessionCookie } from '~web/libs/actions/auth';
 import { formError } from '~web/libs/utils/form';
 import { eitherToResp, respToEither } from '~web/libs/utils/resp';

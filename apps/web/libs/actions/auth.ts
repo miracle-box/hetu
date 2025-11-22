@@ -7,7 +7,7 @@ import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { EitherAsync } from 'purify-ts/EitherAsync';
 import { cache } from 'react';
-import { refreshSession, renewSession } from './api';
+import { refreshSession, renewSession } from './api/auth';
 import { ServerAppConfig } from '../utils/app-config/server';
 import { respToEither } from '../utils/resp';
 

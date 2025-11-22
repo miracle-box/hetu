@@ -2,7 +2,8 @@
 
 import type { CreateTextureFormValues } from '~web/libs/modules/textures/forms/CreateTextureForm';
 import { EitherAsync } from 'purify-ts/EitherAsync';
-import { createTexture, uploadFile } from '~web/libs/actions/api';
+import { uploadFile } from '~web/libs/actions/api/files';
+import { createTexture } from '~web/libs/actions/api/textures';
 import { formError } from '~web/libs/utils/form';
 import { eitherToResp, respToEither } from '~web/libs/utils/resp';
 

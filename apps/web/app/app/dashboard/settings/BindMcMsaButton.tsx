@@ -3,7 +3,7 @@
 import { Button } from '@repo/ui/button';
 import { useMutation } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
-import { requestVerification } from '~web/libs/actions/api';
+import { requestVerification } from '~web/libs/actions/api/auth';
 import { useClientAppConfig } from '~web/libs/hooks/use-client-app-config';
 import { buildOAuth2AuthCodeUrl } from '~web/libs/utils/oauth2';
 import { respToEither } from '~web/libs/utils/resp';

@@ -4,7 +4,7 @@ import { mergeForm, useStore } from '@tanstack/react-form';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import React from 'react';
-import { createProfile } from '~web/libs/actions/api';
+import { createProfile } from '~web/libs/actions/api/profiles';
 import { CreateProfileModalView } from '~web/libs/modules/profiles/components/CreateProfileModalView';
 import {
 	useCreateProfileForm,
