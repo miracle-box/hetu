@@ -37,10 +37,6 @@ const nextConfig = {
 		return BUILD_ID;
 	},
 
-	// Type checking and linting should be in individual tasks.
-	eslint: {
-		ignoreDuringBuilds: true,
-	},
 	typescript: {
 		ignoreBuildErrors: true,
 	},
