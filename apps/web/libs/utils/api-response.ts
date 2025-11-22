@@ -1,4 +1,5 @@
 import type { API } from '@repo/api-client';
+import { getTranslations } from 'next-intl/server';
 import { Left, Right } from 'purify-ts';
 import { eitherToResp } from './resp';
 
@@ -36,9 +37,9 @@ type SuccessStatus =
 	| 307
 	| 308;
 
-export function mapApiError<TErrorResponse extends EdenError>(
+export async function mapApiError<TErrorResponse extends EdenError>(
 	error: TErrorResponse | null,
-): {
+): Promise<{
 	error:
 		| Extract<
 				Exclude<TErrorResponse, { status: SuccessStatus }>,
@@ -47,31 +48,14 @@ export function mapApiError<TErrorResponse extends EdenError>(
 		// Workaround for adding fetch-error causing typing errors.
 		| { path: string; code: 'fetch-error'; message: string; details: unknown };
 	message: string;
-} | null {
+} | null> {
 	if (!error) return null;
 	if (error.status < 400 || error.status > 599) return null;
 	if (!error.value || !('error' in error.value)) return null;
 
-	let message: string;
-	switch (error.value.error.code) {
-		case 'unknown-error':
-			message = 'Unknown error occured.';
-			break;
-		case 'invalid-body':
-			message = 'Invalid body.';
-			break;
-		case 'internal-error':
-			message = 'Internal server error.';
-			break;
-		case 'unauthorized':
-			message = 'Unauthorized.';
-			break;
-		case 'forbidden':
-			message = 'Forbidden.';
-			break;
-		default:
-			message = error.value.error.message;
-	}
+	const errorCode = error.value.error.code;
+	const t = await getTranslations('common.apiErrors');
+	const message = t(errorCode);
 
 	return {
 		error: error.value.error,
@@ -79,15 +63,18 @@ export function mapApiError<TErrorResponse extends EdenError>(
 	};
 }
 
-export function mapFetchError(error: unknown) {
+export async function mapFetchError(error: unknown) {
+	const t = await getTranslations('common.apiErrors');
+	const message = t('fetch-error');
+
 	const result = {
 		error: {
 			path: '',
-			code: 'fetch-error',
-			message: 'Failed to fetch data.',
+			code: 'fetch-error' as const,
+			message,
 			details: error,
 		},
-		message: 'Failed to fetch data.',
+		message,
 	} as const;
 
 	console.log('Failed to fetch data:', result);
@@ -129,21 +116,21 @@ export function handleResponse<
 ): Promise<
 	ReturnType<
 		typeof eitherToResp<
-			| NonNullable<ReturnType<typeof mapApiError<NonNullable<TResponse['error']>>>>
-			| ReturnType<typeof mapFetchError>,
+			| NonNullable<Awaited<ReturnType<typeof mapApiError<NonNullable<TResponse['error']>>>>>
+			| Awaited<ReturnType<typeof mapFetchError>>,
 			NonNullable<TResponse['data']>
 		>
 	>
 > {
 	return (
 		edenReturn
-			.then(({ data, error }) => {
-				const errResp = mapApiError(error);
+			.then(async ({ data, error }) => {
+				const errResp = await mapApiError(error);
 				if (errResp) return Left(errResp);
 
 				return Right(data!);
 			})
-			.catch((error) => Left(mapFetchError(error)))
+			.catch(async (error) => Left(await mapFetchError(error)))
 			// for serialization
 			.then((data) => eitherToResp(data))
 	);

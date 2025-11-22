@@ -29,7 +29,7 @@ export default function PasswordReset() {
 					scenario: 'password_reset',
 					target: values.email,
 				}),
-			).mapLeft((message) => formError(message)),
+			).mapLeft(({ message }) => formError(message)),
 		onSuccess: (resp) => {
 			resp.mapLeft((state) => mergeForm<PasswordResetFormValues>(form, state)).ifRight(() =>
 				router.push('/auth/password-reset/email-sent'),

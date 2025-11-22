@@ -8,7 +8,7 @@ import { readSession } from '../auth';
 export async function uploadFile(body: API.Files.UploadFile.Body) {
 	const session = await readSession();
 
-	return handleResponse(
+	return await handleResponse(
 		api.files.post(
 			{
 				type: body.type,

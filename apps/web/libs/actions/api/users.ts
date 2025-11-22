@@ -8,7 +8,7 @@ import { readSession } from '../auth';
 export async function getUserInfo(params: API.Users.GetUserInfo.Param) {
 	const session = await readSession();
 
-	return handleResponse(
+	return await handleResponse(
 		api.users(params).get({
 			headers: { Authorization: `Bearer ${session.authToken}` },
 		}),
@@ -18,7 +18,7 @@ export async function getUserInfo(params: API.Users.GetUserInfo.Param) {
 export async function getUserProfiles(params: API.Users.GetUserProfiles.Param) {
 	const session = await readSession();
 
-	return handleResponse(
+	return await handleResponse(
 		api.users(params).profiles.get({
 			headers: { Authorization: `Bearer ${session.authToken}` },
 		}),
@@ -28,7 +28,7 @@ export async function getUserProfiles(params: API.Users.GetUserProfiles.Param) {
 export async function getUserTextures(params: API.Users.GetUserTextures.Param) {
 	const session = await readSession();
 
-	return handleResponse(
+	return await handleResponse(
 		api.users(params).textures.get({
 			headers: { Authorization: `Bearer ${session.authToken}` },
 		}),
@@ -38,7 +38,7 @@ export async function getUserTextures(params: API.Users.GetUserTextures.Param) {
 export async function getUserMcClaims(params: API.Users.ListMcClaims.Param) {
 	const session = await readSession();
 
-	return handleResponse(
+	return await handleResponse(
 		api.users(params)['mc-claims'].get({
 			headers: { Authorization: `Bearer ${session.authToken}` },
 		}),
@@ -51,7 +51,7 @@ export async function verifyUserMcClaim(
 ) {
 	const session = await readSession();
 
-	return handleResponse(
+	return await handleResponse(
 		api.users(params)['mc-claims'].post(body, {
 			headers: { Authorization: `Bearer ${session.authToken}` },
 		}),
@@ -61,7 +61,7 @@ export async function verifyUserMcClaim(
 export async function deleteMcClaim(params: API.Users.RemoveMcClaim.Param) {
 	const session = await readSession();
 
-	return handleResponse(
+	return await handleResponse(
 		api
 			.users({ id: params.id })
 			['mc-claims']({ mcClaimId: params.mcClaimId })
@@ -80,7 +80,7 @@ export async function updateMcClaim(
 ) {
 	const session = await readSession();
 
-	return handleResponse(
+	return await handleResponse(
 		api
 			.users({ id: params.id })
 			['mc-claims']({ mcClaimId: params.mcClaimId })

@@ -8,7 +8,7 @@ import { readSession } from '../auth';
 export async function createProfile(body: API.Profiles.CreateProfile.Body) {
 	const session = await readSession();
 
-	return handleResponse(
+	return await handleResponse(
 		api.profiles.post(body, {
 			headers: { Authorization: `Bearer ${session.authToken}` },
 		}),
@@ -20,7 +20,7 @@ export async function updateProfile(
 	body: API.Profiles.UpdateProfile.Body,
 ) {
 	const session = await readSession();
-	return handleResponse(
+	return await handleResponse(
 		api.profiles(params).put(body, {
 			headers: { Authorization: `Bearer ${session.authToken}` },
 		}),
@@ -30,7 +30,7 @@ export async function updateProfile(
 export async function deleteProfile(params: API.Profiles.DeleteProfile.Param) {
 	const session = await readSession();
 
-	return handleResponse(
+	return await handleResponse(
 		api.profiles(params).delete(
 			{},
 			{

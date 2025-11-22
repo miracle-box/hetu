@@ -121,7 +121,7 @@ function FormFieldMessage({ className, children, ...props }: React.ComponentProp
 	return (
 		<p
 			id={`${formId}-${field.name}-msg`}
-			className={cn('text-destructive text-[0.8rem] font-medium', className)}
+			className={cn('text-destructive text-[0.8rem]', className)}
 			{...props}
 		>
 			{body}
@@ -146,7 +146,7 @@ function FormMessage({ className, children, ...props }: React.ComponentPropsWith
 	if (!body) return null;
 
 	return (
-		<p className={cn('text-destructive font-medium', className)} {...props}>
+		<p className={cn('text-destructive text-sm', className)} {...props}>
 			{body}
 		</p>
 	);

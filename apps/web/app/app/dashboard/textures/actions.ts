@@ -30,7 +30,7 @@ export async function handleCreateTexture(form: CreateTextureFormValues) {
 				}),
 			),
 		)
-		.mapLeft((message) => formError(message));
+		.mapLeft(({ message }) => formError(message));
 
 	return eitherToResp(await requests.run());
 }

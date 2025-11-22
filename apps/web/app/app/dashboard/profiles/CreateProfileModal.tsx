@@ -22,7 +22,7 @@ export function CreateProfileModal({ children }: Props) {
 
 	const request = useMutation({
 		mutationFn: async (values: CreateProfileFormValues) =>
-			respToEither(await createProfile(values)).mapLeft((error) => formError(error)),
+			respToEither(await createProfile(values)).mapLeft(({ message }) => formError(message)),
 		onSuccess: (resp) =>
 			resp
 				.map(({ profile }) => {

@@ -29,7 +29,7 @@ export async function handleSignup(form: SignupFormValues) {
 		.map(({ session }) => sessionToCookie(session))
 		// Do not return session to client!
 		.map((session) => writeSessionCookie(session))
-		.mapLeft((message) => formError(message));
+		.mapLeft(({ message }) => formError(message));
 
 	return eitherToResp(await requests.run());
 }
