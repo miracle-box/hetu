@@ -2,7 +2,7 @@ import { Large } from '@repo/ui/typography';
 import { redirect } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
 import { verifyVerification } from '~web/libs/actions/api/auth';
-import { buildClientAppConfig } from '~web/libs/utils/app-config/client';
+import { getClientAppConfig } from '~web/libs/utils/app-config/client';
 import { respToEither } from '~web/libs/utils/resp';
 import { ClientSignin } from './ClientSignin';
 
@@ -44,7 +44,7 @@ export default async function OAuthCallback({ searchParams }: Props) {
 		);
 	}
 
-	const config = buildClientAppConfig();
+	const config = getClientAppConfig();
 	const verificationId = search['state'];
 	const code = search['code'];
 

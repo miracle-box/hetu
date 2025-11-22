@@ -1,6 +1,6 @@
 import 'server-only';
 
-import { buildClientAppConfig, type ClientAppConfig } from './client';
+import { getClientAppConfig, type ClientAppConfig } from './client';
 
 export type ServerAppConfig = {
 	client: ClientAppConfig;
@@ -11,7 +11,7 @@ export type ServerAppConfig = {
 
 function getServerAppConfig(): ServerAppConfig {
 	return {
-		client: buildClientAppConfig(),
+		client: getClientAppConfig(),
 
 		jwtSecret: process.env.JWT_SECRET,
 		apiRoot: process.env.API_ROOT,

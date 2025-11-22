@@ -6,7 +6,7 @@ import { DataList, DataListItem, DataListLabel, DataListValue } from '@repo/ui/d
 import { InlineCode, Large } from '@repo/ui/typography';
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
-import { getClientAppConfig } from '~web/libs/hooks/get-client-app-config';
+import { useClientAppConfig } from '~web/libs/hooks/use-client-app-config';
 
 export type Props = {
 	texture: {
@@ -22,7 +22,7 @@ export type Props = {
 
 export function TextureCard({ texture, children }: Props) {
 	const t = useTranslations();
-	const clientAppConfig = getClientAppConfig();
+	const clientAppConfig = useClientAppConfig();
 
 	return (
 		<Card>
