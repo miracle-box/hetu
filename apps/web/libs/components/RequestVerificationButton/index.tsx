@@ -4,6 +4,7 @@ import { Button } from '@repo/ui/button';
 import { useCountdown } from '@repo/ui/hooks/use-countdown';
 import { Icon } from '@repo/ui/icon';
 import { useMutation } from '@tanstack/react-query';
+import { useTranslations } from 'next-intl';
 import { requestVerification } from '~web/libs/actions/api/auth';
 import { respToEither } from '~web/libs/utils/resp';
 
@@ -24,6 +25,7 @@ export function RequestVerificationButton({
 	onVerificationRequested,
 	onError,
 }: Props) {
+	const t = useTranslations();
 	const [countdown, setCountdown] = useCountdown(0);
 	const requestVerificationMutation = useMutation({
 		mutationFn: async (target: string) =>
@@ -59,12 +61,12 @@ export function RequestVerificationButton({
 			{requestVerificationMutation.isPending ? (
 				<>
 					<Icon.Loader2 className="mr-2 h-4 w-4 animate-spin" />
-					Sending...
+					{t('common.buttons.sending')}
 				</>
 			) : countdown > 0 ? (
-				`Resend (${countdown}s)`
+				t('common.buttons.resend', { countdown })
 			) : (
-				'Send Code'
+				t('common.buttons.sendCode')
 			)}
 		</Button>
 	);

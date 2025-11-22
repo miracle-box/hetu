@@ -1,7 +1,9 @@
 import type { Metadata } from 'next';
 import { cn } from '@repo/ui';
+import { getMessages } from 'next-intl/server';
 import React from 'react';
 import './globals.css';
+import { getLocale } from '~web/libs/actions/i18n';
 import ClientConfigProvider from './client-config-provider';
 import { ClientProviders } from './client-providers';
 import { fontClasses } from '../libs/styling/fonts';
@@ -11,15 +13,18 @@ export const metadata: Metadata = {
 	description: 'Minecraft Account System',
 };
 
-export default function RootLayout({
+export default async function RootLayout({
 	children,
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
+	const locale = await getLocale();
+	const messages = await getMessages();
+
 	return (
 		<html
 			suppressHydrationWarning
-			lang="en"
+			lang={locale}
 			className={cn(fontClasses, 'h-full min-h-[100dvh]')}
 		>
 			<body className="h-full min-h-[100dvh]">
@@ -28,7 +33,7 @@ export default function RootLayout({
 					className="bg-background relative h-full min-h-full w-full"
 					data-vaul-drawer-wrapper
 				>
-					<ClientProviders>
+					<ClientProviders locale={locale} messages={messages}>
 						<ClientConfigProvider>{children}</ClientConfigProvider>
 					</ClientProviders>
 				</div>

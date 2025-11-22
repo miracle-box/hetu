@@ -1,31 +1,43 @@
 import { Large } from '@repo/ui/typography';
+import { getTranslations } from 'next-intl/server';
 import { getOauth2Metadata } from '~web/libs/actions/api/auth';
+import { getLocale } from '~web/libs/actions/i18n';
 import { respToEither } from '~web/libs/utils/resp';
 import { BindMcMsaButton } from './BindMcMsaButton';
 import { BindOauth2Button } from './BindOauth2Button';
+import { LocaleSelector } from './LocaleSelector';
 import McClaimsList from './McClaimsList';
 
 // We fetch data on server side, and wants to opt-out pre-rendering.
 export const dynamic = 'force-dynamic';
 
 export default async function Settings() {
+	const t = await getTranslations();
+	const locale = await getLocale();
 	const providersResult = respToEither(await getOauth2Metadata());
 	if (providersResult.isLeft()) {
 		return (
 			<main className="container mx-auto">
 				<div className="flex flex-col gap-4">
-					<Large>Settings</Large>
+					<Large>{t('dashboard.settings.page.title')}</Large>
+
+					{/* Language Settings */}
+					<section className="flex flex-col gap-2">
+						<Large>{t('dashboard.settings.page.language.title')}</Large>
+						<LocaleSelector currentLocale={locale} />
+					</section>
 
 					{/* OAuth2 account bindings */}
 					<div className="flex flex-col gap-2">
 						<div>
-							Failed to load OAuth2 providers: {providersResult.extract().message}
+							{t('dashboard.settings.page.oauth2.loadFailed')}:{' '}
+							{providersResult.extract().message}
 						</div>
 					</div>
 
 					{/* Mojang Verification */}
 					<section className="flex flex-col gap-2">
-						<Large>Mojang 正版验证</Large>
+						<Large>{t('dashboard.settings.page.mcClaim.title')}</Large>
 						<BindMcMsaButton />
 						<McClaimsList />
 					</section>
@@ -38,7 +50,13 @@ export default async function Settings() {
 		return (
 			<main className="container mx-auto">
 				<div className="flex flex-col gap-4">
-					<Large>Settings</Large>
+					<Large>{t('dashboard.settings.page.title')}</Large>
+
+					{/* Language Settings */}
+					<section className="flex flex-col gap-2">
+						<Large>{t('dashboard.settings.page.language.title')}</Large>
+						<LocaleSelector currentLocale={locale} />
+					</section>
 
 					{/* OAuth2 account bindings */}
 					<section className="flex flex-col gap-2">
@@ -46,12 +64,12 @@ export default async function Settings() {
 							Object.entries(providers).map(([name, metadata]) => (
 								<BindOauth2Button key={name} provider={name} metadata={metadata} />
 							))}
-						{!providers && <div>No OAuth2 providers configured.</div>}
+						{!providers && <div>{t('dashboard.settings.page.oauth2.noProviders')}</div>}
 					</section>
 
 					{/* Mojang Verification */}
 					<section className="flex flex-col gap-2">
-						<Large>Mojang 正版验证</Large>
+						<Large>{t('dashboard.settings.page.mcClaim.title')}</Large>
 						<BindMcMsaButton />
 						<McClaimsList />
 					</section>

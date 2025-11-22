@@ -23,6 +23,7 @@ import {
 	DrawerTrigger,
 } from '@repo/ui/drawer';
 import { useBreakpoint } from '@repo/ui/hooks/use-breakpoint';
+import { useTranslations } from 'next-intl';
 
 function ProfilesList({
 	profiles,
@@ -51,6 +52,7 @@ export type Props = {
 };
 
 export function SelectProfileModalView({ Trigger, profiles, onSelect, open, onOpenChange }: Props) {
+	const t = useTranslations();
 	const widerThanSm = useBreakpoint('sm');
 
 	return widerThanSm ? (
@@ -59,15 +61,21 @@ export function SelectProfileModalView({ Trigger, profiles, onSelect, open, onOp
 
 			<DialogContent>
 				<DialogHeader>
-					<DialogTitle>Select profile</DialogTitle>
-					<DialogDescription>Select a profile to use this texture on.</DialogDescription>
+					<DialogTitle>
+						{t('dashboard.profiles.components.selectProfileModal.title')}
+					</DialogTitle>
+					<DialogDescription>
+						{t('dashboard.profiles.components.selectProfileModal.description')}
+					</DialogDescription>
 				</DialogHeader>
 
 				<ProfilesList profiles={profiles} onSelect={onSelect} />
 
 				<DialogFooter>
 					<DialogClose asChild>
-						<Button variant="secondary">Cancel</Button>
+						<Button variant="secondary">
+							{t('dashboard.profiles.components.selectProfileModal.cancel')}
+						</Button>
 					</DialogClose>
 				</DialogFooter>
 			</DialogContent>
@@ -79,9 +87,13 @@ export function SelectProfileModalView({ Trigger, profiles, onSelect, open, onOp
 				{/* Scroll wrapper */}
 				<div className="overflow-y-scroll">
 					<DrawerHeader>
-						<DrawerTitle>Select profile</DrawerTitle>
+						<DrawerTitle>
+							{t('dashboard.profiles.components.selectProfileModal.title')}
+						</DrawerTitle>
 						<DrawerDescription>
-							Select a profile to use this texture for.
+							{t(
+								'dashboard.profiles.components.selectProfileModal.descriptionMobile',
+							)}
 						</DrawerDescription>
 					</DrawerHeader>
 
@@ -91,7 +103,9 @@ export function SelectProfileModalView({ Trigger, profiles, onSelect, open, onOp
 
 					<DrawerFooter>
 						<DrawerClose asChild>
-							<Button variant="secondary">Cancel</Button>
+							<Button variant="secondary">
+								{t('dashboard.profiles.components.selectProfileModal.cancel')}
+							</Button>
 						</DrawerClose>
 					</DrawerFooter>
 				</div>

@@ -1,4 +1,5 @@
 import { randomUUID } from 'crypto';
+import createNextIntlPlugin from 'next-intl/plugin';
 
 const BUILD_ID = process.env.NEXT_PUBLIC_BUILD_ID ?? randomUUID();
 
@@ -45,4 +46,6 @@ const nextConfig = {
 	},
 };
 
-export default nextConfig;
+const withNextIntl = createNextIntlPlugin('./libs/i18n/request.ts');
+
+export default withNextIntl(nextConfig);

@@ -2,6 +2,7 @@
 
 import { Button } from '@repo/ui/button';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { deleteMcClaim, updateMcClaim } from '~web/libs/actions/api';
 import { respToEither } from '~web/libs/utils/resp';
@@ -25,6 +26,7 @@ export function McClaimActions({
 	mcUsername,
 	profiles,
 }: McClaimActionsProps) {
+	const t = useTranslations();
 	const [selectedProfileId, setSelectedProfileId] = useState<string | null>(
 		currentBoundProfileId || null,
 	);
@@ -47,11 +49,11 @@ export function McClaimActions({
 
 				// 提供更有用的错误信息
 				if (errorCode === 'forbidden') {
-					throw new Error('没有权限删除此绑定');
+					throw new Error(t('dashboard.settings.page.mcClaim.noPermissionDelete'));
 				} else if (error.message?.includes('Unauthorized')) {
-					throw new Error('认证失败，请刷新页面重新登录');
+					throw new Error(t('common.messages.authenticationFailed'));
 				}
-				throw new Error(error.message || '删除失败');
+				throw new Error(error.message || t('common.messages.deleteFailed'));
 			}
 		},
 		onSuccess: () => {
@@ -74,13 +76,13 @@ export function McClaimActions({
 				// 提供更有用的错误信息
 				const errorCode = error.error?.code;
 				if (errorCode === 'forbidden') {
-					throw new Error('没有权限修改此绑定');
+					throw new Error(t('dashboard.settings.page.mcClaim.noPermissionUpdate'));
 				} else if (errorCode === 'profiles/not-found') {
-					throw new Error('选择的档案不存在');
+					throw new Error(t('dashboard.settings.page.mcClaim.profileNotFound'));
 				} else if (error.message?.includes('Unauthorized')) {
-					throw new Error('认证失败，请刷新页面重新登录');
+					throw new Error(t('common.messages.authenticationFailed'));
 				}
-				throw new Error(error.message || '更新失败');
+				throw new Error(error.message || t('common.messages.updateFailed'));
 			}
 		},
 		onSuccess: () => {
@@ -98,7 +100,7 @@ export function McClaimActions({
 	};
 
 	const handleDelete = () => {
-		if (confirm(`确定要删除 ${mcUsername} 的绑定吗？此操作不可撤销。`)) {
+		if (confirm(t('dashboard.settings.page.mcClaim.confirmDelete', { username: mcUsername }))) {
 			deleteMutation.mutate();
 		}
 	};
@@ -106,22 +108,28 @@ export function McClaimActions({
 	return (
 		<div className="mt-2 flex flex-col gap-2">
 			<div className="flex items-center gap-2">
-				<span className="text-muted-foreground text-sm">绑定到档案：</span>
+				<span className="text-muted-foreground text-sm">
+					{t('dashboard.settings.page.mcClaim.bindToProfile')}
+				</span>
 				<select
 					value={selectedProfileId || 'none'}
 					onChange={(e) => handleProfileChange(e.target.value)}
 					disabled={updateMutation.isPending}
 					className="rounded border px-3 py-1 text-sm"
 				>
-					<option value="none">不绑定</option>
+					<option value="none">{t('dashboard.settings.page.mcClaim.notBound')}</option>
 					{profiles.map((profile) => (
 						<option key={profile.id} value={profile.id}>
-							{profile.name} {profile.isPrimary && '(主档案)'}
+							{profile.name}{' '}
+							{profile.isPrimary &&
+								t('dashboard.settings.page.mcClaim.primaryProfile')}
 						</option>
 					))}
 				</select>
 				{updateMutation.isPending && (
-					<span className="text-muted-foreground text-sm">更新中...</span>
+					<span className="text-muted-foreground text-sm">
+						{t('dashboard.settings.page.mcClaim.updating')}
+					</span>
 				)}
 			</div>
 
@@ -132,16 +140,21 @@ export function McClaimActions({
 					onClick={handleDelete}
 					disabled={deleteMutation.isPending}
 				>
-					{deleteMutation.isPending ? '删除中...' : '删除绑定'}
+					{deleteMutation.isPending
+						? t('dashboard.settings.page.mcClaim.deleting')
+						: t('dashboard.settings.page.mcClaim.deleteBinding')}
 				</Button>
 			</div>
 
-			{/* 错误信息显示 */}
 			{deleteMutation.error && (
-				<div className="text-sm text-red-500">删除失败：{deleteMutation.error.message}</div>
+				<div className="text-sm text-red-500">
+					{t('common.messages.deleteFailed')}: {deleteMutation.error.message}
+				</div>
 			)}
 			{updateMutation.error && (
-				<div className="text-sm text-red-500">更新失败：{updateMutation.error.message}</div>
+				<div className="text-sm text-red-500">
+					{t('common.messages.updateFailed')}: {updateMutation.error.message}
+				</div>
 			)}
 		</div>
 	);

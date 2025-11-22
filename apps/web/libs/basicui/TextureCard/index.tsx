@@ -1,9 +1,13 @@
+'use client';
+
 import { Badge } from '@repo/ui/badge';
 import { Card, CardContent, CardFooter, CardHeader } from '@repo/ui/card';
 import { DataList, DataListItem, DataListLabel, DataListValue } from '@repo/ui/data-list';
 import { InlineCode, Large } from '@repo/ui/typography';
 import Image from 'next/image';
-import { getClientAppConfig } from '~web/libs/hooks/get-client-app-config';
+import { useTranslations } from 'next-intl';
+import { useClientAppConfig } from '~web/libs/hooks/use-client-app-config';
+
 export type Props = {
 	texture: {
 		type: 'cape' | 'skin' | 'skin_slim';
@@ -17,7 +21,8 @@ export type Props = {
 };
 
 export function TextureCard({ texture, children }: Props) {
-	const clientAppConfig = getClientAppConfig();
+	const t = useTranslations();
+	const clientAppConfig = useClientAppConfig();
 
 	return (
 		<Card>
@@ -28,26 +33,26 @@ export function TextureCard({ texture, children }: Props) {
 			<CardContent>
 				<DataList orientation="vertical" className="gap-2">
 					<DataListItem>
-						<DataListLabel>Texture ID</DataListLabel>
+						<DataListLabel>{t('common.labels.textureId')}</DataListLabel>
 						<DataListValue>
 							<InlineCode>{texture.id}</InlineCode>
 						</DataListValue>
 					</DataListItem>
 					<DataListItem>
-						<DataListLabel>Description</DataListLabel>
+						<DataListLabel>{t('common.labels.description')}</DataListLabel>
 						<DataListValue>{texture.description}</DataListValue>
 					</DataListItem>
 					<DataListItem>
-						<DataListLabel>Type</DataListLabel>
+						<DataListLabel>{t('common.labels.type')}</DataListLabel>
 						<DataListValue>
 							<Badge variant="secondary">
 								{texture.type === 'skin'
-									? 'Skin (Default)'
+									? t('common.labels.skinDefault')
 									: texture.type === 'skin_slim'
-										? 'Skin (Slim)'
+										? t('common.labels.skinSlim')
 										: texture.type === 'cape'
-											? 'Cape'
-											: 'Unknown'}
+											? t('common.labels.cape')
+											: t('common.labels.unknown')}
 							</Badge>
 						</DataListValue>
 					</DataListItem>
@@ -57,7 +62,7 @@ export function TextureCard({ texture, children }: Props) {
 			<CardFooter className="flex flex-col gap-8">
 				<div className="relative h-48">
 					<Image
-						alt="Texture image"
+						alt={t('dashboard.textures.components.textureCard.alt')}
 						width={64}
 						height={texture.type === 'cape' ? 32 : 64}
 						src={`${clientAppConfig.textureRoot}/${texture.hash.slice(0, 2)}/${texture.hash}`}

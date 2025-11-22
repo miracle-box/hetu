@@ -1,6 +1,7 @@
 import { Button } from '@repo/ui/button';
 import { Large } from '@repo/ui/typography';
 import Link from 'next/link';
+import { getTranslations } from 'next-intl/server';
 import { inspectVerification, verifyVerification } from '~web/libs/actions/api';
 import { respToEither } from '~web/libs/utils/resp';
 import { NewPassword } from './NewPassword';
@@ -8,15 +9,16 @@ import { NewPassword } from './NewPassword';
 type SearchParams = Promise<{ id?: string; secret?: string }>;
 
 export default async function Verified({ searchParams }: { searchParams: SearchParams }) {
+	const t = await getTranslations();
 	const { id, secret } = await searchParams;
 
 	if (!id || !secret) {
-		return <ThisPageLayout>Invalid verification link</ThisPageLayout>;
+		return <ThisPageLayout>{t('auth.passwordReset.page.verified.invalidLink')}</ThisPageLayout>;
 	}
 
 	const verif = respToEither(await inspectVerification(id));
 	if (verif.isLeft() || !verif.isRight()) {
-		return <ThisPageLayout>Verification link expired</ThisPageLayout>;
+		return <ThisPageLayout>{t('auth.passwordReset.page.verified.linkExpired')}</ThisPageLayout>;
 	}
 
 	if (!verif.extract().verification.verified) {
@@ -28,7 +30,11 @@ export default async function Verified({ searchParams }: { searchParams: SearchP
 		);
 
 		if (verifyResponse.isLeft()) {
-			return <ThisPageLayout>Failed to verify your request</ThisPageLayout>;
+			return (
+				<ThisPageLayout>
+					{t('auth.passwordReset.page.verified.verifyFailed')}
+				</ThisPageLayout>
+			);
 		}
 	}
 
@@ -39,16 +45,18 @@ export default async function Verified({ searchParams }: { searchParams: SearchP
 	);
 }
 
-function ThisPageLayout({ children }: { children: React.ReactNode }) {
+async function ThisPageLayout({ children }: { children: React.ReactNode }) {
+	const t = await getTranslations();
+
 	return (
 		<main className="container mx-auto">
 			<div className="flex flex-col gap-2">
-				<Large>Password Reset</Large>
+				<Large>{t('auth.passwordReset.page.verified.title')}</Large>
 
 				<div className="text-foreground flex text-sm">{children}</div>
 
 				<Button variant="secondary" asChild>
-					<Link href="/">Go back to landing page</Link>
+					<Link href="/">{t('common.links.goBackToLanding')}</Link>
 				</Button>
 			</div>
 		</main>

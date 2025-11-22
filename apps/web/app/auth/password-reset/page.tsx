@@ -7,6 +7,7 @@ import { mergeForm } from '@tanstack/react-form';
 import { useMutation } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import React from 'react';
 import { requestVerification } from '~web/libs/actions/api/auth';
 import {
@@ -17,6 +18,7 @@ import { formError } from '~web/libs/utils/form';
 import { respToEither } from '~web/libs/utils/resp';
 
 export default function PasswordReset() {
+	const t = useTranslations();
 	const router = useRouter();
 
 	const requestResetMutation = useMutation({
@@ -42,7 +44,7 @@ export default function PasswordReset() {
 	return (
 		<main className="container mx-auto">
 			<div className="flex flex-col gap-2">
-				<Large>Password Reset</Large>
+				<Large>{t('auth.passwordReset.page.title')}</Large>
 
 				<FormView />
 				<form.AppForm>
@@ -58,7 +60,7 @@ export default function PasswordReset() {
 									{isSubmitting && (
 										<Icon.Loader2 className="mr-2 h-4 w-4 animate-spin" />
 									)}
-									<span>Send Reset Link</span>
+									<span>{t('common.buttons.sendResetLink')}</span>
 								</>
 							</Button>
 						)}
@@ -66,15 +68,15 @@ export default function PasswordReset() {
 				</form.AppForm>
 
 				<Button variant="secondary" asChild>
-					<Link href="/auth/signup">I don't have an account</Link>
+					<Link href="/auth/signup">{t('common.links.iDontHaveAccount')}</Link>
 				</Button>
 
 				<Button variant="secondary" asChild>
-					<Link href="/auth/signin">I already have an account</Link>
+					<Link href="/auth/signin">{t('common.links.iHaveAccount')}</Link>
 				</Button>
 
 				<Button variant="secondary" asChild>
-					<Link href="/">Go back to landing page</Link>
+					<Link href="/">{t('common.links.goBackToLanding')}</Link>
 				</Button>
 			</div>
 		</main>
