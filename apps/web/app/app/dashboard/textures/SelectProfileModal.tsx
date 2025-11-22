@@ -3,11 +3,11 @@
 import type { API } from '@repo/api-client';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
-import { getMyProfiles } from '~web/libs/actions/api/me';
-import { QueryKeys } from '~web/libs/api/query-keys';
-import { respToEither } from '~web/libs/api/resp';
-import { ApiError } from '~web/libs/api/response';
-import { SelectProfileModalView } from '~web/libs/modules/profiles/components/SelectProfileModalView';
+import { getMyProfiles } from '#/libs/actions/api/me';
+import { QueryKeys } from '#/libs/api/query-keys';
+import { respToEither } from '#/libs/api/resp';
+import { ApiError } from '#/libs/api/response';
+import { SelectProfileModalView } from '#/libs/modules/profiles/components/SelectProfileModalView';
 
 export type Props = {
 	children: React.ReactNode;

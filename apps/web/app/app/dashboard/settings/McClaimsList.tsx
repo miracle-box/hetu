@@ -1,5 +1,5 @@
-import { getMyMcClaims, getMyProfiles } from '~web/libs/actions/api/me';
-import { respToEither } from '~web/libs/api/resp';
+import { getMyMcClaims, getMyProfiles } from '#/libs/actions/api/me';
+import { respToEither } from '#/libs/api/resp';
 import { McClaimsListClient } from './McClaimsListClient';
 
 export default async function McClaimsList() {

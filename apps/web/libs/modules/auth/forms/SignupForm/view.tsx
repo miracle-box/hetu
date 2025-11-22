@@ -4,7 +4,7 @@ import { API } from '@repo/api-client';
 import { withForm } from '@repo/ui/hooks/use-app-form';
 import { Input } from '@repo/ui/input';
 import { useTranslations } from 'next-intl';
-import { RequestVerificationButton } from '~web/libs/components/RequestVerificationButton';
+import { RequestVerificationButton } from '#/libs/components/RequestVerificationButton';
 import { signupFormOpts } from './schema';
 
 export const SignupFormView = withForm({

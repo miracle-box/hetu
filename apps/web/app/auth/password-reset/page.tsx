@@ -10,13 +10,13 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import React from 'react';
-import { requestVerification } from '~web/libs/actions/api/auth';
-import { respToEither } from '~web/libs/api/resp';
+import { requestVerification } from '#/libs/actions/api/auth';
+import { respToEither } from '#/libs/api/resp';
 import {
 	usePasswordResetForm,
 	type PasswordResetFormValues,
-} from '~web/libs/modules/auth/forms/PasswordResetForm';
-import { formError } from '~web/libs/utils/form';
+} from '#/libs/modules/auth/forms/PasswordResetForm';
+import { formError } from '#/libs/utils/form';
 
 export default function PasswordReset() {
 	const t = useTranslations();

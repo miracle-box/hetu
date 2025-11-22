@@ -6,7 +6,7 @@ import { SegmentedControl, SegmentedControlItem } from '@repo/ui/segmented-contr
 import { Textarea } from '@repo/ui/textarea';
 import { useTranslations } from 'next-intl';
 import React from 'react';
-import { fileToBase64 } from '~web/libs/utils/file';
+import { fileToBase64 } from '#/libs/utils/file';
 import { createTextureFormOpts } from './schema';
 
 export const CreateTextureFormView = withForm({

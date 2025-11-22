@@ -1,8 +1,8 @@
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import { Suspense } from 'react';
-import { getQueryClient } from '~web/libs/api/query';
-import { QueryKeys } from '~web/libs/api/query-keys';
-import { getClientAppConfig } from '~web/libs/utils/app-config/client';
+import { getQueryClient } from '#/libs/api/query';
+import { QueryKeys } from '#/libs/api/query-keys';
+import { getClientAppConfig } from '#/libs/utils/app-config/client';
 
 function ClientConfigLoading() {
 	return <div>Loading...</div>;

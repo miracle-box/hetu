@@ -1,8 +1,8 @@
 'use server';
 
 import type { API } from '@repo/api-client';
-import { client as api } from '~web/libs/api/eden';
-import { handleResponse } from '~web/libs/api/response';
+import { client as api } from '#/libs/api/eden';
+import { handleResponse } from '#/libs/api/response';
 import { readSession } from '../auth';
 
 export async function getUserInfo(params: API.Users.GetUserInfo.Param) {

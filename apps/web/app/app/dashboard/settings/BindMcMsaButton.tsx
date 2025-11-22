@@ -4,11 +4,11 @@ import { API } from '@repo/api-client';
 import { Button } from '@repo/ui/button';
 import { useMutation } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
-import { requestVerification } from '~web/libs/actions/api/auth';
-import { respToEither } from '~web/libs/api/resp';
-import { useClientAppConfig } from '~web/libs/hooks/use-client-app-config';
-import { MsaOAuth2 } from '~web/libs/utils/constants';
-import { buildOAuth2AuthCodeUrl } from '~web/libs/utils/oauth2';
+import { requestVerification } from '#/libs/actions/api/auth';
+import { respToEither } from '#/libs/api/resp';
+import { useClientAppConfig } from '#/libs/hooks/use-client-app-config';
+import { MsaOAuth2 } from '#/libs/utils/constants';
+import { buildOAuth2AuthCodeUrl } from '#/libs/utils/oauth2';
 
 export function BindMcMsaButton() {
 	const t = useTranslations();

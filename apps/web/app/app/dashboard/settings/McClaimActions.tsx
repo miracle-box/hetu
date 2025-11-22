@@ -4,9 +4,9 @@ import { Button } from '@repo/ui/button';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
-import { deleteMyMcClaim, updateMyMcClaim } from '~web/libs/actions/api/me';
-import { QueryKeys } from '~web/libs/api/query-keys';
-import { respToEither } from '~web/libs/api/resp';
+import { deleteMyMcClaim, updateMyMcClaim } from '#/libs/actions/api/me';
+import { QueryKeys } from '#/libs/api/query-keys';
+import { respToEither } from '#/libs/api/resp';
 
 interface Profile {
 	id: string;

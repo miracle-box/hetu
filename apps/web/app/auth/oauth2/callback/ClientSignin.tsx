@@ -5,8 +5,8 @@ import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { useEffect, useRef } from 'react';
-import { respToEither } from '~web/libs/api/resp';
-import { ApiError } from '~web/libs/api/response';
+import { respToEither } from '#/libs/api/resp';
+import { ApiError } from '#/libs/api/response';
 import { handleOAuth2Signin } from './actions';
 
 export function ClientSignin({ verificationId }: { verificationId: string }) {

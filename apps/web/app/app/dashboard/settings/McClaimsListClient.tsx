@@ -2,9 +2,9 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
-import { getMyMcClaims } from '~web/libs/actions/api/me';
-import { QueryKeys } from '~web/libs/api/query-keys';
-import { respToEither } from '~web/libs/api/resp';
+import { getMyMcClaims } from '#/libs/actions/api/me';
+import { QueryKeys } from '#/libs/api/query-keys';
+import { respToEither } from '#/libs/api/resp';
 import { McClaimActions } from './McClaimActions';
 
 interface Profile {

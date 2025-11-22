@@ -1,8 +1,8 @@
 import { Alert, AlertDescription, AlertTitle } from '@repo/ui/alert';
 import { Large } from '@repo/ui/typography';
 import { getTranslations } from 'next-intl/server';
-import { getMyInfo } from '~web/libs/actions/api/me';
-import { respToEither } from '~web/libs/api/resp';
+import { getMyInfo } from '#/libs/actions/api/me';
+import { respToEither } from '#/libs/api/resp';
 
 export default async function Dashboard() {
 	const t = await getTranslations();

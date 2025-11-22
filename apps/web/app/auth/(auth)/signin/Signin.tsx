@@ -6,8 +6,8 @@ import { mergeForm } from '@tanstack/form-core';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
-import { respToEither } from '~web/libs/api/resp';
-import { useSigninForm, type SigninFormValues } from '~web/libs/modules/auth/forms/SigninForm';
+import { respToEither } from '#/libs/api/resp';
+import { useSigninForm, type SigninFormValues } from '#/libs/modules/auth/forms/SigninForm';
 import { handleSignin } from './actions';
 
 export function Signin() {

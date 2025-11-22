@@ -5,8 +5,8 @@ import { useCountdown } from '@repo/ui/hooks/use-countdown';
 import { Icon } from '@repo/ui/icon';
 import { useMutation } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
-import { requestVerification } from '~web/libs/actions/api/auth';
-import { respToEither } from '~web/libs/api/resp';
+import { requestVerification } from '#/libs/actions/api/auth';
+import { respToEither } from '#/libs/api/resp';
 
 export type Props = {
 	// [TODO] Share common types between frontend and backend.

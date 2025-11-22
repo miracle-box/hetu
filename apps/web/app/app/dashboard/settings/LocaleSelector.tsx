@@ -3,8 +3,8 @@
 import { SegmentedControl, SegmentedControlItem } from '@repo/ui/segmented-control';
 import { useRouter } from 'next/navigation';
 import { useTransition } from 'react';
-import { setLocale } from '~web/libs/actions/i18n';
-import { type Locale, LocaleLabels, Locales } from '~web/libs/i18n/locales';
+import { setLocale } from '#/libs/actions/i18n';
+import { type Locale, LocaleLabels, Locales } from '#/libs/i18n/locales';
 
 export function LocaleSelector({ currentLocale }: { currentLocale: Locale }) {
 	const router = useRouter();

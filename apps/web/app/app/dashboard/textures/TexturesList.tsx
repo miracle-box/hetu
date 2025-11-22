@@ -5,8 +5,8 @@ import { cn } from '@repo/ui';
 import { Button } from '@repo/ui/button';
 import { useMutation } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
-import { updateProfile } from '~web/libs/actions/api/profiles';
-import { TextureCard } from '~web/libs/basicui/TextureCard';
+import { updateProfile } from '#/libs/actions/api/profiles';
+import { TextureCard } from '#/libs/basicui/TextureCard';
 import { SelectProfileModal } from './SelectProfileModal';
 
 export type Props = {

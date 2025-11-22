@@ -1,8 +1,11 @@
 import type { BunPlugin } from 'bun';
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import Bun from 'bun';
 import { bunPluginPino } from 'bun-plugin-pino';
+
+// [FIXME] ESLint plugin bug: inconsistency between editor and cli
+// eslint-disable-next-line import-x/order
+import Bun from 'bun';
 
 function bunPluginEmbedSharpNative(): BunPlugin {
 	return {
