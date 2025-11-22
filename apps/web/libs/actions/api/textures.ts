@@ -1,14 +1,14 @@
 'use server';
 
 import type { API } from '@repo/api-client';
-import { client as api } from '~web/libs/api/eden';
-import { handleResponse } from '~web/libs/utils/api-response';
+import { client as api } from '#/libs/api/eden';
+import { handleResponse } from '#/libs/api/response';
 import { readSession } from '../auth';
 
 export async function createTexture(body: API.Textures.CreateTexture.Body) {
 	const session = await readSession();
 
-	return handleResponse(
+	return await handleResponse(
 		api.textures.post(body, {
 			headers: { Authorization: `Bearer ${session.authToken}` },
 		}),
@@ -21,7 +21,7 @@ export async function updateTexture(
 ) {
 	const session = await readSession();
 
-	return handleResponse(
+	return await handleResponse(
 		api.textures(params).put(body, {
 			headers: { Authorization: `Bearer ${session.authToken}` },
 		}),
@@ -31,7 +31,7 @@ export async function updateTexture(
 export async function deleteTexture(params: API.Textures.DeleteTexture.Param) {
 	const session = await readSession();
 
-	return handleResponse(
+	return await handleResponse(
 		api.textures(params).delete(
 			{},
 			{
@@ -44,7 +44,7 @@ export async function deleteTexture(params: API.Textures.DeleteTexture.Param) {
 export async function getTextureImage(params: API.Textures.GetTextureImage.Param) {
 	const session = await readSession();
 
-	return handleResponse(
+	return await handleResponse(
 		api.textures(params).image.get({
 			headers: { Authorization: `Bearer ${session.authToken}` },
 		}),

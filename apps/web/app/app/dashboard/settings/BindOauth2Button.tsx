@@ -3,11 +3,11 @@
 import { Button } from '@repo/ui/button';
 import { useMutation } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
-import { requestVerification } from '~web/libs/actions/api';
-import { useClientAppConfig } from '~web/libs/hooks/use-client-app-config';
-import { ApiError } from '~web/libs/utils/api-response';
-import { buildOAuth2AuthCodeUrl } from '~web/libs/utils/oauth2';
-import { respToEither } from '~web/libs/utils/resp';
+import { requestVerification } from '#/libs/actions/api/auth';
+import { respToEither } from '#/libs/api/resp';
+import { ApiError } from '#/libs/api/response';
+import { useClientAppConfig } from '#/libs/hooks/use-client-app-config';
+import { buildOAuth2AuthCodeUrl } from '#/libs/utils/oauth2';
 
 export type Props = {
 	provider: string;

@@ -4,7 +4,7 @@
   "exclude": ["node_modules", ".next"],
   "compilerOptions": {
     "paths": {
-      "~web/*": ["../web/*"]
+      "#/*": ["./*"]
     },
 
     "types": ["bun-types"],

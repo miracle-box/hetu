@@ -3,9 +3,9 @@ import { Separator } from '@repo/ui/separator';
 import { Large } from '@repo/ui/typography';
 import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
-import { getOauth2Metadata } from '~web/libs/actions/api/auth';
-import { getClientAppConfig } from '~web/libs/utils/app-config/client';
-import { respToEither } from '~web/libs/utils/resp';
+import { getOauth2Metadata } from '#/libs/actions/api/auth';
+import { respToEither } from '#/libs/api/resp';
+import { getClientAppConfig } from '#/libs/utils/app-config/client';
 import { OAuth2Buttons } from './OAuth2Buttons';
 import { Signin } from './Signin';
 

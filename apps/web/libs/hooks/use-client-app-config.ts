@@ -1,4 +1,5 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
+import { QueryKeys } from '../api/query-keys';
 import { type ClientAppConfig } from '../utils/app-config/client';
 
 export function useClientAppConfig(): ClientAppConfig {
@@ -9,7 +10,7 @@ export function useClientAppConfig(): ClientAppConfig {
 		queryFn: () => {
 			throw new Error('Query function called, client app config not correctly populated');
 		},
-		queryKey: ['clientAppConfig', process.env.NEXT_PUBLIC_BUILD_ID],
+		queryKey: QueryKeys.clientAppConfig(),
 		gcTime: Infinity,
 		staleTime: Infinity,
 	});

@@ -1,10 +1,11 @@
 'use server';
 
-import type { CreateTextureFormValues } from '~web/libs/modules/textures/forms/CreateTextureForm';
+import type { CreateTextureFormValues } from '#/libs/modules/textures/forms/CreateTextureForm';
 import { EitherAsync } from 'purify-ts/EitherAsync';
-import { createTexture, uploadFile } from '~web/libs/actions/api';
-import { formError } from '~web/libs/utils/form';
-import { eitherToResp, respToEither } from '~web/libs/utils/resp';
+import { uploadFile } from '#/libs/actions/api/files';
+import { createTexture } from '#/libs/actions/api/textures';
+import { eitherToResp, respToEither } from '#/libs/api/resp';
+import { formError } from '#/libs/utils/form';
 
 export async function handleCreateTexture(form: CreateTextureFormValues) {
 	const fileBytes = Uint8Array.fromBase64(form.file.base64);
@@ -29,7 +30,7 @@ export async function handleCreateTexture(form: CreateTextureFormValues) {
 				}),
 			),
 		)
-		.mapLeft((message) => formError(message));
+		.mapLeft(({ message }) => formError(message));
 
 	return eitherToResp(await requests.run());
 }

@@ -1,13 +1,13 @@
 'use client';
 
-import type { API } from '@repo/api-client';
+import { API } from '@repo/api-client';
 import { Button } from '@repo/ui/button';
 import { useMutation } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
-import { requestVerification } from '~web/libs/actions/api/auth';
-import { ApiError } from '~web/libs/utils/api-response';
-import { buildOAuth2AuthCodeUrl } from '~web/libs/utils/oauth2';
-import { respToEither } from '~web/libs/utils/resp';
+import { requestVerification } from '#/libs/actions/api/auth';
+import { respToEither } from '#/libs/api/resp';
+import { ApiError } from '#/libs/api/response';
+import { buildOAuth2AuthCodeUrl } from '#/libs/utils/oauth2';
 
 export type Props = {
 	oauth2Metadata: API.Auth.GetOauth2Metadata.Response200;
@@ -20,8 +20,8 @@ export function OAuth2Buttons({ oauth2Metadata, config }: Props) {
 	const createOauth2VerificationMutaion = useMutation({
 		mutationFn: (target: string) =>
 			requestVerification({
-				type: 'oauth2',
-				scenario: 'oauth2_signin',
+				type: API.Auth.Entities.VerificationType.OAUTH2,
+				scenario: API.Auth.Entities.VerificationScenario.OAUTH2_SIGNIN,
 				target: target,
 			}).then((resp) =>
 				respToEither(resp)

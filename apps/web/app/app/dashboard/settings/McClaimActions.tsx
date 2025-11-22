@@ -4,8 +4,9 @@ import { Button } from '@repo/ui/button';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
-import { deleteMcClaim, updateMcClaim } from '~web/libs/actions/api';
-import { respToEither } from '~web/libs/utils/resp';
+import { deleteMyMcClaim, updateMyMcClaim } from '#/libs/actions/api/me';
+import { QueryKeys } from '#/libs/api/query-keys';
+import { respToEither } from '#/libs/api/resp';
 
 interface Profile {
 	id: string;
@@ -35,7 +36,7 @@ export function McClaimActions({
 	// 删除 McClaim
 	const deleteMutation = useMutation({
 		mutationFn: async (): Promise<void> => {
-			const serializedResult = await deleteMcClaim(mcClaimId);
+			const serializedResult = await deleteMyMcClaim({ mcClaimId });
 			const result = respToEither(serializedResult);
 			if (result.isLeft()) {
 				const error = result.extract();
@@ -58,18 +59,21 @@ export function McClaimActions({
 		},
 		onSuccess: () => {
 			// 刷新 McClaims 列表
-			void queryClient.invalidateQueries({ queryKey: ['user-mc-claims'] });
+			void queryClient.invalidateQueries({ queryKey: QueryKeys.userMcClaims() });
 			// 强制重新获取数据
-			void queryClient.refetchQueries({ queryKey: ['user-mc-claims'] });
+			void queryClient.refetchQueries({ queryKey: QueryKeys.userMcClaims() });
 		},
 	});
 
 	// 更新 McClaim 绑定档案
 	const updateMutation = useMutation({
 		mutationFn: async (profileId: string | null): Promise<void> => {
-			const serializedResult = await updateMcClaim(mcClaimId, {
-				boundProfileId: profileId,
-			});
+			const serializedResult = await updateMyMcClaim(
+				{ mcClaimId },
+				{
+					boundProfileId: profileId,
+				},
+			);
 			const result = respToEither(serializedResult);
 			if (result.isLeft()) {
 				const error = result.extract();
@@ -87,9 +91,9 @@ export function McClaimActions({
 		},
 		onSuccess: () => {
 			// 刷新 McClaims 列表
-			void queryClient.invalidateQueries({ queryKey: ['user-mc-claims'] });
+			void queryClient.invalidateQueries({ queryKey: QueryKeys.userMcClaims() });
 			// 强制重新获取数据
-			void queryClient.refetchQueries({ queryKey: ['user-mc-claims'] });
+			void queryClient.refetchQueries({ queryKey: QueryKeys.userMcClaims() });
 		},
 	});
 

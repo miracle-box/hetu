@@ -8,8 +8,8 @@ import { useMutation } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
-import { useSignupForm, type SignupFormValues } from '~web/libs/modules/auth/forms/SignupForm';
-import { respToEither } from '~web/libs/utils/resp';
+import { respToEither } from '#/libs/api/resp';
+import { useSignupForm, type SignupFormValues } from '#/libs/modules/auth/forms/SignupForm';
 import { handleSignup } from './actions';
 
 export default function Signup() {

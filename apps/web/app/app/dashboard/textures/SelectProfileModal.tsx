@@ -3,10 +3,11 @@
 import type { API } from '@repo/api-client';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
-import { getUserProfiles } from '~web/libs/actions/api';
-import { SelectProfileModalView } from '~web/libs/modules/profiles/components/SelectProfileModalView';
-import { ApiError } from '~web/libs/utils/api-response';
-import { respToEither } from '~web/libs/utils/resp';
+import { getMyProfiles } from '#/libs/actions/api/me';
+import { QueryKeys } from '#/libs/api/query-keys';
+import { respToEither } from '#/libs/api/resp';
+import { ApiError } from '#/libs/api/response';
+import { SelectProfileModalView } from '#/libs/modules/profiles/components/SelectProfileModalView';
 
 export type Props = {
 	children: React.ReactNode;
@@ -17,9 +18,9 @@ export function SelectProfileModal({ children, onSelect }: Props) {
 	const [open, setOpen] = useState(false);
 
 	const profiles = useQuery({
-		queryKey: ['profiles', '(userid)'],
+		queryKey: QueryKeys.profiles(),
 		queryFn: async () =>
-			respToEither(await getUserProfiles())
+			respToEither(await getMyProfiles())
 				.mapLeft((error) => Promise.reject(new ApiError(error)))
 				.extract(),
 	});

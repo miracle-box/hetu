@@ -1,5 +1,5 @@
-import { DashboardHeader } from '~web/libs/components/DashboardHeader';
-import { DashboardNavbar } from '~web/libs/components/DashboardNavbar';
+import { DashboardHeader } from '#/libs/components/DashboardHeader';
+import { DashboardNavbar } from '#/libs/components/DashboardNavbar';
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
 	return (

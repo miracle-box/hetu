@@ -1,11 +1,11 @@
 'use server';
 
-import type { SignupFormValues } from '~web/libs/modules/auth/forms/SignupForm';
+import type { SignupFormValues } from '#/libs/modules/auth/forms/SignupForm';
 import { EitherAsync } from 'purify-ts/EitherAsync';
-import { signup, verifyVerification } from '~web/libs/actions/api';
-import { sessionToCookie, writeSessionCookie } from '~web/libs/actions/auth';
-import { formError } from '~web/libs/utils/form';
-import { eitherToResp, respToEither } from '~web/libs/utils/resp';
+import { signup, verifyVerification } from '#/libs/actions/api/auth';
+import { sessionToCookie, writeSessionCookie } from '#/libs/actions/auth';
+import { eitherToResp, respToEither } from '#/libs/api/resp';
+import { formError } from '#/libs/utils/form';
 
 export async function handleSignup(form: SignupFormValues) {
 	const requests = EitherAsync.liftEither(
@@ -29,7 +29,7 @@ export async function handleSignup(form: SignupFormValues) {
 		.map(({ session }) => sessionToCookie(session))
 		// Do not return session to client!
 		.map((session) => writeSessionCookie(session))
-		.mapLeft((message) => formError(message));
+		.mapLeft(({ message }) => formError(message));
 
 	return eitherToResp(await requests.run());
 }

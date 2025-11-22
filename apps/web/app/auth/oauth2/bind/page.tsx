@@ -1,7 +1,7 @@
 import { InlineCode } from '@repo/ui/typography';
 import { getTranslations } from 'next-intl/server';
-import { inspectOauth2Binding } from '~web/libs/actions/api/auth';
-import { respToEither } from '~web/libs/utils/resp';
+import { inspectOauth2Binding } from '#/libs/actions/api/auth';
+import { respToEither } from '#/libs/api/resp';
 import { ConfirmOauth2Binding } from './ConfirmOauth2Binding';
 
 export type Props = {

@@ -1,12 +1,12 @@
 import { Alert, AlertDescription, AlertTitle } from '@repo/ui/alert';
 import { Large } from '@repo/ui/typography';
 import { getTranslations } from 'next-intl/server';
-import { getUserInfo } from '~web/libs/actions/api';
-import { respToEither } from '~web/libs/utils/resp';
+import { getMyInfo } from '#/libs/actions/api/me';
+import { respToEither } from '#/libs/api/resp';
 
 export default async function Dashboard() {
 	const t = await getTranslations();
-	const userInfo = respToEither(await getUserInfo());
+	const userInfo = respToEither(await getMyInfo());
 
 	return (
 		<main className="container mx-auto">

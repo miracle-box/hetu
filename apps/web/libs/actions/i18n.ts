@@ -3,7 +3,7 @@
 import { cookies, headers } from 'next/headers';
 import { cache } from 'react';
 import { DefaultLocale, type Locale } from '../i18n/locales';
-import { isSupportedLocale, matchLocaleFromBrowserLang } from '../utils/i18n';
+import { isSupportedLocale, matchLocaleFromBrowserLang } from '../i18n/utils';
 
 const LocaleCookieName = 'locale';
 

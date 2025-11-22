@@ -1,21 +1,14 @@
 'use client';
 
+import { API } from '@repo/api-client';
 import { Button } from '@repo/ui/button';
 import { useMutation } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
-import { requestVerification } from '~web/libs/actions/api';
-import { useClientAppConfig } from '~web/libs/hooks/use-client-app-config';
-import { buildOAuth2AuthCodeUrl } from '~web/libs/utils/oauth2';
-import { respToEither } from '~web/libs/utils/resp';
-
-// Microsoft Consumer tenant authorize endpoint
-const MSA_AUTHORIZE_ENDPOINT = 'https://login.microsoftonline.com/consumers/oauth2/v2.0/authorize';
-
-// Scope defined in backend auth.constants.ts (VERIFICATION_MC_CLAIM_MSA_SCOPE)
-const MSA_SCOPE = ['XboxLive.signin'];
-
-// ClientId should match server config app.mcClaimVerification.clientId
-const MSA_CLIENT_ID = '32a1f6b7-3602-49b5-989a-06f3b5b53f36';
+import { requestVerification } from '#/libs/actions/api/auth';
+import { respToEither } from '#/libs/api/resp';
+import { useClientAppConfig } from '#/libs/hooks/use-client-app-config';
+import { MsaOAuth2 } from '#/libs/utils/constants';
+import { buildOAuth2AuthCodeUrl } from '#/libs/utils/oauth2';
 
 export function BindMcMsaButton() {
 	const t = useTranslations();
@@ -25,18 +18,18 @@ export function BindMcMsaButton() {
 		mutationFn: async () =>
 			respToEither(
 				await requestVerification({
-					type: 'mc_claim_verification_msa',
-					scenario: 'mc_claim_verification',
+					type: API.Auth.Entities.VerificationType.MC_CLAIM_VERIFICATION_MSA,
+					scenario: API.Auth.Entities.VerificationScenario.MC_CLAIM_VERIFICATION,
 					target: 'msa',
 				}),
 			),
 		onSuccess: (resp) => {
 			resp.ifRight(({ verification }) => {
-				const authUrl = buildOAuth2AuthCodeUrl(MSA_AUTHORIZE_ENDPOINT, {
-					clientId: MSA_CLIENT_ID,
+				const authUrl = buildOAuth2AuthCodeUrl(MsaOAuth2.AuthorizeEndpoint, {
+					clientId: config.msaClientId,
 					responseType: 'code',
 					redirectUri: `${config.publicUrl}/auth/oauth2/callback`,
-					scope: MSA_SCOPE,
+					scope: MsaOAuth2.Scope,
 					state: verification.id,
 					pkce: verification.challenge
 						? { method: 'S256', challenge: verification.challenge }

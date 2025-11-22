@@ -1,9 +1,9 @@
-import { getUserMcClaims, getUserProfiles } from '~web/libs/actions/api';
-import { respToEither } from '~web/libs/utils/resp';
+import { getMyMcClaims, getMyProfiles } from '#/libs/actions/api/me';
+import { respToEither } from '#/libs/api/resp';
 import { McClaimsListClient } from './McClaimsListClient';
 
 export default async function McClaimsList() {
-	const [listResult, profilesResult] = await Promise.all([getUserMcClaims(), getUserProfiles()]);
+	const [listResult, profilesResult] = await Promise.all([getMyMcClaims(), getMyProfiles()]);
 
 	const profilesEither = respToEither(profilesResult);
 	const profiles = profilesEither.isRight() ? profilesEither.extract().profiles : [];

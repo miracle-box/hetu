@@ -7,9 +7,11 @@ import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { EitherAsync } from 'purify-ts/EitherAsync';
 import { cache } from 'react';
-import { refreshSession, renewSession } from './api';
+import { refreshSession, renewSession } from './api/auth';
+import { respToEither } from '../api/resp';
 import { ServerAppConfig } from '../utils/app-config/server';
-import { respToEither } from '../utils/resp';
+
+const SessionCookieName = 'session';
 
 // [TODO] Use type from backend instead.
 type Session = {
@@ -71,7 +73,7 @@ export async function writeSessionCookie(session: SessionCookie) {
 	} as const;
 
 	const jwtString = await signSessionJwt(session);
-	cookieStore.set('session', jwtString, cookieOpts);
+	cookieStore.set(SessionCookieName, jwtString, cookieOpts);
 }
 
 export async function clearSessionCookie() {
@@ -83,7 +85,7 @@ export async function clearSessionCookie() {
 export async function readSessionCookie(): Promise<SessionCookie | null> {
 	const cookieStore = await cookies();
 
-	const jwtString = cookieStore.get('session')?.value;
+	const jwtString = cookieStore.get(SessionCookieName)?.value;
 	if (!jwtString) return null;
 
 	const sessionCookie = readSessionJwt(jwtString);

@@ -1,14 +1,14 @@
 import { Button } from '@repo/ui/button';
 import { Large } from '@repo/ui/typography';
 import { getTranslations } from 'next-intl/server';
-import { getUserTextures } from '~web/libs/actions/api';
-import { respToEither } from '~web/libs/utils/resp';
+import { getMyTextures } from '#/libs/actions/api/me';
+import { respToEither } from '#/libs/api/resp';
 import { CreateTextureModal } from './CreateTextureModal';
 import { TexturesList } from './TexturesList';
 
 export default async function Textures() {
 	const t = await getTranslations();
-	const texturesResp = respToEither(await getUserTextures());
+	const texturesResp = respToEither(await getMyTextures());
 
 	return (
 		<main className="container mx-auto">

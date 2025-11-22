@@ -5,9 +5,9 @@ import { useMutation } from '@tanstack/react-query';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { useEffect, useRef, useState } from 'react';
-import { verifyUserMcClaim, getUserMcClaims } from '~web/libs/actions/api';
-import { ApiError } from '~web/libs/utils/api-response';
-import { respToEither } from '~web/libs/utils/resp';
+import { verifyMyMcClaim, getMyMcClaims } from '#/libs/actions/api/me';
+import { respToEither } from '#/libs/api/resp';
+import { ApiError } from '#/libs/api/response';
 
 export function McClaimBindClient() {
 	const t = useTranslations();
@@ -20,7 +20,7 @@ export function McClaimBindClient() {
 	// 从 URL 中读取 verificationId
 	useEffect(() => {
 		const id = searchParams.get('verificationId');
-		// eslint-disable-next-line react-hooks-extra/no-direct-set-state-in-use-effect
+		// eslint-disable-next-line react-hooks/set-state-in-effect, react-hooks-extra/no-direct-set-state-in-use-effect
 		setVerificationId(id);
 		// eslint-disable-next-line react-hooks-extra/no-direct-set-state-in-use-effect
 		setIsInitialized(true);
@@ -28,7 +28,7 @@ export function McClaimBindClient() {
 
 	const verifyMutation = useMutation({
 		mutationFn: async (verificationId: string) => {
-			const bindResp = await verifyUserMcClaim({ verificationId });
+			const bindResp = await verifyMyMcClaim({ verificationId });
 			const bindResult = respToEither(bindResp);
 
 			if (bindResult.isLeft()) {
@@ -37,7 +37,7 @@ export function McClaimBindClient() {
 				const mcClaim = bindResult.extract().mcClaim;
 
 				// 获取更新后的列表
-				const listResp = await getUserMcClaims();
+				const listResp = await getMyMcClaims();
 				const listResult = respToEither(listResp);
 				const mcClaims = listResult.isRight() ? listResult.extract().mcClaims : undefined;
 

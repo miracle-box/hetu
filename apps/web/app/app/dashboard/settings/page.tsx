@@ -1,8 +1,8 @@
 import { Large } from '@repo/ui/typography';
 import { getTranslations } from 'next-intl/server';
-import { getOauth2Metadata } from '~web/libs/actions/api/auth';
-import { getLocale } from '~web/libs/actions/i18n';
-import { respToEither } from '~web/libs/utils/resp';
+import { getOauth2Metadata } from '#/libs/actions/api/auth';
+import { getLocale } from '#/libs/actions/i18n';
+import { respToEither } from '#/libs/api/resp';
 import { BindMcMsaButton } from './BindMcMsaButton';
 import { BindOauth2Button } from './BindOauth2Button';
 import { LocaleSelector } from './LocaleSelector';

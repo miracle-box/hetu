@@ -6,7 +6,7 @@ import { DataList, DataListItem, DataListLabel, DataListValue } from '@repo/ui/d
 import { InlineCode, Large } from '@repo/ui/typography';
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
-import { useClientAppConfig } from '~web/libs/hooks/use-client-app-config';
+import { useClientAppConfig } from '#/libs/hooks/use-client-app-config';
 
 export type Props = {
 	texture: {

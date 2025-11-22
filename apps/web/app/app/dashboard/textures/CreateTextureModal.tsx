@@ -5,12 +5,12 @@ import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 
-import { CreateTextureModalView } from '~web/libs/modules/textures/components/CreateTextureModalView';
+import { respToEither } from '#/libs/api/resp';
+import { CreateTextureModalView } from '#/libs/modules/textures/components/CreateTextureModalView';
 import {
 	useCreateTextureForm,
 	type CreateTextureFormValues,
-} from '~web/libs/modules/textures/forms/CreateTextureForm';
-import { respToEither } from '~web/libs/utils/resp';
+} from '#/libs/modules/textures/forms/CreateTextureForm';
 import { handleCreateTexture } from './actions';
 
 export type Props = {
