@@ -5,6 +5,7 @@ import { Icon } from '@repo/ui/icon';
 import { mergeForm } from '@tanstack/react-form';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import React from 'react';
 import {
 	useNewPasswordForm,
@@ -14,6 +15,7 @@ import { respToEither } from '~web/libs/utils/resp';
 import { handleResetPassword } from './actions';
 
 export function NewPassword({ verificationId }: { verificationId: string }) {
+	const t = useTranslations();
 	const router = useRouter();
 
 	const resetPasswordMutation = useMutation({
@@ -49,7 +51,7 @@ export function NewPassword({ verificationId }: { verificationId: string }) {
 								{isSubmitting && (
 									<Icon.Loader2 className="mr-2 h-4 w-4 animate-spin" />
 								)}
-								<span>Reset Password</span>
+								<span>{t('common.buttons.resetPassword')}</span>
 							</>
 						</Button>
 					)}

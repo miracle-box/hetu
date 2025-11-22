@@ -7,11 +7,13 @@ import { mergeForm } from '@tanstack/react-form';
 import { useMutation } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { useSignupForm, type SignupFormValues } from '~web/libs/modules/auth/forms/SignupForm';
 import { respToEither } from '~web/libs/utils/resp';
 import { handleSignup } from './actions';
 
 export default function Signup() {
+	const t = useTranslations();
 	const router = useRouter();
 
 	const signupMutation = useMutation({
@@ -30,7 +32,7 @@ export default function Signup() {
 	return (
 		<main className="container mx-auto">
 			<div className="flex flex-col gap-2">
-				<Large>Sign Up</Large>
+				<Large>{t('auth.signup.page.title')}</Large>
 
 				<FormView />
 				<form.AppForm>
@@ -46,7 +48,7 @@ export default function Signup() {
 									{isSubmitting && (
 										<Icon.Loader2 className="mr-2 h-4 w-4 animate-spin" />
 									)}
-									<span>Sign Up</span>
+									<span>{t('auth.signup.page.title')}</span>
 								</>
 							</Button>
 						)}
@@ -54,11 +56,11 @@ export default function Signup() {
 				</form.AppForm>
 
 				<Button variant="link" asChild>
-					<Link href="/auth/signin">I already have an account</Link>
+					<Link href="/auth/signin">{t('common.links.iHaveAccount')}</Link>
 				</Button>
 
 				<Button variant="link" asChild>
-					<Link href="/">Go back to landing page</Link>
+					<Link href="/">{t('common.links.goBackToLanding')}</Link>
 				</Button>
 			</div>
 		</main>

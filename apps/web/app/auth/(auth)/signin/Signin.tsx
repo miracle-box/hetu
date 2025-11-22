@@ -5,11 +5,13 @@ import { Icon } from '@repo/ui/icon';
 import { mergeForm } from '@tanstack/form-core';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { useSigninForm, type SigninFormValues } from '~web/libs/modules/auth/forms/SigninForm';
 import { respToEither } from '~web/libs/utils/resp';
 import { handleSignin } from './actions';
 
 export function Signin() {
+	const t = useTranslations();
 	const router = useRouter();
 
 	const signinMutation = useMutation({
@@ -38,7 +40,7 @@ export function Signin() {
 							className="mt-4 w-full"
 						>
 							{isSubmitting && <Icon.Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-							<span>Sign In</span>
+							<span>{t('common.buttons.signIn')}</span>
 						</Button>
 					)}
 				</form.Submit>

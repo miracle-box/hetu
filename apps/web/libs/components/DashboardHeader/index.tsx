@@ -11,10 +11,12 @@ import {
 } from '@repo/ui/navigation-menu';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 import React from 'react';
 import { DesktopNav } from './DesktopNav';
 import { MobileNav } from './MobileNav';
 export function DashboardHeader() {
+	const t = useTranslations();
 	const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 	const widerThanMd = useBreakpoint('md');
 
@@ -46,7 +48,7 @@ export function DashboardHeader() {
 						<NavigationMenuLink
 							className={cn(navigationMenuTriggerStyle(), 'font-medium')}
 						>
-							Dashboard
+							{t('common.labels.dashboard')}
 						</NavigationMenuLink>
 					</NavigationMenuItem>
 				</NavigationMenuList>

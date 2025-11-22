@@ -1,1 +1,311 @@
-{}
+{
+  "common": {
+    "buttons": {
+      "signIn": "Sign In",
+      "signUp": "Sign Up",
+      "submit": "Submit",
+      "cancel": "Cancel",
+      "delete": "Delete",
+      "create": "Create",
+      "use": "Use",
+      "bind": "Bind",
+      "goBack": "Go back",
+      "loading": "Loading...",
+      "updating": "Updating...",
+      "deleting": "Deleting...",
+      "redirecting": "Redirecting...",
+      "sendCode": "Send Code",
+      "resend": "Resend ({countdown}s)",
+      "sending": "Sending...",
+      "verify": "Verify",
+      "confirmBinding": "Confirm Binding",
+      "resetPassword": "Reset Password",
+      "sendResetLink": "Send Reset Link",
+      "signInWith": "Sign in with [{provider}]",
+      "goBackToSettings": "Go back to settings"
+    },
+    "links": {
+      "signIn": "Sign In",
+      "signUp": "Sign Up",
+      "goToApp": "App",
+      "goBackToLanding": "Go back to landing page",
+      "iDontHaveAccount": "I don't have an account",
+      "iHaveAccount": "I already have an account",
+      "forgotDetails": "I have forgotten my details",
+      "feedback": "Feedback",
+      "github": "GitHub"
+    },
+    "labels": {
+      "email": "Email",
+      "password": "Password",
+      "confirmPassword": "Confirm Password",
+      "username": "Username",
+      "name": "Name",
+      "description": "Description",
+      "file": "File",
+      "type": "Type",
+      "language": "Language",
+      "or": "OR",
+      "uuid": "UUID",
+      "primaryProfile": "Primary Profile",
+      "skin": "Skin",
+      "cape": "Cape",
+      "textureId": "Texture ID",
+      "primary": "Primary",
+      "notPrimary": "Not primary",
+      "noTexture": "No texture",
+      "unknown": "Unknown",
+      "skinDefault": "Skin (Default)",
+      "skinSlim": "Skin (Slim)",
+      "dashboard": "Dashboard"
+    },
+    "placeholders": {
+      "email": "Email",
+      "password": "Password",
+      "confirmPassword": "Confirm your password",
+      "username": "Choose a username",
+      "name": "Name",
+      "verificationCode": "Enter verification code",
+      "textureName": "Texture Name",
+      "textureDescription": "Texture Description",
+      "verificationId": "Verification ID",
+      "secret": "Secret"
+    },
+    "messages": {
+      "loading": "Loading...",
+      "loadingFailed": "Loading failed",
+      "unknownError": "Unknown error",
+      "noData": "No data",
+      "operationFailed": "Operation failed",
+      "updateFailed": "Update failed",
+      "deleteFailed": "Delete failed",
+      "authenticationFailed": "Authentication failed, please refresh the page and log in again",
+      "noPermission": "No permission",
+      "passwordsDoNotMatch": "Passwords do not match"
+    },
+    "status": {
+      "loading": "Loading...",
+      "updating": "Updating...",
+      "deleting": "Deleting...",
+      "redirecting": "Redirecting..."
+    }
+  },
+  "home": {
+    "page": {
+      "title": "Hetu Web",
+      "runningOn": {
+        "title": "Running on",
+        "bun": "Bun",
+        "nodejs": "Node.js"
+      }
+    }
+  },
+  "auth": {
+    "signin": {
+      "page": {
+        "title": "Sign In"
+      }
+    },
+    "signup": {
+      "page": {
+        "title": "Sign Up"
+      },
+      "form": {
+        "verificationCode": {
+          "label": "Verification Code"
+        },
+        "passwordMismatch": "Passwords do not match"
+      }
+    },
+    "passwordReset": {
+      "page": {
+        "title": "Password Reset",
+        "sendResetLink": "Send Reset Link",
+        "emailSent": {
+          "title": "Password Reset",
+          "message": "An email has been sent to your email address with a link to reset your password.",
+          "instruction": "Please check your inbox and follow the instructions in the email."
+        },
+        "verified": {
+          "title": "Password Reset",
+          "invalidLink": "Invalid verification link",
+          "linkExpired": "Verification link expired",
+          "verifyFailed": "Failed to verify your request"
+        }
+      },
+      "form": {
+        "passwordMismatch": "Passwords do not match"
+      }
+    },
+    "oauth2": {
+      "callback": {
+        "title": "OAuth2 Callback",
+        "error": "Error: {error}",
+        "errorDescription": "Error description: {description}",
+        "invalidParams": "Invalid callback params.",
+        "verifyFailed": "Failed to verify your request: {message}"
+      },
+      "bind": {
+        "title": "OAuth2 Binding",
+        "invalidVerificationId": "Invalid verification ID",
+        "inspectFailed": "Failed to inspect binding: {message}",
+        "user": "User: {name}",
+        "oauth2Profile": "OAuth2 Profile:",
+        "alreadyBound": "Already bound: {status}",
+        "yes": "Yes",
+        "no": "No",
+        "alreadyBoundMessage": "You have already bound [{provider}] account {id} to your account.",
+        "bindingMessage": "You are binding [{provider}] account {id} to your account."
+      },
+      "signin": {
+        "signingIn": "Signing you in...",
+        "signinFailed": "Signin failed: {message}",
+        "signinSuccessful": "Sign in successful! Redirecting..."
+      }
+    },
+    "mcClaim": {
+      "bind": {
+        "title": "Mojang Account Verification",
+        "loading": "Loading...",
+        "processing": "Processing verification...",
+        "bindFailed": "Binding failed: {message}",
+        "bindSuccess": "Binding successful. Here is the bound profile information:",
+        "currentBoundProfiles": "Currently bound profiles:",
+        "goBackToSettings": "Go back to settings",
+        "missingParams": "Missing verification parameters. Please access this page through the correct link.",
+        "preparing": "Preparing verification..."
+      }
+    }
+  },
+  "dashboard": {
+    "overview": {
+      "page": {
+        "title": "Dashboard",
+        "loggedInAs": "You are logged in as"
+      }
+    },
+    "settings": {
+      "page": {
+        "title": "Settings",
+        "language": {
+          "title": "Language"
+        },
+        "navigation": {
+          "overview": "Overview",
+          "profiles": "Profiles",
+          "textures": "Textures",
+          "settings": "Settings"
+        },
+        "oauth2": {
+          "title": "OAuth2 Account Bindings",
+          "noProviders": "No OAuth2 providers configured.",
+          "loadFailed": "Failed to load OAuth2 providers"
+        },
+        "mcClaim": {
+          "title": "Mojang Account Verification",
+          "bindButton": "Bind Minecraft Account (Mojang)",
+          "redirecting": "Redirecting...",
+          "noClaims": "No Minecraft profiles bound yet.",
+          "loading": "Loading...",
+          "loadFailed": "Failed to load:",
+          "bindToProfile": "Bind to profile:",
+          "notBound": "Not bound",
+          "primaryProfile": "(Primary)",
+          "updating": "Updating...",
+          "deleteBinding": "Delete Binding",
+          "deleting": "Deleting...",
+          "confirmDelete": "Are you sure you want to delete the binding for {username}? This action cannot be undone.",
+          "noPermissionDelete": "No permission to delete this binding",
+          "noPermissionUpdate": "No permission to update this binding",
+          "profileNotFound": "Selected profile does not exist",
+          "skinTexture": "Skin:",
+          "capeTexture": "Cape:",
+          "boundToLocalProfile": "Bound to local profile:"
+        }
+      },
+      "components": {
+        "bindOauth2Button": {
+          "label": "Bind [{provider}]"
+        }
+      }
+    },
+    "profiles": {
+      "page": {
+        "title": "Profiles",
+        "createButton": "Create profile",
+        "noProfiles": "No profiles",
+        "profileId": "Profile: {id}",
+        "idParam": "ID param: {id}"
+      },
+      "components": {
+        "profileCard": {
+          "uuid": "UUID",
+          "primaryProfile": "Primary Profile",
+          "skin": "Skin",
+          "cape": "Cape"
+        },
+        "createProfileModal": {
+          "title": "Create profile",
+          "description": "Your first profile is primary profile.",
+          "cancel": "Cancel",
+          "create": "Create Profile",
+          "creating": "Creating Profile..."
+        },
+        "selectProfileModal": {
+          "title": "Select profile",
+          "description": "Select a profile to use this texture on.",
+          "descriptionMobile": "Select a profile to use this texture for.",
+          "cancel": "Cancel"
+        }
+      },
+      "form": {
+        "name": {
+          "label": "Name",
+          "description": "Player name should be 3-16 characters long. Numbers, letters, and underscores are allowed.",
+          "placeholder": "Name"
+        }
+      }
+    },
+    "textures": {
+      "page": {
+        "title": "Textures",
+        "createButton": "Create texture",
+        "noTextures": "No textures",
+        "textureId": "Texture: {id}",
+        "idParam": "ID param: {id}"
+      },
+      "components": {
+        "textureCard": {
+          "alt": "Texture image"
+        },
+        "createTextureModal": {
+          "title": "Create Texture",
+          "description": "Upload and manage your textures.",
+          "cancel": "Cancel",
+          "create": "Create Texture",
+          "creating": "Creating Texture..."
+        }
+      },
+      "form": {
+        "name": {
+          "label": "Name",
+          "placeholder": "Texture Name"
+        },
+        "description": {
+          "label": "Description",
+          "placeholder": "Texture Description"
+        },
+        "file": {
+          "label": "File"
+        },
+        "type": {
+          "label": "Type",
+          "description": "Select the type of texture.",
+          "skin": "Normal Skin",
+          "skinSlim": "Slim Skin",
+          "cape": "Cape"
+        }
+      }
+    }
+  }
+}

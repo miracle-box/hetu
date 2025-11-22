@@ -2,6 +2,7 @@
 
 import { withForm } from '@repo/ui/hooks/use-app-form';
 import { Input } from '@repo/ui/input';
+import { useTranslations } from 'next-intl';
 import { RequestVerificationButton } from '~web/libs/components/RequestVerificationButton';
 import { signupFormOpts } from './schema';
 
@@ -11,6 +12,8 @@ export const SignupFormView = withForm({
 		formId: 'signup-form',
 	},
 	render: function Render({ form, formId }) {
+		const t = useTranslations();
+
 		return (
 			<form.AppForm>
 				<form.Form formId={formId} className="flex flex-col gap-4">
@@ -18,13 +21,13 @@ export const SignupFormView = withForm({
 						name="email"
 						children={(field) => (
 							<field.Item>
-								<field.Label>Email</field.Label>
+								<field.Label>{t('common.labels.email')}</field.Label>
 
 								<div className="flex w-full items-center gap-2">
 									<field.Control>
 										<Input
 											type="email"
-											placeholder="Email"
+											placeholder={t('common.placeholders.email')}
 											value={field.state.value}
 											onChange={(e) => field.handleChange(e.target.value)}
 										/>
@@ -54,10 +57,10 @@ export const SignupFormView = withForm({
 					<form.AppField
 						name="verificationCode"
 						children={(field) => (
-							<field.SimpleField label="Verification Code">
+							<field.SimpleField label={t('auth.signup.form.verificationCode.label')}>
 								<Input
 									type="number"
-									placeholder="Enter verification code"
+									placeholder={t('common.placeholders.verificationCode')}
 									value={field.state.value}
 									onChange={(e) => field.handleChange(e.target.value)}
 								/>
@@ -68,10 +71,10 @@ export const SignupFormView = withForm({
 					<form.AppField
 						name="name"
 						children={(field) => (
-							<field.SimpleField label="Username">
+							<field.SimpleField label={t('common.labels.username')}>
 								<Input
 									type="text"
-									placeholder="Choose a username"
+									placeholder={t('common.placeholders.username')}
 									value={field.state.value}
 									onChange={(e) => field.handleChange(e.target.value)}
 								/>
@@ -82,10 +85,10 @@ export const SignupFormView = withForm({
 					<form.AppField
 						name="password"
 						children={(field) => (
-							<field.SimpleField label="Password">
+							<field.SimpleField label={t('common.labels.password')}>
 								<Input
 									type="password"
-									placeholder="Create password"
+									placeholder={t('common.placeholders.password')}
 									value={field.state.value}
 									onChange={(e) => field.handleChange(e.target.value)}
 								/>
@@ -99,16 +102,16 @@ export const SignupFormView = withForm({
 							onChangeListenTo: ['password'],
 							onChange: ({ value, fieldApi }) => {
 								if (value !== fieldApi.form.getFieldValue('password')) {
-									return 'Passwords do not match';
+									return t('auth.signup.form.passwordMismatch');
 								}
 								return undefined;
 							},
 						}}
 						children={(field) => (
-							<field.SimpleField label="Confirm Password">
+							<field.SimpleField label={t('common.labels.confirmPassword')}>
 								<Input
 									type="password"
-									placeholder="Confirm your password"
+									placeholder={t('common.placeholders.confirmPassword')}
 									value={field.state.value}
 									onChange={(e) => field.handleChange(e.target.value)}
 								/>

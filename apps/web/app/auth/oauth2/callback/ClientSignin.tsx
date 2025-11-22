@@ -3,12 +3,14 @@
 import { Icon } from '@repo/ui/icon';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { useEffect, useRef } from 'react';
 import { ApiError } from '~web/libs/utils/api-response';
 import { respToEither } from '~web/libs/utils/resp';
 import { handleOAuth2Signin } from './actions';
 
 export function ClientSignin({ verificationId }: { verificationId: string }) {
+	const t = useTranslations();
 	const router = useRouter();
 	const hasExecuted = useRef(false);
 
@@ -37,7 +39,7 @@ export function ClientSignin({ verificationId }: { verificationId: string }) {
 		return (
 			<div className="flex items-center gap-2">
 				<Icon.Loader2 className="h-4 w-4 animate-spin" />
-				<span>Signing you in...</span>
+				<span>{t('auth.oauth2.signin.signingIn')}</span>
 			</div>
 		);
 	}
@@ -46,8 +48,9 @@ export function ClientSignin({ verificationId }: { verificationId: string }) {
 		return (
 			<div className="flex flex-col gap-2">
 				<div className="flex gap-2">
-					<div>Signin failed: </div>
-					<div>{signinMutation.error?.message || 'Unknown error'}</div>
+					{t('auth.oauth2.signin.signinFailed', {
+						message: signinMutation.error?.message || t('common.messages.unknownError'),
+					})}
 				</div>
 			</div>
 		);
@@ -57,7 +60,7 @@ export function ClientSignin({ verificationId }: { verificationId: string }) {
 	return (
 		<div className="flex items-center gap-2">
 			<Icon.CheckCircle className="h-4 w-4 text-green-500" />
-			<span>Sign in successful! Redirecting...</span>
+			<span>{t('auth.oauth2.signin.signinSuccessful')}</span>
 		</div>
 	);
 }

@@ -1,5 +1,6 @@
 import { Large } from '@repo/ui/typography';
 import { redirect } from 'next/navigation';
+import { getTranslations } from 'next-intl/server';
 import { verifyVerification } from '~web/libs/actions/api/auth';
 import { buildClientAppConfig } from '~web/libs/utils/app-config/client';
 import { respToEither } from '~web/libs/utils/resp';
@@ -10,16 +11,21 @@ export type Props = {
 };
 
 export default async function OAuthCallback({ searchParams }: Props) {
+	const t = await getTranslations();
 	const search = await searchParams;
 	if (search['error']) {
 		return (
 			<main className="container mx-auto">
 				<div className="flex flex-col gap-2">
-					<Large>OAuth2 Callback</Large>
+					<Large>{t('auth.oauth2.callback.title')}</Large>
 
-					<div className="flex gap-2">Error: {search['error']}</div>
 					<div className="flex gap-2">
-						Error description: {search['error_description']}
+						{t('auth.oauth2.callback.error', { error: String(search['error']) })}
+					</div>
+					<div className="flex gap-2">
+						{t('auth.oauth2.callback.errorDescription', {
+							description: String(search['error_description'] || ''),
+						})}
 					</div>
 				</div>
 			</main>
@@ -30,9 +36,9 @@ export default async function OAuthCallback({ searchParams }: Props) {
 		return (
 			<main className="container mx-auto">
 				<div className="flex flex-col gap-2">
-					<Large>OAuth2 Callback</Large>
+					<Large>{t('auth.oauth2.callback.title')}</Large>
 
-					<div className="flex gap-2">Invalid callback params.</div>
+					<div className="flex gap-2">{t('auth.oauth2.callback.invalidParams')}</div>
 				</div>
 			</main>
 		);
@@ -52,11 +58,12 @@ export default async function OAuthCallback({ searchParams }: Props) {
 		return (
 			<main className="container mx-auto">
 				<div className="flex flex-col gap-2">
-					<Large>OAuth2 Callback</Large>
+					<Large>{t('auth.oauth2.callback.title')}</Large>
 
 					<div className="flex gap-2">
-						<div>Failed to verify your request: </div>
-						<div>{verifyResponse.extract().message}</div>
+						{t('auth.oauth2.callback.verifyFailed', {
+							message: verifyResponse.extract().message,
+						})}
 					</div>
 				</div>
 			</main>
@@ -71,7 +78,7 @@ export default async function OAuthCallback({ searchParams }: Props) {
 		return (
 			<main className="container mx-auto">
 				<div className="flex flex-col gap-2">
-					<Large>OAuth2 Callback</Large>
+					<Large>{t('auth.oauth2.callback.title')}</Large>
 
 					<div className="flex gap-2">
 						<ClientSignin verificationId={verificationId} />

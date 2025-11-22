@@ -1,1 +1,311 @@
-{}
+{
+  "common": {
+    "buttons": {
+      "signIn": "登录",
+      "signUp": "注册",
+      "submit": "提交",
+      "cancel": "取消",
+      "delete": "删除",
+      "create": "创建",
+      "use": "使用",
+      "bind": "绑定",
+      "goBack": "返回",
+      "loading": "加载中...",
+      "updating": "更新中...",
+      "deleting": "删除中...",
+      "redirecting": "跳转中...",
+      "sendCode": "发送验证码",
+      "resend": "重新发送（{countdown} 秒）",
+      "sending": "发送中...",
+      "verify": "验证",
+      "confirmBinding": "确认绑定",
+      "resetPassword": "重置密码",
+      "sendResetLink": "发送重置链接",
+      "signInWith": "使用 [{provider}] 登录",
+      "goBackToSettings": "返回设置页面"
+    },
+    "links": {
+      "signIn": "登录",
+      "signUp": "注册",
+      "goToApp": "进入应用",
+      "goBackToLanding": "返回首页",
+      "iDontHaveAccount": "我没有账号",
+      "iHaveAccount": "我已有账号",
+      "forgotDetails": "忘记密码？",
+      "feedback": "反馈",
+      "github": "GitHub"
+    },
+    "labels": {
+      "email": "邮箱",
+      "password": "密码",
+      "confirmPassword": "确认密码",
+      "username": "用户名",
+      "name": "名称",
+      "description": "描述",
+      "file": "文件",
+      "type": "类型",
+      "language": "语言",
+      "or": "或",
+      "uuid": "UUID",
+      "primaryProfile": "主档案",
+      "skin": "皮肤",
+      "cape": "披风",
+      "textureId": "纹理 ID",
+      "primary": "主",
+      "notPrimary": "非主",
+      "noTexture": "无纹理",
+      "unknown": "未知",
+      "skinDefault": "默认皮肤",
+      "skinSlim": "细手臂皮肤",
+      "dashboard": "仪表盘"
+    },
+    "placeholders": {
+      "email": "邮箱",
+      "password": "密码",
+      "confirmPassword": "确认您的密码",
+      "username": "用户名",
+      "name": "名称",
+      "verificationCode": "输入验证码",
+      "textureName": "纹理名称",
+      "textureDescription": "纹理描述",
+      "verificationId": "验证 ID",
+      "secret": "密钥"
+    },
+    "messages": {
+      "loading": "加载中...",
+      "loadingFailed": "加载失败",
+      "unknownError": "未知错误",
+      "noData": "暂无数据",
+      "operationFailed": "操作失败",
+      "updateFailed": "更新失败",
+      "deleteFailed": "删除失败",
+      "authenticationFailed": "认证失败，请刷新页面后重新登录",
+      "noPermission": "没有权限",
+      "passwordsDoNotMatch": "两次输入的密码不一致"
+    },
+    "status": {
+      "loading": "加载中...",
+      "updating": "更新中...",
+      "deleting": "删除中...",
+      "redirecting": "跳转中..."
+    }
+  },
+  "home": {
+    "page": {
+      "title": "Hetu Web",
+      "runningOn": {
+        "title": "运行环境",
+        "bun": "Bun",
+        "nodejs": "Node.js"
+      }
+    }
+  },
+  "auth": {
+    "signin": {
+      "page": {
+        "title": "登录"
+      }
+    },
+    "signup": {
+      "page": {
+        "title": "注册"
+      },
+      "form": {
+        "verificationCode": {
+          "label": "验证码"
+        },
+        "passwordMismatch": "两次输入的密码不一致"
+      }
+    },
+    "passwordReset": {
+      "page": {
+        "title": "重置密码",
+        "sendResetLink": "发送重置链接",
+        "emailSent": {
+          "title": "重置密码邮件已发送",
+          "message": "我们已向您的邮箱发送一封包含密码重置链接的邮件。",
+          "instruction": "请检查您的收件箱，并按照邮件中的说明完成操作。"
+        },
+        "verified": {
+          "title": "重置密码",
+          "invalidLink": "无效的验证链接",
+          "linkExpired": "验证链接已过期",
+          "verifyFailed": "验证请求失败"
+        }
+      },
+      "form": {
+        "passwordMismatch": "两次输入的密码不一致"
+      }
+    },
+    "oauth2": {
+      "callback": {
+        "title": "OAuth2 回调",
+        "error": "错误：{error}",
+        "errorDescription": "错误描述：{description}",
+        "invalidParams": "回调参数无效。",
+        "verifyFailed": "验证请求失败：{message}"
+      },
+      "bind": {
+        "title": "OAuth2 账号绑定",
+        "invalidVerificationId": "无效的验证 ID",
+        "inspectFailed": "检查绑定状态失败：{message}",
+        "user": "用户：{name}",
+        "oauth2Profile": "OAuth2 用户信息：",
+        "alreadyBound": "绑定状态：{status}",
+        "yes": "是",
+        "no": "否",
+        "alreadyBoundMessage": "您已将 [{provider}] 账号 {id} 绑定到您的账户。",
+        "bindingMessage": "您正在将 [{provider}] 账号 {id} 绑定到您的账户。"
+      },
+      "signin": {
+        "signingIn": "正在登录...",
+        "signinFailed": "登录失败：{message}",
+        "signinSuccessful": "登录成功！正在跳转..."
+      }
+    },
+    "mcClaim": {
+      "bind": {
+        "title": "Mojang 正版账号验证",
+        "loading": "加载中...",
+        "processing": "正在处理验证...",
+        "bindFailed": "绑定失败：{message}",
+        "bindSuccess": "绑定成功，以下是已绑定的档案信息：",
+        "currentBoundProfiles": "当前已绑定的档案：",
+        "goBackToSettings": "返回设置页面",
+        "missingParams": "缺少验证参数，请通过正确的链接访问此页面。",
+        "preparing": "正在准备验证..."
+      }
+    }
+  },
+  "dashboard": {
+    "overview": {
+      "page": {
+        "title": "仪表盘",
+        "loggedInAs": "当前登录账号："
+      }
+    },
+    "settings": {
+      "page": {
+        "title": "设置",
+        "language": {
+          "title": "界面语言"
+        },
+        "navigation": {
+          "overview": "概览",
+          "profiles": "档案",
+          "textures": "纹理",
+          "settings": "设置"
+        },
+        "oauth2": {
+          "title": "OAuth2 账号绑定",
+          "noProviders": "尚未配置任何 OAuth2 提供商。",
+          "loadFailed": "加载 OAuth2 提供商失败"
+        },
+        "mcClaim": {
+          "title": "Mojang 正版账号验证",
+          "bindButton": "绑定 Minecraft 账号（Mojang 正版）",
+          "redirecting": "跳转中...",
+          "noClaims": "尚未绑定任何 Minecraft 档案。",
+          "loading": "加载中...",
+          "loadFailed": "加载失败：",
+          "bindToProfile": "绑定到档案：",
+          "notBound": "不绑定",
+          "primaryProfile": "（主档案）",
+          "updating": "更新中...",
+          "deleteBinding": "删除绑定",
+          "deleting": "删除中...",
+          "confirmDelete": "确定要删除 {username} 的绑定吗？此操作无法撤销。",
+          "noPermissionDelete": "没有权限删除此绑定",
+          "noPermissionUpdate": "没有权限修改此绑定",
+          "profileNotFound": "选择的档案不存在",
+          "skinTexture": "皮肤：",
+          "capeTexture": "披风：",
+          "boundToLocalProfile": "绑定到本地档案："
+        }
+      },
+      "components": {
+        "bindOauth2Button": {
+          "label": "绑定 [{provider}]"
+        }
+      }
+    },
+    "profiles": {
+      "page": {
+        "title": "档案",
+        "createButton": "新建档案",
+        "noProfiles": "暂无档案",
+        "profileId": "档案：{id}",
+        "idParam": "ID 参数：{id}"
+      },
+      "components": {
+        "profileCard": {
+          "uuid": "UUID",
+          "primaryProfile": "主档案",
+          "skin": "皮肤",
+          "cape": "披风"
+        },
+        "createProfileModal": {
+          "title": "新建档案",
+          "description": "您的第一个档案将自动设为主档案。",
+          "cancel": "取消",
+          "create": "创建档案",
+          "creating": "正在创建档案..."
+        },
+        "selectProfileModal": {
+          "title": "选择档案",
+          "description": "请选择一个档案以使用此纹理。",
+          "descriptionMobile": "请选择一个档案以使用此纹理。",
+          "cancel": "取消"
+        }
+      },
+      "form": {
+        "name": {
+          "label": "名称",
+          "description": "玩家名称需为 3-16 个字符，可使用数字、字母和下划线。",
+          "placeholder": "名称"
+        }
+      }
+    },
+    "textures": {
+      "page": {
+        "title": "纹理",
+        "createButton": "新建纹理",
+        "noTextures": "暂无纹理",
+        "textureId": "纹理：{id}",
+        "idParam": "ID 参数：{id}"
+      },
+      "components": {
+        "textureCard": {
+          "alt": "纹理预览图"
+        },
+        "createTextureModal": {
+          "title": "新建纹理",
+          "description": "上传并管理您的纹理。",
+          "cancel": "取消",
+          "create": "创建纹理",
+          "creating": "正在创建纹理..."
+        }
+      },
+      "form": {
+        "name": {
+          "label": "名称",
+          "placeholder": "纹理名称"
+        },
+        "description": {
+          "label": "描述",
+          "placeholder": "纹理描述"
+        },
+        "file": {
+          "label": "文件"
+        },
+        "type": {
+          "label": "类型",
+          "description": "选择纹理类型。",
+          "skin": "普通皮肤",
+          "skinSlim": "细手臂皮肤",
+          "cape": "披风"
+        }
+      }
+    }
+  }
+}

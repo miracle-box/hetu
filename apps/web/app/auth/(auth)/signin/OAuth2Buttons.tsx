@@ -3,6 +3,7 @@
 import type { API } from '@repo/api-client';
 import { Button } from '@repo/ui/button';
 import { useMutation } from '@tanstack/react-query';
+import { useTranslations } from 'next-intl';
 import { requestVerification } from '~web/libs/actions/api/auth';
 import { ApiError } from '~web/libs/utils/api-response';
 import { buildOAuth2AuthCodeUrl } from '~web/libs/utils/oauth2';
@@ -15,6 +16,7 @@ export type Props = {
 	};
 };
 export function OAuth2Buttons({ oauth2Metadata, config }: Props) {
+	const t = useTranslations();
 	const createOauth2VerificationMutaion = useMutation({
 		mutationFn: (target: string) =>
 			requestVerification({
@@ -58,7 +60,7 @@ export function OAuth2Buttons({ oauth2Metadata, config }: Props) {
 						createOauth2VerificationMutaion.mutate(name);
 					}}
 				>
-					Sign in with [{name}]
+					{t('common.buttons.signInWith', { provider: name })}
 				</Button>
 			))}
 		</div>

@@ -2,31 +2,39 @@ import { Alert, AlertDescription, AlertTitle } from '@repo/ui/alert';
 import { Button } from '@repo/ui/button';
 import { Large } from '@repo/ui/typography';
 import Link from 'next/link';
-export default function Home() {
+import { getTranslations } from 'next-intl/server';
+
+export default async function Home() {
+	const t = await getTranslations();
+
 	return (
 		<main className="container mx-auto">
 			<div className="flex flex-col gap-2">
-				<Large>Hetu Web</Large>
+				<Large>{t('home.page.title')}</Large>
 
 				<div className="flex gap-2">
 					<Button asChild>
-						<Link href="/auth/signin">Sign In</Link>
+						<Link href="/auth/signin">{t('common.links.signIn')}</Link>
 					</Button>
 					<Button asChild>
-						<Link href="/auth/signup">Sign Up</Link>
+						<Link href="/auth/signup">{t('common.links.signUp')}</Link>
 					</Button>
 					<Button asChild>
-						<Link href="/app/dashboard">App</Link>
+						<Link href="/app/dashboard">{t('common.links.goToApp')}</Link>
 					</Button>
 				</div>
 
 				<Alert>
-					<AlertTitle>Running on</AlertTitle>
+					<AlertTitle>{t('home.page.runningOn.title')}</AlertTitle>
 					<AlertDescription>
 						<div className="flex flex-col">
-							<span>Bun {typeof Bun !== 'undefined' ? Bun.version : '×'}</span>
 							<span>
-								Node.js {typeof process !== 'undefined' ? process.version : '×'}
+								{t('home.page.runningOn.bun')}{' '}
+								{typeof Bun !== 'undefined' ? Bun.version : '×'}
+							</span>
+							<span>
+								{t('home.page.runningOn.nodejs')}{' '}
+								{typeof process !== 'undefined' ? process.version : '×'}
 							</span>
 						</div>
 					</AlertDescription>

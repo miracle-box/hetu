@@ -1,6 +1,7 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
+import { useTranslations } from 'next-intl';
 import { getUserMcClaims } from '~web/libs/actions/api';
 import { respToEither } from '~web/libs/utils/resp';
 import { McClaimActions } from './McClaimActions';
@@ -17,6 +18,7 @@ interface McClaimsListClientProps {
 }
 
 export function McClaimsListClient({ initialData, profiles }: McClaimsListClientProps) {
+	const t = useTranslations();
 	// 使用初始数据并设置查询
 	const {
 		data: listResult,
@@ -29,19 +31,24 @@ export function McClaimsListClient({ initialData, profiles }: McClaimsListClient
 	});
 
 	if (isLoading) {
-		return <div>加载中...</div>;
+		return <div>{t('dashboard.settings.page.mcClaim.loading')}</div>;
 	}
 
 	if (error || !listResult || listResult.isLeft() || !listResult.isRight()) {
 		return (
-			<div>加载失败：{listResult?.isLeft() ? listResult.extract().message : '未知错误'}</div>
+			<div>
+				{t('dashboard.settings.page.mcClaim.loadFailed')}
+				{listResult?.isLeft()
+					? listResult.extract().message
+					: t('common.messages.unknownError')}
+			</div>
 		);
 	}
 
 	const { mcClaims } = listResult.extract();
 
 	if (mcClaims.length === 0) {
-		return <div>暂未绑定任何 Minecraft 档案。</div>;
+		return <div>{t('dashboard.settings.page.mcClaim.noClaims')}</div>;
 	}
 
 	return (
@@ -53,16 +60,21 @@ export function McClaimsListClient({ initialData, profiles }: McClaimsListClient
 					</div>
 					{c.skinTextureUrl && (
 						<div className="text-muted-foreground text-sm">
-							皮肤：{c.skinTextureVariant ?? 'unknown'}
+							{t('dashboard.settings.page.mcClaim.skinTexture')}
+							{c.skinTextureVariant ?? 'unknown'}
 						</div>
 					)}
 					{c.capeTextureAlias && (
 						<div className="text-muted-foreground text-sm">
-							披风：{c.capeTextureAlias}
+							{t('dashboard.settings.page.mcClaim.capeTexture')}
+							{c.capeTextureAlias}
 						</div>
 					)}
 					{c.boundProfileId && (
-						<div className="text-sm">绑定到本地档案：{c.boundProfileId}</div>
+						<div className="text-sm">
+							{t('dashboard.settings.page.mcClaim.boundToLocalProfile')}
+							{c.boundProfileId}
+						</div>
 					)}
 					<McClaimActions
 						mcClaimId={c.id}

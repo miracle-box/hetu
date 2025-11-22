@@ -2,6 +2,7 @@
 
 import { Button } from '@repo/ui/button';
 import { useMutation } from '@tanstack/react-query';
+import { useTranslations } from 'next-intl';
 import { requestVerification } from '~web/libs/actions/api';
 import { getClientAppConfig } from '~web/libs/hooks/get-client-app-config';
 import { ApiError } from '~web/libs/utils/api-response';
@@ -19,6 +20,7 @@ export type Props = {
 };
 
 export function BindOauth2Button({ provider, metadata }: Props) {
+	const t = useTranslations();
 	const config = getClientAppConfig();
 
 	const createOauth2VerificationMutaion = useMutation({
@@ -51,9 +53,10 @@ export function BindOauth2Button({ provider, metadata }: Props) {
 			window.location.href = authUrl;
 		},
 	});
+
 	return (
 		<Button onClick={() => createOauth2VerificationMutaion.mutate(provider)}>
-			Bind [{provider}]
+			{t('dashboard.settings.components.bindOauth2Button.label', { provider })}
 		</Button>
 	);
 }

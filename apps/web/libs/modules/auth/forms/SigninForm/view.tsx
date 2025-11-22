@@ -2,6 +2,7 @@
 
 import { withForm } from '@repo/ui/hooks/use-app-form';
 import { Input } from '@repo/ui/input';
+import { useTranslations } from 'next-intl';
 import { signinFormOpts } from './schema';
 
 export const SigninFormView = withForm({
@@ -10,16 +11,18 @@ export const SigninFormView = withForm({
 		formId: 'signin-form',
 	},
 	render: function Render({ form, formId }) {
+		const t = useTranslations();
+
 		return (
 			<form.AppForm>
 				<form.Form formId={formId} className="flex flex-col gap-4">
 					<form.AppField
 						name="email"
 						children={(field) => (
-							<field.SimpleField label="Email">
+							<field.SimpleField label={t('common.labels.email')}>
 								<Input
 									type="email"
-									placeholder="Email"
+									placeholder={t('common.placeholders.email')}
 									value={field.state.value}
 									onChange={(e) => field.handleChange(e.target.value)}
 								/>
@@ -30,10 +33,10 @@ export const SigninFormView = withForm({
 					<form.AppField
 						name="password"
 						children={(field) => (
-							<field.SimpleField label="Password">
+							<field.SimpleField label={t('common.labels.password')}>
 								<Input
 									type="password"
-									placeholder="Password"
+									placeholder={t('common.placeholders.password')}
 									value={field.state.value}
 									onChange={(e) => field.handleChange(e.target.value)}
 								/>

@@ -22,6 +22,7 @@ import {
 } from '@repo/ui/drawer';
 import { useBreakpoint } from '@repo/ui/hooks/use-breakpoint';
 import { Icon } from '@repo/ui/icon';
+import { useTranslations } from 'next-intl';
 import React from 'react';
 
 export type Props = {
@@ -39,6 +40,7 @@ export function CreateTextureModalView({
 	canSubmit,
 	isSubmitting,
 }: Props) {
+	const t = useTranslations();
 	const widerThanSm = useBreakpoint('sm');
 
 	return widerThanSm ? (
@@ -47,25 +49,31 @@ export function CreateTextureModalView({
 
 			<DialogContent>
 				<DialogHeader>
-					<DialogTitle>Create Texture</DialogTitle>
-					<DialogDescription>Upload and manage your textures.</DialogDescription>
+					<DialogTitle>
+						{t('dashboard.textures.components.createTextureModal.title')}
+					</DialogTitle>
+					<DialogDescription>
+						{t('dashboard.textures.components.createTextureModal.description')}
+					</DialogDescription>
 				</DialogHeader>
 
 				<FormView />
 
 				<DialogFooter>
 					<DialogClose asChild>
-						<Button variant="secondary">Cancel</Button>
+						<Button variant="secondary">
+							{t('dashboard.textures.components.createTextureModal.cancel')}
+						</Button>
 					</DialogClose>
 
 					<Button type="submit" form={formId} disabled={!canSubmit}>
 						{isSubmitting ? (
 							<>
 								<Icon.Loader2 className="mr-2 h-4 w-4 animate-spin" />
-								Creating Texture...
+								{t('dashboard.textures.components.createTextureModal.creating')}
 							</>
 						) : (
-							'Create Texture'
+							t('dashboard.textures.components.createTextureModal.create')
 						)}
 					</Button>
 				</DialogFooter>
@@ -78,8 +86,12 @@ export function CreateTextureModalView({
 				{/* Scroll wrapper */}
 				<div className="overflow-y-scroll">
 					<DrawerHeader>
-						<DrawerTitle>Create Texture</DrawerTitle>
-						<DrawerDescription>Upload and manage your textures.</DrawerDescription>
+						<DrawerTitle>
+							{t('dashboard.textures.components.createTextureModal.title')}
+						</DrawerTitle>
+						<DrawerDescription>
+							{t('dashboard.textures.components.createTextureModal.description')}
+						</DrawerDescription>
 					</DrawerHeader>
 
 					<div className="px-4">
@@ -91,10 +103,10 @@ export function CreateTextureModalView({
 							{isSubmitting ? (
 								<>
 									<Icon.Loader2 className="mr-2 h-4 w-4 animate-spin" />
-									Creating Texture...
+									{t('dashboard.textures.components.createTextureModal.creating')}
 								</>
 							) : (
-								'Create Texture'
+								t('dashboard.textures.components.createTextureModal.create')
 							)}
 						</Button>
 					</DrawerFooter>

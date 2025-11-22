@@ -3,12 +3,14 @@
 import { Large, InlineCode } from '@repo/ui/typography';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { useEffect, useRef, useState } from 'react';
 import { verifyUserMcClaim, getUserMcClaims } from '~web/libs/actions/api';
 import { ApiError } from '~web/libs/utils/api-response';
 import { respToEither } from '~web/libs/utils/resp';
 
 export function McClaimBindClient() {
+	const t = useTranslations();
 	const router = useRouter();
 	const searchParams = useSearchParams();
 	const hasProcessedRef = useRef(false);
@@ -72,8 +74,8 @@ export function McClaimBindClient() {
 	if (verifyMutation.isPending) {
 		return (
 			<div className="flex flex-col gap-4">
-				<Large>Mojang 正版验证</Large>
-				<div>正在处理验证...</div>
+				<Large>{t('auth.mcClaim.bind.title')}</Large>
+				<div>{t('auth.mcClaim.bind.processing')}</div>
 			</div>
 		);
 	}
@@ -81,8 +83,12 @@ export function McClaimBindClient() {
 	if (verifyMutation.isError) {
 		return (
 			<div className="flex flex-col gap-4">
-				<Large>Mojang 正版验证</Large>
-				<div>绑定失败：{verifyMutation.error?.message || 'Unknown error occurred'}</div>
+				<Large>{t('auth.mcClaim.bind.title')}</Large>
+				<div>
+					{t('auth.mcClaim.bind.bindFailed', {
+						message: verifyMutation.error?.message || t('common.messages.unknownError'),
+					})}
+				</div>
 			</div>
 		);
 	}
@@ -90,14 +96,14 @@ export function McClaimBindClient() {
 	if (verifyMutation.isSuccess && verifyMutation.data) {
 		return (
 			<div className="flex flex-col gap-4">
-				<Large>Mojang 正版验证</Large>
-				<div>绑定成功，以下是绑定的档案信息：</div>
+				<Large>{t('auth.mcClaim.bind.title')}</Large>
+				<div>{t('auth.mcClaim.bind.bindSuccess')}</div>
 				<pre>
 					<InlineCode>{JSON.stringify(verifyMutation.data.mcClaim, null, 2)}</InlineCode>
 				</pre>
 				{verifyMutation.data.mcClaims && (
 					<div>
-						<div>当前已绑定档案：</div>
+						<div>{t('auth.mcClaim.bind.currentBoundProfiles')}</div>
 						<pre>
 							<InlineCode>
 								{JSON.stringify(verifyMutation.data.mcClaims, null, 2)}
@@ -106,7 +112,7 @@ export function McClaimBindClient() {
 					</div>
 				)}
 				<a className="underline" href="/app/dashboard/settings">
-					返回设置页面
+					{t('auth.mcClaim.bind.goBackToSettings')}
 				</a>
 			</div>
 		);
@@ -116,8 +122,8 @@ export function McClaimBindClient() {
 	if (!isInitialized) {
 		return (
 			<div className="flex flex-col gap-4">
-				<Large>Mojang 正版验证</Large>
-				<div>加载中...</div>
+				<Large>{t('auth.mcClaim.bind.title')}</Large>
+				<div>{t('auth.mcClaim.bind.loading')}</div>
 			</div>
 		);
 	}
@@ -126,10 +132,10 @@ export function McClaimBindClient() {
 	if (!verificationId) {
 		return (
 			<div className="flex flex-col gap-4">
-				<Large>Mojang 正版验证</Large>
-				<div>缺少验证参数，请通过正确的链接访问此页面。</div>
+				<Large>{t('auth.mcClaim.bind.title')}</Large>
+				<div>{t('auth.mcClaim.bind.missingParams')}</div>
 				<a className="underline" href="/app/dashboard/settings">
-					返回设置页面
+					{t('auth.mcClaim.bind.goBackToSettings')}
 				</a>
 			</div>
 		);
@@ -138,8 +144,8 @@ export function McClaimBindClient() {
 	// 初始状态或等待触发
 	return (
 		<div className="flex flex-col gap-4">
-			<Large>Mojang 正版验证</Large>
-			<div>准备验证...</div>
+			<Large>{t('auth.mcClaim.bind.title')}</Large>
+			<div>{t('auth.mcClaim.bind.preparing')}</div>
 		</div>
 	);
 }

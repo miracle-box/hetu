@@ -4,17 +4,40 @@ import { cn } from '@repo/ui';
 import { Button } from '@repo/ui/button';
 import Link from 'next/link';
 import { useSelectedLayoutSegment } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import React from 'react';
 
-// [TODO] Probably need a better way for generating links
-const navigationItems = [
-	{ segment: '(overview)', label: 'Overview', link: '/app/dashboard' },
-	{ segment: 'profiles', label: 'Profiles', link: '/app/dashboard/profiles' },
-	{ segment: 'textures', label: 'Textures', link: '/app/dashboard/textures' },
-	{ segment: 'settings', label: 'Settings', link: '/app/dashboard/settings' },
-] as const;
-
 export function DashboardNavbar() {
+	const t = useTranslations();
+
+	// [TODO] Probably need a better way for generating links
+	const navigationItems = React.useMemo(
+		() =>
+			[
+				{
+					segment: '(overview)',
+					label: t('dashboard.settings.page.navigation.overview'),
+					link: '/app/dashboard',
+				},
+				{
+					segment: 'profiles',
+					label: t('dashboard.settings.page.navigation.profiles'),
+					link: '/app/dashboard/profiles',
+				},
+				{
+					segment: 'textures',
+					label: t('dashboard.settings.page.navigation.textures'),
+					link: '/app/dashboard/textures',
+				},
+				{
+					segment: 'settings',
+					label: t('dashboard.settings.page.navigation.settings'),
+					link: '/app/dashboard/settings',
+				},
+			] as const,
+		[t],
+	);
+
 	const [buttonsRefMap, setButtonsRefMap] = React.useState(() => new Map<string, HTMLElement>());
 
 	// Help updating the indicator on initial render, and manages button refs.
@@ -42,7 +65,7 @@ export function DashboardNavbar() {
 			width,
 			transform: left - firstBtn.getBoundingClientRect().left,
 		};
-	}, [activeSegment, buttonsRefMap]);
+	}, [activeSegment, buttonsRefMap, navigationItems]);
 
 	return (
 		<div

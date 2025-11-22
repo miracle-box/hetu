@@ -12,9 +12,10 @@ export type Props = {
 		capeTextureId: string | null;
 		isPrimary: boolean;
 	};
+	t: (key: string) => string;
 };
 
-export function ProfileCard({ profile }: Props) {
+export function ProfileCard({ profile, t }: Props) {
 	return (
 		<Card>
 			<CardHeader>
@@ -24,38 +25,46 @@ export function ProfileCard({ profile }: Props) {
 			<CardContent>
 				<DataList orientation="vertical" className="gap-2">
 					<DataListItem>
-						<DataListLabel>UUID</DataListLabel>
+						<DataListLabel>
+							{t('dashboard.profiles.components.profileCard.uuid')}
+						</DataListLabel>
 						<DataListValue>
 							<InlineCode>{profile.id}</InlineCode>
 						</DataListValue>
 					</DataListItem>
 					<DataListItem>
-						<DataListLabel>Primary Profile</DataListLabel>
+						<DataListLabel>
+							{t('dashboard.profiles.components.profileCard.primaryProfile')}
+						</DataListLabel>
 						<DataListValue>
 							{profile.isPrimary ? (
-								<Badge variant="secondary">Primary</Badge>
+								<Badge variant="secondary">{t('common.labels.primary')}</Badge>
 							) : (
-								<Badge variant="outline">Not primary</Badge>
+								<Badge variant="outline">{t('common.labels.notPrimary')}</Badge>
 							)}
 						</DataListValue>
 					</DataListItem>
 					<DataListItem>
-						<DataListLabel>Skin</DataListLabel>
+						<DataListLabel>
+							{t('dashboard.profiles.components.profileCard.skin')}
+						</DataListLabel>
 						<DataListValue>
 							{profile.skinTextureId ? (
 								<InlineCode>{profile.skinTextureId}</InlineCode>
 							) : (
-								<Badge variant="outline">No texture</Badge>
+								<Badge variant="outline">{t('common.labels.noTexture')}</Badge>
 							)}
 						</DataListValue>
 					</DataListItem>
 					<DataListItem>
-						<DataListLabel>Cape</DataListLabel>
+						<DataListLabel>
+							{t('dashboard.profiles.components.profileCard.cape')}
+						</DataListLabel>
 						<DataListValue>
 							{profile.capeTextureId ? (
 								<InlineCode>{profile.capeTextureId}</InlineCode>
 							) : (
-								<Badge variant="outline">No texture</Badge>
+								<Badge variant="outline">{t('common.labels.noTexture')}</Badge>
 							)}
 						</DataListValue>
 					</DataListItem>

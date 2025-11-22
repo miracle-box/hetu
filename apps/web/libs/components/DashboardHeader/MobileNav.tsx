@@ -7,6 +7,7 @@ import { useScrollLock } from '@repo/ui/hooks/use-scroll-lock';
 import { useToggle } from '@repo/ui/hooks/use-toggle';
 import { Icon } from '@repo/ui/icon';
 import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 import { links } from './links';
 
 type MobileMenuProps = {
@@ -14,6 +15,7 @@ type MobileMenuProps = {
 };
 
 export function MobileNav({ onMenuToggle }: MobileMenuProps) {
+	const t = useTranslations();
 	const [mobileNavOpen, toggleMobileNav] = useToggle();
 	const { lock: lockScroll, unlock: unlockScroll } = useScrollLock({
 		autoLock: false,
@@ -75,7 +77,7 @@ export function MobileNav({ onMenuToggle }: MobileMenuProps) {
 								key={item.href}
 								asChild
 							>
-								<Link href={item.href}>{item.label}</Link>
+								<Link href={item.href}>{t(item.labelKey)}</Link>
 							</Button>
 						))}
 					</section>

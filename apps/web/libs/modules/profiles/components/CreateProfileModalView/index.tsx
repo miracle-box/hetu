@@ -22,6 +22,7 @@ import {
 } from '@repo/ui/drawer';
 import { useBreakpoint } from '@repo/ui/hooks/use-breakpoint';
 import { Icon } from '@repo/ui/icon';
+import { useTranslations } from 'next-intl';
 import React from 'react';
 
 export type Props = {
@@ -39,6 +40,7 @@ export function CreateProfileModalView({
 	canSubmit,
 	isSubmitting,
 }: Props) {
+	const t = useTranslations();
 	const widerThanSm = useBreakpoint('sm');
 
 	return widerThanSm ? (
@@ -47,25 +49,31 @@ export function CreateProfileModalView({
 
 			<DialogContent>
 				<DialogHeader>
-					<DialogTitle>Create profile</DialogTitle>
-					<DialogDescription>Your first profile is primary profile.</DialogDescription>
+					<DialogTitle>
+						{t('dashboard.profiles.components.createProfileModal.title')}
+					</DialogTitle>
+					<DialogDescription>
+						{t('dashboard.profiles.components.createProfileModal.description')}
+					</DialogDescription>
 				</DialogHeader>
 
 				<FormView />
 
 				<DialogFooter>
 					<DialogClose asChild>
-						<Button variant="secondary">Cancel</Button>
+						<Button variant="secondary">
+							{t('dashboard.profiles.components.createProfileModal.cancel')}
+						</Button>
 					</DialogClose>
 
 					<Button type="submit" form={formId} disabled={!canSubmit}>
 						{isSubmitting ? (
 							<>
 								<Icon.Loader2 className="mr-2 h-4 w-4 animate-spin" />
-								Creating Profile...
+								{t('dashboard.profiles.components.createProfileModal.creating')}
 							</>
 						) : (
-							'Create Profile'
+							t('dashboard.profiles.components.createProfileModal.create')
 						)}
 					</Button>
 				</DialogFooter>
@@ -78,9 +86,11 @@ export function CreateProfileModalView({
 				{/* Scroll wrapper */}
 				<div className="overflow-y-scroll">
 					<DrawerHeader>
-						<DrawerTitle>Create profile</DrawerTitle>
+						<DrawerTitle>
+							{t('dashboard.profiles.components.createProfileModal.title')}
+						</DrawerTitle>
 						<DrawerDescription>
-							Your first profile is primary profile.
+							{t('dashboard.profiles.components.createProfileModal.description')}
 						</DrawerDescription>
 					</DrawerHeader>
 
@@ -93,10 +103,10 @@ export function CreateProfileModalView({
 							{isSubmitting ? (
 								<>
 									<Icon.Loader2 className="mr-2 h-4 w-4 animate-spin" />
-									Creating Profile...
+									{t('dashboard.profiles.components.createProfileModal.creating')}
 								</>
 							) : (
-								'Create Profile'
+								t('dashboard.profiles.components.createProfileModal.create')
 							)}
 						</Button>
 					</DrawerFooter>
