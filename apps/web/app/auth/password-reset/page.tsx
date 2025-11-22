@@ -1,5 +1,6 @@
 'use client';
 
+import { API } from '@repo/api-client';
 import { Button } from '@repo/ui/button';
 import { Icon } from '@repo/ui/icon';
 import { Large } from '@repo/ui/typography';
@@ -10,12 +11,12 @@ import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import React from 'react';
 import { requestVerification } from '~web/libs/actions/api/auth';
+import { respToEither } from '~web/libs/api/resp';
 import {
 	usePasswordResetForm,
 	type PasswordResetFormValues,
 } from '~web/libs/modules/auth/forms/PasswordResetForm';
 import { formError } from '~web/libs/utils/form';
-import { respToEither } from '~web/libs/utils/resp';
 
 export default function PasswordReset() {
 	const t = useTranslations();
@@ -25,8 +26,8 @@ export default function PasswordReset() {
 		mutationFn: async (values: PasswordResetFormValues) =>
 			respToEither(
 				await requestVerification({
-					type: 'email',
-					scenario: 'password_reset',
+					type: API.Auth.Entities.VerificationType.EMAIL,
+					scenario: API.Auth.Entities.VerificationScenario.PASSWORD_RESET,
 					target: values.email,
 				}),
 			).mapLeft(({ message }) => formError(message)),

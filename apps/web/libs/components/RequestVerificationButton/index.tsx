@@ -6,7 +6,7 @@ import { Icon } from '@repo/ui/icon';
 import { useMutation } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 import { requestVerification } from '~web/libs/actions/api/auth';
-import { respToEither } from '~web/libs/utils/resp';
+import { respToEither } from '~web/libs/api/resp';
 
 export type Props = {
 	// [TODO] Share common types between frontend and backend.

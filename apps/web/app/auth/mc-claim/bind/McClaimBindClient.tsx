@@ -6,8 +6,8 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { useEffect, useRef, useState } from 'react';
 import { verifyMyMcClaim, getMyMcClaims } from '~web/libs/actions/api/me';
-import { ApiError } from '~web/libs/utils/api-response';
-import { respToEither } from '~web/libs/utils/resp';
+import { respToEither } from '~web/libs/api/resp';
+import { ApiError } from '~web/libs/api/response';
 
 export function McClaimBindClient() {
 	const t = useTranslations();

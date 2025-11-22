@@ -7,11 +7,11 @@ import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import React from 'react';
+import { respToEither } from '~web/libs/api/resp';
 import {
 	useNewPasswordForm,
 	type NewPasswordFormValues,
 } from '~web/libs/modules/auth/forms/NewPasswordForm';
-import { respToEither } from '~web/libs/utils/resp';
 import { handleResetPassword } from './actions';
 
 export function NewPassword({ verificationId }: { verificationId: string }) {

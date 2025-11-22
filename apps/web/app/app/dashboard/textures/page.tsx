@@ -2,7 +2,7 @@ import { Button } from '@repo/ui/button';
 import { Large } from '@repo/ui/typography';
 import { getTranslations } from 'next-intl/server';
 import { getMyTextures } from '~web/libs/actions/api/me';
-import { respToEither } from '~web/libs/utils/resp';
+import { respToEither } from '~web/libs/api/resp';
 import { CreateTextureModal } from './CreateTextureModal';
 import { TexturesList } from './TexturesList';
 

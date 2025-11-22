@@ -3,8 +3,8 @@ import { Button } from '@repo/ui/button';
 import { Large } from '@repo/ui/typography';
 import { getTranslations } from 'next-intl/server';
 import { getMyProfiles } from '~web/libs/actions/api/me';
+import { respToEither } from '~web/libs/api/resp';
 import { ProfileCard } from '~web/libs/basicui/ProfileCard';
-import { respToEither } from '~web/libs/utils/resp';
 import { CreateProfileModal } from './CreateProfileModal';
 
 export default async function Profiles() {

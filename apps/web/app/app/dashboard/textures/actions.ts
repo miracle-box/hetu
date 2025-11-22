@@ -4,8 +4,8 @@ import type { CreateTextureFormValues } from '~web/libs/modules/textures/forms/C
 import { EitherAsync } from 'purify-ts/EitherAsync';
 import { uploadFile } from '~web/libs/actions/api/files';
 import { createTexture } from '~web/libs/actions/api/textures';
+import { eitherToResp, respToEither } from '~web/libs/api/resp';
 import { formError } from '~web/libs/utils/form';
-import { eitherToResp, respToEither } from '~web/libs/utils/resp';
 
 export async function handleCreateTexture(form: CreateTextureFormValues) {
 	const fileBytes = Uint8Array.fromBase64(form.file.base64);

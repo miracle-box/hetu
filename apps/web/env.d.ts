@@ -5,5 +5,6 @@ declare namespace NodeJS {
 		API_ROOT: string;
 		TEXTURE_STORE_ROOT: string;
 		JWT_SECRET: string;
+		MSA_CLIENT_ID: string;
 	}
 }

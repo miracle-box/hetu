@@ -2,7 +2,7 @@
 
 import type { API } from '@repo/api-client';
 import { client as api } from '~web/libs/api/eden';
-import { handleResponse } from '~web/libs/utils/api-response';
+import { handleResponse } from '~web/libs/api/response';
 import { readSession } from '../auth';
 
 export async function getOauth2Metadata() {

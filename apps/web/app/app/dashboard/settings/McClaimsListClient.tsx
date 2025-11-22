@@ -3,7 +3,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 import { getMyMcClaims } from '~web/libs/actions/api/me';
-import { respToEither } from '~web/libs/utils/resp';
+import { QueryKeys } from '~web/libs/api/query-keys';
+import { respToEither } from '~web/libs/api/resp';
 import { McClaimActions } from './McClaimActions';
 
 interface Profile {
@@ -25,7 +26,7 @@ export function McClaimsListClient({ initialData, profiles }: McClaimsListClient
 		isLoading,
 		error,
 	} = useQuery({
-		queryKey: ['user-mc-claims'],
+		queryKey: QueryKeys.userMcClaims(),
 		queryFn: async () => respToEither(await getMyMcClaims()),
 		initialData: respToEither(initialData),
 	});

@@ -1,5 +1,6 @@
 'use client';
 
+import { API } from '@repo/api-client';
 import { withForm } from '@repo/ui/hooks/use-app-form';
 import { Input } from '@repo/ui/input';
 import { useTranslations } from 'next-intl';
@@ -33,8 +34,8 @@ export const SignupFormView = withForm({
 										/>
 									</field.Control>
 									<RequestVerificationButton
-										type="email"
-										scenario="signup"
+										type={API.Auth.Entities.VerificationType.EMAIL}
+										scenario={API.Auth.Entities.VerificationScenario.SIGNUP}
 										getTarget={() => form.getFieldValue('email')}
 										onVerificationRequested={(id) => {
 											form.setFieldValue('verificationId', id);

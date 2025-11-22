@@ -3,7 +3,7 @@ import { Large } from '@repo/ui/typography';
 import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
 import { inspectVerification, verifyVerification } from '~web/libs/actions/api/auth';
-import { respToEither } from '~web/libs/utils/resp';
+import { respToEither } from '~web/libs/api/resp';
 import { NewPassword } from './NewPassword';
 
 type SearchParams = Promise<{ id?: string; secret?: string }>;

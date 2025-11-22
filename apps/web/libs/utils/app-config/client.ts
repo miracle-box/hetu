@@ -4,6 +4,7 @@ export type ClientAppConfig = {
 	buildId: string;
 	publicUrl: string;
 	textureRoot: string;
+	msaClientId: string;
 };
 
 export function getClientAppConfig(): ClientAppConfig {
@@ -11,5 +12,6 @@ export function getClientAppConfig(): ClientAppConfig {
 		buildId: process.env.NEXT_PUBLIC_BUILD_ID,
 		publicUrl: process.env.PUBLIC_URL,
 		textureRoot: process.env.TEXTURE_STORE_ROOT,
+		msaClientId: process.env.MSA_CLIENT_ID,
 	};
 }

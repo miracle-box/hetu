@@ -4,8 +4,8 @@ import type { NewPasswordFormValues } from '~web/libs/modules/auth/forms/NewPass
 import { EitherAsync } from 'purify-ts/EitherAsync';
 import { resetPassword } from '~web/libs/actions/api/auth';
 import { sessionToCookie, writeSessionCookie } from '~web/libs/actions/auth';
+import { eitherToResp, respToEither } from '~web/libs/api/resp';
 import { formError } from '~web/libs/utils/form';
-import { eitherToResp, respToEither } from '~web/libs/utils/resp';
 
 export async function handleResetPassword(form: NewPasswordFormValues) {
 	const requests = EitherAsync.liftEither(

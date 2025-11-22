@@ -5,7 +5,8 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { deleteMyMcClaim, updateMyMcClaim } from '~web/libs/actions/api/me';
-import { respToEither } from '~web/libs/utils/resp';
+import { QueryKeys } from '~web/libs/api/query-keys';
+import { respToEither } from '~web/libs/api/resp';
 
 interface Profile {
 	id: string;
@@ -58,9 +59,9 @@ export function McClaimActions({
 		},
 		onSuccess: () => {
 			// 刷新 McClaims 列表
-			void queryClient.invalidateQueries({ queryKey: ['user-mc-claims'] });
+			void queryClient.invalidateQueries({ queryKey: QueryKeys.userMcClaims() });
 			// 强制重新获取数据
-			void queryClient.refetchQueries({ queryKey: ['user-mc-claims'] });
+			void queryClient.refetchQueries({ queryKey: QueryKeys.userMcClaims() });
 		},
 	});
 
@@ -90,9 +91,9 @@ export function McClaimActions({
 		},
 		onSuccess: () => {
 			// 刷新 McClaims 列表
-			void queryClient.invalidateQueries({ queryKey: ['user-mc-claims'] });
+			void queryClient.invalidateQueries({ queryKey: QueryKeys.userMcClaims() });
 			// 强制重新获取数据
-			void queryClient.refetchQueries({ queryKey: ['user-mc-claims'] });
+			void queryClient.refetchQueries({ queryKey: QueryKeys.userMcClaims() });
 		},
 	});
 

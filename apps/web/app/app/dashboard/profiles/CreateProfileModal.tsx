@@ -5,13 +5,13 @@ import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 import { createProfile } from '~web/libs/actions/api/profiles';
+import { respToEither } from '~web/libs/api/resp';
 import { CreateProfileModalView } from '~web/libs/modules/profiles/components/CreateProfileModalView';
 import {
 	useCreateProfileForm,
 	type CreateProfileFormValues,
 } from '~web/libs/modules/profiles/forms/CreateProfileForm';
 import { formError } from '~web/libs/utils/form';
-import { respToEither } from '~web/libs/utils/resp';
 
 export type Props = {
 	children: React.ReactNode;

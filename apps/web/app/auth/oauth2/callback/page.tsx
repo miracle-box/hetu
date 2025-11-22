@@ -2,8 +2,8 @@ import { Large } from '@repo/ui/typography';
 import { redirect } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
 import { verifyVerification } from '~web/libs/actions/api/auth';
+import { respToEither } from '~web/libs/api/resp';
 import { getClientAppConfig } from '~web/libs/utils/app-config/client';
-import { respToEither } from '~web/libs/utils/resp';
 import { ClientSignin } from './ClientSignin';
 
 export type Props = {

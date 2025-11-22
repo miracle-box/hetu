@@ -5,8 +5,8 @@ import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { confirmOauth2Binding } from '~web/libs/actions/api/auth';
-import { ApiError } from '~web/libs/utils/api-response';
-import { respToEither } from '~web/libs/utils/resp';
+import { respToEither } from '~web/libs/api/resp';
+import { ApiError } from '~web/libs/api/response';
 
 export function ConfirmOauth2Binding({ verificationId }: { verificationId: string }) {
 	const t = useTranslations();
