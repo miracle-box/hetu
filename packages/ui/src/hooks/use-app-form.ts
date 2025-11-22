@@ -41,7 +41,7 @@ export const { useAppForm: appFormHook, withForm } = createFormHook({
 
 export function createAppFormHook<
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	TFormView extends (props: any) => React.JSX.Element,
+	TFormView extends (props: any) => React.ReactNode,
 	// Type params required by FormOptions
 	TFormData,
 	TOnMount extends undefined | FormValidateOrFn<TFormData>,

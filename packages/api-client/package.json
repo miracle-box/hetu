@@ -2,11 +2,11 @@
   "name": "@repo/api-client",
   "version": "0.0.0",
   "devDependencies": {
-    "@elysiajs/eden": "^1.4.1",
+    "@elysiajs/eden": "^1.4.5",
     "@repo/backend": "workspace:*",
     "@repo/typescript-config": "workspace:*",
     "ts-morph": "^27.0.2",
-    "typescript": "^5.9.2"
+    "typescript": "^5.9.3"
   },
   "exports": {
     ".": "./index.ts"

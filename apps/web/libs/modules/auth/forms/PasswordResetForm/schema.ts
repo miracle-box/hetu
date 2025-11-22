@@ -2,7 +2,7 @@ import type { Static } from '@sinclair/typebox';
 import { Type } from '@sinclair/typebox';
 import { ValueErrorType } from '@sinclair/typebox/errors';
 import { Compile } from '@sinclair/typemap';
-import { formOptions } from '@tanstack/react-form/nextjs';
+import { formOptions } from '@tanstack/react-form-nextjs';
 
 export const passwordResetFormSchema = Type.Object({
 	email: Type.String({

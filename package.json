@@ -14,11 +14,11 @@
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
-    "@typescript/native-preview": "^7.0.0-dev.20250921.1",
+    "@typescript/native-preview": "^7.0.0-dev.20251122.1",
     "prettier": "^3.6.2",
-    "prettier-plugin-tailwindcss": "^0.6.14",
-    "turbo": "^2.5.6",
-    "typescript": "^5.9.2"
+    "prettier-plugin-tailwindcss": "^0.7.1",
+    "turbo": "^2.6.1",
+    "typescript": "^5.9.3"
   },
   "engines": {
     "node": ">=18"
@@ -29,8 +29,7 @@
     "packages/*"
   ],
   "overrides": {
-    "elysia": "1.4.6",
-    "@sinclair/typebox": "0.34.41",
-    "purify-ts": "2.1.2"
+    "elysia": "1.4.16",
+    "@sinclair/typebox": "0.34.41"
   }
 }
