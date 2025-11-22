@@ -13,20 +13,12 @@ export default async function Verified({ searchParams }: { searchParams: SearchP
 	const { id, secret } = await searchParams;
 
 	if (!id || !secret) {
-		return (
-			<ThisPageLayout t={t}>
-				{t('auth.passwordReset.page.verified.invalidLink')}
-			</ThisPageLayout>
-		);
+		return <ThisPageLayout>{t('auth.passwordReset.page.verified.invalidLink')}</ThisPageLayout>;
 	}
 
 	const verif = respToEither(await inspectVerification(id));
 	if (verif.isLeft() || !verif.isRight()) {
-		return (
-			<ThisPageLayout t={t}>
-				{t('auth.passwordReset.page.verified.linkExpired')}
-			</ThisPageLayout>
-		);
+		return <ThisPageLayout>{t('auth.passwordReset.page.verified.linkExpired')}</ThisPageLayout>;
 	}
 
 	if (!verif.extract().verification.verified) {
@@ -39,7 +31,7 @@ export default async function Verified({ searchParams }: { searchParams: SearchP
 
 		if (verifyResponse.isLeft()) {
 			return (
-				<ThisPageLayout t={t}>
+				<ThisPageLayout>
 					{t('auth.passwordReset.page.verified.verifyFailed')}
 				</ThisPageLayout>
 			);
@@ -47,19 +39,15 @@ export default async function Verified({ searchParams }: { searchParams: SearchP
 	}
 
 	return (
-		<ThisPageLayout t={t}>
+		<ThisPageLayout>
 			<NewPassword verificationId={id} />
 		</ThisPageLayout>
 	);
 }
 
-function ThisPageLayout({
-	children,
-	t,
-}: {
-	children: React.ReactNode;
-	t: ReturnType<typeof getTranslations>;
-}) {
+async function ThisPageLayout({ children }: { children: React.ReactNode }) {
+	const t = await getTranslations();
+
 	return (
 		<main className="container mx-auto">
 			<div className="flex flex-col gap-2">

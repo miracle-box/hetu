@@ -1,8 +1,11 @@
+'use client';
+
 import { Badge } from '@repo/ui/badge';
 import { Card, CardContent, CardFooter, CardHeader } from '@repo/ui/card';
 import { DataList, DataListItem, DataListLabel, DataListValue } from '@repo/ui/data-list';
 import { InlineCode, Large } from '@repo/ui/typography';
 import Image from 'next/image';
+import { useTranslations } from 'next-intl';
 import { getClientAppConfig } from '~web/libs/hooks/get-client-app-config';
 
 export type Props = {
@@ -15,10 +18,10 @@ export type Props = {
 		authorId: string;
 	};
 	children?: React.ReactNode;
-	t: (key: string) => string;
 };
 
-export function TextureCard({ texture, children, t }: Props) {
+export function TextureCard({ texture, children }: Props) {
+	const t = useTranslations();
 	const clientAppConfig = getClientAppConfig();
 
 	return (

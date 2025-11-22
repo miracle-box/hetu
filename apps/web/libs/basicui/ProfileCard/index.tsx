@@ -2,6 +2,7 @@ import { Badge } from '@repo/ui/badge';
 import { Card, CardContent, CardHeader } from '@repo/ui/card';
 import { DataList, DataListItem, DataListLabel, DataListValue } from '@repo/ui/data-list';
 import { InlineCode, Large } from '@repo/ui/typography';
+import { getTranslations } from 'next-intl/server';
 
 export type Props = {
 	profile: {
@@ -12,10 +13,10 @@ export type Props = {
 		capeTextureId: string | null;
 		isPrimary: boolean;
 	};
-	t: (key: string) => string;
 };
 
-export function ProfileCard({ profile, t }: Props) {
+export async function ProfileCard({ profile }: Props) {
+	const t = await getTranslations();
 	return (
 		<Card>
 			<CardHeader>

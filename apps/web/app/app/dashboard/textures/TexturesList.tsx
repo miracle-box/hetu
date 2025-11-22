@@ -30,7 +30,7 @@ export function TexturesList({ textures }: Props) {
 		>
 			{textures.length > 0 ? (
 				textures.map((texture) => (
-					<TextureCard key={texture.id} texture={texture} t={t}>
+					<TextureCard key={texture.id} texture={texture}>
 						<SelectProfileModal
 							onSelect={(profile) => {
 								if (texture.type === API.Textures.Entities.TextureType.CAPE) {

@@ -34,7 +34,7 @@ export default async function Profiles() {
 							>
 								{profiles.length > 0 ? (
 									profiles.map((profile) => (
-										<ProfileCard key={profile.id} profile={profile} t={t} />
+										<ProfileCard key={profile.id} profile={profile} />
 									))
 								) : (
 									<span>{t('dashboard.profiles.page.noProfiles')}</span>
