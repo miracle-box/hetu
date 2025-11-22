@@ -8,6 +8,7 @@ import { NextIntlClientProvider } from 'next-intl';
 import { ThemeProvider } from 'next-themes';
 import { getQueryClient } from '~web/libs/api/query';
 import { SessionManager } from '~web/libs/modules/auth/components/SessionManager';
+import { ClientTypeBoxInitializer } from './client-typebox-initializer';
 
 export function ClientProviders({
 	children,
@@ -30,6 +31,7 @@ export function ClientProviders({
 			<QueryClientProvider client={queryClient}>
 				<NextIntlClientProvider locale={locale} messages={messages}>
 					{children}
+					<ClientTypeBoxInitializer />
 				</NextIntlClientProvider>
 				<ReactQueryDevtools />
 				<SessionManager />

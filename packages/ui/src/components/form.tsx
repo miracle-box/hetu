@@ -99,12 +99,14 @@ function FormFieldMessage({ className, children, ...props }: React.ComponentProp
 	const formId = useFormId();
 	const field = useFieldContext<unknown>();
 
-	// We do not know the type of errors, assume it's from Zod or just a plain string.
+	/**
+	 * We do not know the type of errors, assume it's from the one returned by TypeBox.
+	 */
 	const errors = field.state.meta.errors
 		// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-		.filter((error) => typeof error === 'string' || typeof error.message === 'string')
+		.filter((error) => typeof error === 'object' && typeof error.message === 'string')
 		// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-		.map((error) => (error.message ?? error) as string);
+		.map((error) => error.message as string);
 
 	const body = errors.length
 		? errors.map((error) => (

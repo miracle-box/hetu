@@ -1,9 +1,10 @@
 import type { Metadata } from 'next';
 import { cn } from '@repo/ui';
-import { getMessages } from 'next-intl/server';
+import { getMessages, getTranslations } from 'next-intl/server';
 import React from 'react';
 import './globals.css';
 import { getLocale } from '~web/libs/actions/i18n';
+import { initializeTypeBoxErrorMessage } from '~web/libs/utils/typebox-mesage';
 import ClientConfigProvider from './client-config-provider';
 import { ClientProviders } from './client-providers';
 import { fontClasses } from '../libs/styling/fonts';
@@ -20,6 +21,9 @@ export default async function RootLayout({
 }>) {
 	const locale = await getLocale();
 	const messages = await getMessages();
+	const t = await getTranslations();
+
+	initializeTypeBoxErrorMessage(t);
 
 	return (
 		<html

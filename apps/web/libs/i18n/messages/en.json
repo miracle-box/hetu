@@ -83,6 +83,19 @@
       "noPermission": "No permission",
       "passwordsDoNotMatch": "Passwords do not match"
     },
+    "validation": {
+      "required": "This field is required",
+      "minLength": "This field must be at least {min} characters",
+      "maxLength": "This field must be at most {max} characters",
+      "emailFormat": "Please enter a valid email address",
+      "namePattern": "Name should be 3-16 characters long. Numbers, letters, and underscores are allowed.",
+      "verificationCodeLength": "Verification code must be 8 characters",
+      "passwordRequired": "Password is required",
+      "nameRequired": "Name is required",
+      "descriptionRequired": "Description is required",
+      "fileRequired": "File is required",
+      "typeRequired": "Type is required"
+    },
     "status": {
       "loading": "Loading...",
       "updating": "Updating...",
